@@ -48,6 +48,16 @@ return require('packer').startup(function(use)
     }
 
     use 'rlane/pounce.nvim' -- jump to text
+    -- jump to character
+    use {
+        'jinh0/eyeliner.nvim',
+        config = function()
+            require'eyeliner'.setup {
+                highlight_on_key = true,
+                dim = false
+            }
+        end
+    }
     -- FOSS alt to Copilot below. Setup with :CodiumSync + make an account. Commented out by default because errors without setup.
     --[[
     use {
