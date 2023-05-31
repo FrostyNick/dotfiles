@@ -46,8 +46,11 @@ return require('packer').startup(function(use)
             {'rafamadriz/friendly-snippets'},
         }
     }
+    -- jump to text -- I switched to just live grep <Leader-f-g>.
+    -- use 'rlane/pounce.nvim' 
 
-    use 'rlane/pounce.nvim' -- jump to text
+    use 'airblade/vim-rooter' -- changes directory to project root when opening from CLI
+    
     -- jump to character
     use {
         'jinh0/eyeliner.nvim',
@@ -58,19 +61,17 @@ return require('packer').startup(function(use)
             }
         end
     }
-    -- FOSS alt to Copilot below. Setup with :CodiumSync + make an account. Commented out by default because errors without setup.
-    --[[
     use {
         'Exafunction/codeium.vim',
         config = function()
             -- Change '<C-g>' here to any keycode you like.
             vim.keymap.set('i', '<c-g>', function()
-                return vim.fn['codeium#Accept']() end, { expr = true }) ]]
-                --[[ vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-                vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-                vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true }) ]]
---[[        end
-    } ]]
+                return vim.fn['codeium#Accept']() end, { expr = true })
+            vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+            vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+            -- vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+        end
+    }
     vim.cmd('colorscheme rose-pine')
 
 end)

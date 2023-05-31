@@ -20,6 +20,9 @@ Install packer with [instructions](https://github.com/wbthomason/packer.nvim)
 on the web
 ([ThePrimeagen video with timestamp](https://youtu.be/w7i4amO_zaE?t=234))
 
+If any new changes are made, you need to `:w` so Packer.nvim can see the changes.
+
+Then:
 `:so`
 
 If errors show up for above command, (`ZQ`) quit out of vim, reopen the
@@ -27,16 +30,24 @@ packer.lua file in Neovim and repeat.
 
 `:PackerSync`
 
-A screen should show up that everything installed successfully. If not, try
-checking out ThePrimeagen video or hit me up.
+A screen should show up that everything installed successfully.
 
-After all that, close and open and open up again, some errors and tips will
-show up. Wait for everything to install. After that, you're ready!
+After all that, close and open and open up again, some errors and tips will show up. Wait for everything to install.
+
+### Codium setup 
+
+Note: If you don't set this up, there will be warnings or errors. Remove it (or comment it out) from packer.nvim or set it up.
+
+[Getting Started](https://github.com/Exafunction/codeium.vim#-getting-started)
 
 ### Future
 
 [Lazy.nvim](https://github.com/folke/lazy.nvim) is tempting over Packer.nvim
-... it's faster thanks to lazy loading and from what I have heard it might be
-easier to start with too.
+
+#### Why?
+- Packer.nvim hasn't been updated for a while. Also [Is this project dead? \#1229: packer.nvim](https://github.com/wbthomason/packer.nvim/issues/1229)
+- It's faster thanks to lazy loading.
+- Hot loading also automates the compilation; no `:LazyVimSync` in sight.
+- From what I have heard it might be easier to start with too.
 
 
