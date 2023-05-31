@@ -1,0 +1,23 @@
+[Default Applications]
+application/x-desktop=vim.desktop
+application/pdf=FoxitReader.desktop
+application/ppdf=FoxitReader.desktop
+application/xfdf=FoxitReader.desktop
+application/fdf=FoxitReader.desktop
+x-scheme-handler/quaver=Quaver-scheme-handler.desktop
+x-scheme-handler/discord-376180410490552320=discord-376180410490552320.desktop
+x-scheme-handler/tg=userapp-Telegram Desktop-6F9PV1.desktop
+text/html=librewolf.desktop
+x-scheme-handler/http=librewolf.desktop
+x-scheme-handler/https=librewolf.desktop
+x-scheme-handler/about=librewolf.desktop
+x-scheme-handler/unknown=librewolf.desktop
+text/plain=featherpad.desktop
+application/x-ms-dos-executable=librewolf.desktop
+inode/directory=ranger.desktop
+
+[Added Associations]
+application/x-desktop=vim.desktop;
+x-scheme-handler/tg=userapp-Telegram Desktop-6F9PV1.desktop;
+image/gif=nvim.desktop;
+text/plain=featherpad.desktop;
