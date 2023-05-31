@@ -174,7 +174,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-# mouse clicks suck
+# mouse clicks suck; replace this later
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 bindsym $mod+Shift+q exec "i3-nagbar -t warning -m 'You pressed the shutdown shortcut. Do you really want to shutdown i3?' -B 'Yes' 'shutdown now'"
 # bindsym $mod+Shift+e exec i3-msg exit
@@ -187,10 +187,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -254,7 +254,7 @@ client.background       #00ee78
 bindsym Print exec flameshot gui 
 # bindcode 107 flameshot gui 
 workspace_auto_back_and_forth yes # repeat mod + num to go to previous ws
-# i dont want this anymore go awayyy. focus_follows_mouse no
+# i dont want this anymore go awayyy. might change my mind later: focus_follows_mouse no
 hide_edge_borders smart
 # remove title bar
 default_border pixel
@@ -305,10 +305,10 @@ set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) re
 bindsym $mod+BackSpace mode "$mode_system"
 bindsym Mod1+BackSpace mode "$mode_system"
 bindsym Control+Mod1+Delete mode "$mode_system"
-# once in a while mod key stops working so that's why above exists
-# not Ctrl but Control 
+# once in a long while mod key stops working so that's why above exists
+# !!!! not Ctrl but Control !!!!
 
-# will systemctl work everywhere? I think not.
+# will systemctl work everywhere? I think not. change that later.
 mode "$mode_system" {
     bindsym l exec --no-startup-id $i3lockwall, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -363,7 +363,7 @@ assign [class="librewolf-default"] $ws1
 # assign [class="firefox"] $ws1 
 for_window [class="librewolf-default"] focus
 
-# code stuff
+# code
 assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
 assign [class="kitty"] $ws2
@@ -376,16 +376,16 @@ for_window [class="jetbrains-studio"] focus
 
 assign [class="Joplin"] $ws4
 
-# I'm more like to play a game on my phone from my pc than having a game and scrcpy on
+# I'm more likely to play a game on my phone from my pc than having a game and scrcpy on
 assign [class="scrcpy"] $ws5
 for_window [class="scrcpy"] focus
 
 
-# social-game stuff
+# social-game
 assign [class="Steam"] $ws5
 assign [class="discord"] $ws6
 
-# video stuff
+# video
 assign [class="obs"] $ws10
 for_window [class="obs"] focus
 assign [class="Shotcut"] $ws10
@@ -397,7 +397,7 @@ for_window [class="SimpleScreenRecorder"] focus
 # for_window [class="mpv"] focus
 
 
-# private (cannot be accessed w shortcuts)
+# private (cannot be accessed w keyboard shortcuts. mouse scroll on bar works though.)
 assign [class="KeePassXC"] $ws100
 
 
