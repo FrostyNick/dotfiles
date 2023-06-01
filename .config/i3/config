@@ -260,7 +260,8 @@ hide_edge_borders smart
 default_border pixel
 default_floating_border pixel
 
-set $mode_launcher Launch: [l]wolf, r[a]nger, ..[c]py, [a]nroid, [o]bs, [d]uwu, sim[r]ec, n[v]im, [j]op, s[y]nc, kee[p], s[h]otc, pcman[f]m
+# set $mode_launcher Launch: [l]ibrewolf, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, [j]oplin, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
+set $mode_launcher Open: [l]wlf, r[a]nger, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], [j]op, s[y]nc, kee[p], s[h]otc, pcm[f]m, [n]boat
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
@@ -272,6 +273,7 @@ mode "$mode_launcher" {
     bindsym r exec simplescreenrecorder
     bindsym d exec discord || exec discord-canary
     bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
+    bindsym n exec i3-sensible-terminal -e "newsboat"
     # FAIL bindsym i exec "nvim"
     # FAIL bindsym v exec i3-sensible-terminal -e "nvim ~/p"
     # FAIL || vim || vi || nano
