@@ -1,4 +1,5 @@
 -- thicc cursor vim.opt.guicursor = ""
+-- vim.cmd("set autochdir") same as o.autochdir = true
 local o = vim.o -- vim.opt == vim.o 
 o.nu = true
 o.relativenumber = true
@@ -9,6 +10,7 @@ o.shiftwidth = 4
 o.expandtab = true
 
 o.smartindent = true
+o.ignorecase = true
 
 --[[ saves all backups to undotree. might try l8r
 o.swapfile = false
@@ -20,7 +22,7 @@ o.incsearch = true
 
 o.termguicolors = true
 
-o.scrolloff = 8
+o.scrolloff = 6 -- This should be dynamically determined based on how many lines are on the screen. sucks on small screens.
 -- o.signcolumn = "yes"
 -- o.isfname:append("@-@")
 
@@ -30,3 +32,4 @@ o.colorcolumn = "80"
 o.ttyfast = true -- will it speed up scrolling?
 -- o.swapfile = false
 
+o.conceallevel = 2 -- for future plugin or idk
