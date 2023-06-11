@@ -51,6 +51,10 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+# picom is a compositor for X11; allows for transparent background in kitty.
+exec --no-startup-id picom -b
+# credit: https://github.com/i3/i3/discussions/4841
+# NOT SURE THIS WORKS exec picom # /usr/local/bin/picom
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -449,3 +453,4 @@ assign [class="KeePassXC"] $ws100
 # exec ./Apps/KeePassXC-2.7.4-x86_64.AppImage 
 # no longer needed thanks to assign: exec i3-msg "workspace 2;"
 # exec "xdg-open ~/backup2022nov10/checkDaily/index.html" # opens in ws1
+
