@@ -12,7 +12,9 @@
 
 :root {
     /* --------- BASE THEME --------- */
+    
     --blurple-replace: #7289DA;
+    /*
     --background-primary: rgb(8, 8, 8);
     --background-secondary: rgb(5, 5, 5);
     --background-secondary-alt: rgb(15, 15, 15);
@@ -53,4 +55,5 @@
     --background-accent-1: rgb(15, 15, 15, 0.1);
     --background-accent-3: rgb(15, 15, 15, 0.3);
     --background-floating-2: rgba(0, 0, 0, 0.2);
+    */
 }

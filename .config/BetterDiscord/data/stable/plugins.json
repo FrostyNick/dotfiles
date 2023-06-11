@@ -6,7 +6,7 @@
     "CallTimeCounter": true,
     "CharCounter": true,
     "CompleteTimestamps": true,
-    "FreeEmojis": false,
+    "FreeEmojis": true,
     "DoNotTrack": true,
     "DoubleClickVoiceChannels": false,
     "EmojiParty": false,
