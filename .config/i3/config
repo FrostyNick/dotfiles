@@ -25,7 +25,7 @@
 #############################################################################
 # Please see https://i3wm.org/docs/userguide.html for a complete reference! #
 #############################################################################
-# soon? https://github.com/swaywm/sway/wiki   👀                            #
+# soon? https://github.com/swaywm/sway/wiki   👀 (see !!SWAY!!)             #
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -213,12 +213,19 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+
+
     mode hide
     # position top
     # disable clicking on the bar
     bindsym button1 nop
     strip_workspace_numbers yes
 	status_command i3status --config ~/.config/i3/i3status.conf
+    # !SWAY + no benefit i3bar_command i3bar --transparency
+
+    # colors {
+    #     background #00ff0088
+    # }
     # Disable all tray icons
     # tray_output none
     # colors {
@@ -233,6 +240,27 @@ bar {
     #     urgent_workspace   $red1 $red1 $white2
     #     binding_mode       $background $red2 $white2
     # }
+    colors {
+        background #000000
+        statusline #ffffff
+        # background #00ff0000 !SWAY
+        # statusline #ffffff00
+        separator #005800
+        #9a3800 # orange
+        # separator #ee5500aa # orange
+
+#          <colorclass> <border> <background> <text>
+        # focused_workspace  #4c7899 #28557700 #ffffff
+        # active_workspace   #333333 #5f676a00 #ffffff
+        # inactive_workspace #333333 #22222200 #888888
+        # urgent_workspace   #2f343a #90000000 #ffffff
+        # binding_mode       #2f343a #90000000 #ffffff
+        focused_workspace  #005500 #005500 #ffffff
+        active_workspace   #000000 #5f676a #ffffff
+        inactive_workspace #000000 #000000 #888888
+        urgent_workspace   #ff0000 #900000 #ffffff
+        binding_mode       #000000 #900000 #ffffff
+    }
 
 }
 # very basic WIP
@@ -244,6 +272,7 @@ bar {
 # client.placeholder      #000000 #0c0c0c #bbbbbb #000000   #0c0c0c
 # client.background       #00ff88
 
+# these colors are probably not matching the theme since these aren't visible.
 client.focused          #002800 #002800 #b8b8b8 #002800   #001800
 client.focused_inactive #180000 #181818 #888888 #141414   #181818
 client.unfocused        #333333 #222222 #696969 #292d2e   #222222
@@ -259,7 +288,8 @@ client.background       #00ee78
 bindsym Print exec flameshot gui 
 # bindcode 107 flameshot gui 
 workspace_auto_back_and_forth yes # repeat mod + num to go to previous ws
-# i dont want this anymore go awayyy. might change my mind later: focus_follows_mouse no
+# i dont want this anymore go awayyy. might change my mind later:
+focus_follows_mouse no
 hide_edge_borders smart
 # remove title bar
 default_border pixel
@@ -287,14 +317,16 @@ mode "$mode_launcher" {
     # NOT WORKING?	bindsym i exec qterminal -e "vi ~/.config/i3/config"
     # WORKING		bindsym y exec i3-sensible-terminal -e "syncthing"
     bindsym y exec "syncthing"
-    # below should've been in a bin location where it's assigned to a path..oh well!
+    # below should be symln'd to /usr/local/bin
     bindsym j exec ./.joplin/Joplin.AppImage
     # NOT WORKING bindsym y exec xdg-open syncthing
     # TRY L8R exec --no-startup-id    
+# L8R: mv below to /usr/local/bin/ or /usr/bin/
     bindsym p exec ./Apps/KeePassXC-2.7.4-x86_64.AppImage
     bindsym h exec ./Apps/shotcut-linux-x86_64-221221.AppImage
     bindsym a exec ./Apps/android-studio/bin/studio.sh
-    bindsym f exec pcmanfm-qt
+# below = file manager that comes in Lubuntu 20.04. Likely not on your OS.
+    bindsym f exec pcmanfm-qt # || exec nautilus || exec dolphin
     bindsym Return exec i3-sensible-terminal
     
     # NOT WORKING	bindsym --release t exec i3-sensible-terminal -e "fzf"
@@ -389,8 +421,10 @@ assign [class="scrcpy"] $ws5
 for_window [class="scrcpy"] focus
 
 
-# social-game
+# game
 assign [class="Steam"] $ws5
+assign [class="supertuxkart"] $ws7
+# social
 assign [class="discord"] $ws6
 
 # video
