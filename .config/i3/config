@@ -34,7 +34,7 @@ set $mod Mod4
 # font pango:DejaVu Sans Mono 8
 # font pango:Mononoki Nerd Font Mono Regular 9
 
-font pango:Mononoki Nerd Font Mono Regular 16
+font pango:Mononoki Nerd Font Propo Regular 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -64,7 +64,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
-bindsym Control+Mod1+t exec i3-sensible-terminal
+bindsym Control+Mod1+t exec i3:󰎛-sensible-terminal
 
 # kill focused window
 bindsym $mod+q kill
@@ -139,8 +139,8 @@ bindsym $mod+a focus parent
 
 set $ws1 "1:󰖟"
 set $ws2 "2:"
-set $ws3 "3"
-set $ws4 "4"
+set $ws3 "3:"
+set $ws4 "4:󰎛"
 set $ws5 "5:󰍳"
 set $ws6 "6:󰙯"
 set $ws7 "7"
