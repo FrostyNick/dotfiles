@@ -17,7 +17,7 @@ alias procn='cat /tmp/antichenalog02028 | xclip -sel "clip" ; rm /tmp/antichenal
 # procn() {
     
 alias gits="git status"
-alias gitp='anticl && git push ; procn'
+alias gitp='anticn && git push ; procn'
 alias gita='git add'
 alias gitm='git commit -m'
 alias gitc=gitm
@@ -30,7 +30,7 @@ rweb() {
 }
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias dots='dot status'
-alias dotp='anticl && dot push ; procn'
+alias dotp='anticn && dot push ; procn'
 alias dota='dot add'
 alias dotm='dot commit -m'
 # tui related
