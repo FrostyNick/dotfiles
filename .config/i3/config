@@ -51,6 +51,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+# !!SWAY!!
 # picom is a compositor for X11; allows for transparent background in kitty.
 exec --no-startup-id picom -b
 # credit: https://github.com/i3/i3/discussions/4841
@@ -143,8 +144,8 @@ bindsym $mod+a focus parent
 
 set $ws1 "1:󰖟"
 set $ws2 "2:"
-set $ws3 "3:"
-set $ws4 "4:󰎛"
+set $ws3 "3:󰎛"
+set $ws4 "4:"
 set $ws5 "5:󰍳"
 set $ws6 "6:󰙯"
 set $ws7 "7"
@@ -400,37 +401,42 @@ for_window [window_role="task_dialog"] floating enable
 # exec "sh -c 'sleep 3;'"
 # exec i3-msg "workspace 3;"
 
-
 # exec librewolf
-# DOESNT WORK CUZ LIBREWOLF BE WEIRD: assign [class="librewolf"] $ws2 # Thanks to https://unix.stackexchange.com/a/363848 --> `xprop | grep CLASS`
-
 # Thanks to https://unix.stackexchange.com/a/363848 --> `xprop | grep CLASS`
-assign [class="librewolf-default"] $ws1 
+
+# web
 # selenium uses firefox.. and i dont need to focus on selenium always
 # assign [class="firefox"] $ws1 
+assign [class="librewolf-default"] $ws1 
 for_window [class="librewolf-default"] focus
 
-# code
+# terminal
 assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
 assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
-assign [class="vscodium"] $ws3
-for_window [class="vscodium"] focus
-# android studio
-assign [class="jetbrains-studio"] $ws3
-for_window [class="jetbrains-studio"] focus
 
-assign [class="Joplin"] $ws4
+# notes + educational + not terminal
+assign [class="Joplin"] $ws3
+for_window [class="Anki"] focus
+assign [class="Anki"] $ws3
+
+# android studio
+assign [class="jetbrains-studio"] $ws4
+for_window [class="jetbrains-studio"] focus
+assign [class="vscodium"] $ws4
+for_window [class="vscodium"] focus
 
 # I'm more likely to play a game on my phone from my pc than having a game and scrcpy on
-assign [class="scrcpy"] $ws5
 for_window [class="scrcpy"] focus
-
+assign [class="scrcpy"] $ws5
 
 # game
 assign [class="Steam"] $ws5
-assign [class="supertuxkart"] $ws7
+assign [class="supertuxkart"] $ws5
+for_window [class="osu!"] focus
+assign [class="osu!"] $ws5
+
 # social
 assign [class="discord"] $ws6
 
