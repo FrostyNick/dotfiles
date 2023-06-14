@@ -19,7 +19,8 @@ init.lua (Neovim)
 </summary>
 
 
-In [init.lua](init.lua) file, add the following lines and customize it to your hearts content:
+In [init.lua](init.lua) file, add the following lines and customize it to your
+hearts content:
 
 ```lua
 -- this is a comment in lua
@@ -42,16 +43,20 @@ o.smartindent = true
 
 o.termguicolors = true  -- color support
 o.ignorecase = true -- ignores case when searching, etc.
-
-o.scrolloff = 6 -- your cursor is always 6 lines away from the top or bottom of your visible window
+-- below line: cursor is always 6 lines away from top or bottom of your window
+o.scrolloff = 6 
 o.colorcolumn = "80"
 o.swapfile = false -- don't use swap files
 ```
 
 Lua vs Vimscript:
 
-- Thanks to [LuaJIT](https://github.com/LuaJIT/LuaJIT) (based on Lua 5.1), this is generally about 10x faster than vimscript8. vimscript9 might be much closer in speed to LuaJIT. Take benchmarks with a grain of salt though.
-- Lua is a skill that can be used outside of Vimscript. Vimscript is stuck in vim world. If you go deeper into the language, you probably should learn some Vimscript and Vim API to use Lua in Neovim though.
+- Thanks to [LuaJIT](https://github.com/LuaJIT/LuaJIT) (based on Lua 5.1),
+this is generally about 10x faster than vimscript8. vimscript9 might be much
+closer in speed to LuaJIT. Take benchmarks with a grain of salt though.
+- Lua is a skill that can be used outside of Vimscript. Vimscript is stuck in
+Vim world. If you go deeper into the language, you probably should learn some
+Vimscript and Vim API to use Lua in Neovim though.
 
 </details>
 
@@ -96,12 +101,12 @@ set tabstop
 
 ### Lazy installation
 
-Note: I probably forgot to add instructions. This works *in theory*.
+Everything here is tested with Neovim v0.9.0 and may not work with older
+versions. Also this hasn't been tested on other devices yet so instructions
+may need improvements.
 
-Note #2: If migrating from the old nvim config using packer.nvim, check
-`:checkhealth` and remove files from there.
-
-These instructions might not work. In progress moving from Packer to Lazy.
+Note: If migrating from the previously used nvim config using packer.nvim,
+check `:checkhealth` and remove files from there.
 
 If any new changes were made: 
 `:w`
@@ -109,7 +114,8 @@ If any new changes were made:
 Likely required first time. If I'm wrong, ignore below:
 `:so` then `:Lazy`
 
-No need to source the file again. Lazy is always available with the `:Lazy` command.
+No need to source the file again. Lazy is always available with the `:Lazy`
+command.
 
 ### Lazy config
 
@@ -130,7 +136,8 @@ Install packer with [instructions](https://github.com/wbthomason/packer.nvim)
 on the web
 ([ThePrimeagen video with timestamp](https://youtu.be/w7i4amO_zaE?t=234))
 
-If any new changes are made, you need to `:w` so Packer.nvim can see the changes.
+If any new changes are made, you need to `:w` so Packer.nvim can see the
+changes.
 
 Then:
 `:so`
@@ -152,7 +159,8 @@ Note: If you don't set this up, there will be warnings or errors depending on
 your version of Codium. Remove it (or comment it out) from your plugin config
 or set it up.
 
-Create an account on [Codium](https://codeium.com/) and then type `:Codeium Auth` to link to your account.
+Create an account on [Codium](https://codeium.com/) and then type
+`:Codeium Auth` to link to your account.
 
 If I missed anything else, create an issue and/or check out:
 [Getting Started](https://github.com/Exafunction/codeium.vim#-getting-started)
