@@ -18,6 +18,7 @@ One might work better for you than others.
 init.lua (Neovim)
 </summary>
 
+
 In [init.lua](init.lua) file, add the following lines and customize it to your hearts content:
 
 ```lua
@@ -46,6 +47,12 @@ o.scrolloff = 6 -- your cursor is always 6 lines away from the top or bottom of 
 o.colorcolumn = "80"
 o.swapfile = false -- don't use swap files
 ```
+
+Lua vs Vimscript:
+
+- Thanks to [LuaJIT](https://github.com/LuaJIT/LuaJIT) (based on Lua 5.1), this is generally about 10x faster than vimscript8. vimscript9 might be much closer in speed to LuaJIT. Take benchmarks with a grain of salt though.
+- Lua is a skill that can be used outside of Vimscript. Vimscript is stuck in vim world. If you go deeper into the language, you probably should learn some Vimscript and Vim API to use Lua in Neovim though.
+
 </details>
 
 <details>
@@ -53,10 +60,11 @@ o.swapfile = false -- don't use swap files
 init.vim (Neovim; Vim; Vi)
 </summary>
 
+
 Didn't test code below! It's possible some of these lines of code don't work.
 If this is in `init.vim` file, the equivalent works in Vi, Vim, and Neovim:
 
-```vimscript
+```vim
 " This is a comment.
 " Double quote comment means it's also valid vimrc code; commented out.
 " There's no difference between single and multiline comments in vim.
