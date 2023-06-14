@@ -16,11 +16,12 @@ alias anticn='echo $(xclip -sel "clip" -o) > /tmp/antichenalog02028 && sudo cat 
 alias procn='cat /tmp/antichenalog02028 | xclip -sel "clip" ; rm /tmp/antichenalog02028'
 # procn() {
     
-alias gits="git status"
+alias gits="git branch;git status"
 alias gitp='anticn && git push ; procn'
 alias gita='git add'
 alias gitm='git commit -m'
 alias gitc=gitm
+
 alias py=python
 mweb() {
     cd ~/p/website2022/ && live-server --ignore=/home/nicholas/p/website2022/index.md --browser=librewolf
@@ -31,7 +32,18 @@ rweb() {
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias dots='dot status'
 alias dotp='anticn && dot push ; procn'
-alias dota='dot add'
+# in future, below should also commit, but not commit other files
+# (pseudocode: $(echo $dots | grep "Changes to be committed") == "")
+alias doti3='dota ~/.config/i3/config'
+
+dota() {
+    if [ $* == "." ]; then
+        echo "https://youtu.be/t4Z6_KJME_0"
+    else
+        dot add $*
+    fi
+}
+# alias dota='dot add'
 alias dotm='dot commit -m'
 # tui related
 alias ia='nvim ~/backup2022nov10/markor/ideas.md'
