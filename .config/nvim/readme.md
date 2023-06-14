@@ -1,6 +1,3 @@
-There might be a few missing details.
-[This video](https://youtu.be/w7i4amO_zaE)
-probably fills in all the details you might run into.
 <!--
 I paste this link so many times I should be using markdown slightly better..
 -->
@@ -16,6 +13,10 @@ One might work better for you than others.
 ### Most simple config for beginners
 ..... / minimalists / Vanilla Vim vibes / without plugins
 
+<details>
+<summary>
+init.lua (Neovim)
+</summary>
 In [init.lua](init.lua) file, add the following lines and customize it to your hearts content:
 
 ```lua
@@ -44,7 +45,12 @@ o.scrolloff = 6 -- your cursor is always 6 lines away from the top or bottom of 
 o.colorcolumn = "80"
 o.swapfile = false -- don't use swap files
 ```
+</details>
 
+<details>
+<summary>
+init.vim (Neovim; Vim; Vi)
+</summary>
 Didn't test code below! It's possible some of these lines of code don't work.
 If this is in `init.vim` file, the equivalent works in Vi, Vim, and Neovim:
 ```vimscript
@@ -75,6 +81,7 @@ set tabstop
 " i forgot if this is important
 " set guicursor=""
 ```
+</details>
 
 ### Lazy installation
 
@@ -103,6 +110,10 @@ Read Lazy docs for more info.
 
 Note: This no longer works! Kept it here for educational purposes.
 
+<details>
+<summary>
+Packer installation
+</summary>
 In packer.lua:
 Install packer with [instructions](https://github.com/wbthomason/packer.nvim)
 on the web
@@ -122,6 +133,7 @@ A screen should show up that everything installed successfully.
 
 After all that, close and open and open up again, some errors and tips will
 show up. Wait for everything to install.
+</details>
 
 ### Codium setup 
 
