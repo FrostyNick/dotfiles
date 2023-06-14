@@ -17,6 +17,7 @@ One might work better for you than others.
 <summary>
 init.lua (Neovim)
 </summary>
+
 In [init.lua](init.lua) file, add the following lines and customize it to your hearts content:
 
 ```lua
@@ -51,8 +52,10 @@ o.swapfile = false -- don't use swap files
 <summary>
 init.vim (Neovim; Vim; Vi)
 </summary>
+
 Didn't test code below! It's possible some of these lines of code don't work.
 If this is in `init.vim` file, the equivalent works in Vi, Vim, and Neovim:
+
 ```vimscript
 " This is a comment.
 " Double quote comment means it's also valid vimrc code; commented out.
