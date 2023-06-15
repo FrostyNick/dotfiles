@@ -32,4 +32,5 @@ o.colorcolumn = "80"
 o.ttyfast = true -- will it speed up scrolling?
 -- o.swapfile = false
 
+o.foldlevelstart = 1 -- 99 = don't close anything, default -1
 o.conceallevel = 2 -- for future plugin or idk

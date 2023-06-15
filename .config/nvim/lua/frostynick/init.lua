@@ -14,7 +14,7 @@ local msg
 -- elseif a == 4 then
 --     msg = [[Nuwuevim: Your account has been terminated for security reasons. Please enter your SSN to continue.]]
 -- else
-msg = [[Nuwuevim: ~hiii :3 (plugin remaps not working right now)]]
+msg = [[Nuwuevim: ~hiii :3]]
 -- end
 print(msg)
 -- :set rnu nu
