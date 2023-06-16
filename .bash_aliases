@@ -1,9 +1,5 @@
-alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
-alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage"
-alias nv="nvim"
-alias vidn="ls ~/Videos/simplescreenrecorder-* | xargs | rev | cut -d\  -f1 | rev"
 fcd() {
-    cd "$(find -type d | fzf)"
+    cd "$(find -type d | fzf)" # taken from BugsWriter
 }
 yts() {
     xdg-open "https://www.youtube.com/results?search_query=$*"
@@ -12,8 +8,22 @@ alias yt="yts"
 ddg() {
     xdg-open "https://lite.duckduckgo.com/lite/?q=$*" 
 }
+mweb() {
+    cd ~/p/website2022/ && live-server --ignore=/home/nicholas/p/website2022/index.md --browser=librewolf
+}
+rweb() {
+    cd ~/p/RhythmSwipe/ && live-server --browser=librewolf
+}
+alias fnalias="cat ~/.bash_aliases | grep '()'"
+alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
+alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage"
+alias nv="nvim"
+alias vidn="ls ~/Videos/simplescreenrecorder-* | xargs | rev | cut -d\  -f1 | rev"
 alias anticn='echo $(xclip -sel "clip" -o) > /tmp/antichenalog02028 && sudo cat ~/.antichenalog | xclip -sel "clip"'
 alias procn='cat /tmp/antichenalog02028 | xclip -sel "clip" ; rm /tmp/antichenalog02028'
+# above can be used on wayland if that's the case in the future
+# alias anticn='echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo cat ~/.antichenalog | xclip -sel "clip"'
+# alias procn='echo $(xclip -sel "secondary" -o) | xclip -sel "clip"'
 # procn() {
     
 alias gits="git branch;git status"
@@ -23,12 +33,6 @@ alias gitm='git commit -m'
 alias gitc=gitm
 
 alias py=python
-mweb() {
-    cd ~/p/website2022/ && live-server --ignore=/home/nicholas/p/website2022/index.md --browser=librewolf
-}
-rweb() {
-    cd ~/p/RhythmSwipe/ && live-server --browser=librewolf
-}
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias dots='dot status'
 alias dotp='anticn && dot push ; procn'
@@ -50,4 +54,6 @@ alias ia='nvim ~/backup2022nov10/markor/ideas.md'
 
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one
+# actually, a shortcut + fzf would be better than cluttering the terminal (maybe)
+# until then, it's saved in t-ui (android).
 # syntax: tui <alias>
