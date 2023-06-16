@@ -2,7 +2,7 @@ Note: This readme.md is far from complete. WIP.
 
 # Neovim config
 
-[See .config\/nvim\/readme.md](.config/nvim/readme.md)
+[See .config\/nvim\/](.config/nvim/)
 
 # Install nerd fonts
 
