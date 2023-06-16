@@ -18,7 +18,6 @@ One might work better for you than others.
 init.lua (Neovim)
 </summary>
 
-
 In [init.lua](init.lua) file, add the following lines and customize it to your
 hearts content:
 
@@ -131,6 +130,7 @@ Note: This no longer works! Kept it here for educational purposes.
 <summary>
 Packer installation
 </summary>
+  
 In packer.lua:
 Install packer with [instructions](https://github.com/wbthomason/packer.nvim)
 on the web
