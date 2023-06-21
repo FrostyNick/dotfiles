@@ -23,7 +23,7 @@ alias fnalias="cat ~/.bash_aliases | grep '()'"
 alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
 alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage" # kms
 alias vidn="ls ~/Videos/simplescreenrecorder-* | xargs | rev | cut -d\  -f1 | rev" # It could be a lot more efficient
-alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev" # It could be a lot more efficient
+alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev"
 #
 # below is prep for wayland if that's supported in the future. works in theory. aliases need to be adjusted. todo!("paste into variable instead of file")
 # alias antiw='wl-paste > /tmp/antichenalog02028 && sudo cat ~/.antichenalog | wl-copy'
@@ -70,5 +70,5 @@ alias ia='nv ~/backup2022nov10/markor/ideas.md'
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one
 # actually, a shortcut + fzf would be better than cluttering the terminal (maybe)
-# until then, it's saved in androi dt-ui.
+# until then, it's saved in android t-ui.
 # syntax: tui <alias>
