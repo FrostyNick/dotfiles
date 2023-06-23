@@ -14,6 +14,11 @@ local msg
 -- elseif a == 4 then
 --     msg = [[Nuwuevim: Your account has been terminated for security reasons. Please enter your SSN to continue.]]
 -- else
+-- pcall(function()
+--     print(vim.inspect(vim.version()))
+--     local v = vim.version()
+--     print(string.format("Neovim version: %d.%d.%d", v.major, v.minor, v.patch))
+-- end)
 msg = [[Nuwuevim: ~hiii :3]]
 -- end
 print(msg)
