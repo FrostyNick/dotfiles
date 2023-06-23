@@ -14,10 +14,11 @@ mweb() {
 rweb() {
     cd ~/p/RhythmSwipe/ && live-server --browser=librewolf
 }
-alias py=python
-alias nv=nvim
+alias f=fcd
 alias _="nv ~/.bash_aliases" # c to b_ if _ is needed
 # alias b_="_"
+alias py=python
+alias nv=nvim
 alias live="live-server --browser=librewolf"
 alias fnalias="cat ~/.bash_aliases | grep '()'"
 alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
