@@ -406,7 +406,8 @@ for_window [window_role="task_dialog"] floating enable
 
 # web
 # selenium uses firefox.. and i dont need to focus on selenium always
-# assign [class="firefox"] $ws1 
+assign [class="firefox"] $ws1 
+for_window [class="firefox"] focus
 assign [class="librewolf-default"] $ws1 
 for_window [class="librewolf-default"] focus
 
@@ -434,7 +435,6 @@ assign [class="scrcpy"] $ws5
 # game
 assign [class="Steam"] $ws5
 assign [class="supertuxkart"] $ws5
-for_window [class="osu!"] focus
 assign [class="osu!"] $ws5
 
 # social
