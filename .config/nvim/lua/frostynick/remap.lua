@@ -3,7 +3,7 @@
 -- missing: comment shortcut
 
 local k = vim.keymap
-vim.g.mapleader = ' '
+-- vim.g.mapleader = ' '
 k.set("n", "<leader>pv", vim.cmd.Ex)
 
 k.set("v", "J", ":m '>+1<CR>gv=gv")
