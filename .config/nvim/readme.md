@@ -46,6 +46,8 @@ o.ignorecase = true -- ignores case when searching, etc.
 o.scrolloff = 6 
 o.colorcolumn = "80"
 o.swapfile = false -- don't use swap files
+
+o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
 ```
 
 Lua vs Vimscript:
@@ -93,6 +95,7 @@ set noswapfile
 "" set ai " auto indent
 set tabstop
 
+set shellslash
 " i forgot if this is important
 " set guicursor=""
 ```
