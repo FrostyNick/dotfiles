@@ -1,9 +1,10 @@
--- stopped working with lazy. I don't really know enough about combining lua and vim together.
 local builtin = require('telescope.builtin')
 -- vim.g.mapleader = ' '
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fv', builtin.git_files, {})
+vim.keymap.set('n', '<leader>fo', builtin.oldfiles, {})
+vim.keymap.set('n', '<leader>?', builtin.keymaps, {})
 vim.keymap.set('n', '<leader>ps', function()
     builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end)
