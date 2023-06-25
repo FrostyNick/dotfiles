@@ -434,6 +434,7 @@ assign [class="scrcpy"] $ws5
 
 # game
 assign [class="Steam"] $ws5
+assign [class="steam"] $ws5 # It's lowercase as of June 2023
 assign [class="supertuxkart"] $ws5
 assign [class="osu!"] $ws5
 
