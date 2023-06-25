@@ -1,0 +1,22 @@
+browser "/usr/bin/librewolf %u"
+
+# modified from original src: https://github.com/tallguyjenks/dotfiles/blob/629e6e69d1c96283685a27069ba2973fa36e941c/.config/newsboat/config
+bind-key j down
+bind-key k up
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key G end
+bind-key g home
+bind-key d pagedown
+bind-key u pageup
+bind-key l open
+bind-key h quit
+
+color listnormal blue default
+color listfocus black yellow standout bold
+color listnormal_unread cyan default
+color listfocus_unread yellow default bold
+color info default black bold
+color article cyan default
