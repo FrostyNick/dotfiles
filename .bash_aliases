@@ -15,7 +15,7 @@ rweb() {
     cd ~/p/RhythmSwipe/ && live-server --browser=librewolf
 }
 alias f=fcd
-alias _="nv ~/.bash_aliases" # c to b_ if _ is needed
+alias _="nv ~/.bash_aliases"
 # alias b_="_"
 alias py=python
 alias nv=nvim
@@ -29,6 +29,7 @@ alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev"
 # below is prep for wayland if that's supported in the future. works in theory. aliases need to be adjusted. todo!("paste into variable instead of file")
 # alias antiw='wl-paste > /tmp/antichenalog02028 && sudo cat ~/.antichenalog | wl-copy'
 # alias prow='wl-copy < /tmp/antichenalog02028 ; rm /tmp/antichenalog02028'
+# wlr-randr (wayland xrandr)
 
 alias anticn='echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo cat ~/.antichenalog | xclip -sel "clip"'
 alias procn='echo $(xclip -sel "secondary" -o) | xclip -sel "clip"'
@@ -38,6 +39,7 @@ alias gitp='anticn && git push;procn'
 alias gitpl='anticn && git pull;procn'
 alias gita='git add'
 alias gitm='git commit -m'
+alias gitcb='git checkout -b'
 alias gitf='anticn && git fetch;procn'
 
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
@@ -46,6 +48,7 @@ alias dotp='anticn && dot push;procn'
 alias dotpl='anticn && dot pull;procn'
 # alias dota=function
 alias dotm='dot commit -m'
+alias gitcb='git checkout -b'
 alias dotq='echo WIP||dot add $1 || dot commit -m "Updated file"'
 alias dotf='anticn && dot fetch;procn'
 # in future, below should also add and commit, but not commit other files
