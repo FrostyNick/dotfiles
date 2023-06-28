@@ -18,6 +18,7 @@ o.backup = false
 o.undodir = os.getenv("HOME") .. "/.vim/undodir"
 o.undofile = true
 ]]
+o.backup = false
 o.incsearch = true
 
 o.termguicolors = true
@@ -34,3 +35,24 @@ o.ttyfast = true -- will it speed up scrolling?
 
 o.foldlevelstart = 1 -- 99 = don't close anything, default -1
 o.conceallevel = 2 -- for future plugin or idk
+
+-- Taken from: https://github.com/vim/vim/blob/master/runtime/defaults.vim
+vim.cmd(
+[[
+" Put these in an autocmd group, so that you can revert them with:
+" ":augroup vimStartup | exe 'au!' | augroup END"
+augroup vimStartup
+  au!
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid, when inside an event handler
+  " (happens when dropping a file on gvim) and for a commit message (it's
+  " likely a different one than last time).
+  autocmd BufReadPost *
+    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+    \ |   exe "normal! g`\""
+    \ | endif
+
+augroup END
+]]
+)
