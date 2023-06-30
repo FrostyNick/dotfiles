@@ -11,27 +11,32 @@ ddg() {
 mweb() {
     cd ~/p/website2022/ && live-server --ignore=/home/nicholas/p/website2022/index.md --browser=librewolf
 }
-rweb() {
-    cd ~/p/RhythmSwipe/ && live-server --browser=librewolf
-}
 alias f=fcd
 alias _="nv ~/.bash_aliases"
 # alias b_="_"
 alias py=python
 alias nv=nvim
+
 alias live="live-server --browser=librewolf"
 alias fnalias="cat ~/.bash_aliases | grep '()'"
 alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
 alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage" # kms
+
+# src: Avoid the password suggestion though. https://web.archive.org/web/20230630174028/https://superuser.com/questions/548234/how-can-i-easily-toggle-between-dvorak-and-qwerty-keyboard-layouts-from-a-linux/548235 
+alias asdf="setxkbmap dvorak"
+alias aoeu="setxkbmap us"
+# alias asdf="sudo loadkeys dvorak" # doesn't work for some reason
+# alias aoeu="sudo loadkeys us"
+
 alias vidn="ls ~/Videos/simplescreenrecorder-* | xargs | rev | cut -d\  -f1 | rev" # It could be a lot more efficient
 alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev"
-#
+
 # below is prep for wayland if that's supported in the future. works in theory. aliases need to be adjusted. todo!("paste into variable instead of file")
 # alias antiw='wl-paste > /tmp/antichenalog02028 && sudo cat ~/.antichenalog | wl-copy'
 # alias prow='wl-copy < /tmp/antichenalog02028 ; rm /tmp/antichenalog02028'
 # wlr-randr (wayland xrandr)
 
-alias anticn='echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo cat ~/.antichenalog | xclip -sel "clip"'
+alias anticn='aoeu && echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo cat ~/.antichenalog | xclip -sel "clip"'
 alias procn='echo $(xclip -sel "secondary" -o) | xclip -sel "clip"'
     
 alias gits='git branch;git status'
