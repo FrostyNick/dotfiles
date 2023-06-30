@@ -421,6 +421,8 @@ for_window [class="kitty"] focus
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
+for_window [class="libreoffice"] focus
+assign [class="libreoffice"] $ws3
 
 # android studio
 assign [class="jetbrains-studio"] $ws4
