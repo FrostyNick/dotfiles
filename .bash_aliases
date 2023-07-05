@@ -36,7 +36,7 @@ alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev"
 # alias prow='wl-copy < /tmp/antichenalog02028 ; rm /tmp/antichenalog02028'
 # wlr-randr (wayland xrandr)
 
-alias anticn='aoeu && echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo cat ~/.antichenalog | xclip -sel "clip"'
+alias anticn='aoeu && echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo -k cat ~/.antichenalog | xclip -sel "clip"'
 alias procn='echo $(xclip -sel "secondary" -o) | xclip -sel "clip"'
     
 alias gits='git branch;git status'
