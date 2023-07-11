@@ -1,4 +1,4 @@
 #!/bin/bash
 source ~/.bash_aliases
-nonoti && obs ; noti
+nonoti && simplescreenrecorder ; noti
 # obs

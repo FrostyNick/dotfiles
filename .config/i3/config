@@ -317,7 +317,7 @@ mode "$mode_launcher" {
     # WORKING bindsym o exec obs
     bindsym s exec steam
     bindsym c exec scrcpy
-    bindsym r exec simplescreenrecorder
+    bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
     bindsym d exec discord || exec discord-canary
     bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
     bindsym n exec i3-sensible-terminal -e "newsboat"
