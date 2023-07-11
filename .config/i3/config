@@ -302,6 +302,8 @@ hide_edge_borders smart
 # remove title bar
 default_border pixel
 default_floating_border pixel
+# on|off|toggle
+# debuglog on
 
 # set $mode_launcher Launch: [l]ibrewolf, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, [j]oplin, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
 set $mode_launcher Open: [l]wlf, r[a]nger, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], [j]op, s[y]nc, kee[p], s[h]otc, pcm[f]m, [n]boat
@@ -310,7 +312,8 @@ bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     bindsym l exec librewolf
     bindsym a exec i3-sensible-terminal -e "ranger"
-    bindsym o exec i3-sensible-terminal -e "obs"
+#    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
+    bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/obs.sh'"
     # WORKING bindsym o exec obs
     bindsym s exec steam
     bindsym c exec scrcpy
@@ -363,7 +366,7 @@ mode "$mode_system" {
     bindsym s exec --no-startup-id $i3lockwall && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $i3lockwall && systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id restart, mode "default"
-    bindsym Ctrl+s exec --no-startup-id shutdown now, mode "default" # might not work
+    bindsym Ctrl+s exec --no-startup-id shutdown now, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"

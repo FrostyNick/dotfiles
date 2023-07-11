@@ -17,7 +17,21 @@ alias _="nv ~/.bash_aliases"
 alias py=python
 alias nv=nvim
 
+alias rs="cd ~/p/ && echo hint hint :\)"
 alias live="live-server --browser=librewolf"
+alias ytc="cd ~/p/commentsaver && live"
+
+nonoti() { # Used in a .sh script, so it's a function
+    notify-send "DUNST_COMMAND_PAUSE"
+}
+noti() {
+    notify-send "DUNST_COMMAND_RESUME"
+}
+export -f noti nonoti
+
+alias nonotify="printf \"nonoti\n\" && nonoti"
+alias notify="printf \"noti\n\" && noti"
+
 alias fnalias="cat ~/.bash_aliases | grep '()'"
 alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
 alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage" # kms
