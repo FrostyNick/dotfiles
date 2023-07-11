@@ -1,25 +1,13 @@
-<!--
-I paste this link so many times I should be using markdown slightly better..
--->
-
-### General sources to get started with your Neovim config
-
-One might work better for you than others.
-
-- Install Nvchad / Astrovim to have a good config setup right away.
-- [0 to LSP \: Neovim RC From Scratch \- YouTube](https://youtu.be/w7i4amO_zaE)
-- [Effective Neovim\: Instant IDE \- YouTube](https://youtu.be/stqUbv-5u2s&t=171s)
-
-### Most simple config for beginners
-..... / minimalists / Vanilla Vim vibes / without plugins
+## Most simple config setup for beginners
+minimalist / without plugins
 
 <details>
 <summary>
 init.lua (Neovim)
 </summary>
 
-In [init.lua](init.lua) file, add the following lines and customize it to your
-hearts content:
+Create [~/.config/nvim/init.lua](init.lua) folders and files if not created,
+then add the following lines and customize it to your hearts content:
 
 ```lua
 -- this is a comment in lua
@@ -58,6 +46,7 @@ closer in speed to LuaJIT. Take benchmarks with a grain of salt though.
 - Lua is a skill that can be used outside of Vimscript. Vimscript is stuck in
 Vim world. If you go deeper into the language, you probably should learn some
 Vimscript and Vim API to use Lua in Neovim though.
+- It's worth noting that Neovim is backwards compatible with vimscript8. (vimscript9 is a work in progress.)
 
 </details>
 
@@ -100,6 +89,27 @@ set shellslash
 " set guicursor=""
 ```
 </details>
+
+## Plugin setup
+
+<!--
+I paste this link so many times I should be using markdown slightly better..
+-->
+
+### General sources
+
+#### Get started with your Neovim config
+
+One might work better for you than others.
+
+- [0 to LSP \: Neovim RC From Scratch \- YouTube](https://youtu.be/w7i4amO_zaE)
+- [Effective Neovim\: Instant IDE \- YouTube](https://youtu.be/stqUbv-5u2s&t=171s)
+- Install Nvchad / Astrovim to have a good config setup right away.
+
+#### More ideas
+
+- [neovim topic on GitHub](https://github.com/topics/neovim)
+- [My neovim list](https://github.com/stars/FrostyNick/lists/neovim-vim)
 
 ### Lazy installation
 
@@ -156,13 +166,13 @@ After all that, close and open and open up again, some errors and tips will
 show up. Wait for everything to install.
 </details>
 
-### Codium setup 
+### Codeium setup 
 
 Note: If you don't set this up, there will be warnings or errors depending on
-your version of Codium. Remove it (or comment it out) from your plugin config
+your version of Codeium. Remove it (or comment it out) from your plugin config
 or set it up.
 
-Create an account on [Codium](https://codeium.com/) and then type
+Create an account on [Codeium](https://codeium.com/) and then type
 `:Codeium Auth` to link to your account.
 
 If I missed anything else, create an issue and/or check out:
