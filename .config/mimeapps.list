@@ -14,10 +14,11 @@ x-scheme-handler/about=librewolf.desktop
 x-scheme-handler/unknown=librewolf.desktop
 text/plain=featherpad.desktop
 application/x-ms-dos-executable=librewolf.desktop
-inode/directory=ranger.desktop
+inode/directory=pcmanfm-qt.desktop
 
 [Added Associations]
 application/x-desktop=vim.desktop;
 x-scheme-handler/tg=userapp-Telegram Desktop-6F9PV1.desktop;
 image/gif=nvim.desktop;
 text/plain=featherpad.desktop;
+inode/directory=pcmanfm-qt.desktop;
