@@ -1,12 +1,6 @@
 
-local check_ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim", "query" }
-local vimdoc_name
-if vim.version().minor < 9 then
-    vimdoc_name = "help"
-else
-    vimdoc_name = "vimdoc"
-end
-table.insert(check_ensure_installed, vimdoc_name)
+local check_ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim", "query", "vimdoc" }
+-- "vimdoc" might be "help" in some cases. When I tested v0.8.3 nvim on another devices it seems to still be vimdoc.
 
 require'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
