@@ -27,8 +27,9 @@ k.set("n", "Q", "<nop>")
 -- not yet. k.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 k.set("n", "<leader>f", vim.lsp.buf.format)
 
-k.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-k.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+-- overrided by new harpoon shortcuts
+-- k.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+-- k.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
@@ -37,7 +38,10 @@ k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 k.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/frostynick/lazy.lua<CR>");
 k.set("n", "<leader>vpr", "<cmd>e ~/p/RhythmSwipe<CR>");
--- k.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
+k.set("n", "<leader>vpr", "<cmd>e ~/p/RhythmSwipe<CR>");
+k.set("n", "<leader>gr", "!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1)") -- if in git repository, open 1st remote url.
+-- k.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");"
+k.set("n", "<leader>fo", function() vim.print("use o not fo") end)
 
 k.set("n", "<leader>ws", function()
     vim.cmd("w")
