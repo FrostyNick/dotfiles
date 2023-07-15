@@ -1,10 +1,11 @@
 
-local check_ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim", "query", "vimdoc" }
--- "vimdoc" might be "help" in some cases. When I tested v0.8.3 nvim on another devices it seems to still be vimdoc.
-
 require'nvim-treesitter.configs'.setup {
-    -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = check_ensure_installed,
+    -- A list of parser names,
+    -- or "all" (five required parsers should always be installed)
+    ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim",
+    "query", "vimdoc" },
+    -- "vimdoc" might be "help" in some cases. When I tested v0.8.3 nvim on
+    -- another device it seems to still use vimdoc instead of help.
 
 
     -- end
