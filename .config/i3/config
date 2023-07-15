@@ -442,6 +442,10 @@ assign [class="Steam"] $ws5
 assign [class="steam"] $ws5 # It's lowercase as of June 2023
 assign [class="supertuxkart"] $ws5
 assign [class="osu!"] $ws5
+# below not working
+assign [class="minecraft-launcher"] $ws5
+assign [class="Minecraft Launcher"] $ws5
+assign [class="Minecraft 1.19"] $ws5
 
 # social
 assign [class="discord"] $ws6
