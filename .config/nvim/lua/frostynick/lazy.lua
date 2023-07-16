@@ -107,7 +107,7 @@ local plugins = {
         dependencies = { 'nvim-lua/plenary.nvim' }
     },
 
-    {
+    { -- doesn't work + not supported in Termux.
         'Exafunction/codeium.vim',
         config = function()
             -- Change '<C-g>' here to any keycode you like.
