@@ -1,10 +1,23 @@
+require('telescope').setup({
+  defaults = {
+    -- layout_strategy = "vertical", -- better on vertical screens.
+    layout_config = {
+        width = 0.93
+    }
+  },
+  -- other configuration values here
+})
+
 local builtin = require('telescope.builtin')
 -- vim.g.mapleader = ' '
+
+vim.keymap.set('n', '<leader>o', builtin.oldfiles, {})
+vim.keymap.set('n', '<leader>?', builtin.keymaps, {})
+vim.keymap.set('n', '<leader>f?', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fv', builtin.git_files, {})
-vim.keymap.set('n', '<leader>o', builtin.oldfiles, {})
-vim.keymap.set('n', '<leader>?', builtin.keymaps, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>ps', function()
     builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end)
