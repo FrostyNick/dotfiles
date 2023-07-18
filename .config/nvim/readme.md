@@ -111,6 +111,19 @@ One might work better for you than others.
 - [neovim topic on GitHub](https://github.com/topics/neovim)
 - [My neovim list](https://github.com/stars/FrostyNick/lists/neovim-vim)
 
+## Installation
+
+#### Termux
+
+(incomplete)
+```bash
+mkdir dotfiles
+cd dotfiles/
+git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
+git sparse-checkout set --no-cone .config/nvim
+ln -s ~/p_termux/dotfiles/.config/nvim/ ~/.config/nvim
+```
+
 ### Lazy installation
 
 Everything here is tested with Neovim v0.9.0 and may not work with older
@@ -184,3 +197,4 @@ Minimal plugin; works with classic vim too:
 [vim-plug](https://github.com/junegunn/vim-plug)
 
 
+tal
