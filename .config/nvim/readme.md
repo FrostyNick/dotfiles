@@ -115,13 +115,15 @@ One might work better for you than others.
 
 #### Termux
 
-(incomplete)
-```bash
-mkdir dotfiles
-cd dotfiles/
+pkg install nvim
+# cc gcc clang cl zig
 git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
+cd dotfiles/
 git sparse-checkout set --no-cone .config/nvim
-ln -s ~/p_termux/dotfiles/.config/nvim/ ~/.config/nvim
+git checkout
+
+mkdir ~/.config
+ln -s ~/path_to_dotfiles/dotfiles/.config/nvim/ ~/.config/nvim
 ```
 
 ### Lazy installation
