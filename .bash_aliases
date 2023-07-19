@@ -82,6 +82,8 @@ dota() {
         dot add $*
     fi
 }
+
+alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
 # tui related
 mo() {
     # moname=$*
