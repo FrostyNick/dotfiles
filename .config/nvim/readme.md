@@ -117,10 +117,12 @@ One might work better for you than others.
 
 You should probably skim and copy over what you want and don't want;
 make it for yourself.
-This will merge. Yes it will be sad. I've had enough merge conflicts for today.
 
 ```bash
-pkg install nvim rg
+pkg update && pkg upgrade
+pkg install nvim
+pkg install rg
+
 git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
 cd dotfiles/
 git sparse-checkout set --no-cone .config/nvim
