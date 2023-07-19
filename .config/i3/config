@@ -1,3 +1,4 @@
+# !!SWAY!! if switching to sway one day.
 # QA:
 # Issue:
 # Links open in Brave, Firefox --> should just be LibreWolf
@@ -473,3 +474,6 @@ assign [class="KeePassXC"] $ws100
 # no longer needed thanks to assign: exec i3-msg "workspace 2;"
 # exec "xdg-open ~/backup2022nov10/checkDaily/index.html" # opens in ws1
 
+# This is at the bottom just in case it's not asyncronous
+# THIS WORKS when restarting i3: exec_always /home/nicholas/.config/i3/xrandr.sh
+exec /home/nicholas/.config/i3/xrandr.sh
