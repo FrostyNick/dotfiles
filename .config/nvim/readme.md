@@ -115,8 +115,12 @@ One might work better for you than others.
 
 #### Termux
 
-pkg install nvim
-# cc gcc clang cl zig
+You should probably skim and copy over what you want and don't want;
+make it for yourself.
+This will merge. Yes it will be sad. I've had enough merge conflicts for today.
+
+```bash
+pkg install nvim rg
 git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
 cd dotfiles/
 git sparse-checkout set --no-cone .config/nvim
@@ -125,6 +129,19 @@ git checkout
 mkdir ~/.config
 ln -s ~/path_to_dotfiles/dotfiles/.config/nvim/ ~/.config/nvim
 ```
+
+Then install nerd fonts. See main [readme.md](readme.md)
+
+See `:checkhealth` for any missing dependencies.
+
+Known issues:
+- Codeium will not support Neovim termux. Search for termux in codeium issues for more info.
+- Treesitter might not be correctly compiling. Will investigate.
+
+Incomplete instructions for Treesitter:
+`pkg install clang`
+You should probably install clang. I have not tested this with treesitter yet.
+In theory, you could substitute clang with: `cc` `gcc` `clang` `cl` [`zig`](https://ziglang.org/download/)
 
 ### Lazy installation
 
