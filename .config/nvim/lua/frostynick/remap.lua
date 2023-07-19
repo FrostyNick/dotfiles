@@ -39,6 +39,7 @@ k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 k.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/frostynick/lazy.lua<CR>");
 k.set("n", "<leader>vpr", "<cmd>e ~/p/RhythmSwipe<CR>");
 k.set("n", "<leader>vpr", "<cmd>e ~/p/RhythmSwipe<CR>");
+k.set("n", "<leader>vs", "<cmd>vsplit<CR>");
 k.set("n", "<leader>gr", "<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR>") -- if in git repository, open 1st remote url.
 k.set("n", "<leader>gr", "<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR>") -- if in git repository, open 1st remote url.
 k.set("n", "<leader>t", "<cmd>vsplit<CR><cmd>term<CR>i") -- if in git repository, open 1st remote url.
