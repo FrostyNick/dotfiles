@@ -115,8 +115,10 @@ One might work better for you than others.
 
 #### Termux
 
+```bash
+pkg update && pkg upgrade
 pkg install nvim
-# cc gcc clang cl zig
+
 git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
 cd dotfiles/
 git sparse-checkout set --no-cone .config/nvim
