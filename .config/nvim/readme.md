@@ -2,8 +2,7 @@
 
 If you are completely new to Vim, focus on Vim motions.
 
-- Online game for starting with Vim: [VIM Adventures](https://vim-adventures.com/ "Learn VIM while playing a game - VIM Adventures")
-- Alternatively in Vim, type `:help`. 
+- Open Vim and type `:help` to get started. 
 
 ## Most simple config setup for beginners
 minimalist / without plugins
