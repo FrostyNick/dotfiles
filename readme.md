@@ -1,4 +1,4 @@
-## Compatability
+## File descriptions
 
 <details>
   <summary>See list</summary>
@@ -7,24 +7,24 @@
   x = definitely works <br> ? = no clue <br> empty = not supported <br> %%% = not git pushed
 
   ##### Info
-  | File | Ubuntu 20.04+ | Termux | Windows 10 |
-  | --- | --- | --- | --- |
-  | ~/.config/nvim | x | x | ? |
-  | ~/.config/ranger | x | x | |
-  | ~/.config/BetterDiscord | x | ? | ? |
-  | ~/.config/Kvantum | x | ? | |
-  | ~/.config/i3 | x | ? | |
-  | ~/.config/kitty | x | | |
-  | ~/.config/mimeapps.list | x | | |
-  | ~/.config/picom.conf | x | ? | |
-  | ~/.config/screenkey.json | x | ? | |
-  | ~/.termux/font.tff%%% | | x | | 
-  | ~/.local/share/fonts | x | | |
-  | ~/.fzf | x | ? | ? |
-  | ~/.newsboat | x | ? | ? |
-  | ~/.bashrc | x | ? | |
-  | ~/.bash_aliases | x | ? | |
-  | ~/.profile | x | ? | |
+  | Config file | Description | Ubuntu 20.04+ | Termux | Windows 10 |
+  | --- | --- | --- | --- | --- |
+  | ~/.config/nvim | Config for powerful text editor / PDE | x | x | ? |
+  | ~/.config/ranger | File manager in terminal; planning to remove later | x | x |
+  | ~/.config/BetterDiscord | BetterDiscord config files; might switch to Vencord | ? | ? |
+  | ~/.config/Kvantum | Force dark mode on some apps | x | ? |
+  | ~/.config/i3 | Window Manager for X11 compositor on Linux | x | ? |
+  | ~/.config/kitty | Terminal emulator | x |
+  | ~/.config/mimeapps.list | Fix for i3 default links on Ubuntu | x |
+  | ~/.config/picom.conf | Compositor for X11; allows for transparent windows | x | ? |
+  | ~/.config/screenkey.json | See keys typed on screen | x | ? |
+  | ~/.termux/font.tff%%% | Set default font in Termux | | x |
+  | ~/.local/share/fonts | Set default font on most linux distros | x |
+  | ~/.fzf | file fuzzy finder | x | ? | ? |
+  | ~/.newsboat | RSS reader in terminal with vim keybinds | x | ? | ? |
+  | ~/.bashrc | bash shell config | x | ? |
+  | ~/.bash_aliases | aliases in shell | x | ? |
+  | ~/.profile | another startup file found by default in Ubuntu 20.04 | x | ? |
   
 </details>
 
