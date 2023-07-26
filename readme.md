@@ -1,9 +1,26 @@
-Note: This readme.md is far from complete. WIP.
+## Compatability
 
-Aiming for this to work on:
-- [x] (Should work in theory) Linux 20.04+
-- [ ] (In progress) Termux
-- [ ] Windows 10
+##### Legend
+x = definitely works <br> ? = no clue <br> empty = not supported <br> %%% = not git pushed
+
+| File | Ubuntu 20.04+ | Termux | Windows 10 |
+| --- | --- | --- | --- |
+| ~/.config/nvim | x | x | ? |
+| ~/.config/ranger | x | x | |
+| ~/.config/BetterDiscord | x | ? | ? |
+| ~/.config/Kvantum | x | ? | |
+| ~/.config/i3 | x | ? | |
+| ~/.config/kitty | x | | |
+| ~/.config/mimeapps.list | x | | |
+| ~/.config/picom.conf | x | ? | |
+| ~/.config/screenkey.json | x | ? | |
+| ~/.termux/font.tff%%% | | x | | 
+| ~/.local/share/fonts | x | | |
+| ~/.fzf | x | ? | ? |
+| ~/.newsboat | x | ? | ? |
+| ~/.bashrc | x | ? | |
+| ~/.bash_aliases | x | ? | |
+| ~/.profile | x | ? | |
 
 ## Neovim config
 
