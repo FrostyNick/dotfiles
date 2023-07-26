@@ -9,9 +9,9 @@
   ##### Info
   | Config file | Description | Ubuntu 20.04+ | Termux | Windows 10 |
   | --- | --- | --- | --- | --- |
-  | ~/.config/nvim | Config for powerful text editor / PDE | x | x | ? |
+  | [~/.config/nvim](.config/nvim/) | Config for Neovim; powerful text editor / PDE | x | x | ? |
   | ~/.config/ranger | File manager in terminal; planning to remove later | x | x |
-  | ~/.config/BetterDiscord | BetterDiscord config files; might switch to Vencord | ? | ? |
+  | ~/.config/BetterDiscord | BetterDiscord is a discord client; might switch to Vencord | ? | ? |
   | ~/.config/Kvantum | Force dark mode on some apps | x | ? |
   | ~/.config/i3 | Window Manager for X11 compositor on Linux | x | ? |
   | ~/.config/kitty | Terminal emulator | x |
@@ -21,9 +21,9 @@
   | ~/.termux/font.tff%%% | Set default font in Termux | | x |
   | ~/.local/share/fonts | Set default font on most linux distros | x |
   | ~/.fzf | file fuzzy finder | x | ? | ? |
-  | ~/.newsboat | RSS reader in terminal with vim keybinds | x | ? | ? |
+  | ~/.newsboat | Terminal RSS reader with vim keybinds in config | x | ? | ? |
   | ~/.bashrc | bash shell config | x | ? |
-  | ~/.bash_aliases | aliases in shell | x | ? |
+  | ~/.bash_aliases | aliases for shell | x | ? |
   | ~/.profile | another startup file found by default in Ubuntu 20.04 | x | ? |
   
 </details>
