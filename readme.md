@@ -1,26 +1,33 @@
 ## Compatability
 
-##### Legend
-x = definitely works <br> ? = no clue <br> empty = not supported <br> %%% = not git pushed
+<details>
+  <summary>See list</summary>
 
-| File | Ubuntu 20.04+ | Termux | Windows 10 |
-| --- | --- | --- | --- |
-| ~/.config/nvim | x | x | ? |
-| ~/.config/ranger | x | x | |
-| ~/.config/BetterDiscord | x | ? | ? |
-| ~/.config/Kvantum | x | ? | |
-| ~/.config/i3 | x | ? | |
-| ~/.config/kitty | x | | |
-| ~/.config/mimeapps.list | x | | |
-| ~/.config/picom.conf | x | ? | |
-| ~/.config/screenkey.json | x | ? | |
-| ~/.termux/font.tff%%% | | x | | 
-| ~/.local/share/fonts | x | | |
-| ~/.fzf | x | ? | ? |
-| ~/.newsboat | x | ? | ? |
-| ~/.bashrc | x | ? | |
-| ~/.bash_aliases | x | ? | |
-| ~/.profile | x | ? | |
+  ##### Legend
+  x = definitely works <br> ? = no clue <br> empty = not supported <br> %%% = not git pushed
+
+  ##### Info
+  | File | Ubuntu 20.04+ | Termux | Windows 10 |
+  | --- | --- | --- | --- |
+  | ~/.config/nvim | x | x | ? |
+  | ~/.config/ranger | x | x | |
+  | ~/.config/BetterDiscord | x | ? | ? |
+  | ~/.config/Kvantum | x | ? | |
+  | ~/.config/i3 | x | ? | |
+  | ~/.config/kitty | x | | |
+  | ~/.config/mimeapps.list | x | | |
+  | ~/.config/picom.conf | x | ? | |
+  | ~/.config/screenkey.json | x | ? | |
+  | ~/.termux/font.tff%%% | | x | | 
+  | ~/.local/share/fonts | x | | |
+  | ~/.fzf | x | ? | ? |
+  | ~/.newsboat | x | ? | ? |
+  | ~/.bashrc | x | ? | |
+  | ~/.bash_aliases | x | ? | |
+  | ~/.profile | x | ? | |
+  
+</details>
+
 
 ## Neovim config
 
