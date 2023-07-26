@@ -117,7 +117,29 @@ One might work better for you than others.
 - [neovim topic on GitHub](https://github.com/topics/neovim)
 - [My neovim list](https://github.com/stars/FrostyNick/lists/neovim-vim)
 
-## Installation
+## Neovim Installation
+
+[Tags (for releases) · neovim\/neovim](https://github.com/neovim/neovim/tags "Tags · neovim/neovim")
+
+#### Ubuntu
+
+Download v0.9.0 AppImage; recommended file format to install neovim. Download link for AppImage: https://github.com/neovim/neovim/releases/download/v0.9.0/nvim.appimage
+
+Then:
+```bash
+# Make it executable
+chmod u+x nvim.appimage && ./nvim.appimage
+# ZQ out of that if it executes. If it doesn't work, you probably don't have FUSE. See https://github.com/AppImage/AppImageKit/wiki/FUSE#fallback
+
+# This likely requires sudo. You may want it in `~/.local/bin` instead if that is setup. Otherwise:
+mv nvim.appimage /usr/bin
+
+# Now you can run Neovim by typing:
+nvim.appimage # you probably want an alias in .bashrc so it's just nvim/nv
+
+# If you plan to use telescope, install ripgrep:
+sudo apt install rg
+```
 
 #### Termux
 
@@ -126,28 +148,38 @@ make it for yourself.
 
 ```bash
 pkg update && pkg upgrade
-pkg install nvim
-pkg install rg
-
-git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
-cd dotfiles/
-git sparse-checkout set --no-cone .config/nvim
-git checkout
-
-mkdir ~/.config
-ln -s ~/path_to_dotfiles/dotfiles/.config/nvim/ ~/.config/nvim
+# Install neovim. If using telescope.nvim plugin, install (rg) ripgrep.
+pkg install nvim rg
 ```
 
-Then install nerd fonts. See main [readme.md](readme.md)
+## Neovim config installation
 
-See `:checkhealth` for any missing dependencies.
+```bash
+# cd to ~ and clone directory tree
+cd && git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
+# Only download/checkout files from .config/nvim
+cd dotfiles/ && git sparse-checkout set --no-cone .config/nvim
+git checkout && cd
+
+# Create ~/.config/ if it doesn't already exist
+mkdir -p ~/.config
+# Create a soft link to nvim directory.
+ln -s ~/dotfiles/.config/nvim/ ~/.config/nvim
+```
+
+Then:
+- Install nerd fonts. See main [readme.md](readme.md) (not neovim readme)
+- See `:checkhealth` for any other missing dependencies.
+
+#### Termux
 
 Known issues:
-- Codeium will not support Neovim termux. Search for termux in codeium issues for more info.
-- Treesitter might not be correctly compiling. Will investigate.
+- Codeium doesn't and doesn't plan to support Termux. Search for Termux in codeium issues for more info.
+- Treesitter is buggy in Termux. Will investigate.
 
 Incomplete instructions for Treesitter:
 `pkg install clang`
+
 You should probably install clang. I have not tested this with treesitter yet.
 In theory, you could substitute clang with: `cc` `gcc` `clang` `cl` [`zig`](https://ziglang.org/download/)
 
