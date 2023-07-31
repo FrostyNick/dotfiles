@@ -412,6 +412,10 @@ for_window [window_role="task_dialog"] floating enable
 # selenium uses firefox.. and i dont need to focus on selenium always
 assign [class="firefox"] $ws1 
 for_window [class="firefox"] focus
+assign [class="Chromium-browser"] $ws1 
+for_window [class="Chromium-browser"] focus
+assign [class="Brave-browser"] $ws1 
+for_window [class="Brave-browser"] focus
 assign [class="librewolf-default"] $ws1 
 for_window [class="librewolf-default"] focus
 
