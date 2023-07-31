@@ -118,9 +118,12 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # environment variables | test: `printenv | grep TERM`
-export PATH="/home/nicholas/.local/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:/home/nicholas/.local/bin:$PATH"
 # TERMINAL=kitty; export TERMINAL
 # export TERMINAL="kitty"
 
 # REMINDER THAT ~/.profile and ~/.bash_aliases exists
 # ls="ls --hyperlink" added above cuz it don't work here
+
+# for nix command to work
+# . /home/nicholas/.nix-profile/etc/profile.d/nix.sh
