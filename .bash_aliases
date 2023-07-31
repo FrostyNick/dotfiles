@@ -103,8 +103,13 @@ alias dtq='echo WIP||dt add $1 || dt commit -m "Updated file"'
 alias dtf='anticn && dt fetch;procn'
 # in future, below should also add and commit, but not commit other files
 # (pseudocode: $(echo $dts | grep "Changes to be committed") == "")
-alias dti3='dta ~/.config/i3/config'
+
+# skip warnings for these
+alias dti3='dt add ~/.config/i3/config'
+alias dt_='dt add ~/.bashrc ~/.bash_aliases'
+
 dta() {
+    dtwarning
     if [ $* == "." ]; then
         echo "https://youtu.be/t4Z6_KJME_0"
     else
