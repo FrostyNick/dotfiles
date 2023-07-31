@@ -4,27 +4,32 @@
   <summary>See list</summary>
 
   ##### Legend
-  x = definitely works <br> ? = no clue <br> empty = not supported <br> %%% = not git pushed
+  `x`      = definitely works
+  `i`      = supported with issues <br>
+  `ip`     = planning support <br>
+  ` `      = not supported <br>
+  `%%%`    = not git pushed <br>
+  `?`      = no clue <br>
 
   ##### Info
   | Config file | Description | Ubuntu 20.04+ | Termux | Windows 10 |
   | --- | --- | --- | --- | --- |
-  | [~/.config/nvim](.config/nvim/) | Config for Neovim; powerful text editor / PDE | x | x | ? |
-  | ~/.config/ranger | File manager in terminal; planning to remove later | x | x |
-  | ~/.config/BetterDiscord | BetterDiscord is a discord client; might switch to Vencord | ? | ? |
-  | ~/.config/Kvantum | Force dark mode on some apps | x | ? |
-  | ~/.config/i3 | Window Manager for X11 compositor on Linux | x | ? |
-  | ~/.config/kitty | Terminal emulator | x |
-  | ~/.config/mimeapps.list | Fix for i3 default links on Ubuntu | x |
-  | ~/.config/picom.conf | Compositor for X11; allows for transparent windows | x | ? |
-  | ~/.config/screenkey.json | See keys typed on screen | x | ? |
-  | ~/.termux/font.tff%%% | Set default font in Termux | | x |
-  | ~/.local/share/fonts | Set default font on most linux distros | x |
-  | ~/.fzf | file fuzzy finder | x | ? | ? |
-  | ~/.newsboat | Terminal RSS reader with vim keybinds in config | x | ? | ? |
-  | ~/.bashrc | bash shell config | x | ? |
-  | ~/.bash_aliases | aliases for shell | x | ? |
-  | ~/.profile | another startup file found by default in Ubuntu 20.04 | x | ? |
+  | [~/.config/nvim](.config/nvim/) | Config for Neovim; powerful text editor / PDE | x | i | ? |
+  | [~/.config/ranger](.config/ranger) | File manager in terminal; planning to remove later | x | x |
+  | [~/.config/Vencord](.config/Vencord) | Vencord is a Discord client | ? | ? |
+  | [~/.config/Kvantum](.config/Kvantum) | Force dark mode on some apps | x | ? |
+  | [~/.config/i3](.config/i3) | Window Manager for X11 compositor on Linux | x | ? |
+  | [~/.config/kitty](.config/kitty) | Terminal emulator | x |
+  | [~/.config/mimeapps.list](.config/mimeapps.list) | Fix for i3 default links on Ubuntu | x |
+  | [~/.config/picom.conf](.config/picom.conf) | Compositor for X11; allows for transparent windows | x | ? |
+  | [~/.config/screenkey.json](.config/screenkey.json) | See keys typed on screen | x | ? |
+  | [~/.termux/font.tff%%%](.termux/font.tff) | Set default font in Termux | | x |
+  | [~/.local/share/fonts](.local/share/fonts) | Set default font in Ubuntu | x |
+  | [~/.fzf](.fzf) | file fuzzy finder | x | ? | ? |
+  | [~/.newsboat](.newsboat) | Terminal RSS reader with vim keybinds in config | x | ? | ? |
+  | [~/.bashrc](.bashrc) | bash shell config | x | ? |
+  | [~/.bash_aliases](.bash_aliases) | aliases for shell | x | ? |
+  | [~/.profile](.profile) | another startup file found by default in Ubuntu 20.04 | x | ? |
   
 </details>
 
@@ -38,7 +43,7 @@
 Click Download on any of the fonts in the link below; they all contain nerd fonts.
 [NerdFonts Install](https://nerdfonts.com/font-downloads)
 
-Place it in `~/.local/share/fonts` and create the fonts folder if it doesn't already exist.
+Place it in [`~/.local/share/fonts`](.local/share/fonts) and create the fonts folder if it doesn't already exist.
 
 For my case I downloaded with cURL:
 ```
