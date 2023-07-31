@@ -90,24 +90,25 @@ alias gitm='git commit -m'
 alias gitcb='git checkout -b'
 alias gitf='anticn && git fetch;procn'
 
-alias dot='/nix/store/0cgj6agi5yzp4lyrzcnjwlidym2c84al-user-environment/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-alias dots='dot status'
-alias dotp='anticn && dot push;procn'
-alias dotpl='anticn && dot pull;procn'
-# alias dota=function
-alias dotd='dot diff'
-alias dotm='dot commit -m'
-alias dotcb='dot checkout -b'
-alias dotq='echo WIP||dot add $1 || dot commit -m "Updated file"'
-alias dotf='anticn && dot fetch;procn'
+alias dtwarning='echo "All changes WILL be public."'
+alias dt='/nix/store/0cgj6agi5yzp4lyrzcnjwlidym2c84al-user-environment/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias dts='dt status'
+alias dtp='dtwarning && anticn && dt push;procn'
+alias dtpl='anticn && dt pull;procn'
+# aliasdota=function
+alias dtd='dt diff'
+alias dtm='dtwarning && dt commit -m'
+alias dtcb='dt checkout -b'
+alias dtq='echo WIP||dt add $1 || dt commit -m "Updated file"'
+alias dtf='anticn && dt fetch;procn'
 # in future, below should also add and commit, but not commit other files
-# (pseudocode: $(echo $dots | grep "Changes to be committed") == "")
-alias doti3='dota ~/.config/i3/config'
-dota() {
+# (pseudocode: $(echo $dts | grep "Changes to be committed") == "")
+alias dti3='dta ~/.config/i3/config'
+dta() {
     if [ $* == "." ]; then
         echo "https://youtu.be/t4Z6_KJME_0"
     else
-        dot add $*
+        dt add "$*"
     fi
 }
 
