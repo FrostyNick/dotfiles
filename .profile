@@ -39,3 +39,5 @@ else
     echo "fail"
 fi
 . "$HOME/.cargo/env"
+
+if [ -e /home/nicholas/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nicholas/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
