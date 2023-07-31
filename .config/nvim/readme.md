@@ -44,6 +44,8 @@ o.swapfile = false -- don't use swap files
 o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
 ```
 
+Learn more about Neovim + Lua here: `:help lua-guide`. If your neovim is too old, check out [nanotee\/nvim\-lua\-guide\: A guide to using Lua in Neovim](https://github.com/nanotee/nvim-lua-guide). Newest guide online: [Lua\-guide \- Neovim docs](https://neovim.io/doc/user/lua-guide.html#lua-guide)
+
 Lua vs Vimscript:
 
 - Thanks to [LuaJIT](https://github.com/LuaJIT/LuaJIT) (based on Lua 5.1),
