@@ -429,6 +429,7 @@ for_window [class="libreoffice"] focus
 assign [class="libreoffice"] $ws3
 
 # android studio
+assign [class="Emacs"] $ws4
 assign [class="jetbrains-studio"] $ws4
 for_window [class="jetbrains-studio"] focus
 assign [class="vscodium"] $ws4
@@ -437,6 +438,7 @@ for_window [class="vscodium"] focus
 # I'm more likely to play a game on my phone from my pc than having a game and scrcpy on
 for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
+assign [class="Qemu-system-x86_64"] $ws5
 
 # game
 assign [class="Steam"] $ws5
@@ -447,6 +449,9 @@ assign [class="osu!"] $ws5
 assign [class="minecraft-launcher"] $ws5
 assign [class="Minecraft Launcher"] $ws5
 assign [class="Minecraft 1.19"] $ws5
+
+# art editing
+assign [class="Gimp"] $ws5
 
 # social
 assign [class="discord"] $ws6
