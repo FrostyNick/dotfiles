@@ -1,3 +1,21 @@
+convert() {
+    echo "This doesn't work right now. TODO"
+    if [ $# -lt 3 ]; then
+        echo "Usage: convert <format1> <format2> <file(s)>"
+        return
+    fi
+
+    return # this doesn't work right now
+
+    # validate input
+    for file in $3; do
+        nout=$(echo $file | awk -F '.' '{ print $file }' | sed "s/$/.$1/")
+        nin=$(echo $file | awk -F '.' '{ print $file }' | sed "s/$/.$2/")
+        echo "In: $nin Out: $nout"
+        # ffmpeg -i $nin -acodec libvorbis $nout
+        ffmpeg -i $nin $nout
+    done
+}
 fcd() {
     cd "$(find -type d | fzf)" # taken from BugsWriter
 }
@@ -72,7 +90,7 @@ alias gitm='git commit -m'
 alias gitcb='git checkout -b'
 alias gitf='anticn && git fetch;procn'
 
-alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias dot='/nix/store/0cgj6agi5yzp4lyrzcnjwlidym2c84al-user-environment/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias dots='dot status'
 alias dotp='anticn && dot push;procn'
 alias dotpl='anticn && dot pull;procn'
