@@ -28,10 +28,12 @@ o.scrolloff = 6 -- This should be dynamically determined based on how many lines
 -- o.isfname:append("@-@")
 
 o.updatetime = 50
+o.timeoutlen = 300 -- timeout for key strokes
 
 o.colorcolumn = "80"
 o.ttyfast = true -- will it speed up scrolling?
 -- o.swapfile = false
+-- vim.o.clipboard = 'unnamedplus' -- use system clipboard
 
 o.foldlevelstart = 1 -- 99 = don't close anything, default -1
 o.conceallevel = 2 -- for future plugin or idk

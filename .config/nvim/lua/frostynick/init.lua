@@ -19,7 +19,9 @@ local msg
 --     local v = vim.version()
 --     print(string.format("Neovim version: %d.%d.%d", v.major, v.minor, v.patch))
 -- end)
+-- check if empty buffer then vim.cmd("term")
 msg = [[Nuwuevim: ~hiii :3]]
+-- msg = [[Type <C-\><C-n> to enter insert mode.]]
 -- end
 print(msg)
 -- :set rnu nu

@@ -1,29 +1,53 @@
-require('telescope').setup({
-  defaults = {
-    -- layout_strategy = "vertical", -- better on vertical screens.
-    layout_config = {
-        width = 0.93
+local cope = require("telescope")
+cope.setup({
+    defaults = {
+        -- layout_strategy = "vertical", -- better on vertical screens.
+        layout_config = {
+            width = 0.93
+        }
+    },
+    extensions = {
+        file_browser = {
+            hijack_netrw = true,
+        }
     }
-  },
-  -- other configuration values here
+    -- other configuration values here
 })
 
+cope.load_extension "file_browser"
+cope.load_extension 'media_files'
 local builtin = require('telescope.builtin')
+local k = vim.keymap
 -- vim.g.mapleader = ' '
 
-vim.keymap.set('n', '<leader>o', builtin.oldfiles, {})
-vim.keymap.set('n', '<leader>?', builtin.keymaps, {})
-vim.keymap.set('n', '<leader>f?', builtin.help_tags, {})
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fv', builtin.git_files, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>ps', function()
+k.set('n', '<leader>,', builtin.oldfiles, {})
+k.set('n', '<leader>?', builtin.keymaps, {})
+k.set('n', '<leader>f?', builtin.help_tags, {})
+k.set('n', '<leader>ff', builtin.find_files, {})
+k.set('n', '<leader>fg', builtin.live_grep, {})
+k.set('n', '<leader>fv', builtin.git_files, {})
+k.set('n', '<leader>fb', builtin.buffers, {})
+k.set('n', '<leader>ps', function()
     builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end)
+k.set("n", "<leader>fb",
+  ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
+  { noremap = true })
 
--- pasted f nvim-telescope wiki https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#file-and-text-search-in-hidden-files-and-directories --
--- local telescope = require("telescope")
+cope.setup{
+    extensions = {
+        media_files = {
+            filetypes = {"png", "webp", "jpg", "jpeg"},
+            -- find command (defaults to `fd`)
+            find_cmd = "rg"
+        }
+    }
+}
+
+
+-- pasted f nvim-telescope wiki
+-- https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#file-and-text-search-in-hidden-files-and-directories --
+-- local cope = require("telescope")
 -- local telescopeConfig = require("telescope.config")
 --
 -- -- Clone the default Telescope configuration
@@ -43,7 +67,7 @@ table.insert(vimgrep_arguments, "--hidden")
 table.insert(vimgrep_arguments, "--glob")
 table.insert(vimgrep_arguments, "!**/.git/*")
 
-telescope.setup({
+cope.setup({
 	defaults = {
 		-- `hidden = true` is not supported in text grep commands.
 		vimgrep_arguments = vimgrep_arguments,
