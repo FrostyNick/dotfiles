@@ -1,4 +1,4 @@
-browser "/usr/bin/librewolf %u"
+browser "xdg-open %u"
 
 # modified from original src: https://github.com/tallguyjenks/dotfiles/blob/629e6e69d1c96283685a27069ba2973fa36e941c/.config/newsboat/config
 bind-key j down
