@@ -42,7 +42,7 @@ k.set("n", "<leader>gr",
 k.set("n", "<leader>gf", vim.cmd.Git)
 k.set("n", "<leader>gp", "<leader>tgitp") -- if in git repository, open 1st remote url.
 
-k.set("n", "<leader>t", "<C-wv><cmd>term<CR>i")
+k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>i")
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
 k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 -- k.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");"
