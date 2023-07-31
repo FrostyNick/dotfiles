@@ -8,18 +8,28 @@ alias yt="yts"
 ddg() {
     xdg-open "https://lite.duckduckgo.com/lite/?q=$*" 
 }
+mwebinit() {
+    cd ~/p/FrostyNick.github.io/ && live-server --ignore=./index.md --browser=librewolf
+}
 mweb() {
-    cd ~/p/website2022/ && live-server --ignore=/home/nicholas/p/website2022/index.md --browser=librewolf
+    mwebinit
+    cd - # doesn't do anything yet
 }
 alias f=fcd
 alias _="nv ~/.bash_aliases"
 # alias b_="_"
 alias py=python
 alias nv=nvim
+alias emacs="doom run"
 
 alias rs="cd ~/p/ && echo hint hint :\)"
 alias live="live-server --browser=librewolf"
 alias ytc="cd ~/p/commentsaver && live"
+# especially useful when the config inevitably breaks
+alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
+alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
+alias ndiff='nvim -d -R'
+
 
 nonoti() { # Used in a .sh script, so it's a function
     notify-send "DUNST_COMMAND_PAUSE"
@@ -83,7 +93,6 @@ dota() {
     fi
 }
 
-alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
 # tui related
 mo() {
     # moname=$*
@@ -93,6 +102,7 @@ mo() {
     # nv "$(ls ~/backup2022nov10/markor/ | fzf)"
 }
 alias ia='nv ~/backup2022nov10/markor/ideas.md'
+alias 2j='nv ~/backup2022nov10/markor/j'
 
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one
