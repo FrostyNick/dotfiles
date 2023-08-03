@@ -21,7 +21,17 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 --
 k.set("n", "Q", "<nop>")
 -- not yet. k.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-k.set("n", "<leader>f", vim.lsp.buf.format)
+
+-- LSP shortcuts
+-- k.set("n", "<leader>f", vim.lsp.buf.format)
+-- k.set("n", "K", vim.lsp.buf.format, {buffer=0})
+k.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
+k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {buffer=0})
+k.set("n", "<leader>dj", vim.diagnostic.goto_next, {buffer=0})
+k.set("n", "<leader>dl", "<cmd>Telescope disagnostics<CR>", {buffer=0})
+-- k.set("n", "<leader>dl", "<cmd>Telescope lsp_references<CR>", {buffer=0})
+-- rename not found in js.. fix later
+-- also C-q to move diagnostics to quickfix ls
 
 -- overrided by new harpoon shortcuts
 -- k.set("n", "<C-k>", "<cmd>cnext<CR>zz")
@@ -40,7 +50,8 @@ k.set("n", "<leader>o", function() io.write('noo o --> ,') end);
 k.set("n", "<leader>gr",
 "<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR>")
 k.set("n", "<leader>gf", vim.cmd.Git)
-k.set("n", "<leader>gp", "<leader>tgitp") -- if in git repository, open 1st remote url.
+k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
+k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
 
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>i")
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
@@ -51,16 +62,7 @@ k.set("n", "<leader>ws", function()
     vim.cmd("w | so")
 end)
 
-local pv
-local miniFiles = pcall(function()
-    pv = function() vim.cmd("lua MiniFiles.open()") end
-end)
-if not miniFiles then
-    print("MiniFiles plugin not loaded. Using :Vex")
-    pv = vim.cmd.Vex
-end
-
-k.set("n", "<leader>pv", pv)
+k.set("n", "<leader>pv", vim.cmd.Ex)
 
 --[[ missing lsp stuff
 k.set("n", "gd", function()
