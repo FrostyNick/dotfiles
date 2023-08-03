@@ -52,10 +52,10 @@ local plugins = {
         build = ":TSUpdate",
     },
 
-    {
-        'VonHeikemen/lsp-zero.nvim', -- errors without it?
-        branch = 'v2.x',
-        dependencies = {
+    -- {
+    'VonHeikemen/lsp-zero.nvim', -- errors without it?
+    --     branch = 'v2.x',
+    --     dependencies = {
             -- LSP Support
             { 'neovim/nvim-lspconfig' }, -- Required
             {
@@ -70,20 +70,20 @@ local plugins = {
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
-             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },     -- Required
-            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-            { 'L3MON4D3/LuaSnip' },     -- Required
-            { 'folke/neodev.nvim' }, -- trying out
-        }
-    },
-
+            -- Autocompletion
+            -- { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+            -- { 'hrsh7th/nvim-cmp' },     -- Required
+            -- { 'hrsh7th/cmp-path' },     -- Required
+            -- { 'L3MON4D3/LuaSnip' },     -- Required Asks lsp to do extra tricks
+            -- { 'folke/neodev.nvim' },    -- trying out.
+            -- neodev Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
+    --     }
+    -- },
     -- -- autocomplete (not required)
     -- 'hrsh7th/cmp-buffer',
     -- 'hrsh7th/cmp-path',
     -- "L3MON4D3/LuaSnip",
     -- -- 'hrsh7th/cmp-cmdline',
-
     -- -- autocomplete (required)
     -- 'neovim/nvim-lspconfig',
     -- 'hrsh7th/nvim-cmp',
@@ -120,6 +120,12 @@ local plugins = {
         'KaitlynEthylia/TreePin',
         dependencies = 'nvim-treesitter/nvim-treesitter',
         init = function() require('treepin').setup() end,
+    },
+    {
+        'TarunDaCoder/sus.nvim',
+        config = function()
+            require('sus').setup()
+        end,
     },
     {
       -- doesn't work + not supported in Termux.
@@ -176,7 +182,7 @@ local plugins = {
 
     -- Two colorschemes below
     { 'rose-pine/neovim',      name = 'rose-pine' },
-    { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
+    -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true }
@@ -220,7 +226,7 @@ local plugins = {
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     },
     -- not working for some reason 'm4xshen/autoclose.nvim',
-    'airblade/vim-gitgutter',
+    'airblade/vim-gitgutter', -- not sure if this breaks sus.nvim
     'nvim-treesitter/playground',
     'theprimeagen/harpoon',
     'mbbill/undotree',
@@ -234,12 +240,14 @@ local plugins = {
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', opts = {} },
+    {
+        'stevearc/oil.nvim',
+        opts = {},
+    },
     -- - Trying out below; might delete later - --
-    {'echasnovski/mini.files', version = false}, -- file manager. >=0.9 required
     {
         'goolord/alpha-nvim',
         event = "VimEnter",
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
     --     opts = { require'alpha.themes.startify'.config }
     --     -- this breaks nvim rn. opts = { require'alpha.themes.dashboard'.config }
     },
@@ -264,6 +272,7 @@ local plugins = {
 }
 --[[
 -- alternative plugins maybe
+-- markdown-preview
     ctrl + ^ should look at previous file in :Telescope oldfiles
     https://github.com/stevearc/oil.nvim
     kiran94/edit-markdown-table.nvim (it's a preview of the text when editing.. not exactly what I'm looking for with md tables)
@@ -280,11 +289,53 @@ end
 local opts = {}
 
 require("lazy").setup(plugins, opts)
-require('mini.files').setup(
-{
-    options = { use_as_default_explorer = false },
-    windows = { preview = true }
-})
+require("oil").setup()
+
+-- -- cmp setup
+-- local cmp = require'cmp'
+-- 
+-- cmp.setup({
+--     snippet = {
+--         -- REQUIRED - you must specify a snippet engine
+--         expand = function(args)
+--             -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+--             require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+--             -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+--             -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+--         end,
+--     },
+--     window = {
+--         -- completion = cmp.config.window.bordered(),
+--         -- documentation = cmp.config.window.bordered(),
+--     },
+--     mapping = cmp.mapping.preset.insert({
+--         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+--         ['<C-f>'] = cmp.mapping.scroll_docs(4),
+--         ['<C-Space>'] = cmp.mapping.complete(),
+--         ['<C-e>'] = cmp.mapping.abort(),
+--         ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+--     }),
+--     sources = cmp.config.sources({
+--         { name = 'nvim_lsp' },
+--         { name = 'luasnip' }, -- For luasnip users.
+--         -- { name = 'vsnip' }, -- For vsnip users.
+--         -- { name = 'ultisnips' }, -- For ultisnips users.
+--         -- { name = 'snippy' }, -- For snippy users.
+--     })
+-- })
+-- 
+-- -- Set up lspconfig.
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+-- -- self-reminder: check termux device or checkout with lsp servers
+-- 
+-- --[[ This is what needs to be changed to fix this commit
+-- --not that hard; just done for today
+-- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
+--     capabilities = capabilities
+-- }
+-- ]]
+-- -- end cmp setup
 
 -- vim.print(plugins);
 vim.g.codeium_disable_bindings = 1 -- disable codeium bindings
