@@ -1,5 +1,6 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 -- keys for vim https://vimdoc.sourceforge.net/htmldoc/intro.html#key-notation
+-- Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
 --[[
 use()
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
@@ -53,7 +54,7 @@ local plugins = {
     },
 
     -- {
-    'VonHeikemen/lsp-zero.nvim', -- errors without it?
+    -- 'VonHeikemen/lsp-zero.nvim', -- errors without it?
     --     branch = 'v2.x',
     --     dependencies = {
             -- LSP Support
@@ -82,12 +83,12 @@ local plugins = {
     -- -- autocomplete (not required)
     -- 'hrsh7th/cmp-buffer',
     -- 'hrsh7th/cmp-path',
-    -- "L3MON4D3/LuaSnip",
+    "L3MON4D3/LuaSnip",
     -- -- 'hrsh7th/cmp-cmdline',
     -- -- autocomplete (required)
-    -- 'neovim/nvim-lspconfig',
-    -- 'hrsh7th/nvim-cmp',
-    -- 'hrsh7th/cmp-nvim-lsp',
+    'neovim/nvim-lspconfig',
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
 
     -- uses ys; which stands for you surround; see `:h nvim-surround.usage` for more info
     {
@@ -235,6 +236,13 @@ local plugins = {
     'folke/zen-mode.nvim',
     'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
     'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
+    {"iamcco/markdown-preview.nvim",
+        ft = "markdown",
+        -- \/ once I yeet out of Joplin
+        -- build = "cd app && yarn install",
+        build = "cd app && npm install",
+        init = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    },
     { 'nvim-telescope/telescope-media-files.nvim',
         dependencies = { 'nvim-lua/popup.nvim', 'nvim-telescope/telescope.nvim' }
     },
