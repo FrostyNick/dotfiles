@@ -58,18 +58,9 @@ local plugins = {
     --     branch = 'v2.x',
     --     dependencies = {
             -- LSP Support
-            { 'neovim/nvim-lspconfig' }, -- Required
-            {
-                -- Optional
-                'williamboman/mason.nvim',
-                build = function()
-                    local a, b = pcall(vim.cmd, 'MasonUpdate') -- ignore the warning
-                    if not a then
-                        print("MasonUpdate: " .. b)
-                    end
-                end,
-            },
+            { 'williamboman/mason.nvim', },-- Optional
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+            { 'neovim/nvim-lspconfig' }, -- Required
 
             -- Autocompletion
             -- { 'hrsh7th/cmp-nvim-lsp' }, -- Required
@@ -298,6 +289,13 @@ local opts = {}
 
 require("lazy").setup(plugins, opts)
 require("oil").setup()
+require("mason").setup()
+require("mason-lspconfig").setup {
+    ensure_installed = { "lua_ls", "rust_analyzer", "denols" },
+}
+-- require("lspconfig").tsserver.setup()
+
+
 
 -- -- cmp setup
 -- local cmp = require'cmp'
@@ -337,12 +335,20 @@ require("oil").setup()
 -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 -- -- self-reminder: check termux device or checkout with lsp servers
 -- 
--- --[[ This is what needs to be changed to fix this commit
--- --not that hard; just done for today
--- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
---     capabilities = capabilities
--- }
--- ]]
+--This is what needs to be changed to fix this commit
+--not that hard; just done for today
+local a,b = pcall(function()
+    -- it can't find deno, which is fine require('lspconfig')['deno'].setup {
+    --     capabilities = capabilities
+    -- }
+    require('lspconfig')['tsserver'].setup {
+        capabilities = capabilities
+    }
+end)
+if not a then
+	print("failed to setup lspconfig: "..b)
+end
+
 -- -- end cmp setup
 
 -- vim.print(plugins);

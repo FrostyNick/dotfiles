@@ -23,12 +23,26 @@ k.set("n", "Q", "<nop>")
 -- not yet. k.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
 -- LSP shortcuts
+local function kLsp(map, todo, desc)
+    -- desc = desc or map
+    k.set("n", map, todo, {buffer=0, desc="LSP: "..desc or map})
+
+end
 -- k.set("n", "<leader>f", vim.lsp.buf.format)
 -- k.set("n", "K", vim.lsp.buf.format, {buffer=0})
-k.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
-k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {buffer=0})
-k.set("n", "<leader>dj", vim.diagnostic.goto_next, {buffer=0})
-k.set("n", "<leader>dl", "<cmd>Telescope disagnostics<CR>", {buffer=0})
+kLsp("gt", vim.lsp.buf.type_definition, "type definition")
+kLsp("<leader>dk", vim.diagnostic.goto_prev, "prev diagnostic")
+kLsp("<leader>dj", vim.diagnostic.goto_next, "next diagnostic")
+kLsp("<leader>dl", "<cmd>Telescope disagnostics<CR>", "Telescope diagnostics")
+kLsp("gr", vim.lsp.buf.rename, "rename")
+kLsp("gca", vim.lsp.buf.code_action, "code action")
+
+
+-- k.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
+-- k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {buffer=0})
+-- k.set("n", "<leader>dj", vim.diagnostic.goto_next, {buffer=0})
+-- k.set("n", "<leader>dl", "<cmd>Telescope disagnostics<CR>", {buffer=0})
+
 -- k.set("n", "<leader>dl", "<cmd>Telescope lsp_references<CR>", {buffer=0})
 -- rename not found in js.. fix later
 -- also C-q to move diagnostics to quickfix ls
