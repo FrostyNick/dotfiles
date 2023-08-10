@@ -227,6 +227,7 @@ local plugins = {
     'folke/zen-mode.nvim',
     'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
     'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
+    {"dhruvasagar/vim-table-mode", ft = "markdown"},
     {"iamcco/markdown-preview.nvim",
         ft = "markdown",
         -- \/ once I yeet out of Joplin
@@ -295,8 +296,6 @@ require("mason-lspconfig").setup {
 }
 -- require("lspconfig").tsserver.setup()
 
-
-
 -- -- cmp setup
 -- local cmp = require'cmp'
 -- 
@@ -348,6 +347,7 @@ end)
 if not a then
 	print("failed to setup lspconfig: "..b)
 end
+
 
 -- -- end cmp setup
 

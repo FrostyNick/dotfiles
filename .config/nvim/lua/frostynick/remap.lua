@@ -22,18 +22,19 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 k.set("n", "Q", "<nop>")
 -- not yet. k.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
--- LSP shortcuts
+-- Diagnostic shortcuts
 local function kLsp(map, todo, desc)
     -- desc = desc or map
     k.set("n", map, todo, {buffer=0, desc="LSP: "..desc or map})
-
 end
--- k.set("n", "<leader>f", vim.lsp.buf.format)
--- k.set("n", "K", vim.lsp.buf.format, {buffer=0})
-kLsp("gt", vim.lsp.buf.type_definition, "type definition")
 kLsp("<leader>dk", vim.diagnostic.goto_prev, "prev diagnostic")
 kLsp("<leader>dj", vim.diagnostic.goto_next, "next diagnostic")
 kLsp("<leader>dl", "<cmd>Telescope disagnostics<CR>", "Telescope diagnostics")
+
+-- LSP shortcuts
+-- k.set("n", "<leader>f", vim.lsp.buf.format)
+-- k.set("n", "K", vim.lsp.buf.format, {buffer=0})
+kLsp("gt", vim.lsp.buf.type_definition, "type definition")
 kLsp("gr", vim.lsp.buf.rename, "rename")
 kLsp("gca", vim.lsp.buf.code_action, "code action")
 
@@ -53,13 +54,12 @@ kLsp("gca", vim.lsp.buf.code_action, "code action")
 k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
-k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 k.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/frostynick/lazy.lua<CR>");
 k.set("n", "<leader>vpr", "<cmd>e ~/p/Rhythm-Swipe<CR>");
 k.set("n", "<leader>vs", function() io.write('noooo <C-wv> instead\nsmh') end);
-k.set("n", "<leader>o", function() io.write('o --> ,') end);
 
 -- Git shortcuts
 k.set("n", "<leader>gr",
@@ -69,14 +69,19 @@ k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
 k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
 k.set("n", "<leader>m", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
 
+-- xdg-open miscellaneous
+k.set("n", "<leader>o",
+"<cmd>!xdg-open .&<CR><CR>", { silent = true, desc = "Open working dir" })
+k.set("n", "<leader>p5",
+"<cmd>!xdg-open ~/p/p5-reference/index.html<CR><CR>", { silent = true })
+
 -- Terminal shortcuts
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>i")
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
 k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 -- k.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");"
-k.set("n", "<leader>p5",
-"<cmd>!xdg-open ~/p/p5-reference/index.html<CR><CR>", { silent = true })
 
+-- Vim shortcuts
 k.set("n", "<leader>ws", function()
     vim.cmd("w | so")
 end)
@@ -85,5 +90,7 @@ k.set("n", "<leader>pv", function()
     local path = vim.b.netrw_curdir
     require("oil").open(path)
 end, { desc = "open+fix oil+netrw", buffer = true })
--- Plugin shortcuts
-k.set("n", "<leader>m", "<cmd>MarkdownPreviewToggle<CR>")
+
+-- Markdown shortcuts
+k.set("n", "<leader>mm", "<cmd>MarkdownPreviewToggle<CR>")
+k.set("n", "<leader>mt", "<cmd>TableModeToggle<CR>")
