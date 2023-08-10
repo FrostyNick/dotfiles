@@ -485,4 +485,5 @@ assign [class="KeePassXC"] $ws100
 
 # This is at the bottom just in case it's not asyncronous
 # THIS WORKS when restarting i3: exec_always /home/nicholas/.config/i3/xrandr.sh
-exec /home/nicholas/.config/i3/xrandr.sh
+# THIS WORKS only on startup: exec /home/nicholas/.config/i3/xrandr.sh
+# Above no longer needed cuz Vencord fixes the resolution of streaming.
