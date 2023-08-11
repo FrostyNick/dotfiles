@@ -5,31 +5,31 @@
 
   ##### Legend
   `x`      = definitely works
-  `i`      = supported with issues <br>
+  `!`      = supported with issues <br>
   `ip`     = planning support <br>
   ` `      = not supported <br>
   `%%%`    = not git pushed <br>
   `?`      = no clue <br>
 
   ##### Info
-  | Config file | Description | Ubuntu 20.04+ | Termux | Windows 10 |
-  | --- | --- | --- | --- | --- |
-  | [~/.config/nvim](.config/nvim/) | Config for Neovim; powerful text editor / PDE | x | i | ? |
-  | [~/.config/ranger](.config/ranger) | File manager in terminal; planning to remove later | x | x |
-  | [~/.config/Vencord](.config/Vencord) | Vencord is a Discord client | ? | ? |
-  | [~/.config/Kvantum](.config/Kvantum) | Force dark mode on some apps | x | ? |
-  | [~/.config/i3](.config/i3) | Window Manager for X11 compositor on Linux | x | ? |
-  | [~/.config/kitty](.config/kitty) | Terminal emulator | x |
-  | [~/.config/mimeapps.list](.config/mimeapps.list) | Fix for i3 default links on Ubuntu | x |
-  | [~/.config/picom.conf](.config/picom.conf) | Compositor for X11; allows for transparent windows | x | ? |
-  | [~/.config/screenkey.json](.config/screenkey.json) | See keys typed on screen | x | ? |
-  | [~/.termux/font.tff%%%](.termux/font.tff) | Set default font in Termux | | x |
-  | [~/.local/share/fonts](.local/share/fonts) | Set default font in Ubuntu | x |
-  | [~/.fzf](.fzf) | file fuzzy finder | x | ? | ? |
-  | [~/.newsboat](.newsboat) | Terminal RSS reader with vim keybinds in config | x | ? | ? |
-  | [~/.bashrc](.bashrc) | bash shell config | x | ? |
-  | [~/.bash_aliases](.bash_aliases) | aliases for shell | x | ? |
-  | [~/.profile](.profile) | another startup file found by default in Ubuntu 20.04 | x | ? |
+  | Config file                                        | Description                                           | Ubuntu | Termux | Windows 10 |
+  | ---                                                | ---                                                   | -      | -      | -          |
+  | [~/.config/nvim](.config/nvim/)                    | Config for Neovim; powerful text editor / PDE         | x      | !      | ?          |
+  | [~/.config/ranger](.config/ranger)                 | File manager in terminal; planning to remove later    | x      | x      |
+  | [~/.config/Vencord](.config/Vencord)               | Vencord is a Discord client                           | ?      | ?      |
+  | [~/.config/Kvantum](.config/Kvantum)               | Force dark mode on some apps                          | x      | ?      |
+  | [~/.config/i3](.config/i3)                         | Window Manager for X11 compositor on Linux            | x      | ?      |
+  | [~/.config/kitty](.config/kitty)                   | Terminal emulator                                     | x      |
+  | [~/.config/mimeapps.list](.config/mimeapps.list)   | Fix for i3 default links on Ubuntu                    | x      |
+  | [~/.config/picom.conf](.config/picom.conf)         | Compositor for X11; allows for transparent windows    | x      | ?      |
+  | [~/.config/screenkey.json](.config/screenkey.json) | See keys typed on screen                              | x      | ?      |
+  | [~/.termux/font.tff%%%](.termux/font.tff)          | Set default font in Termux                            |        | x      |
+  | [~/.local/share/fonts](.local/share/fonts)         | Set default font in Ubuntu                            | x      |
+  | [~/.fzf](.fzf)                                     | file fuzzy finder                                     | x      | ?      | ?          |
+  | [~/.newsboat](.newsboat)                           | Terminal RSS reader with vim keybinds in config       | x      | ?      | ?          |
+  | [~/.bashrc](.bashrc)                               | bash shell config                                     | x      | ?      |
+  | [~/.bash_aliases](.bash_aliases)                   | aliases for shell                                     | x      | ?      |
+  | [~/.profile](.profile)                             | another startup file found by default in Ubuntu 20.04 | x      | ?      |
   
 </details>
 
