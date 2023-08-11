@@ -60,6 +60,7 @@ export -f noti nonoti
 alias nonotify="printf \"nonoti\n\" && nonoti"
 alias notify="printf \"noti\n\" && noti"
 
+alias invert="xcalib -invert -alter" # works on Ububtu 18.04+
 alias fnalias="cat ~/.bash_aliases | grep '()'"
 alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
 alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage" # kms
