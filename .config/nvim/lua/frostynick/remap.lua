@@ -79,11 +79,12 @@ k.set("n", "<leader>vpr", "<cmd>e ~/p/Rhythm-Swipe<CR>");
 k.set("n", "<leader>vs", function() io.write('noooo <C-wv> instead\nsmh') end);
 
 -- xdg-open miscellaneous
+-- Future: If using Windows, alias different open command
 k.set("n", "<leader>o",
 "<cmd>!xdg-open .&<CR><CR>", { silent = true, desc = "Open working dir" })
 k.set("n", "<leader>p5",
 "<cmd>!xdg-open ~/p/p5-reference/index.html || xdg-open https://p5js.org/reference/<CR><CR>",
-{ silent = true })
+{ silent = false })
 
 -- Git shortcuts
 k.set("n", "<leader>gr",
@@ -105,10 +106,7 @@ k.set("n", "<leader>ws", function()
     vim.cmd("w | so")
 end)
 -- k.set("n", "<leader>pv", vim.cmd.Ex)
-k.set("n", "<leader>pv", function()
-    local path = vim.b.netrw_curdir
-    require("oil").open(path)
-end, { desc = "open+fix oil+netrw", buffer = true })
+k.set("n", "<leader>pv", vim.cmd.Ex); -- function()
 
 -- Markdown shortcuts
 k.set("n", "<leader>mm", "<cmd>MarkdownPreviewToggle<CR>")
