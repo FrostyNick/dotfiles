@@ -51,6 +51,8 @@ local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
+        -- commit that also supports nvim 0.8.0 - <0.9.1
+        commit = "2aa9e9b0e655462890c6d2d8632a0d569be66482",
     },
 
     -- {
