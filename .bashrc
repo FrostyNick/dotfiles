@@ -119,6 +119,8 @@ fi
 
 # environment variables | test: `printenv | grep TERM`
 export PATH="$HOME/.config/emacs/bin:/home/nicholas/.local/bin:$PATH"
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export HOMEBREW_NO_ENV_FILTERING=1
 # TERMINAL=kitty; export TERMINAL
 # export TERMINAL="kitty"
 
