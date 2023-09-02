@@ -10,6 +10,11 @@ cope.setup({
         file_browser = {
             hijack_netrw = true,
         }
+    },
+    media_files = {
+        filetypes = {"png", "webp", "jpg", "jpeg"},
+        -- find command (defaults to `fd`)
+        find_cmd = "rg"
     }
     -- other configuration values here
 })
@@ -20,29 +25,35 @@ local builtin = require('telescope.builtin')
 local k = vim.keymap
 -- vim.g.mapleader = ' '
 
+k.set('n', '<leader><leader>', builtin.spell_suggest, {})
 k.set('n', '<leader>,', builtin.oldfiles, {})
+k.set('n', '<leader>b', builtin.buffers, {})
 k.set('n', '<leader>?', builtin.keymaps, {})
 k.set('n', '<leader>f?', builtin.help_tags, {})
-k.set('n', '<leader>ff', builtin.find_files, {})
+-- error: k.set('n', '<leader>f/', builtin.grep_files, {})
+-- k.set('n', '<leader>ff', builtin.find_files, {})
+k.set('n', '<leader>ff', "<cmd>Telescope find_files hidden=true<CR>", {})
 k.set('n', '<leader>fg', builtin.live_grep, {})
 k.set('n', '<leader>fv', builtin.git_files, {})
-k.set('n', '<leader>fb', builtin.buffers, {})
-k.set('n', '<leader>ps', function()
+k.set('n', '<leader>fb', function() print'buffers replaced with just " b", unless collision with more common shortcut in the future' end, {})
+k.set('n', '<leader>fm', "<cmd>Telescope file_browser<CR>", {})
+k.set('n', '<leader>fp', "<cmd>Telescope media_files<CR>", { desc = "fz pics"})
+k.set('n', '<leader>f/', function()
     builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end)
-k.set("n", "<leader>fb",
-  ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
-  { noremap = true })
 
-cope.setup{
-    extensions = {
-        media_files = {
-            filetypes = {"png", "webp", "jpg", "jpeg"},
-            -- find command (defaults to `fd`)
-            find_cmd = "rg"
-        }
-    }
-}
+-- local a = pcall(function() -- used to work
+--     k.set('n', '<leader>fz', builtin.file_browser, {})
+--     k.set('n', '<leader>fzz', builtin.media_files, { desc = "fz pics"})
+-- end)
+-- if a then
+--     print("problem fixed in telescope.lua")
+-- end
+--
+-- k.set("n", "<leader>fb",
+--   ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
+--   { noremap = true })
+--
 
 
 -- pasted f nvim-telescope wiki
