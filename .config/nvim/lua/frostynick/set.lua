@@ -38,9 +38,10 @@ o.ttyfast = true -- will it speed up scrolling?
 o.foldlevelstart = 1 -- 99 = don't close anything, default -1
 o.conceallevel = 2 -- for future plugin or idk
 
+o.hidden = true -- rm annoying buffer error message https://linuxhandbook.com/vim-buffers/
+
 -- Taken from: https://github.com/vim/vim/blob/master/runtime/defaults.vim
-vim.cmd(
-[[
+vim.cmd([[
 " Put these in an autocmd group, so that you can revert them with:
 " ":augroup vimStartup | exe 'au!' | augroup END"
 augroup vimStartup
@@ -56,5 +57,4 @@ augroup vimStartup
     \ | endif
 
 augroup END
-]]
-)
+]])
