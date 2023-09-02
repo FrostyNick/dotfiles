@@ -14,7 +14,6 @@
 export TERMINAL=kitty
 # for dark theme on apps such as simplescrrec
 export QT_STYLE_OVERRIDE=kvantum
-export OPENAI_KEY='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'
 export SUS=andrewtate
 feh --randomize --bg-max ~/Pictures/wallpapers/*
 
@@ -41,3 +40,5 @@ fi
 . "$HOME/.cargo/env"
 
 if [ -e /home/nicholas/.nix-profile/etc/profile.d/nix.sh ]; then . /home/nicholas/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
