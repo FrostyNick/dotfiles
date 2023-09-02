@@ -1,6 +1,6 @@
 [Default Applications]
 application/x-desktop=vim.desktop
-application/pdf=FoxitReader.desktop
+application/pdf=qpdfview.desktop
 application/ppdf=FoxitReader.desktop
 application/xfdf=FoxitReader.desktop
 application/fdf=FoxitReader.desktop
@@ -15,6 +15,9 @@ x-scheme-handler/unknown=librewolf.desktop
 text/plain=featherpad.desktop
 application/x-ms-dos-executable=librewolf.desktop
 inode/directory=pcmanfm-qt.desktop
+image/png=qimgv.desktop
+image/jpeg=qimgv.desktop
+image/webp=qimgv.desktop
 
 [Added Associations]
 application/x-desktop=vim.desktop;
@@ -22,3 +25,8 @@ x-scheme-handler/tg=userapp-Telegram Desktop-6F9PV1.desktop;
 image/gif=nvim.desktop;
 text/plain=featherpad.desktop;
 inode/directory=pcmanfm-qt.desktop;
+application/x-ms-dos-executable=wine.desktop;
+image/png=qimgv.desktop;
+image/jpeg=qimgv.desktop;
+image/webp=qimgv.desktop;
+application/pdf=qpdfview.desktop;
