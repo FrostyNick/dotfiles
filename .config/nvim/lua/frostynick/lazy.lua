@@ -51,28 +51,22 @@ local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        -- commit that also supports nvim 0.8.0 - <0.9.1
-        commit = "2aa9e9b0e655462890c6d2d8632a0d569be66482",
+        -- commit that (in theory) supports nvim 0.8.0 - <0.9.1
+        -- commit = "2aa9e9b0e655462890c6d2d8632a0d569be66482",
     },
 
-    -- {
-    -- 'VonHeikemen/lsp-zero.nvim', -- errors without it?
-    --     branch = 'v2.x',
-    --     dependencies = {
-            -- LSP Support
-            { 'williamboman/mason.nvim', },-- Optional
-            { 'williamboman/mason-lspconfig.nvim' }, -- Optional
-            { 'neovim/nvim-lspconfig' }, -- Required
+    -- LSP Support
+    { 'williamboman/mason.nvim', },-- Optional
+    { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+    { 'neovim/nvim-lspconfig' }, -- Required
 
-            -- Autocompletion
-            -- { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-            -- { 'hrsh7th/nvim-cmp' },     -- Required
-            -- { 'hrsh7th/cmp-path' },     -- Required
-            -- { 'L3MON4D3/LuaSnip' },     -- Required Asks lsp to do extra tricks
-            -- { 'folke/neodev.nvim' },    -- trying out.
-            -- neodev Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
-    --     }
-    -- },
+    -- Autocompletion
+    -- { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+    -- { 'hrsh7th/nvim-cmp' },     -- Required
+    -- { 'hrsh7th/cmp-path' },     -- Required
+    -- { 'L3MON4D3/LuaSnip' },     -- Required Asks lsp to do extra tricks
+    -- { 'folke/neodev.nvim' },    -- trying out.
+    -- neodev Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
     -- -- autocomplete (not required)
     -- 'hrsh7th/cmp-buffer',
     -- 'hrsh7th/cmp-path',
@@ -94,7 +88,7 @@ local plugins = {
             })
         end
     },
-    -- jump to character
+    -- visualize jump to character
     {
         'jinh0/eyeliner.nvim',
         config = function()
@@ -115,11 +109,8 @@ local plugins = {
         dependencies = 'nvim-treesitter/nvim-treesitter',
         init = function() require('treepin').setup() end,
     },
-    {
-        'TarunDaCoder/sus.nvim',
-        config = function()
-            require('sus').setup()
-        end,
+    { 'TarunDaCoder/sus.nvim',
+        config = function() require('sus').setup() end,
     },
     {
       -- doesn't work + not supported in Termux.
@@ -142,9 +133,12 @@ local plugins = {
             end
 
             i('g', 'Accept')
-            i('x', 'Clear')
+            -- using :CodiumToggle instead of Clear.
             c(';', 'CycleCompletions', 1)
             c(',', 'CycleCompletions', -1)
+
+            k.set('n', '<leader>cx', vim.cmd.CodeiumDisable)
+
         end
     },
     {
@@ -174,6 +168,7 @@ local plugins = {
         end,
     },
 
+    'nacro90/numb.nvim', -- non-intrusively preview while typing :432... 
     -- Two colorschemes below
     { 'rose-pine/neovim',      name = 'rose-pine' },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
@@ -230,6 +225,8 @@ local plugins = {
     'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
     'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
     {"dhruvasagar/vim-table-mode", ft = "markdown"},
+    {"chrisbra/Colorizer", event = "VeryLazy"},
+    -- {"ap/vim-css-color", ft = "css"},
     {"iamcco/markdown-preview.nvim",
         ft = "markdown",
         -- \/ once I yeet out of Joplin
@@ -242,10 +239,7 @@ local plugins = {
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', opts = {} },
-    {
-        'stevearc/oil.nvim',
-        opts = {},
-    },
+    -- { 'stevearc/oil.nvim', opts = {}, },
     -- - Trying out below; might delete later - --
     {
         'goolord/alpha-nvim',
@@ -274,14 +268,18 @@ local plugins = {
 }
 --[[
 -- alternative plugins maybe
--- markdown-preview
-    ctrl + ^ should look at previous file in :Telescope oldfiles
-    https://github.com/stevearc/oil.nvim
-    kiran94/edit-markdown-table.nvim (it's a preview of the text when editing.. not exactly what I'm looking for with md tables)
     ray-x/web-tools.nvim
-    Plug 'tpope/vim-commentary'
     ap/vim-css-color -- hex color
     erryma/vim-multiple-cursors
+    -- best for notetaking:
+        set linebreak
+        set spell [spelllang=en_us]
+        https://youtu.be/NmIatTT0MLc?t=388 " spell check usage w/ shortcuts
+    vim-hexokinaste - css colors
+    sudoedit
+    vim-closetag
+    https://twitter.com/learnvim - future problem
+
 -- troubleshooting --
 for k,v in pairs(plugins) do
     print(k,v)
@@ -291,10 +289,13 @@ end
 local opts = {}
 
 require("lazy").setup(plugins, opts)
-require("oil").setup()
+-- require("oil").setup()
 require("mason").setup()
 require("mason-lspconfig").setup {
     ensure_installed = { "lua_ls", "rust_analyzer", "denols" },
+}
+require("numb").setup{
+    -- number_only = true, -- just in case I find it intrusive
 }
 -- require("lspconfig").tsserver.setup()
 

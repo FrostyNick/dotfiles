@@ -44,10 +44,11 @@ k.set("n", "<leader>dl", telescopeBi.diagnostics, {desc="Telescope diagnostics"}
 -- Stopped working:
 -- kLsp("gt", vim.lsp.buf.type_definition, "type definition")
 -- kLsp("gr", vim.lsp.buf.rename, "rename")
+-- v conflicts with gcc
 -- kLsp("gca", vim.lsp.buf.code_action, "code action")
 k.set("n", "gt", vim.lsp.buf.type_definition, {desc="type definition"})
 k.set("n", "gr", vim.lsp.buf.rename, {desc="rename"})
-k.set("n", "gca", vim.lsp.buf.code_action, {desc="code action"})
+k.set("n", "ga", vim.lsp.buf.code_action, {desc="code action"})
 
 -- yank/put: " + macro + y/p
 -- useless macro: isusu€kb
@@ -71,23 +72,28 @@ k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
-k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true }) -- doing this again should do the opposite
+k.set("n", "<leader>vs", function() io.write('noooo <C-wv> instead\nsmh') end);
 
 k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
 k.set("n", "<leader>vpr", "<cmd>e ~/p/Rhythm-Swipe<CR>");
-k.set("n", "<leader>vs", function() io.write('noooo <C-wv> instead\nsmh') end);
+-- below doesnt work because i is powerful af. fix later.
+k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
+k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md || echo fail<CR>");
 
 -- xdg-open miscellaneous
--- Future: If using Windows, alias different open command
+-- Future: If using Windows or MacOS, alias different open command
+-- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup
+k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
 k.set("n", "<leader>o",
 "<cmd>!xdg-open .&<CR><CR>", { silent = true, desc = "Open working dir" })
 k.set("n", "<leader>p5",
-"<cmd>!xdg-open ~/p/p5-reference/index.html || xdg-open https://p5js.org/reference/<CR><CR>",
-{ silent = false })
+"<cmd>!xdg-open ~/p/p5-reference/index.html || xdg-open https://p5js.org/reference/ || open https://p5js.org/reference/<CR><CR>",
+{ silent = false }) -- "open" not tested yet on Windows / MacOS.
 
 -- Git shortcuts
-k.set("n", "<leader>gr",
+k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
 "<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
 { silent = true })
 k.set("n", "<leader>gf", vim.cmd.Git)
@@ -95,11 +101,12 @@ k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
 k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
 
--- Terminal shortcuts
+-- Compiler shortcuts
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
 k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 -- k.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");"
+-- <leader>cx is in lazy.lua if it still exists
 
 -- Vim shortcuts
 k.set("n", "<leader>ws", function()
