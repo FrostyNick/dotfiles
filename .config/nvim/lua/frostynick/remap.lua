@@ -22,6 +22,7 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 --
 k.set("n", "Q", "<nop>")
 -- not yet. k.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
 
 -- Diagnostic shortcuts
 local function kLsp(map, action, desc)
@@ -33,9 +34,9 @@ end
 -- kLsp("<leader>dj", vim.diagnostic.goto_next, "next diagnostic")
 -- kLsp("<leader>dl", telescopeBi.diagnostics, "Telescope diagnostics")
 
-k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="prev diagnostic"})
-k.set("n", "<leader>dj", vim.diagnostic.goto_next, {desc="next diagnostic"})
-k.set("n", "<leader>dl", telescopeBi.diagnostics, {desc="Telescope diagnostics"})
+k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
+k.set("n", "<leader>dj", vim.diagnostic.goto_next, {desc="LSP: next diagnostic"})
+k.set("n", "<leader>dl", telescopeBi.diagnostics, {desc="LSP: Telescope diagnostics"})
 
 -- LSP shortcuts
 -- k.set("n", "<leader>f", vim.lsp.buf.format)
@@ -46,9 +47,10 @@ k.set("n", "<leader>dl", telescopeBi.diagnostics, {desc="Telescope diagnostics"}
 -- kLsp("gr", vim.lsp.buf.rename, "rename")
 -- v conflicts with gcc
 -- kLsp("gca", vim.lsp.buf.code_action, "code action")
-k.set("n", "gt", vim.lsp.buf.type_definition, {desc="type definition"})
-k.set("n", "gr", vim.lsp.buf.rename, {desc="rename"})
-k.set("n", "ga", vim.lsp.buf.code_action, {desc="code action"})
+k.set("n", "gt", vim.lsp.buf.type_definition, {desc="LSP: type definition"})
+k.set("n", "gr", vim.lsp.buf.rename, {desc="LSP: rename"})
+-- ga overrides vim keybind which could be useful in the future
+k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 
 -- yank/put: " + macro + y/p
 -- useless macro: isusu€kb
@@ -84,7 +86,7 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md || echo fail<
 
 -- xdg-open miscellaneous
 -- Future: If using Windows or MacOS, alias different open command
--- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup
+-- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
 k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
 k.set("n", "<leader>o",
 "<cmd>!xdg-open .&<CR><CR>", { silent = true, desc = "Open working dir" })

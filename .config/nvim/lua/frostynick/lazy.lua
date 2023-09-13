@@ -118,7 +118,7 @@ local plugins = {
         event = "VeryLazy",
         config = function()
             -- Change '<C-g>' here to any keycode you like.
-            local expT = { expr = true }
+            local expT = { expr = true, desc = "Codeium keybinds. Located in lazy.lua" }
             local k = vim.keymap
             local function c(viM, codeM, n)
                 k.set('i', '<c-' .. viM .. '>', function()
@@ -137,7 +137,8 @@ local plugins = {
             c(';', 'CycleCompletions', 1)
             c(',', 'CycleCompletions', -1)
 
-            k.set('n', '<leader>cx', vim.cmd.CodeiumDisable)
+            -- Toggle instead of Disable would be better. I rarely turn it back on though so not big enough concern for me do to anything about it.
+            k.set('n', '<leader>cx', vim.cmd.CodeiumDisable, { desc = "Codeium: Calls `:DisableCodeium`" })
 
         end
     },
@@ -168,7 +169,7 @@ local plugins = {
         end,
     },
 
-    'nacro90/numb.nvim', -- non-intrusively preview while typing :432... 
+    {'nacro90/numb.nvim', opts = {} }, -- non-intrusively preview while typing :432... 
     -- Two colorschemes below
     { 'rose-pine/neovim',      name = 'rose-pine' },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
@@ -215,7 +216,7 @@ local plugins = {
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     },
     -- not working for some reason 'm4xshen/autoclose.nvim',
-    'airblade/vim-gitgutter', -- not sure if this breaks sus.nvim
+    'airblade/vim-gitgutter',
     'nvim-treesitter/playground',
     'theprimeagen/harpoon',
     'mbbill/undotree',
@@ -223,9 +224,10 @@ local plugins = {
     'f-person/git-blame.nvim',                 -- shows git blame
     'folke/zen-mode.nvim',
     'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
-    'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
+    -- no longer works on here. probably bc of another plugin.
+    -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
     {"dhruvasagar/vim-table-mode", ft = "markdown"},
-    {"chrisbra/Colorizer", event = "VeryLazy"},
+    {"chrisbra/Colorizer", event = "VeryLazy"}, -- test if it still works
     -- {"ap/vim-css-color", ft = "css"},
     {"iamcco/markdown-preview.nvim",
         ft = "markdown",
@@ -240,13 +242,16 @@ local plugins = {
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', opts = {} },
     -- { 'stevearc/oil.nvim', opts = {}, },
+    -- rm homepage. I don't really want it.
     -- - Trying out below; might delete later - --
-    {
-        'goolord/alpha-nvim',
-        event = "VimEnter",
-    --     opts = { require'alpha.themes.startify'.config }
-    --     -- this breaks nvim rn. opts = { require'alpha.themes.dashboard'.config }
-    },
+    -- I find it annoying about 20 seconds in. maybe i should look at config.
+    -- { -- for better vim habits. if it's not super annoying I'll keep it.
+    --     "m4xshen/hardtime.nvim",
+    --     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    --     opts = {}
+    -- },
+    -- new alt to which-key: Cassin01/wf.nvim
+    -- new thing that depends on which-key: roobert/surround-ui.nvim -- for nvim-surround help
     -- {
     --     "folke/which-key.nvim",
     --     event = "VeryLazy",
@@ -268,6 +273,7 @@ local plugins = {
 }
 --[[
 -- alternative plugins maybe
+    kkoomen/vim-doge -- if I ever need to add documentation to code, this makes it faster. keymaps can be changed: https://github.com/kkoomen/vim-doge#gdoge_enable_mappings
     ray-x/web-tools.nvim
     ap/vim-css-color -- hex color
     erryma/vim-multiple-cursors
@@ -289,13 +295,11 @@ end
 local opts = {}
 
 require("lazy").setup(plugins, opts)
+-- move below to init l8r
 -- require("oil").setup()
 require("mason").setup()
 require("mason-lspconfig").setup {
     ensure_installed = { "lua_ls", "rust_analyzer", "denols" },
-}
-require("numb").setup{
-    -- number_only = true, -- just in case I find it intrusive
 }
 -- require("lspconfig").tsserver.setup()
 
@@ -343,9 +347,15 @@ local a,b = pcall(function()
     -- it can't find deno, which is fine require('lspconfig')['deno'].setup {
     --     capabilities = capabilities
     -- }
-    require('lspconfig')['tsserver'].setup {
-        capabilities = capabilities
-    }
+    -- How would this be worse than say LspZero other than it doesn't
+    -- automatically have all the plugins that Mason has?
+    local lspLs = {'lua_ls', 'tsserver'}
+
+    for _,v in ipairs(lspLs) do
+        require('lspconfig')[v].setup {
+            capabilities = capabilities
+        }
+    end
 end)
 if not a then
 	print("failed to setup lspconfig: "..b)

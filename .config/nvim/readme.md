@@ -3,6 +3,7 @@
 If you are completely new to Vim, focus on Vim motions.
 
 - Open Vim and type `:help` to get started. 
+- In the future, `:help <topic>` is pretty useful.
 
 ## Most simple config setup for beginners
 minimalist / without plugins
