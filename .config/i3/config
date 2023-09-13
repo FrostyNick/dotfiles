@@ -318,7 +318,8 @@ mode "$mode_launcher" {
     # WORKING bindsym o exec obs
     bindsym s exec steam
     bindsym c exec scrcpy
-    bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
+    bindsym r exec simplescreenrecorder
+    # bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
     bindsym d exec discord || exec discord-canary
     bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
     bindsym n exec i3-sensible-terminal -e "newsboat"
@@ -422,6 +423,8 @@ for_window [class="librewolf-default"] focus
 # terminal
 assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
+assign [class="XTerm"] $ws2
+for_window [class="XTerm"] focus
 assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
 
@@ -429,8 +432,13 @@ for_window [class="kitty"] focus
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
+for_window [class="Soffice"] focus
+assign [class="Soffice"] $ws3
+for_window [class="qpdfview"] focus
+assign [class="qpdfview"] $ws3
 for_window [class="libreoffice"] focus
 assign [class="libreoffice"] $ws3
+assign [class="FeatherPad"] $ws3
 
 # android studio
 assign [class="Emacs"] $ws4
@@ -483,8 +491,21 @@ assign [class="KeePassXC"] $ws100
 # exec ./Apps/KeePassXC-2.7.4-x86_64.AppImage 
 # no longer needed thanks to assign: exec i3-msg "workspace 2;"
 # exec "xdg-open ~/backup2022nov10/checkDaily/index.html" # opens in ws1
+# not working on restarting i3:
+# exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
+# NOT WORKING exec_always i3-sensible-terminal -e "nvim ~/backup2022nov10/notes/todo.norg" 
+# NOT WORKING exec_always /home/nicholas/.config/i3/openNeorg.sh
+exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openNeorg.sh"
+# NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
+
+
+# WORKING exec_always i3-sensible-terminal -e "nvim" 
+# NOT WORKING exec_always "xdg-open ~/backup2022nov10/notes/todo.norg"
+# this made the command worse, but fixed it in other places:
+# sudo ln -s /home/YOUR_USERNAME_HERE/Apps/nvim-linux64/bin/nvim /usr/bin/nvim
 
 # This is at the bottom just in case it's not asyncronous
 # THIS WORKS when restarting i3: exec_always /home/nicholas/.config/i3/xrandr.sh
 # THIS WORKS only on startup: exec /home/nicholas/.config/i3/xrandr.sh
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
+# Above ruins bc Vencord broke with Discord update.
