@@ -66,6 +66,11 @@ rm M*.ttf LICENSE.txt
 rm Mononoki.zip
 ```
 
+## Dotfile info
+
+- https://dotfiles.github.io/ (I haven't looked at this it just looks promising)
+- DT YT video about dotfiles + take notes + comment section.
+
 ## Showcase
 
 ![image](https://github.com/FrostyNick/dotfiles/assets/57016218/dc492a6c-f389-45b4-b874-b4850f5ea08a)
