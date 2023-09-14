@@ -1,0 +1,3 @@
+xterm*foreground:       #FFFFFF
+xterm*background:       #000000
+xterm*faceName:         Terminus:pixelsize=13
