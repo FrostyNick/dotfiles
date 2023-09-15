@@ -316,7 +316,8 @@ mode "$mode_launcher" {
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/obs.sh'"
     # WORKING bindsym o exec obs
-    bindsym s exec steam
+# below temporarily removed
+    # bindsym s exec steam
     bindsym c exec scrcpy
     bindsym r exec simplescreenrecorder
     # bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
