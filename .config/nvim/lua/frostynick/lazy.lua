@@ -192,7 +192,6 @@ local plugins = {
         config = function(_, opts) require("compiler").setup(opts) end,
     },
     {
-                                                             -- The framework we use to run tasks
         "stevearc/overseer.nvim",
         commit = "3047ede61cc1308069ad1184c0d447ebee92d749", -- Recommended to to avoid breaking changes
         cmd = { "CompilerOpen", "CompilerToggleResults" },
@@ -224,6 +223,31 @@ local plugins = {
     'f-person/git-blame.nvim',                 -- shows git blame
     'folke/zen-mode.nvim',
     'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
+    {'nvim-treesitter/nvim-treesitter-textobjects',
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        config = function()
+            -- basic setup; might change later
+            -- see https://github.com/nvim-treesitter/nvim-treesitter-textobjects#text-objects-move
+            require'nvim-treesitter.configs'.setup {
+                textobjects = {
+                    select = {
+                        enable = true,
+
+                        -- Automatically jump forward to textobj, similar to targets.vim
+                        lookahead = true,
+
+                        keymaps = {
+                            -- You can use the capture groups defined in textobjects.scm
+                            ["af"] = "@function.outer",
+                            ["if"] = "@function.inner",
+                            ["ac"] = "@class.outer",
+                            ["ic"] = "@class.inner",
+                        }
+                    }
+                }
+            }
+        end
+    },
     -- no longer works on here. probably bc of another plugin.
     -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
     {"dhruvasagar/vim-table-mode", ft = "markdown"},
@@ -241,6 +265,38 @@ local plugins = {
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', opts = {} },
+    { 'simrat39/symbols-outline.nvim',
+        opts = { show_symbol_details = true,
+            symbol_blacklist = {'File',
+            'Module',
+            'Namespace',
+            'Package',
+            'Class',
+            'Method',
+            'Property',
+            'Field',
+            'Constructor',
+            'Enum',
+            'Interface',
+            -- 'Function',
+            'Variable',
+            'Constant',
+            'String',
+            'Number',
+            'Boolean',
+            'Array',
+            'Object',
+            'Key',
+            'Null',
+            'EnumMember',
+            'Struct',
+            'Event',
+            'Operator',
+            'TypeParameter',
+            'Component',
+            'Fragment'}
+        }
+    },
     -- { 'stevearc/oil.nvim', opts = {}, },
     -- rm homepage. I don't really want it.
     -- - Trying out below; might delete later - --
