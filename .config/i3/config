@@ -445,13 +445,16 @@ assign [class="FeatherPad"] $ws3
 assign [class="Emacs"] $ws4
 assign [class="jetbrains-studio"] $ws4
 for_window [class="jetbrains-studio"] focus
-assign [class="vscodium"] $ws4
-for_window [class="vscodium"] focus
+assign [class="Codium"] $ws4 # it changes to this sometimes.
+assign [class="VSCodium"] $ws4
+for_window [class="VSCodium"] focus
 
 # I'm more likely to play a game on my phone from my pc than having a game and scrcpy on
 for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
+
+# ws5=graphics
 
 # game
 assign [class="Steam"] $ws5
@@ -466,11 +469,15 @@ assign [class="Minecraft 1.19"] $ws5
 # art editing
 assign [class="Gimp"] $ws5
 
+# video player
+assign [class="mpv"] $ws5
+assign [class="vlc"] $ws5 # not tested
+
 # social
 assign [class="discord"] $ws6
 assign [class="zoom"] $ws6
 
-# video
+# video creation
 assign [class="obs"] $ws10
 for_window [class="obs"] focus
 assign [class="Shotcut"] $ws10
