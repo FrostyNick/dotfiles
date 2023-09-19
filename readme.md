@@ -47,38 +47,40 @@ config works.
     <summary>What's in this config?</summary>
 
 - Working LSP. Search LSP in <kbd>leader + ?</kbd> for LSP keybinds.
+    - <kbd>gr</kbd> - rename variable based on code context. (it won't mess up
+      other variables)
+    - <kbd>gd</kbd> - go to definition.
 - Much more sane defaults for coding, tabs, etc.
 - Minimal design.
 - Loads in about 100ms as of today; after optimizing a few of the new plugins,
   it would probably drop to around 80ms. Also benchmarks vary on other devices.
-- Many things revolve around the existing vim keybinds especially if they're
-  useful keybinds.
+- Several keybinds while being mindful about existing vim keybinds; especially
+  if they're useful keybinds.
     - <kbd>leader + ,</kbd> to see previous files. In plain vim, <kbd>:bro
       o</kbd> is the shortest alternative.
     - <kbd>leader + t</kbd> to open terminal in a vertical split.
     - <kbd>leader + b</kbd> to switch/see buffers.
-    - <kbd>gr</kbd> - rename variable based on code context (it won't mess up
-      other variables).
-- Uses the Lazy plugin manager some time before Packer was archived.
+- Uses the Lazy plugin manager for some time before Packer was archived.
 - 30+ plugins; plugin configuration is located in
   [...`/nvim/lua/frostynick/lazy.lua`](~/.config/nvim/lua/frostynick/lazy.lua)
   <!-- if you're in vim remember gf - go to file for above -->
     - Treesitter textobjects; basically for now you can <kbd>dif</kbd> to
       delete inside a function, <kbd>caf</kbd> to delete around a function,
-      etc. There's a lot of potential for this since it's very barebones.
+      etc. There's a lot of potential for this since it's just the start of
+      this part of the config.
     - Use nvim surround for many new keybinds. Starts with <kbd>ys</kbd> "you
       surround"
     - Format markdown tables with `:Tableize` or <kbd>leader + m + t</kbd>.
       Preview markdown in the web with `:MarkdownPreviewToggle` or <kbd>leader
-      + m + m</kbd>.
+      \+ m + m</kbd>. Requires `npm` or possibly `yarn` with config changes.
     - Git fugitive. Access with <kbd>leader + g + f</kbd>
+    - Lua line.
     - Much more.
-- Lua based whenever it's better in speed or functionality.
+- Lua based plugins whenever it's better in speed or functionality.
 - Not familiar with the keybinds for this config? <kbd>leader + ?</kbd>
   (leaderkey is space for everything)
 - Rose pine theme. (The screenshot is likely outdated if it has a different
   theme)
-- Lua line
 
 </details> 
 
