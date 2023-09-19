@@ -40,10 +40,12 @@ can fork this into something better probably.
 
 ## Neovim config
 
-[See `.config\/nvim\/`](.config/nvim/) for learning vim or learning how the
+[See `.config/nvim/`](.config/nvim/) for learning vim or learning how the
 config works.
 
-Comes with:
+<details>
+    <summary>What's in this config?</summary>
+
 - Working LSP. Search LSP in `leader + ?` for LSP keybinds.
 - Much more sane defaults for coding, tabs, etc.
 - Minimal design.
@@ -71,7 +73,9 @@ Comes with:
   (leaderkey is space for everything)
 - Rose pine theme. (The screenshot is likely outdated if it has a different
   theme)
-- Lua line 
+- Lua line
+
+</details> 
 
 ## Install nerd fonts
 
