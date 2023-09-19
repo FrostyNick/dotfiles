@@ -107,44 +107,48 @@ local plugins = {
     {
         'KaitlynEthylia/TreePin',
         dependencies = 'nvim-treesitter/nvim-treesitter',
-        init = function() require('treepin').setup() end,
+        opts = {} -- Might break. See commit on 2023-9-18 to rollback
     },
-    { 'TarunDaCoder/sus.nvim',
-        config = function() require('sus').setup() end,
-    },
-    {
-      -- doesn't work + not supported in Termux.
-        'Exafunction/codeium.vim',
-        event = "VeryLazy",
-        config = function()
-            -- Change '<C-g>' here to any keycode you like.
-            local expT = { expr = true, desc = "Codeium keybinds. Located in lazy.lua" }
-            local k = vim.keymap
-            local function c(viM, codeM, n)
-                k.set('i', '<c-' .. viM .. '>', function()
-                    return vim.fn['codeium#' .. codeM](n)
-                end, expT)
-            end
-
-            local function i(viM, codeM)
-                k.set('i', '<c-' .. viM .. '>', function()
-                    return vim.fn['codeium#' .. codeM]()
-                end, expT)
-            end
-
-            i('g', 'Accept')
-            -- using :CodiumToggle instead of Clear.
-            c(';', 'CycleCompletions', 1)
-            c(',', 'CycleCompletions', -1)
-
-            -- Toggle instead of Disable would be better. I rarely turn it back on though so not big enough concern for me do to anything about it.
-            k.set('n', '<leader>cx', vim.cmd.CodeiumDisable, { desc = "Codeium: Calls `:DisableCodeium`" })
-
-        end
-    },
+    { 'TarunDaCoder/sus.nvim', opts = {} },
+    -- { --[[ commented out codeium for now because
+    --  * Termux: Doesn't work + errors + planned to not be supported.
+    --  * It gets a bit in the way when trying to do projects. Opt-in would be
+    --  better (honestly not that hard to add).
+    --  * Not mindful of built-in vim features when useful vim keybinds are
+    --  overrided on default config on Github such as <c-x>.
+    --  * Will I really miss this? Is there really much benefit?
+    --  ]]
+    --     'Exafunction/codeium.vim',
+    --     event = "VeryLazy",
+    --     config = function()
+    --         -- Change '<C-g>' here to any keycode you like.
+    --         local expT = { expr = true, desc = "Codeium keybinds. Located in lazy.lua" }
+    --         local k = vim.keymap
+    --         local function c(viM, codeM, n)
+    --             k.set('i', '<c-' .. viM .. '>', function()
+    --                 return vim.fn['codeium#' .. codeM](n)
+    --             end, expT)
+    --         end
+    --
+    --         local function i(viM, codeM)
+    --             k.set('i', '<c-' .. viM .. '>', function()
+    --                 return vim.fn['codeium#' .. codeM]()
+    --             end, expT)
+    --         end
+    --
+    --         i('g', 'Accept')
+    --         -- using :CodiumToggle instead of Clear.
+    --         c(';', 'CycleCompletions', 1)
+    --         c(',', 'CycleCompletions', -1)
+    --
+    --         -- Toggle instead of Disable would be better. I rarely turn it back on though so not big enough concern for me do to anything about it.
+    --         k.set('n', '<leader>cx', vim.cmd.CodeiumDisable, { desc = "Codeium: Calls `:DisableCodeium`" })
+    --
+    --     end
+    -- },
     {
         "nvim-neorg/neorg",
-        ft = "norg",
+        -- ft = "norg",
         build = ":Neorg sync-parsers",
         dependencies = { "nvim-lua/plenary.nvim" },
         -- event = "VeryLazy",
@@ -226,7 +230,7 @@ local plugins = {
     {'nvim-treesitter/nvim-treesitter-textobjects',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         config = function()
-            -- basic setup; might change later
+            -- extremely basic setup is useful; has a ton of potential.
             -- see https://github.com/nvim-treesitter/nvim-treesitter-textobjects#text-objects-move
             require'nvim-treesitter.configs'.setup {
                 textobjects = {
@@ -265,7 +269,7 @@ local plugins = {
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', opts = {} },
-    { 'simrat39/symbols-outline.nvim',
+    { 'simrat39/symbols-outline.nvim', -- I use as function outline. no whitelist so there's a long list instead.
         opts = { show_symbol_details = true,
             symbol_blacklist = {'File',
             'Module',
