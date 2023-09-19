@@ -51,7 +51,7 @@ config works.
     - <kbd>gr</kbd> - rename variable based on code context. (it won't mess up
       other variables)
     - <kbd>gd</kbd> - go to definition.
-    - <kbd>leader + l + l<kbd> - Toggle live server; there's no toggle in original plugin. Powered by barrett-ruth/live-server.nvim. Requires npm; yarn works too, see live-server readme and modify config.
+    - <kbd>leader + l + l</kbd> - Toggle live server; there's no toggle in original plugin. Powered by barrett-ruth/live-server.nvim. Requires npm; yarn works too, see live-server readme and modify config.
 - Much more sane defaults for coding, tabs, etc.
 - Minimal design.
 - Loads in about 100ms as of today; after optimizing a few of the new plugins,
