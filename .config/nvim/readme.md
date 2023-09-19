@@ -14,7 +14,7 @@ init.lua (Neovim)
 </summary>
 
 Create [~/.config/nvim/init.lua](init.lua) folders and files if not created,
-then add the following lines and customize it to your hearts content:
+then add the following lines and customize these to your hearts content:
 
 ```lua
 -- this is a comment in lua
@@ -22,11 +22,11 @@ then add the following lines and customize it to your hearts content:
 this is a 
 *multiline*
 comment
-
 ]]
-local o = vim.o -- short for vim.opt
+
+local o = vim.o -- short for vim.opt; possibly might behave diff in some cases
 o.nu = true -- true or false
-o.relativenumber = true
+o.rnu = true
 
 -- four spaced tabbing
 o.tabstop = 4

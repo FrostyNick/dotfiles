@@ -1,3 +1,7 @@
+I am open to PR requests, issues or questions (in discussions). Just make an
+issue and then after getting my feedback you can work on the PR. Otherwise, you
+can fork this into something better probably.
+
 ## File descriptions
 
 <details>
@@ -36,14 +40,46 @@
 
 ## Neovim config
 
-[See .config\/nvim\/](.config/nvim/)
+[See `.config\/nvim\/`](.config/nvim/) for learning vim or learning how the
+config works.
+
+Comes with:
+- Working LSP. Search LSP in `leader + ?` for LSP keybinds.
+- Much more sane defaults for coding, tabs, etc.
+- Minimal design.
+- Loads in about 100ms as of today; after optimizing a few of the new plugins,
+  it would probably drop to around 80ms. Also benchmarks vary on other devices.
+- Many things revolve around the existing vim keybinds especially if they're
+  useful keybinds.
+    - `leader + ,` to see previous files. In plain vim, `:bro o` is the
+      shortest alternative.
+    - `leader + t` to open terminal in a vertical split.
+    - `leader + b` to switch/see buffers.
+- Uses the Lazy plugin manager some time before Packer was archived.
+- 30+ plugins; plugin configuration is located in
+  [...`/nvim/lua/frostynick/lazy.lua`](~/.config/nvim/lua/frostynick/lazy.lua)
+  <!-- if you're in vim remember gf - go to file for above -->
+    - Treesitter textobjects; basically for now you can <kbd>dif</kbd> to
+      delete inside a function, <kbd>caf</kbd> to delete around a function,
+      etc. There's a lot of potential for this since it's very barebones.
+    - Use nvim surround for many new keybinds. Starts with <kbd>ys</kbd> "you
+      surround"
+    - Format markdown tables with `:Tableize` or `leader + m + t`. Preview
+      markdown in the web with `:MarkdownPreviewToggle` or `leader + m + m`.
+- Lua based whenever it's better in speed or functionality.
+- Not familiar with the keybinds for this config? <kbd>leader + ?</kbd>
+  (leaderkey is space for everything)
+- Rose pine theme. (The screenshot is likely outdated if it has a different
+  theme)
+- Lua line 
 
 ## Install nerd fonts
 
 Click Download on any of the fonts in the link below; they all contain nerd fonts.
 [NerdFonts Install](https://nerdfonts.com/font-downloads)
 
-Place it in [`~/.local/share/fonts`](.local/share/fonts) and create the fonts folder if it doesn't already exist.
+Place it in [`~/.local/share/fonts`](.local/share/fonts) and create the fonts
+folder if it doesn't already exist.
 
 For my case I downloaded with cURL:
 ```
@@ -51,7 +87,8 @@ cd ~/.local/share/fonts
 curl -OL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.1/Mononoki.zip
 unzip Mononoki.zip
 ```
-After that, I changed the default fonts in the kitty terminal. In your case, see your config settings for your terminal if it doesn't apply on its own.
+After that, I changed the default fonts in the kitty terminal. In your case,
+see your config settings for your terminal if it doesn't apply on its own.
 
 In Termux:
 ```
