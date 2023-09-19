@@ -46,10 +46,12 @@ config works.
 <details>
     <summary>What's in this config?</summary>
 
-- Working LSP. Search LSP in <kbd>leader + ?</kbd> for LSP keybinds.
+- Working LSP and live server. Search LSP in <kbd>leader + ?</kbd> for LSP
+  keybinds.
     - <kbd>gr</kbd> - rename variable based on code context. (it won't mess up
       other variables)
     - <kbd>gd</kbd> - go to definition.
+    - <kbd>leader + l + l<kbd> - Toggle live server; there's no toggle in original plugin. Powered by barrett-ruth/live-server.nvim. Requires npm; yarn works too, see live-server readme and modify config.
 - Much more sane defaults for coding, tabs, etc.
 - Minimal design.
 - Loads in about 100ms as of today; after optimizing a few of the new plugins,
@@ -62,8 +64,9 @@ config works.
     - <kbd>leader + b</kbd> to switch/see buffers.
 - Uses the Lazy plugin manager for some time before Packer was archived.
 - 30+ plugins; plugin configuration is located in
-  [...`/nvim/lua/frostynick/lazy.lua`](~/.config/nvim/lua/frostynick/lazy.lua)
+  [...`/nvim/lua/frostynick/lazy.lua`](.config/nvim/lua/frostynick/lazy.lua)
   <!-- if you're in vim remember gf - go to file for above -->
+    - Telescope, Treesitter (A must have for Neovim)
     - Treesitter textobjects; basically for now you can <kbd>dif</kbd> to
       delete inside a function, <kbd>caf</kbd> to delete around a function,
       etc. There's a lot of potential for this since it's just the start of
