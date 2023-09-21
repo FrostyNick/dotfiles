@@ -1,4 +1,4 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- This file can be loaded by calling `lua require('frostynick.plugins')` from your init.vim
 -- keys for vim https://vimdoc.sourceforge.net/htmldoc/intro.html#key-notation
 -- Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
 --[[
@@ -409,8 +409,8 @@ local a,b = pcall(function()
     -- }
     -- How would this be worse than say LspZero other than it doesn't
     -- automatically have all the plugins that Mason has?
-    local lspLs = {'lua_ls', 'tsserver'}
-
+    local lspLs = { 'lua_ls', 'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
+    'denols', 'emmet_ls', 'lua_ls', 'tsserver', 'zk', }
     for _,v in ipairs(lspLs) do
         require('lspconfig')[v].setup {
             capabilities = capabilities

@@ -39,6 +39,7 @@ o.foldlevelstart = 1 -- 99 = don't close anything, default -1
 o.conceallevel = 2 -- for future plugin or idk
 
 o.hidden = true -- rm annoying buffer error message https://linuxhandbook.com/vim-buffers/
+-- o.linebreak = true
 
 -- Taken from: https://github.com/vim/vim/blob/master/runtime/defaults.vim
 vim.cmd([[
