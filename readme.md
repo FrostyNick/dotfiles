@@ -40,34 +40,38 @@ can fork this into something better probably.
 
 ## Neovim config
 
-[See `.config/nvim/`](.config/nvim/) for learning vim or learning how the
-config works.
+[See `.config/nvim/`](.config/nvim/) for learning Vim/Neovim or learning how
+the config works.
 
 <details>
     <summary>What's in this config?</summary>
 
-- Working LSP and live server. Search LSP in <kbd>leader + ?</kbd> for LSP
+- Working LSP. Search LSP in <kbd>leader + ?</kbd> for LSP
   keybinds.
     - <kbd>gr</kbd> - rename variable based on code context. (it won't mess up
       other variables)
     - <kbd>gd</kbd> - go to definition.
-    - <kbd>leader + l + l</kbd> - Toggle live server; there's no toggle in original plugin. Powered by barrett-ruth/live-server.nvim. Requires npm; yarn works too, see live-server readme and modify config.
-- Much more sane defaults for coding, tabs, etc.
-- Minimal design.
+- Live server for web testing. <kbd>leader + l + l</kbd> - Toggle live
+  server; there's no toggle in original plugin. Powered by
+  barrett-ruth/live-server.nvim. Requires npm; yarn works too, see live-server
+  readme and modify config.
+- Sane defaults for coding, tabs, etc.
+- Minimal look and feel.
 - Loads in about 100ms as of today; after optimizing a few of the new plugins,
   it would probably drop to around 80ms. Also benchmarks vary on other devices.
+  Taking better advantage of lazy loading more would lower this a lot.
 - Several keybinds while being mindful about existing vim keybinds; especially
   if they're useful keybinds.
     - <kbd>leader + ,</kbd> to see previous files. In plain vim, <kbd>:bro
       o</kbd> is the shortest alternative.
     - <kbd>leader + t</kbd> to open terminal in a vertical split.
     - <kbd>leader + b</kbd> to switch/see buffers.
-- Uses the Lazy plugin manager for some time before Packer was archived.
+- Uses the Lazy plugin manager.
 - 30+ plugins; plugin configuration is located in
   [...`/nvim/lua/frostynick/lazy.lua`](.config/nvim/lua/frostynick/lazy.lua)
   <!-- if you're in vim remember gf - go to file for above -->
-    - Telescope, Treesitter (A must have for Neovim)
-    - Treesitter textobjects; basically for now you can <kbd>dif</kbd> to
+    - Telescope, Treesitter - A must have for Neovim.
+    - Treesitter textobjects - For now you can <kbd>dif</kbd> to
       delete inside a function, <kbd>caf</kbd> to delete around a function,
       etc. There's a lot of potential for this since it's just the start of
       this part of the config.
@@ -82,8 +86,8 @@ config works.
 - Lua based plugins whenever it's better in speed or functionality.
 - Not familiar with the keybinds for this config? <kbd>leader + ?</kbd>
   (leaderkey is space for everything)
-- Rose pine theme. (The screenshot is likely outdated if it has a different
-  theme)
+- Rose pine theme. (The Showcase screenshot is likely outdated if it has a
+  different theme)
 
 </details> 
 
