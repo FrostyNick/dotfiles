@@ -49,6 +49,7 @@ alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-des
 alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share'
 alias sendEbook=sendEB
+alias discordU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb ; cd'
 
 
 nonoti() { # Used in a .sh script, so it's a function
@@ -132,7 +133,7 @@ mo() {
     # nv "$(ls ~/backup2022nov10/markor/ | fzf)"
 }
 alias ia='nv ~/backup2022nov10/markor/ideas.md'
-alias 2j="nv ~/backup2022nov10/markor/j/$(date +%Y)/$(date +%m | sed 's/^0*//').md"
+alias 2j="nv ~/backup2022nov10/markor/j/$(date +%Y)/$(date +%m | sed 's/^0*//').md" # date doesn't work on FreeBSD or OSX based on some quick research. Instead see: man strftime
 
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one
