@@ -33,6 +33,23 @@ mweb() {
     mwebinit
     cd - # doesn't do anything yet
 }
+
+# enable color support of ls and also add handy aliases (src: ubuntu bashrc)
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto --hyperlink'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
 alias f=fcd
 alias _="nv ~/.bash_aliases"
 # alias b_="_"
@@ -123,6 +140,32 @@ dta() {
         dt add "$*"
     fi
 }
+
+# pomodoro related (src: https://gist.github.com/bashbunni/3880e4194e3f800c4c494de286ebc1d7 and https://youtu.be/GfQjJBtO-8Y )
+# src vs this: remove dependencies with voice and progress bar (in ubuntu 20.04 no new dependencies needed) for minimal maintainance
+declare -A pomo_options
+pomo_options=(
+    ["work"]="2700" # 45 min
+    ["break"]="600" # 10 min
+    ["games"]="1800" # 30 min
+)
+
+pomodoro () {
+  echo "options: wo, br, br2."
+  if [ -n "$1" -a -n "{pomo_options["$1"]}" ]; then
+  val=$1;
+  timer=${pomo_options["$val"]};
+  echo "$val session start. time: $timer sec"
+  sleep $timer
+
+  # timer "${pomo_options["$val"]}m"
+  notify-send "'$val' session done."
+  fi
+}
+
+alias wo="pomodoro 'work' &"
+alias br="pomodoro 'break' &"
+alias br2="pomodoro 'games' &"
 
 # tui related
 mo() {
