@@ -1,10 +1,8 @@
 # !!SWAY!! if switching to sway one day.
-# QA:
 # Issue:
-# Links open in Brave, Firefox --> should just be LibreWolf
-# VScode opens when opening many types of files (like opening a folder)
-# A: Use mimetype to detect file types
+# Mod1 key stops working sometimes.
 # 
+# -- QA --
 # topbar config: https://github.com/vivien/i3blocks/blob/master/i3blocks.sh
 #
 # if transfering to new PC, must have feh and flameshot for no Err.
@@ -15,20 +13,22 @@
 #
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
+#
 # thanks to:
 #
+# - documentation
 # - The Linux Cast
 # - https://thevaluable.dev/i3-config-mouseless/
 # - Ma brain
-# - I lost another really useful link to credit.. :(
 
 # i3 config file (v4)
 #############################################################################
 # Please see https://i3wm.org/docs/userguide.html for a complete reference! #
 #############################################################################
 # soon? https://github.com/swaywm/sway/wiki   👀 (see !!SWAY!!)             #
-set $mod Mod4 || set $mod Mod1
-# "Mod1" above will be just in case Mod4 stops working.. and this might fix it?
+set $mod Mod4
+# set above as Mod1 after resetting to avoid Mod4 if it breaks. Errors are expected, but it's workable.
+# otherwise above should be Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -61,8 +61,8 @@ exec --no-startup-id picom -b
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3statusconf
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3statusconf
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
