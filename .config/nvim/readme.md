@@ -25,8 +25,8 @@ comment
 ]]
 
 local o = vim.o -- short for vim.opt; possibly might behave diff in some cases
-o.nu = true -- true or false
-o.rnu = true
+o.nu = true -- :set number, true or false
+o.rnu = true -- relativenumber
 
 -- four spaced tabbing
 o.tabstop = 4
@@ -44,6 +44,50 @@ o.swapfile = false -- don't use swap files
 
 o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
 ```
+
+<details>
+  <summary>Example: Basic config on Windows 10 with leader key + keymaps</summary>
+
+  This will work on Windows, Linux, and likely macOS as well.
+
+```lua
+local o = vim.o
+o.nu = true
+o.rnu = true
+
+-- four spaced tabbing
+o.tabstop = 4
+o.softtabstop = 4
+o.shiftwidth = 4
+o.expandtab = true
+o.smartindent = true
+
+o.termguicolors = true  -- color support
+o.ignorecase = true -- ignores case when searching, etc.
+-- below line: cursor is always 6 lines away from top or bottom of your window
+o.scrolloff = 6 
+o.colorcolumn = "80"
+
+o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
+o.linebreak = true
+-- Note: Git Bash doesn't work with :term (at least on nvim)
+
+vim.g.mapleader = ' '
+
+local k = vim.keymap
+k.set("n", "<leader>lo", function() vim.cmd("!love %") end, {desc="Run current file buffer with Love2D"})
+k.set("n", "<leader>b", function() vim.cmd("bro o") end, {desc=":bro o"})
+
+print("See oldfiles: <leader>b")
+
+-- sys clipboard
+k.set({ "n", "v" }, "<leader>y", [["+y]])
+k.set({ "n", "v" }, "<leader>p", [["+p]])
+
+k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
+```
+
+</details>
 
 Learn more about Neovim + Lua here: `:help lua-guide`. If your neovim is too old, check out [nanotee\/nvim\-lua\-guide\: A guide to using Lua in Neovim](https://github.com/nanotee/nvim-lua-guide). Newest guide online: [Lua\-guide \- Neovim docs](https://neovim.io/doc/user/lua-guide.html#lua-guide)
 
