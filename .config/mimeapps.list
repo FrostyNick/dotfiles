@@ -29,4 +29,4 @@ application/x-ms-dos-executable=wine.desktop;
 image/png=qimgv.desktop;
 image/jpeg=qimgv.desktop;
 image/webp=qimgv.desktop;
-application/pdf=qpdfview.desktop;
+application/pdf=org.kde.kdeconnect.nonplasma.desktop;org.kde.kdeconnect.app.desktop;qpdfview.desktop;
