@@ -176,6 +176,7 @@ local plugins = {
     {'nacro90/numb.nvim', opts = {} }, -- non-intrusively preview while typing :432... 
     -- Two colorschemes below
     { 'rose-pine/neovim',      name = 'rose-pine' },
+    { 'AlexvZyl/nordic.nvim',  name = 'nordic', config = {telescope = {style = 'classic'}} },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     {
         'nvim-lualine/lualine.nvim',
