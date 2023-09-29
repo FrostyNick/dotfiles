@@ -14,8 +14,8 @@
 export TERMINAL=kitty
 # for dark theme on apps such as simplescrrec
 export QT_STYLE_OVERRIDE=kvantum
-export SUS=andrewtate
-feh --randomize --bg-max ~/Pictures/wallpapers/*
+# feh --randomize --bg-max ~/Pictures/wallpapers/*
+feh --randomize --bg-fill ~/Pictures/wallpapers/*
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
