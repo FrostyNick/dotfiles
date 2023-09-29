@@ -308,6 +308,9 @@ default_floating_border pixel
 # on|off|toggle
 # debuglog on
 
+# fixes windows that are too big. Side effect: Affects all floating windows.
+floating_maximum_size 0 x 0
+
 # set $mode_launcher Launch: [l]ibrewolf, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, [j]oplin, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
 set $mode_launcher Open: [l]wlf, r[a]nger, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], [j]op, s[y]nc, kee[p], s[h]otc, pcm[f]m, [n]boat
 bindsym $mod+o mode "$mode_launcher"
@@ -424,6 +427,8 @@ assign [class="Brave-browser"] $ws1
 for_window [class="Brave-browser"] focus
 assign [class="librewolf-default"] $ws1 
 for_window [class="librewolf-default"] focus
+assign [instance="steamwebhelper" class="steam"] $ws1 
+for_window [instance="steamwebhelper" class="steam"] focus
 
 # terminal
 assign [class="qterminal"] $ws2
@@ -461,8 +466,7 @@ assign [class="Qemu-system-x86_64"] $ws5
 # ws5=graphics
 
 # game
-assign [class="Steam"] $ws5
-assign [class="steam"] $ws5 # It's lowercase as of June 2023
+assign [class="steam"] $ws5
 assign [class="Quaver"] $ws5
 assign [class="supertuxkart"] $ws5
 assign [class="osu!"] $ws5
@@ -474,9 +478,12 @@ assign [class="Minecraft 1.19"] $ws5
 # art editing
 assign [class="Gimp"] $ws5
 
-# video player
+# pic / video player
 assign [class="mpv"] $ws5
+assign [class="feh"] $ws5
+assign [class="sxiv"] $ws5 # not tested
 assign [class="vlc"] $ws5 # not tested
+assign [class="qimgv"] $ws5
 
 # social
 assign [class="discord"] $ws6
