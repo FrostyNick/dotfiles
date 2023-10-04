@@ -67,6 +67,7 @@ alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share'
 alias sendEbook=sendEB
 alias discordU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb ; cd'
+alias discordV='curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh > Vencord.sh && chmod +x Vencord.sh && cat Vencord.sh ; echo "# ./Vencord.sh if installer looks alright"'
 
 
 nonoti() { # Used in a .sh script, so it's a function
@@ -137,7 +138,7 @@ dta() {
     if [ $* == "." ]; then
         echo "https://youtu.be/t4Z6_KJME_0"
     else
-        dt add "$*"
+        dt add "$*" # doesn't work with multiple arguments
     fi
 }
 
@@ -148,14 +149,15 @@ pomo_options=(
     ["work"]="2700" # 45 min
     ["break"]="600" # 10 min
     ["games"]="1800" # 30 min
+    ["test"]="5"
 )
 
 pomodoro () {
-  echo "options: wo, br, br2."
+  echo "options: wo, br, br2, testbr."
   if [ -n "$1" -a -n "{pomo_options["$1"]}" ]; then
   val=$1;
   timer=${pomo_options["$val"]};
-  echo "$val session start. time: $timer sec"
+  echo "$val session start. time: $timer sec. notifitiction + interaction with shell will occur."
   sleep $timer
 
   # timer "${pomo_options["$val"]}m"
@@ -166,6 +168,7 @@ pomodoro () {
 alias wo="pomodoro 'work' &"
 alias br="pomodoro 'break' &"
 alias br2="pomodoro 'games' &"
+alias testbr="pomodoro 'test' &"
 
 # tui related
 mo() {
