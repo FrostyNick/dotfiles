@@ -16,6 +16,7 @@ k.set("n", "N", "Nzzzv") -- greatest remap ever k.set("x", "<leader>p", [["_dP]]
 -- system clipboard
 k.set({ "n", "v" }, "<leader>y", [["+y]])
 k.set("n", "<leader>Y", [["+Y]])
+-- k.set({ "n", "v" }, "<leader>p", [["+p]])
 
 k.set({ "n", "v" }, "<leader>d", [["_d]])
 
@@ -25,10 +26,10 @@ k.set("n", "Q", "<nop>")
 k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
 
 -- Diagnostic shortcuts
-local function kLsp(map, action, desc)
-    -- desc = desc or map
-    k.set("n", map, action, {buffer=0, desc="LSP: "..desc or map})
-end
+-- local function kLsp(map, action, desc)
+--     -- desc = desc or map
+--     k.set("n", map, action, {buffer=0, desc="LSP: "..desc or map})
+-- end
 -- Stopped working:
 -- kLsp("<leader>dk", vim.diagnostic.goto_prev, "prev diagnostic")
 -- kLsp("<leader>dj", vim.diagnostic.goto_next, "next diagnostic")
@@ -89,10 +90,11 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md || echo fail<
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
 k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
 k.set("n", "<leader>o",
-"<cmd>!xdg-open .&<CR><CR>", { silent = true, desc = "Open working dir" })
+"<cmd>!xdg-open .&<CR><CR>", { silent = true, desc = "xdg-open working dir" })
 k.set("n", "<leader>p5",
 "<cmd>!xdg-open ~/p/p5-reference/index.html || xdg-open https://p5js.org/reference/ || open https://p5js.org/reference/<CR><CR>",
 { silent = false }) -- "open" not tested yet on Windows / MacOS.
+k.set("n", "<leader>lo", function() vim.cmd("!love %:h") end, {desc="Run with Love2D; assuming that parent is project root folder."})
 
 -- Git shortcuts
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think

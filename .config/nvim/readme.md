@@ -76,9 +76,9 @@ vim.g.mapleader = ' '
 
 local k = vim.keymap
 k.set("n", "<leader>lo", function() vim.cmd("!love %/..") end, {desc="Run with Love2D; assuming that parent is project root folder."})
-k.set("n", "<leader>b", function() vim.cmd("bro o") end, {desc=":bro o"})
+k.set("n", "<leader>,", function() vim.cmd("bro o") end, {desc=":bro o"})
 
-print("See oldfiles: <leader>b")
+print("See oldfiles: <leader>,")
 
 -- sys clipboard
 k.set({ "n", "v" }, "<leader>y", [["+y]])

@@ -219,6 +219,25 @@ local plugins = {
         "nvim-telescope/telescope-file-browser.nvim",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     },
+    {
+        "davisdude/vim-love-docs",
+        -- This plugin doesn't work out of the box.
+        --[[ Extra steps to make this work:
+        1. Get the dependencies.
+        I wonder if the built-in luaJIT from Neovim works:
+        - ~/.local/share/nvim/lazy/vim-love-docs/src/env.txt 
+        `lua="lua"` to `lua="nvim -l"`
+
+        2. Download file from instructions:
+        https://github.com/davisdude/vim-love-docs/tree/master
+
+        Place it in:
+        ~/.local/share/nvim/lazy/vim-love-docs/src
+        
+        3. Run the file. There should be no errors.
+        ]]
+        -- 
+    },
     -- not working for some reason 'm4xshen/autoclose.nvim',
     'airblade/vim-gitgutter',
     'nvim-treesitter/playground',
@@ -226,7 +245,30 @@ local plugins = {
     'mbbill/undotree',
     'tpope/vim-fugitive',
     'f-person/git-blame.nvim',                 -- shows git blame
-    'folke/zen-mode.nvim',
+    {
+        'folke/zen-mode.nvim',
+        opts = {
+            window = {
+                backdrop = 0,
+                height = 0.7,
+                width = 0.9,
+                options = {
+                    number = false,
+                    relativenumber = false,
+                },
+            },
+            plugins = {
+                kitty = {
+                    enabled = true,
+                    font = "+4",
+                },
+                -- wezterm = { -- will probably use wezterm in the future
+                --     enabled = true,
+                --     font = "+4",
+                -- },
+            },
+        }
+    },
     'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
     {'nvim-treesitter/nvim-treesitter-textobjects',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
@@ -428,5 +470,5 @@ end
 -- vim.print(plugins);
 vim.g.codeium_disable_bindings = 1 -- disable codeium bindings
 --vim.cmd('colorscheme kanagawa-dragon')
-
+-- init.lua file to look at later https://github.com/wincent/wincent/blob/a54fb501a4e331a7c197088f9f744bfb9c6d2e1f/aspects/nvim/files/.config/nvim/init.lua#L213
 --print("Lazy loaded")
