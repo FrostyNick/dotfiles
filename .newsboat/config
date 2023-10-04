@@ -1,4 +1,8 @@
 browser "xdg-open %u"
+# This supposedly works on MacOS and zsh:
+# browser "open -a Firefox %u"
+
+# one issue: for some reason newsboat doesn't detect neovim with E
 
 # modified from original src: https://github.com/tallguyjenks/dotfiles/blob/629e6e69d1c96283685a27069ba2973fa36e941c/.config/newsboat/config
 bind-key j down
