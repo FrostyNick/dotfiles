@@ -1,6 +1,10 @@
 I am open to PR requests, issues or questions (in discussions). Just make an
-issue and then after getting my feedback you can work on the PR. Otherwise, you
-can fork this into something better probably.
+issue and then after getting my feedback you can work on the PR. Other than
+that, feel free to learn and take any amount of code to tweak or do whatever
+you want.
+
+If you learn something, consider adding a star or commenting.
+
 
 ## File descriptions
 
@@ -51,6 +55,8 @@ the config works.
     - <kbd>gr</kbd> - rename variable based on code context. (it won't mess up
       other variables)
     - <kbd>gd</kbd> - go to definition.
+- Aggressively testing code and new plugins. Things might break once in a while.
+- Space = leader key.
 - Live server for web testing. <kbd>leader + l + l</kbd> - Toggle live
   server; there's no toggle in original plugin. Powered by
   barrett-ruth/live-server.nvim. Requires npm; yarn works too, see live-server
@@ -69,7 +75,8 @@ the config works.
 - Uses the Lazy plugin manager.
 - 30+ plugins; plugin configuration is located in
   [...`/nvim/lua/frostynick/lazy.lua`](.config/nvim/lua/frostynick/lazy.lua)
-  <!-- if you're in vim remember gf - go to file for above -->
+    <!-- .config/nvim/lua/frostynick/lazy.lua -->
+    <!-- if you're in vim remember gf - go to file for above -->
     - Telescope, Treesitter - A must have for Neovim.
     - Treesitter textobjects - For now you can <kbd>dif</kbd> to
       delete inside a function, <kbd>caf</kbd> to delete around a function,
@@ -81,7 +88,10 @@ the config works.
       Preview markdown in the web with `:MarkdownPreviewToggle` or <kbd>leader
       \+ m + m</kbd>. Requires `npm` or possibly `yarn` with config changes.
     - Git fugitive. Access with <kbd>leader + g + f</kbd>
-    - Lua line.
+    - Neorg support.
+    - Comment.nvim (gcc to comment current line; gc(motions) to select where to
+      comment; many vim like shortcuts supported)
+    - Zen mode, Harpoon, Lua line.
     - Much more.
 - Lua based plugins whenever it's better in speed or functionality.
 - Not familiar with the keybinds for this config? <kbd>leader + ?</kbd>
