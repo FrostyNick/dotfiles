@@ -72,6 +72,9 @@ the config works.
       o</kbd> is the shortest alternative.
     - <kbd>leader + t</kbd> to open terminal in a vertical split.
     - <kbd>leader + b</kbd> to switch/see buffers.
+    - <kbd>leader + z + d</kbd> to get definition of a word. (Needs dependency
+      `dict` to work and in some Linux distros you may also need another
+      package for specifically the english/other-language part of dictionary.)
 - Uses the Lazy plugin manager.
 - 30+ plugins; plugin configuration is located in
   [...`/nvim/lua/frostynick/lazy.lua`](.config/nvim/lua/frostynick/lazy.lua)

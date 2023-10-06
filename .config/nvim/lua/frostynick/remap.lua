@@ -1,4 +1,4 @@
--- missing: comment shortcut
+-- file browser shortcuts: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
 
 local k = vim.keymap
 local telescopeBi = require("telescope.builtin")
@@ -73,6 +73,7 @@ k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
+k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
 k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true }) -- doing this again should do the opposite

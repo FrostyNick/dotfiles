@@ -215,7 +215,7 @@ local plugins = {
             },
         },
     },
-    {
+    { -- useful keybinds: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
         "nvim-telescope/telescope-file-browser.nvim",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     },
