@@ -269,6 +269,7 @@ local plugins = {
             },
         }
     },
+    -- piersolenski/telescope-import.nvim Autofill imports. Supports JS; lua; py; c++.
     'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
     {'nvim-treesitter/nvim-treesitter-textobjects',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
@@ -344,6 +345,9 @@ local plugins = {
             'Fragment'}
         }
     },
+    -- :Speedtyper to start typing practice
+    {'NStefan002/speedtyper.nvim', opts = {}},
+    'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
     -- { 'stevearc/oil.nvim', opts = {}, },
     -- rm homepage. I don't really want it.
     -- - Trying out below; might delete later - --
