@@ -1,4 +1,4 @@
--- file browser shortcuts: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
+--- file browser shortcuts: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
 
 local k = vim.keymap
 local telescopeBi = require("telescope.builtin")
@@ -6,17 +6,18 @@ vim.g.mapleader = ' '
 k.set("v", "J", ":m '>+1<CR>gv=gv")
 k.set("v", "K", ":m '<-2<CR>gv=gv")
 
--- cursors are better
+--- cursors are better
 k.set("n", "J", "mzJ`z", { desc = "keeps cursor in same place when doing J"})
 k.set("n", "<C-d>", "<C-d>zz")
 k.set("n", "<C-u>", "<C-u>zz")
 k.set("n", "n", "nzzzv")
 k.set("n", "N", "Nzzzv") -- greatest remap ever k.set("x", "<leader>p", [["_dP]])
 
--- system clipboard
+--- system clipboard
 k.set({ "n", "v" }, "<leader>y", [["+y]])
 k.set("n", "<leader>Y", [["+Y]])
--- k.set({ "n", "v" }, "<leader>p", [["+p]])
+k.set({ "n", "v" }, "<leader>p", [["+p]])
+k.set("n", "<leader>P", [["+P]])
 
 k.set({ "n", "v" }, "<leader>d", [["_d]])
 
@@ -65,12 +66,25 @@ k.set("n", "<leader>vs", function() io.write('noooo <C-wv> instead\nsmh') end);
 
 k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
+
 k.set("n", "<leader>vpr", "<cmd>e ~/p/Rhythm-Swipe<CR>");
+k.set("n", "<leader>vps", "<cmd>e ~/backup2022nov10/j/Sources/App_web sources.md<CR>");
 -- below doesnt work because i is powerful af. fix later.
 k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
+
+-- For some reason there is A being called after the below is run. Additionally
+-- adding over one Esc keys aren't recognized. Might report as bug.
+k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>"); 
+
+-- local leader = ' '
+-- I cannot get below to work. Above is the best solution I could make.
+-- vim.api.nvim_set_keymap('n', ' <Space>vpv', [[:nmap  <Space>vp<CR>]], { noremap = true, silent = true })
+-- k.set("n", "<leader>vpv", "<cmd>nmap " .. space .. "vp<CR>");
+-- k.set("n", "<leader>vpv", [[:execute 'nmap ' .. mapleader .. 'vp' | echomsg ''<CR>]]);
+-- k.set("n", "<leader>vpv", [[:echo 'nmap <leader>vp'<CR>]]);
 k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 
--- xdg-open miscellaneous
+--- xdg-open miscellaneous
 -- Future: If using Windows or MacOS, alias different open command
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
 k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
@@ -83,7 +97,7 @@ k.set("n", "<leader>o",
 
 k.set("n", "<leader>dx", "<cmd>bd<CR>", {desc="Delete buffer"})
 
--- Git shortcuts
+--- Git shortcuts
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
 "<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
 { silent = true })
@@ -93,17 +107,17 @@ k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
 k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
 
--- Run prgm
+--- Run prgm
 k.set("n", "<leader>lo", function() vim.cmd("!love %:h") end, {desc="Run with Love2D; assuming that parent is project root folder."})
 k.set("n", "<leader>p5",
 "<cmd>!xdg-open ~/p/p5-reference/index.html || xdg-open https://p5js.org/reference/ || open https://p5js.org/reference/<CR><CR>",
 { silent = false }) -- "open" not tested yet on Windows / MacOS.
 
---- Markdown shortcuts
+---- Markdown shortcuts
 k.set("n", "<leader>mm", "<cmd>MarkdownPreviewToggle<CR>")
 k.set("n", "<leader>mt", "<cmd>TableModeToggle<CR>")
 
---- Compiler shortcuts
+---- Compiler shortcuts
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
 k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
@@ -111,7 +125,7 @@ k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 -- k.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");"
 -- <leader>cx is in lazy.lua if it still exists
 
--- Vim shortcuts
+--- Vim shortcuts
 k.set("n", "<leader>ws", function()
     vim.cmd("w | so")
 end)

@@ -168,6 +168,12 @@ local plugins = {
                             workspaces = { notes = "~/backup2022nov10/notes" },
                         },
                     },
+                    ["core.export"] = {},
+                    ["core.export.markdown"] = {
+                        config = {
+                            extensions = "all",
+                        },
+                    },
                 },
             }
         end,
@@ -347,6 +353,8 @@ local plugins = {
     },
     -- :Speedtyper to start typing practice
     {'NStefan002/speedtyper.nvim', opts = {}},
+    -- leetcode: https://github.com/kawre/leetcode.nvim . Requires v0.9.0. See requirements b4 installing.
+    --
     'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
     -- { 'stevearc/oil.nvim', opts = {}, },
     -- rm homepage. I don't really want it.
