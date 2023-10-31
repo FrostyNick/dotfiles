@@ -8,6 +8,8 @@
 #       - Maybe when pdf viewer is frozen?
 #   - Pressing down "fn" while holding Mod1. Same thing to fix. I wonder if
 #     this will fix this mysterious bug always?
+# Possible solution: Updated i3 from stable i3 ppa from sur5r in
+# https://i3wm.org/docs/repositories.html which is recommended just in Ubuntu
 
 # -- QA --
 # topbar config: https://github.com/vivien/i3blocks/blob/master/i3blocks.sh
@@ -99,6 +101,8 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
+# change default workspace layout. Instead of splitting, it will start tabbed.
+workspace_layout tabbed
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -365,7 +369,7 @@ mode "$mode_launcher" {
 }
 
 # shutdown / restart / suspend...
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (CTRL+s) shutdown, (i) restart i3
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot (broke), (CTRL+s) shutdown, (i) restart i3
 bindsym $mod+BackSpace mode "$mode_system"
 bindsym Mod1+BackSpace mode "$mode_system"
 bindsym Control+Mod1+Delete mode "$mode_system"
@@ -378,7 +382,7 @@ mode "$mode_system" {
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $i3lockwall && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $i3lockwall && systemctl hibernate, mode "default"
-    bindsym r exec --no-startup-id restart, mode "default"
+    # bindsym r exec --no-startup-id restart, mode "default" # this does NOT work
 
     bindsym i restart, mode "default"
     bindsym Ctrl+s exec --no-startup-id shutdown now, mode "default"
@@ -389,6 +393,7 @@ mode "$mode_system" {
 }
 
 # floating pop up automatically
+# probably not working: for_window [title="Special Offers" class="steam"] resize set 100 50
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 # doesn't do anything
@@ -433,8 +438,6 @@ assign [class="Brave-browser"] $ws1
 for_window [class="Brave-browser"] focus
 assign [class="librewolf-default"] $ws1 
 for_window [class="librewolf-default"] focus
-# assign [instance="steamwebhelper"] $ws1 
-# for_window [instance="steamwebhelper"] focus
 
 # terminal
 assign [class="qterminal"] $ws2
@@ -503,7 +506,8 @@ for_window [class="obs"] focus
 assign [class="Shotcut"] $ws10
 for_window [class="Shotcut"] focus
 assign [class="SimpleScreenRecorder"] $ws10
-for_window [class="SimpleScreenRecorder"] focus
+# layout tabbed not working.. bc of workspace config ig
+for_window [class="SimpleScreenRecorder"] focus,layout tabbed
 
 # should auto full scr l8r. or change window mode to fit the whole screen.
 # for_window [class="mpv"] focus
