@@ -1,3 +1,5 @@
+#!/bin/bash
+
 convert() {
     echo "This doesn't work right now. TODO"
     if [ $# -lt 3 ]; then
@@ -33,6 +35,30 @@ mweb() {
     mwebinit
     cd - # doesn't do anything yet
 }
+# librewolfUnverified() {
+#     script_url='https://gist.github.com/TheBrokenRail/c43bf0f07f4860adac2631a1bd9e4136/raw/jailbreak-firefox-system.sh'
+# 
+#     # Download the script and save its contents
+#     script_contents=$(curl -sSL "$script_url")
+# 
+#     # Replace "firefox" with "librewolf" in the script contents
+#     script_contents_modified=$(echo "$script_contents" | sed 's/firefox/librewolf/g')
+# 
+#     # Display the modified script contents
+#     echo "Script contents with 'firefox' replaced by 'librewolf':"
+#     echo "$script_contents_modified"
+#     echo "$script_contents"
+# 
+#     read -p "Do you want to execute this modified script? (y/n): " response
+#     if [ "$response" = "y" ]; then
+#         echo "Executing the modified script..."
+#         echo "$script_contents_modified" | sh
+#     else
+#         echo "Script execution canceled."
+#     fi
+# 
+# }
+
 
 # enable color support of ls and also add handy aliases (src: ubuntu bashrc)
 if [ -x /usr/bin/dircolors ]; then
@@ -46,6 +72,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+alias lt='ls *.{txt,md}'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -55,27 +82,42 @@ alias _="nv ~/.bash_aliases"
 # alias b_="_"
 alias py=python
 alias nv=nvim
+
+# From my eyes, inspiration for better nvim (though to be fair it has a
+# different purpose). Emacs has a mature powerful ecosystem to learn from.
 alias emacs="doom run"
 
-alias rs="cd ~/p/ && echo hint hint :\)"
+# self-notes: see rank
+# APIs are yes. https://wiki.quavergame.com/docs/api/users
+alias apiQuaver="echo $(curl -s 'https://api.quavergame.com/v1/users/scores/recent?id=479240&mode=1&limit=10' 2>&1 | jq .scores[].\"max_combo\" | awk '{ total += $1 } END { print total/NR }') is your average max combo based on the last 10 maps."
+
 alias live="live-server --browser=librewolf"
 alias ytc="cd ~/p/commentsaver && live"
-# especially useful when the config inevitably breaks
+# below especially useful when the config inevitably breaks
 alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
 alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
 alias ndiff='nvim -d -R'
-alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share'
-alias sendEbook=sendEB
-alias discordU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb ; cd'
-alias discordV='curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh > Vencord.sh && chmod +x Vencord.sh && cat Vencord.sh ; echo "# ./Vencord.sh if installer looks alright"'
+alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share ; echo xdg-open + kdeconnect works better'
+alias discordU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb && echo Might need to run discordV ; cd'
 
+discordV() {
+    cd
+    if [ -f ~/Vencord.sh ]; then
+        . ~/Vencord.sh
+    else
+        curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh > ~/Vencord.sh && chmod +x ~/Vencord.sh && cat ~/Vencord.sh ; echo "# ./Vencord.sh if installer looks alright"
+    fi
+    cd -
+}
 
 nonoti() { # Used in a .sh script, so it's a function
     notify-send "DUNST_COMMAND_PAUSE"
 }
+
 noti() {
     notify-send "DUNST_COMMAND_RESUME"
 }
+
 export -f noti nonoti
 
 alias nonotify="printf \"nonoti\n\" && nonoti"
@@ -136,7 +178,7 @@ alias dt_='dt add ~/.bashrc ~/.bash_aliases'
 dta() {
     dtwarning
     if [ $* == "." ]; then
-        echo "https://youtu.be/t4Z6_KJME_0"
+        xdg-open https://youtu.be/t4Z6_KJME_0
     else
         dt add "$*" # doesn't work with multiple arguments
     fi
@@ -157,7 +199,7 @@ pomodoro () {
   if [ -n "$1" -a -n "{pomo_options["$1"]}" ]; then
   val=$1;
   timer=${pomo_options["$val"]};
-  echo "$val session start. time: $timer sec. notifitiction + interaction with shell will occur."
+  echo "$val session start. time: $timer sec. notification + interaction with shell will occur."
   sleep $timer
 
   # timer "${pomo_options["$val"]}m"
@@ -170,7 +212,7 @@ alias br="pomodoro 'break' &"
 alias br2="pomodoro 'games' &"
 alias testbr="pomodoro 'test' &"
 
-# tui related
+# alias.txt from tui app related
 mo() {
     # moname=$*
     moname=${*%.*}
