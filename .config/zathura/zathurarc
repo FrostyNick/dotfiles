@@ -1,6 +1,9 @@
+# zathura: A vim-based minimalist PDF/djvu/ps/epub/comic book reader
+# https://www.youtube.com/watch?v=V_Iz4zdyRM4&t=315s
 set statusbar-v-padding 0
 set statusbar-h-padding 0
 set page-padding 1
+set recolor true
 map u scroll half-up
 map d scroll half-down
 map D toggle_page_mode
