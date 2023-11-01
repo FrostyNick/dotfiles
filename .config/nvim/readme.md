@@ -184,8 +184,9 @@ mv nvim.appimage /usr/bin
 # Now you can run Neovim by typing:
 nvim.appimage # you probably want an alias in .bashrc so it's just nvim/nv
 
-# If you plan to use telescope, install ripgrep:
-sudo apt install rg
+# If you plan to use telescope, install ripgrep as shown below.
+# If using dict (<leader>zd), add dict to the list:
+sudo apt install rg dict
 ```
 
 #### Termux
@@ -195,8 +196,10 @@ make it for yourself.
 
 ```bash
 pkg update && pkg upgrade
-# Install neovim. If using telescope.nvim plugin, install (rg) ripgrep.
-pkg install nvim rg
+# Install neovim.
+# If using telescope.nvim plugin, install (rg) ripgrep.
+# If using dict, install (dictd) dict daemon.
+pkg install nvim rg dictd
 ```
 
 ## Neovim config installation
