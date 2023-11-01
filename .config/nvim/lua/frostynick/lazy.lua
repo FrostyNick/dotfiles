@@ -481,6 +481,7 @@ end
 
 -- vim.print(plugins);
 vim.g.codeium_disable_bindings = 1 -- disable codeium bindings
+vim.g.neovide_scale_factor = 0.7
 --vim.cmd('colorscheme kanagawa-dragon')
 -- init.lua file to look at later https://github.com/wincent/wincent/blob/a54fb501a4e331a7c197088f9f744bfb9c6d2e1f/aspects/nvim/files/.config/nvim/init.lua#L213
 --print("Lazy loaded")
