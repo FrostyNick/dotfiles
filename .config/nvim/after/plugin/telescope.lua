@@ -43,6 +43,10 @@ k.set('n', '<leader>fj',
 '<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/backup2022nov10/<CR>',
 {desc="Telescope: find backup files; keyword: joplin"})
 
+k.set('n', '<leader>fc',
+'<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/p/<CR>',
+{desc="Telescope: find code in projects directory"})
+
 k.set('n', '<leader>gj',
 '<cmd>Telescope live_grep search_dirs=/home/nicholas/backup2022nov10/<CR>',
 {desc="Telescope: live grep (find text) in backup files; replacement to joplin. Requires rg."})

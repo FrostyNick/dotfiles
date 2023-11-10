@@ -29,6 +29,10 @@ k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"}
 k.set("n", "<leader>dj", vim.diagnostic.goto_next, {desc="LSP: next diagnostic"})
 k.set("n", "<leader>dl", telescopeBi.diagnostics, {desc="LSP: Telescope diagnostics"})
 
+-- Keep clipboard contents after pasting with p in visual mode.
+-- Thanks to: https://github.com/LunarVim/Neovim-from-scratch/blob/02-keymaps/lua/user/keymaps.lua#L52C1-L52C31
+k.set("v", "p", '"_dP')
+
 -- v conflicts with gcc
 -- kLsp("gca", vim.lsp.buf.code_action, "code action")
 k.set("n", "gt", vim.lsp.buf.type_definition, {desc="LSP: type definition"})
@@ -41,15 +45,6 @@ k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 -- macro: cwk,€kb.setwa"n", $2F'2F"$2F"i{desc=$i}
 
 
--- k.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
--- k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {buffer=0})
--- k.set("n", "<leader>dj", vim.diagnostic.goto_next, {buffer=0})
--- k.set("n", "<leader>dl", "<cmd>Telescope disagnostics<CR>", {buffer=0})
-
--- k.set("n", "<leader>dl", "<cmd>Telescope lsp_references<CR>", {buffer=0})
--- rename not found in js.. fix later
--- also C-q to move diagnostics to quickfix ls
-
 -- overrided by new harpoon shortcuts
 -- k.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 -- k.set("n", "<C-j>", "<cmd>cprev<CR>zz")
@@ -58,11 +53,14 @@ k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 -- k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 -- k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
+-- :wincmd w
+k.set("n", "<leader>zo", [[:SymbolsOutline<CR>:sl! 100m<CR>:wincmd w<CR>]], {desc="Symbols outline. I configured it as a def outline like used in Geany."}) -- Note that adding ! to :sl is neovim exclusive. All it does is not hide the cursor while sleeping.
+-- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
+k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
 k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true }) -- doing this again should do the opposite
-k.set("n", "<leader>vs", function() io.write('noooo <C-wv> instead\nsmh') end);
 
 k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
@@ -95,7 +93,7 @@ k.set("n", "<leader>o",
 "<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
 { silent = true, desc = "xdg-open file" })
 
-k.set("n", "<leader>dx", "<cmd>bd<CR>", {desc="Delete buffer"})
+k.set("n", "<leader>dx", "<cmd>bd<CR>", {desc=":bd Delete buffer"})
 
 --- Git shortcuts
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
