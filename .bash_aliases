@@ -98,7 +98,7 @@ alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
 alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
 alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share ; echo xdg-open + kdeconnect works better'
-alias discordU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb && echo Might need to run discordV ; cd'
+alias discordU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb || echo Failed to remove .deb file (maybe due to update error?) ; cd && echo Also run discordV.'
 
 discordV() {
     cd
