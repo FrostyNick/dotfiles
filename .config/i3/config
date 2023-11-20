@@ -1,6 +1,7 @@
 # !!SWAY!! if switching to sway one day. https://github.com/swaywm/sway/wiki
 
 # Issues:
+# https://wezfurlong.org/wezterm/config/launch.html#launching-a-different-program-as-a-one-off-via-the-cli
 # Control key stops working sometimes. Unknown reason.
 # Mod4 key stops working sometimes.
 #   Repoducable:
@@ -436,6 +437,8 @@ assign [class="Chromium-browser"] $ws1
 for_window [class="Chromium-browser"] focus
 assign [class="Brave-browser"] $ws1 
 for_window [class="Brave-browser"] focus
+assign [class="Luakit"] $ws1 
+for_window [class="Luakit"] focus
 assign [class="librewolf-default"] $ws1 
 for_window [class="librewolf-default"] focus
 
@@ -453,6 +456,8 @@ for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
 for_window [class="Soffice"] focus
 assign [class="Soffice"] $ws3
+for_window [class="Zathura"] focus
+assign [class="Zathura"] $ws3
 for_window [class="qpdfview"] focus
 assign [class="qpdfview"] $ws3
 for_window [class="libreoffice"] focus
@@ -467,14 +472,14 @@ assign [class="Codium"] $ws4 # it changes to this sometimes.
 assign [class="VSCodium"] $ws4
 for_window [class="VSCodium"] focus
 
-# I'm more likely to play a game on my phone from my pc than having a game and scrcpy on
+# emulator
 for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
 
-# ws5=graphics
-
 # game
+for_window [class="love"] focus
+assign [class="love"] $ws5
 assign [class="steam"] $ws5
 assign [class="steam_app*"] $ws5
 # name: steam_app_843380
@@ -497,6 +502,7 @@ assign [class="vlc"] $ws5 # not tested
 assign [class="qimgv"] $ws5
 
 # social
+assign [class="VencordDesktop"] $ws6
 assign [class="discord"] $ws6
 assign [class="zoom"] $ws6
 
