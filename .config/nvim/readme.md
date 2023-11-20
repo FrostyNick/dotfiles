@@ -13,8 +13,9 @@ minimalist / without plugins
 init.lua (Neovim)
 </summary>
 
-Create [~/.config/nvim/init.lua](init.lua) folders and files if not created,
-then add the following lines and customize these to your hearts content:
+Create [~/.config/nvim/init.lua](init.lua) folders and files (`:help vimrc` for
+all possible locations) if not created, then add the following lines and
+customize these to your hearts content:
 
 ```lua
 -- this is a comment in lua
@@ -99,7 +100,7 @@ closer in speed to LuaJIT. Take benchmarks with a grain of salt though.
 - Lua is a skill that can be used outside of Vimscript. Vimscript is stuck in
 Vim world. If you go deeper into the language, you probably should learn some
 Vimscript and Vim API to use Lua in Neovim though.
-- It's worth noting that Neovim is backwards compatible with vimscript8. (vimscript9 is a work in progress.)
+- It's worth noting that Neovim is backwards compatible with vimscript8 and not vimscript9.
 
 </details>
 
@@ -155,9 +156,11 @@ I paste this link so many times I should be using markdown slightly better..
 
 One might work better for you than others.
 
+- *best starting point for learning to make your config in Lua* [nvim\-lua\/kickstart\.nvim\: A launch point for your personal nvim configuration](https://github.com/nvim-lua/kickstart.nvim)
+- [jmbuhr\/quarto\-nvim\-kickstarter\: A neovim configuration to get you up to speed](https://github.com/jmbuhr/quarto-nvim-kickstarter "This sounds like a promising alternative to kickstart\.nvim\. Haven't tried this though\.")
 - [0 to LSP \: Neovim RC From Scratch \- YouTube](https://youtu.be/w7i4amO_zaE)
 - [Effective Neovim\: Instant IDE \- YouTube](https://youtu.be/stqUbv-5u2s&t=171s)
-- Install Nvchad / Astrovim to have a good config setup right away.
+- Install Nvchad / Astrovim to have a good config setup right away. Might be a bit complex to change it to your specific use case though.
 
 #### More ideas
 
@@ -166,7 +169,7 @@ One might work better for you than others.
 
 ## Neovim Installation
 
-[Tags (for releases) · neovim\/neovim](https://github.com/neovim/neovim/tags "Tags · neovim/neovim")
+[Tags (for releases) · neovim\/neovim](https://github.com/neovim/neovim/tags)
 
 #### Ubuntu
 
@@ -235,9 +238,8 @@ In theory, you could substitute clang with: `cc` `gcc` `clang` `cl` [`zig`](http
 
 ### Lazy installation
 
-Everything here is tested with Neovim v0.9.0 and may not work with older
-versions. Also this hasn't been tested on other devices yet so instructions
-may need improvements.
+Everything here is tested with Neovim v0.9.0 - v0.9.4 and may not work with older
+versions. 
 
 Note: If migrating from the previously used nvim config using packer.nvim,
 check `:checkhealth` and remove files from there.
@@ -245,11 +247,13 @@ check `:checkhealth` and remove files from there.
 If any new changes were made: 
 `:w`
 
-Likely required first time. If I'm wrong, ignore below:
-`:so` then `:Lazy`
+`:so` likely required first time but I may be wrong.
+Then `:Lazy` (or `:La`)
 
-No need to source the file again. Lazy is always available with the `:Lazy`
+No need to source the file again. Lazy is always available with the `:La`
 command.
+
+By design, I didn't enable auto-updating. To update all plugins, type `:La update`, `:Lazy update`, or open up lazy and press <kbd>U</kbd>.
 
 ### Lazy config
 
@@ -305,5 +309,3 @@ If I missed anything else, create an issue and/or check out:
 Minimal plugin; works with classic vim too:
 [vim-plug](https://github.com/junegunn/vim-plug)
 
-
-tal
