@@ -47,7 +47,7 @@ config.window_background_opacity = 0.8
 
 -- config.color_scheme = 'Batman'
 
-local lunch_menu = {}
+local launch_menu = {}
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
   table.insert(launch_menu, {
@@ -76,6 +76,6 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
   end
 end
 
-config.launch_menu = lunch_menu
+config.launch_menu = launch_menu
 
 return config
