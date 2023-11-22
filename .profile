@@ -9,13 +9,15 @@
 #umask 022
 
 # for i3-sensible-terminal
-# TERMINAL=kitty; export TERMINAL 
+# TERMINAL=wezterm; export TERMINAL 
 # ^ this has stopped working. maybe the system has stopped recognizing this file for some reason??
-export TERMINAL=kitty
+# wezterm can be replaced by kitty btw
+export TERMINAL=wezterm
 # for dark theme on apps such as simplescrrec
 export QT_STYLE_OVERRIDE=kvantum
 # feh --randomize --bg-max ~/Pictures/wallpapers/*
 feh --randomize --bg-fill ~/Pictures/wallpapers/*
+setxkbmap -option caps:escape
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
