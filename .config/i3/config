@@ -447,6 +447,8 @@ assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
 assign [class="XTerm"] $ws2
 for_window [class="XTerm"] focus
+assign [class="org.wezfurlong.wezterm"] $ws2
+for_window [class="org.wezfurlong.wezterm"] focus
 assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
 
