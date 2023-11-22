@@ -134,6 +134,26 @@ rm M*.ttf LICENSE.txt
 rm Mononoki.zip
 ```
 
+<!--
+## Vencord themes
+
+# mv to 
+# vencord themes:
+# https://raw.githubusercontent.com/Dyzean/Tokyo-Night/main/tokyo-night.theme.css
+#
+
+# Also yes:
+# https://saltssaumure.github.io/pios-discord-theme/piOS.theme.css
+
+# really cool but not lightweight probably because of background blur
+# https://capnkitten.github.io/BetterDiscord/Themes/Translucence/css/source.css
+
+# idk below
+# https://discord-extensions.github.io/modern-indicators/src/source.css
+# https://discord-extensions.github.io/compact-userarea/src/source.css
+-->
+
+
 ## Dotfile info
 
 - https://dotfiles.github.io/ (I haven't looked at this it just looks promising)
