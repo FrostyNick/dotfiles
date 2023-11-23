@@ -54,7 +54,8 @@ k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 -- k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- :wincmd w
-k.set("n", "<leader>zo", [[:SymbolsOutline<CR>:sl! 100m<CR>:wincmd w<CR>]], {desc="Symbols outline. I configured it as a def outline like used in Geany."}) -- Note that adding ! to :sl is neovim exclusive. All it does is not hide the cursor while sleeping.
+k.set("n", "<leader>zo", [[:SymbolsOutline<CR>:sl! 100m<CR>:winc p<CR>]], {desc="Function outline. I configured it as a def outline like used in Geany. Works by using :SymbolsOutline with config."}) -- Note that adding ! to :sl is neovim exclusive. All it does is not hide the cursor while sleeping.
+k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"}) -- Note that adding ! to :sl is neovim exclusive. All it does is not hide the cursor while sleeping.
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
 k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
@@ -93,7 +94,7 @@ k.set("n", "<leader>o",
 "<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
 { silent = true, desc = "xdg-open file" })
 
-k.set("n", "<leader>dx", "<cmd>bd<CR>", {desc=":bd Delete buffer"})
+k.set("n", "<leader>q", "<cmd>bd<CR>", {desc=":bd Delete buffer"})
 
 --- Git shortcuts
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
