@@ -387,7 +387,9 @@ mode "$mode_system" {
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $i3lockwall && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $i3lockwall && systemctl hibernate, mode "default"
-    # bindsym r exec --no-startup-id restart, mode "default" # this does NOT work
+
+    # systemctl reboot
+    bindsym r exec --no-startup-id "shutdown -r now", mode "default" # this might NOT work
 
     bindsym i restart, mode "default"
     bindsym Ctrl+s exec --no-startup-id shutdown now, mode "default"
@@ -439,6 +441,8 @@ assign [class="firefox"] $ws1
 for_window [class="firefox"] focus
 assign [class="Chromium-browser"] $ws1 
 for_window [class="Chromium-browser"] focus
+assign [class="Pale moon"] $ws1 
+for_window [class="Pale moon"] focus
 assign [class="Brave-browser"] $ws1 
 for_window [class="Brave-browser"] focus
 assign [class="Luakit"] $ws1 
@@ -469,12 +473,18 @@ assign [class="qpdfview"] $ws3
 for_window [class="libreoffice"] focus
 assign [class="libreoffice"] $ws3
 assign [class="FeatherPad"] $ws3
+for_window [class="FeatherPad"] focus
+assign [class="nobleNote"] $ws3
+for_window [class="nobleNote"] focus
+# del sharik
 
 # android studio
 assign [class="Emacs"] $ws4
 assign [class="jetbrains-studio"] $ws4
 for_window [class="jetbrains-studio"] focus
 assign [class="Codium"] $ws4 # it changes to this sometimes.
+assign [class="Geany"] $ws4
+for_window [class="Geany"] focus
 assign [class="VSCodium"] $ws4
 for_window [class="VSCodium"] focus
 
@@ -484,8 +494,12 @@ assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
 
 # game
+for_window [class="2048-qt"] focus
+assign [class="2048-qt"] $ws5
 for_window [class="love"] focus
 assign [class="love"] $ws5
+for_window [class="Lutris"] focus
+assign [class="Lutris"] $ws5
 assign [class="steam"] $ws5
 assign [class="steam_app*"] $ws5
 # name: steam_app_843380
@@ -509,12 +523,16 @@ assign [class="qimgv"] $ws5
 
 # social
 assign [class="VencordDesktop"] $ws6
+for_window [class="VencordDesktop"] focus
 assign [class="discord"] $ws6
+
 assign [class="zoom"] $ws6
 
 # video creation
 assign [class="obs"] $ws10
 for_window [class="obs"] focus
+assign [class="kdenlive"] $ws10
+for_window [class="kdenlive"] focus
 assign [class="Shotcut"] $ws10
 for_window [class="Shotcut"] focus
 assign [class="SimpleScreenRecorder"] $ws10
