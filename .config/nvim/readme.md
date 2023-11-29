@@ -238,8 +238,8 @@ In theory, you could substitute clang with: `cc` `gcc` `clang` `cl` [`zig`](http
 
 ### Lazy installation
 
-Everything here is tested with Neovim v0.9.0 - v0.9.4 and may not work with older
-versions. 
+Everything here is tested with Neovim v0.9.0 - v0.9.4 and may not work with
+older versions. 
 
 Note: If migrating from the previously used nvim config using packer.nvim,
 check `:checkhealth` and remove files from there.

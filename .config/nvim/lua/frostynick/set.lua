@@ -12,6 +12,7 @@ o.expandtab = true
 o.smartindent = true
 o.ignorecase = true
 
+-- looking back at below when I didn't understand it: Not having a backup or swapfile seems like a bad idea imo just in case like power goes out.. you have less info.
 --[[ saves all backups to undotree. might try l8r
 o.swapfile = false
 o.backup = false
@@ -40,6 +41,9 @@ o.conceallevel = 2 -- for future plugin or idk
 o.acd = true -- autochdir changes directory whenever you open something.
 o.hid = true -- rm annoying buffer error message https://linuxhandbook.com/vim-buffers/
 -- o.linebreak = true
+
+-- Speed up diff:
+vim.g.diff_translations = 0
 
 -- Taken from: https://github.com/vim/vim/blob/master/runtime/defaults.vim
 vim.cmd([[

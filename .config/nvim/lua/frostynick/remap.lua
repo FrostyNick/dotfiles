@@ -131,3 +131,20 @@ end)
 
 -- k.set("n", "<leader>pv", vim.cmd.Ex)
 k.set("n", "<leader>pv", vim.cmd.Ex); -- function()
+
+-- if vim.g.vscode then
+-- --[[ Original:
+-- xmap gc  <Plug>VSCodeCommentary
+-- nmap gc  <Plug>VSCodeCommentary
+-- omap gc  <Plug>VSCodeCommentary
+-- nmap gcc <Plug>VSCodeCommentaryLine
+-- --]]
+--
+-- -- The alternative provided in the docs works worse from my experience :/
+--
+--     -- k.del({"x", "n", "o"}, "gc")
+--     -- k.del("n", "gcc")
+--
+--     -- k.set({"x", "n", "o"}, "gc", "<Plug>(VSCodeCommentary)")
+--     -- k.set("n", "gcc", "<Plug>(VSCodeCommentaryLine)")
+-- end
