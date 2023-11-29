@@ -38,6 +38,9 @@ k.set('n', '<leader>f<BS>', tsb.resume,
 {desc="Telescope: use prev picker"})
 
 -- error: k.set('n', '<leader>f/', builtin.grep_files, {})
+-- k.set('n', '<leader>ff', builtin.find_files, {})
+k.set('n', '<leader>ff', "<cmd>Telescope find_files hidden=true<CR>",
+{desc="Telescope: find files"})
 
 k.set('n', '<leader>fj',
 '<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/backup2022nov10/<CR>',
