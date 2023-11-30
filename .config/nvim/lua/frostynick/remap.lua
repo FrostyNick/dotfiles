@@ -61,7 +61,9 @@ k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
-k.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true }) -- doing this again should do the opposite
+k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clipboard
+k.set("n", "<leader>mr", [[:put =range(1,)<Left>]], { desc="mr=math range" })
+k.set("n", "<leader>cm", "<cmd>!chmod +x %<CR>", { silent = true })
 
 k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
@@ -73,7 +75,7 @@ k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 
 -- For some reason there is A being called after the below is run. Additionally
 -- adding over one Esc keys aren't recognized. Might report as bug.
-k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>"); 
+k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
 
 -- local leader = ' '
 -- I cannot get below to work. Above is the best solution I could make.
@@ -117,6 +119,11 @@ k.set("n", "<leader>mm", "<cmd>MarkdownPreviewToggle<CR>")
 k.set("n", "<leader>mt", "<cmd>TableModeToggle<CR>")
 
 ---- Compiler shortcuts
+-- Replace later with vim autogroup to an extent maybe.
+k.set("n", "<leader>r", function() print"code: run general code soon. also try <leader>co. self-note: see tj tutorial" end)
+k.set("n", "<leader>dc", function() print"code: run docs soon. (see tj tutorial)" end)
+-- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
+
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
 k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
