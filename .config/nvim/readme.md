@@ -14,7 +14,7 @@ init.lua (Neovim)
 </summary>
 
 Create [~/.config/nvim/init.lua](init.lua) folders and files (`:help vimrc` for
-all possible locations) if not created, then add the following lines and
+all other possible locations) if not created, then add the following lines and
 customize these to your hearts content:
 
 ```lua
@@ -167,7 +167,8 @@ init.vim (Neovim; Vim; Vi)
 </summary>
 
 
-Didn't test code below! It's possible some of these lines of code don't work.
+This is not updated much as I mostly focus on lua script lately.
+
 If this is in `init.vim` file, the equivalent works in Vi, Vim, and Neovim:
 
 ```vim
