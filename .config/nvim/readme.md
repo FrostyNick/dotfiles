@@ -47,14 +47,18 @@ o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
 ```
 
 <details>
-  <summary>Example: Basic config on Windows 10 with leader key + keymaps</summary>
+  <summary>Example: Shorter config on Windows 10 with transparent theme, Telescope, comment.nvim, leader key, and keymaps</summary>
 
   This will work on Windows, Linux, and likely macOS as well.
 
 ```lua
+-- Note: Git Bash doesn't work with :term (at least on nvim)
+
+--- Set
 local o = vim.o
 o.nu = true
 o.rnu = true
+o.acd = true
 
 -- four spaced tabbing
 o.tabstop = 4
@@ -68,24 +72,77 @@ o.ignorecase = true -- ignores case when searching, etc.
 -- below line: cursor is always 6 lines away from top or bottom of your window
 o.scrolloff = 6 
 o.colorcolumn = "80"
-
-o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
 o.linebreak = true
--- Note: Git Bash doesn't work with :term (at least on nvim)
 
+-- If you want to change shellslash during fresh install, do it AFTER selecting
+-- something in telescope.
+-- This is due to a bug with paths in plenary + set shellslash:
+-- https://github.com/nvim-telescope/telescope.nvim/issues/2651
+o.shellslash = false -- Only affects Windows: This will use '/' instead of the default '\'
+
+--- Keymaps
 vim.g.mapleader = ' '
 
 local k = vim.keymap
 k.set("n", "<leader>lo", function() vim.cmd("!love %/..") end, {desc="Run with Love2D; assuming that parent is project root folder."})
-k.set("n", "<leader>,", function() vim.cmd("bro o") end, {desc=":bro o"})
+k.set("n", "<leader>,", function() vim.cmd("bro o") end, {desc=":bro o -> Telescope oldfiles"})
+k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
 
 print("See oldfiles: <leader>,")
 
--- sys clipboard
+-- system clipboard
 k.set({ "n", "v" }, "<leader>y", [["+y]])
 k.set({ "n", "v" }, "<leader>p", [["+p]])
+k.set("n", "<leader>x", [[ggVG"+x]], {desc="(normal mode) Cut all text to clipboard."})
+k.set("v", "<leader>x", [["+x]])
 
-k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
+-- Don't copy lines below if you don't want plugins.
+--- Lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Lazy Plugins
+local plugins = {
+    {
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
+        -- or                          , branch = '0.1.x',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        config = function()
+            k.del("n", "<leader>,") -- this is backup remap; telescope will break probably
+            k.set("n", "<leader>,", function() vim.cmd("Telescope oldfiles") end, {desc=":bro o -> Telescope oldfiles"})
+        end
+    },
+    {
+        'rose-pine/neovim',
+        name = 'rose-pine',
+        config = function()
+            vim.cmd.colorscheme("rose-pine")
+
+--            :lua vim.print(vim.api.nvim_get_color_map())
+--            :Telescope highlights
+            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+            -- Makes telescope transparent
+            vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+        end,
+    },
+    { 'numToStr/Comment.nvim', opts = {} },
+}
+
+require("lazy").setup(plugins, {})
+-- lua vim.print(vim.api.nvim_get_color_map().Brown)
 ```
 
 </details>
