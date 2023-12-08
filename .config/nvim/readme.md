@@ -2,7 +2,7 @@
 
 If you are completely new to Vim, focus on Vim motions.
 
-- Open Vim and type `:help` to get started. 
+- Open Vim and type `:help` to get started.
 - In the future, `:help <topic>` is pretty useful.
 
 ## Most simple config setup for beginners
@@ -20,7 +20,7 @@ customize these to your hearts content:
 ```lua
 -- this is a comment in lua
 --[[
-this is a 
+this is a
 *multiline*
 comment
 ]]
@@ -39,7 +39,7 @@ o.smartindent = true
 o.termguicolors = true  -- color support
 o.ignorecase = true -- ignores case when searching, etc.
 -- below line: cursor is always 6 lines away from top or bottom of your window
-o.scrolloff = 6 
+o.scrolloff = 6
 o.colorcolumn = "80"
 o.swapfile = false -- don't use swap files
 
@@ -66,7 +66,7 @@ o.smartindent = true
 o.termguicolors = true  -- color support
 o.ignorecase = true -- ignores case when searching, etc.
 -- below line: cursor is always 6 lines away from top or bottom of your window
-o.scrolloff = 6 
+o.scrolloff = 6
 o.colorcolumn = "80"
 
 o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
@@ -239,12 +239,12 @@ In theory, you could substitute clang with: `cc` `gcc` `clang` `cl` [`zig`](http
 ### Lazy installation
 
 Everything here is tested with Neovim v0.9.0 - v0.9.4 and may not work with
-older versions. 
+older versions.
 
 Note: If migrating from the previously used nvim config using packer.nvim,
 check `:checkhealth` and remove files from there.
 
-If any new changes were made: 
+If any new changes were made:
 `:w`
 
 `:so` likely required first time but I may be wrong.
@@ -269,7 +269,7 @@ Note: This no longer works! Kept it here for educational purposes.
 <summary>
 Packer installation
 </summary>
-  
+
 In packer.lua:
 Install packer with [instructions](https://github.com/wbthomason/packer.nvim)
 on the web
@@ -282,7 +282,7 @@ Then:
 `:so`
 
 If errors show up for above command, (`ZQ`) quit out of vim, reopen the
-packer.lua file in Neovim and repeat. 
+packer.lua file in Neovim and repeat.
 
 `:PackerSync`
 
@@ -292,7 +292,7 @@ After all that, close and open and open up again, some errors and tips will
 show up. Wait for everything to install.
 </details>
 
-### Codeium setup 
+### Codeium setup
 
 Note: If you don't set this up, there will be warnings or errors depending on
 your version of Codeium. Remove it (or comment it out) from your plugin config
