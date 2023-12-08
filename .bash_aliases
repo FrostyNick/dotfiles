@@ -26,7 +26,7 @@ yts() {
 }
 alias yt="yts"
 ddg() {
-    xdg-open "https://lite.duckduckgo.com/lite/?q=$*" 
+    xdg-open "https://lite.duckduckgo.com/lite/?q=$*"
 }
 mwebinit() {
     cd ~/p/FrostyNick.github.io/ && live-server --ignore=./index.md --browser=librewolf
@@ -37,18 +37,18 @@ mweb() {
 }
 # librewolfUnverified() {
 #     script_url='https://gist.github.com/TheBrokenRail/c43bf0f07f4860adac2631a1bd9e4136/raw/jailbreak-firefox-system.sh'
-# 
+#
 #     # Download the script and save its contents
 #     script_contents=$(curl -sSL "$script_url")
-# 
+#
 #     # Replace "firefox" with "librewolf" in the script contents
 #     script_contents_modified=$(echo "$script_contents" | sed 's/firefox/librewolf/g')
-# 
+#
 #     # Display the modified script contents
 #     echo "Script contents with 'firefox' replaced by 'librewolf':"
 #     echo "$script_contents_modified"
 #     echo "$script_contents"
-# 
+#
 #     read -p "Do you want to execute this modified script? (y/n): " response
 #     if [ "$response" = "y" ]; then
 #         echo "Executing the modified script..."
@@ -56,7 +56,7 @@ mweb() {
 #     else
 #         echo "Script execution canceled."
 #     fi
-# 
+#
 # }
 
 
@@ -98,7 +98,9 @@ alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
 alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
 alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share ; echo xdg-open + kdeconnect works better'
-alias discordU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb || echo Failed to remove .deb file (maybe due to update error?) ; cd && echo Also run discordV.'
+alias discordU="echo use diU now"
+alias diU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb || echo Failed to remove .deb file, maybe due to update error? Run diRm to continue removing ; cd && echo Also run discordV.'
+alias diRm='rm ~/Downloads/discord-0.0.*.deb'
 
 discordV() {
     cd
@@ -108,6 +110,16 @@ discordV() {
         curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh > ~/Vencord.sh && chmod +x ~/Vencord.sh && cat ~/Vencord.sh ; echo "# ./Vencord.sh if installer looks alright"
     fi
     cd -
+}
+
+pipewireE() {
+    systemctl --user --now disable pulseaudio.service pulseaudio.socket
+    systemctl --user --now enable pipewire{,-pulse}.{socket,service}
+}
+
+pulseaudioE() {
+    systemctl --user --now disable pipewire{,-pulse}.{socket,service}
+    systemctl --user --now enable pulseaudio.service pulseaudio.socket
 }
 
 nonoti() { # Used in a .sh script, so it's a function
@@ -131,7 +143,7 @@ alias fnalias="cat ~/.bash_aliases | grep '()'"
 alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
 alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage" # kms
 
-# src: Avoid the password suggestion though. https://web.archive.org/web/20230630174028/https://superuser.com/questions/548234/how-can-i-easily-toggle-between-dvorak-and-qwerty-keyboard-layouts-from-a-linux/548235 
+# src: Avoid the password suggestion though. https://web.archive.org/web/20230630174028/https://superuser.com/questions/548234/how-can-i-easily-toggle-between-dvorak-and-qwerty-keyboard-layouts-from-a-linux/548235
 alias asdf="setxkbmap dvorak"
 alias aoeu="setxkbmap us"
 # alias asdf="sudo loadkeys dvorak" # doesn't work for some reason
@@ -147,7 +159,7 @@ alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev"
 
 alias anticn='aoeu && echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo -k cat ~/.antichenalog | xclip -sel "clip"'
 alias procn='echo $(xclip -sel "secondary" -o) | xclip -sel "clip"'
-    
+
 alias gits='git branch;git status'
 alias gitp='anticn && git push;procn'
 alias gitpl='anticn && git pull;procn'
