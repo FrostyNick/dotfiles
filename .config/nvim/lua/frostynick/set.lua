@@ -1,13 +1,17 @@
 -- thicc cursor vim.opt.guicursor = ""
+-- :options
+-- set nohlsearch
 -- vim.cmd("set autochdir") same as o.autochdir = true
 local o = vim.o -- vim.opt == vim.o 
 o.nu = true
 o.rnu = true
 
+-- o.splitbelow = true
+
 o.tabstop = 4
 o.softtabstop = 4
 o.shiftwidth = 4
-o.expandtab = true
+o.expandtab = true -- spaces instead of tabs
 
 o.smartindent = true
 o.ignorecase = true
@@ -22,7 +26,7 @@ o.undofile = true
 o.backup = false
 o.incsearch = true
 
-o.termguicolors = true
+o.termguicolors = true -- full color support
 
 o.scrolloff = 6 -- This should be dynamically determined based on how many lines are on the screen. sucks on small screens.
 -- o.signcolumn = "yes"
@@ -44,6 +48,9 @@ o.hid = true -- rm annoying buffer error message https://linuxhandbook.com/vim-b
 
 -- Speed up diff:
 vim.g.diff_translations = 0
+
+o.virtualedit = "block" -- might c this l8r
+o.inccommand = "split" -- might c this l8r
 
 -- Taken from: https://github.com/vim/vim/blob/master/runtime/defaults.vim
 vim.cmd([[

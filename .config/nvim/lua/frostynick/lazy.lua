@@ -89,7 +89,15 @@ local plugins = {
 
     -- LSP Support
     { 'williamboman/mason.nvim', },-- Optional
-    { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+    { 'williamboman/mason-lspconfig.nvim',
+        dependencies = { 'williamboman/mason.nvim' },
+        config = function()
+            require("mason").setup()
+            require("mason-lspconfig").setup {
+                ensure_installed = { "lua_ls", "rust_analyzer", "denols" },
+            }
+        end
+    }, -- Optional
     { 'neovim/nvim-lspconfig' }, -- Required
 
     -- Autocompletion
@@ -153,6 +161,7 @@ local plugins = {
     --     'Exafunction/codeium.vim',
     --     event = "VeryLazy",
     --     config = function()
+    --         vim.g.codeium_disable_bindings = 1 -- disable codeium bindings
     --         -- Change '<C-g>' here to any keycode you like.
     --         local expT = { expr = true, desc = "Codeium keybinds. Located in lazy.lua" }
     --         local k = vim.keymap
@@ -444,10 +453,6 @@ local opts = {}
 require("lazy").setup(plugins, opts)
 -- move below to init l8r
 -- require("oil").setup()
-require("mason").setup()
-require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "rust_analyzer", "denols" },
-}
 -- require("lspconfig").tsserver.setup()
 
 -- -- cmp setup
@@ -512,7 +517,6 @@ end
 -- -- end cmp setup
 
 -- vim.print(plugins);
-vim.g.codeium_disable_bindings = 1 -- disable codeium bindings
 vim.g.neovide_scale_factor = 0.7
 --vim.cmd('colorscheme kanagawa-dragon')
 -- init.lua file to look at later https://github.com/wincent/wincent/blob/a54fb501a4e331a7c197088f9f744bfb9c6d2e1f/aspects/nvim/files/.config/nvim/init.lua#L213
