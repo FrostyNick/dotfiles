@@ -1,6 +1,14 @@
 -- This file can be loaded by calling `lua require('frostynick.plugins')` from your init.vim
 -- keys for vim https://vimdoc.sourceforge.net/htmldoc/intro.html#key-notation
--- Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
+-- Migration: Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
+--[[ Open issues:
+*** [Bye to files in after/plugin](https://github.com/FrostyNick/dotfiles/issues/5)
+[Telescope plugin errors with default config](https://github.com/FrostyNick/dotfiles/issues/6)
+[Replace npm with yarn](https://github.com/FrostyNick/dotfiles/issues/4)
+[Neovim config should be more backwards compatible](https://github.com/FrostyNick/dotfiles/issues/1)
+Additionally, clean code. Remove extra comments.
+--]]
+
 --[[
 use()
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
