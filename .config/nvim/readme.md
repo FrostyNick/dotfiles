@@ -1,11 +1,18 @@
-## Starting with Vim
+## Starting with Vim/Neovim
 
-If you are completely new to Vim, focus on Vim motions.
+If you are completely new to Vim or Neovim, focus on Vim motions.
 
-- Open Vim and type `:help` to get started.
-- In the future, `:help <topic>` is pretty useful.
+- Run `vimtutor` if it's installed on your system and learn the basics.
+  Otherwise, open Vim and type `:help` to get started.
 
-## Most simple config setup for beginners
+### After Starting
+- `:help <topic>` is pretty useful.
+- Check out [this cheatsheet by potatokuka](https://github.com/potatokuka/Intro_to_Vim/blob/0e4c06babe8c8b8443f909bccba1a8d6db9e7961/Vim_Cheatsheet.txt)
+  as a reference for common actions you may do.
+- In general, search "how to *your question* vim".
+- Don't be afraid of `:help vimrc` to change some default behaviors.
+
+## Most simple configuration setup for beginners
 minimalist / without plugins
 
 <details>
