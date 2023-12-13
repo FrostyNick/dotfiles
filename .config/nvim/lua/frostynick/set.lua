@@ -49,8 +49,8 @@ o.hid = true -- rm annoying buffer error message https://linuxhandbook.com/vim-b
 -- Speed up diff:
 vim.g.diff_translations = 0
 
-o.virtualedit = "block" -- might c this l8r
-o.inccommand = "split" -- might c this l8r
+o.virtualedit = "block"
+o.inccommand = "split"
 
 -- Taken from: https://github.com/vim/vim/blob/master/runtime/defaults.vim
 vim.cmd([[

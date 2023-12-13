@@ -384,39 +384,23 @@ local plugins = {
     { 'numToStr/Comment.nvim', opts = {} },
     { 'simrat39/symbols-outline.nvim', -- I use as function outline. no whitelist so there's a long list instead.
         opts = { show_symbol_details = true,
-            symbol_blacklist = {'File',
-            'Module',
-            'Namespace',
-            'Package',
-            'Class',
-            'Method',
-            'Property',
-            'Field',
-            'Constructor',
-            'Enum',
-            'Interface',
-            -- 'Function',
-            'Variable',
-            'Constant',
-            'String',
-            'Number',
-            'Boolean',
-            'Array',
-            'Object',
-            'Key',
-            'Null',
-            'EnumMember',
-            'Struct',
-            'Event',
-            'Operator',
-            'TypeParameter',
-            'Component',
-            'Fragment'}
+            symbol_blacklist = {'File', 'Module', 'Namespace', 'Package', 'Class', 'Method', 'Property', 'Field', 'Constructor', 'Enum', 'Interface', --[[ 'Function', 'Variable', 'Constant', 'String', 'Number', 'Boolean', 'Array', 'Object', 'Key', 'Null', 'EnumMember', ]] 'Struct', 'Event', 'Operator', 'TypeParameter', 'Component', 'Fragment'}
         }
     },
     -- :Speedtyper to start typing practice
     {'NStefan002/speedtyper.nvim', opts = {}},
     -- leetcode: https://github.com/kawre/leetcode.nvim . Requires v0.9.0. See requirements b4 installing.
+
+    -- currently not working: https://github.com/glacambre/firenvim/blob/master/TROUBLESHOOTING.md
+    -- Below is made for browser extension firenvim.
+    {
+        "glacambre/firenvim",
+        -- lazy = not vim.g.started_by_firenvim,
+        -- module = false,
+        build = function()
+            vim.fn["firenvim#install"](0)
+        end,
+    },
     --
     'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
     -- { 'stevearc/oil.nvim', opts = {}, },
