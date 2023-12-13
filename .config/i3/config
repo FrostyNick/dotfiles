@@ -325,7 +325,7 @@ default_floating_border pixel
 floating_maximum_size 0 x 0
 
 # set $mode_launcher Launch: [l]ibrewolf, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
-set $mode_launcher Open: [l]wlf, r[a]nger, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], s[y]nc, kee[p], s[h]otc, pcm[f]m, [n]boat
+set $mode_launcher Open: [l]wlf, r[a]nger, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat, fb[m]sg
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
@@ -339,7 +339,11 @@ mode "$mode_launcher" {
     bindsym c exec scrcpy
     bindsym r exec simplescreenrecorder
     # bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
+
+# !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
     bindsym d exec vencorddesktop || exec discord || exec discord-canary
+    bindsym m exec caprine
+
     bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
     bindsym n exec i3-sensible-terminal -e "newsboat"
     # FAIL bindsym i exec "nvim"
@@ -525,6 +529,7 @@ assign [class="qimgv"] $ws5
 assign [class="VencordDesktop"] $ws6
 for_window [class="VencordDesktop"] focus
 assign [class="discord"] $ws6
+assign [class="Caprine"] $ws6
 
 assign [class="zoom"] $ws6
 

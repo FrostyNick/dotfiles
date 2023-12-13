@@ -30,3 +30,4 @@ image/png=qimgv.desktop;
 image/jpeg=qimgv.desktop;
 image/webp=qimgv.desktop;
 application/pdf=org.kde.kdeconnect.nonplasma.desktop;org.kde.kdeconnect.app.desktop;qpdfview.desktop;
+application/epub+zip=qpdfview.desktop;
