@@ -38,7 +38,7 @@ If you learn something, consider adding a star or commenting.
   | [~/.bashrc](.bashrc)                               | bash shell config                                     | x      | ?      |
   | [~/.bash_aliases](.bash_aliases)                   | aliases for shell                                     | x      | ?      |
   | [~/.profile](.profile)                             | another startup file found by default in Ubuntu 20.04 | x      | ?      |
-  
+ 
 </details>
 
 
@@ -102,9 +102,11 @@ the config works.
 - Rose pine theme. (The Showcase screenshot is likely outdated if it has a
   different theme)
 
-</details> 
+</details>
 
 ## Install nerd fonts
+
+For all the icons to be displayed correctly in the terminal, you will need to install a nerd font. (If you use WezTerm, note it has a nerd font pre-installed as a fallback and glyph characters, so no setup is needed with nerd fonts.)
 
 Click Download on any of the fonts in the link below; they all contain nerd fonts.
 [NerdFonts Install](https://nerdfonts.com/font-downloads)
@@ -130,26 +132,30 @@ mv MononokiNerdFont-Regular.ttf font.ttf
 termux-reload-settings
 # Font should be changed on Termux now and neovim.
 
-rm M*.ttf LICENSE.txt
+rm MononokiNerdFont*.ttf LICENSE.txt
 rm Mononoki.zip
 ```
 
 <!--
 ## Vencord themes
 
-# mv to 
+# mv to
 # vencord themes:
 # https://raw.githubusercontent.com/Dyzean/Tokyo-Night/main/tokyo-night.theme.css
-#
 
-# Also yes:
+# (My preference) black mode + padding theme + modern notifications:
+
+# Follow instructions: https://refact0r.github.io/midnight-discord/
+# See ~/.config/VencordDesktop/VencordDesktop/themes/midnight.theme.css from my dotfiles for css variables to quickcss in Vencord to add opinionated padding + make the theme black rather than just dark.
+# Add to Vencord: https://discord-extensions.github.io/modern-indicators/src/source.css
+
+# video game themed discord:
 # https://saltssaumure.github.io/pios-discord-theme/piOS.theme.css
 
 # really cool but not lightweight probably because of background blur
 # https://capnkitten.github.io/BetterDiscord/Themes/Translucence/css/source.css
 
 # idk below
-# https://discord-extensions.github.io/modern-indicators/src/source.css
 # https://discord-extensions.github.io/compact-userarea/src/source.css
 -->
 
