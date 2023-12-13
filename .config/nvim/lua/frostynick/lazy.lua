@@ -110,7 +110,7 @@ local plugins = {
     -- -- autocomplete (not required)
     -- 'hrsh7th/cmp-buffer',
     -- 'hrsh7th/cmp-path',
-    "L3MON4D3/LuaSnip",
+    -- "L3MON4D3/LuaSnip", -- errors on init, haven't configured yet.
     -- -- 'hrsh7th/cmp-cmdline',
     -- -- autocomplete (required)
     'neovim/nvim-lspconfig',
@@ -140,7 +140,8 @@ local plugins = {
     },
     {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.1',
+        -- tag = '0.1.1',
+        tag = '0.1.5',
         -- or                       , branch = '0.1.x',
         dependencies = { 'nvim-lua/plenary.nvim' }
     },
@@ -222,7 +223,18 @@ local plugins = {
 
     {'nacro90/numb.nvim', opts = {} }, -- non-intrusively preview while typing :432... 
     -- Two colorschemes below
-    { 'rose-pine/neovim',      name = 'rose-pine' },
+    { 'rose-pine/neovim',      name = 'rose-pine',
+    -- Note: Use "config" for one theme, if multiple exist.
+        config = function()
+            vim.cmd.colorscheme("rose-pine")
+
+            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+            vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+        end
+    },
     { 'AlexvZyl/nordic.nvim',  name = 'nordic', config = {telescope = {style = 'classic'}} },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     {
@@ -337,6 +349,8 @@ local plugins = {
                             ["if"] = "@function.inner",
                             ["ac"] = "@class.outer",
                             ["ic"] = "@class.inner",
+                            -- How about inside of dates descriptions, like for
+                            -- a log or journal?
                         }
                     }
                 }
