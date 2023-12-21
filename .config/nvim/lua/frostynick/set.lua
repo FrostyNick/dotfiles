@@ -52,7 +52,7 @@ vim.g.diff_translations = 0
 o.virtualedit = "block"
 o.inccommand = "split"
 
--- Taken from: https://github.com/vim/vim/blob/master/runtime/defaults.vim
+-- src: https://github.com/vim/vim/blob/master/runtime/defaults.vim
 vim.cmd([[
 " Put these in an autocmd group, so that you can revert them with:
 " ":augroup vimStartup | exe 'au!' | augroup END"
@@ -70,6 +70,17 @@ augroup vimStartup
 
 augroup END
 ]])
+
+-- src: https://web.archive.org/web/20230117225946/https://stackoverflow.com/questions/7894330/preserve-last-editing-position-in-vim
+-- Try when ya got time. Works but could be improved maybe.
+--[[ Restore cursor position
+vim.api.nvim_create_autocmd("BufReadPost", {
+    pattern = "*",
+    callback = function()
+        vim.api.nvim_exec('silent! normal! g`"zv', false)
+    end,
+})
+--]]
 
 -- local mygroup = vim.api.nvim_create_augroup('vimStartup', {clear = true}) -- rm clear?
 -- vim.api.nvim_create_autocmd("BufReadPost", {
