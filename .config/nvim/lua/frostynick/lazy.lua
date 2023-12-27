@@ -384,7 +384,6 @@ local plugins = {
         'folke/zen-mode.nvim',
         -- cmd = "ZenMode", -- avoid if using vim.cmd or if it's on startup
         -- event = "VeryLazy", -- avoid if it's on startup
-        lazy = true,
         config = function()
             require("zen-mode").setup {
                 window = {
