@@ -295,8 +295,8 @@ local plugins = {
     {
       -- This plugin
         "Zeioth/compiler.nvim",
-        -- cmd = { "CompilerOpen", "CompilerToggleResults" },
-        event = "VeryLazy",
+        cmd = { "CompilerOpen", "CompilerToggleResults" },
+        -- event = "VeryLazy",
         dependencies = { "stevearc/overseer.nvim" },
         config = function(_, opts) require("compiler").setup(opts) end,
     },
@@ -367,9 +367,9 @@ local plugins = {
     },
     {
         'mbbill/undotree',
-        event = "VeryLazy",
-        config = function()
-            vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
+        cmd = "UndotreeToggle",
+        init = function()
+            vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)-- "<cmd>UndotreeToggle<CR>")
         end,
     },
     {
@@ -382,8 +382,15 @@ local plugins = {
     { 'f-person/git-blame.nvim', event = "VeryLazy" }, -- shows git blame
     {
         'folke/zen-mode.nvim',
-        -- cmd = "ZenMode", -- avoid if using vim.cmd or if it's on startup
-        -- event = "VeryLazy", -- avoid if it's on startup
+        cmd = "ZenMode", -- avoid these if on startup
+        -- event = "VeryLazy", 
+        init = function()
+            vim.keymap.set("n", "<leader>zz", function()
+                vim.cmd("ZenMode")
+                vim.wo.wrap = false
+                -- not working ColorMyPencils()
+            end)
+        end,
         config = function()
             require("zen-mode").setup {
                 window = {
@@ -395,12 +402,6 @@ local plugins = {
                     }
                 },
             }
-
-            vim.keymap.set("n", "<leader>zz", function()
-                require("zen-mode").toggle()
-                vim.wo.wrap = false
-                -- not working ColorMyPencils()
-            end)
         end,
         opts = {
             window = {
