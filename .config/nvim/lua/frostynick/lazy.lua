@@ -158,7 +158,10 @@ local plugins = {
         dependencies = 'nvim-treesitter/nvim-treesitter',
         opts = {} -- Might break. See commit on 2023-9-18 to rollback
     },
-    { 'TarunDaCoder/sus.nvim', opts = {} },
+    {
+        'TarunDaCoder/sus.nvim',
+        opts = {}
+    },
     -- { --[[ commented out codeium for now because
     --  * Termux: Doesn't work + errors + planned to not be supported.
     --  * It gets a bit in the way when trying to do projects. Opt-in would be
@@ -247,13 +250,36 @@ local plugins = {
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     {
         'nvim-lualine/lualine.nvim',
-        dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true }
+        dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
+        opts = {},
     },
     {
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
         -- cmd = "LiveServerStart", -- lazyload on command --> not working?
         build = 'npm install -g live-server',
+        config = function()
+            local l = require('live-server')
+            l.setup(--[[ args = {"--browser=librewolf"} ]])
+            vim.g.liveservertoggle = true
+            vim.keymap.set('n', '<leader>lf', function()
+                vim.g.liveservertoggle = true
+                l.start()
+            end)
+            vim.keymap.set('n', '<leader>lt', function()
+                vim.g.liveservertoggle = false
+                l.stop()
+            end)
+
+            vim.keymap.set('n', '<leader>ll', function()
+                if vim.g.liveservertoggle then
+                    l.start()
+                else
+                    l.stop()
+                end
+                vim.g.liveservertoggle = not vim.g.liveservertoggle
+            end)
+        end,
     },
     -- How to install the required dependencies · Zeioth/compiler.nvim Wiki https://github.com/Zeioth/Compiler.nvim/wiki/how-to-install-the-required-dependencies
     {
@@ -308,12 +334,55 @@ local plugins = {
     -- not working for some reason 'm4xshen/autoclose.nvim',
     'airblade/vim-gitgutter',
     'nvim-treesitter/playground',
-    'theprimeagen/harpoon',
-    'mbbill/undotree',
-    'tpope/vim-fugitive',
+    {
+        'theprimeagen/harpoon',
+        config = function()
+            local mark = require("harpoon.mark")
+            local ui = require("harpoon.ui")
+            local k = vim.keymap
+
+            k.set("n", "<leader>a", mark.add_file)
+            k.set("n", "<C-p>", ui.toggle_quick_menu) -- C-o overrides jumping in vim and C-e sucks in termux (scroll down action)
+
+            -- dvorak local keys = {"h", "t", "n", "s", "leader"}
+            local keys = {"h", "j", "k", "l"}
+            for i, key in ipairs(keys) do
+                k.set("n", "<C-"..key..">", function() ui.nav_file(i) end)
+            end
+        end,
+    },
+    {
+        'mbbill/undotree',
+        config = function()
+            vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
+        end,
+    },
+    {
+        'tpope/vim-fugitive',
+        config = function()
+            vim.keymap.set('n', '<leader>gs', vim.cmd.Git);
+        end,
+    },
     'f-person/git-blame.nvim',                 -- shows git blame
     {
         'folke/zen-mode.nvim',
+        config = function()
+            require("zen-mode").setup {
+                window = {
+                    width = 90,
+                    options = {
+                        number = true,
+                        relativenumber = true,
+                    }
+                },
+            }
+
+            vim.keymap.set("n", "<leader>zz", function()
+                require("zen-mode").toggle()
+                vim.wo.wrap = false
+                -- not working ColorMyPencils()
+            end)
+        end,
         opts = {
             window = {
                 backdrop = 0,

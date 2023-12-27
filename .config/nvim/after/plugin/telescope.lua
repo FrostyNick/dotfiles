@@ -1,4 +1,9 @@
 local ts = require"telescope"
+if not ts then
+    print('require"telescope" failed. Telescope is probably not installed. Telescope config has been skipped.')
+    return
+end
+
 ts.setup({
     defaults = {
         -- layout_strategy = "vertical", -- better on vertical screens.
@@ -19,8 +24,6 @@ ts.setup({
     -- other configuration values here
 })
 
-ts.load_extension"file_browser"
-ts.load_extension'media_files'
 local tsb = require('telescope.builtin')
 local k = vim.keymap
 -- vim.g.mapleader = ' '
@@ -59,13 +62,28 @@ k.set('n', '<leader>fv', tsb.git_files, {desc="Telescope: git files"})
 
 k.set('n', '<leader>fm', "<cmd>Telescope man_page<CR>", {})
 
-k.set('n', '<leader>fb',
-"<cmd>Telescope file_browser<CR>", {desc="Telescope: file browser"})
-
-k.set('n', '<leader>fp',
-"<cmd>Telescope media_files<CR>", { desc = "Telescope: pictures; media files"})
-
 k.set('n', '<leader>f/', function()
     tsb.grep_string({ search = vim.fn.input("Grep > ") })
 end, {desc="Telescope: Grep string"})
+
+local success,msg = pcall(function()
+    ts.load_extension"file_browser"
+    k.set('n', '<leader>fb',
+    "<cmd>Telescope file_browser<CR>", {desc="Telescope: file browser"})
+end)
+
+if not success then
+    print("Error loading telescope file_browser: " .. msg)
+end
+
+success,msg = pcall(function()
+    ts.load_extension"media_files"
+    k.set('n', '<leader>fp',
+    "<cmd>Telescope media_files<CR>", { desc = "Telescope: pictures; media files"})
+end)
+
+if not success then
+    print("Error loading telescope media_files: " .. msg)
+end
+
 

@@ -4,16 +4,11 @@
 --    /
 --    sus.nvim
 --
---
+-- (Ps: My inspired plugin doesn't exist.)
 
 local function notsus()
-    for _ = 1, vim.api.nvim_buf_line_count(0) do
-        print("soonotsus AAHHHHHHH")
-    end
-
+    print("(test) line count? " .. vim.api.nvim_buf_line_count(0))
 end
 
 notsus()
-
-
 
