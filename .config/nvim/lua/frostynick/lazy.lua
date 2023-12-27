@@ -58,6 +58,7 @@ vim.g.mapleader = ' '
 local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
+        event = "VeryLazy",
         build = ":TSUpdate",
         config = function()
 
@@ -96,9 +97,10 @@ local plugins = {
     },
 
     -- LSP Support
-    { 'williamboman/mason.nvim', },-- Optional
+    { 'williamboman/mason.nvim', event = "VeryLazy"},-- Optional
     { 'williamboman/mason-lspconfig.nvim',
         dependencies = { 'williamboman/mason.nvim' },
+        event = "VeryLazy",
         config = function()
             require("mason").setup()
             require("mason-lspconfig").setup {
@@ -106,7 +108,7 @@ local plugins = {
             }
         end
     }, -- Optional
-    { 'neovim/nvim-lspconfig' }, -- Required
+    { 'neovim/nvim-lspconfig', event = "VeryLazy" }, -- Required
 
     -- Autocompletion
     -- { 'hrsh7th/cmp-nvim-lsp' }, -- Required
@@ -121,9 +123,8 @@ local plugins = {
     -- "L3MON4D3/LuaSnip", -- errors on init, haven't configured yet.
     -- -- 'hrsh7th/cmp-cmdline',
     -- -- autocomplete (required)
-    'neovim/nvim-lspconfig',
-    'hrsh7th/nvim-cmp',
-    'hrsh7th/cmp-nvim-lsp',
+    { 'hrsh7th/nvim-cmp', event = "VeryLazy" },
+    { 'hrsh7th/cmp-nvim-lsp', event = "VeryLazy" },
 
     -- uses ys; which stands for you surround; see `:h nvim-surround.usage` for more info
     {
@@ -139,6 +140,7 @@ local plugins = {
     -- visualize jump to character
     {
         'jinh0/eyeliner.nvim',
+        event = "VeryLazy",
         config = function()
             require 'eyeliner'.setup {
                 highlight_on_key = true,
@@ -155,11 +157,13 @@ local plugins = {
     },
     {
         'KaitlynEthylia/TreePin',
+        event = "VeryLazy",
         dependencies = 'nvim-treesitter/nvim-treesitter',
         opts = {} -- Might break. See commit on 2023-9-18 to rollback
     },
     {
         'TarunDaCoder/sus.nvim',
+        event = "VeryLazy",
         opts = {}
     },
     -- { --[[ commented out codeium for now because
@@ -204,7 +208,7 @@ local plugins = {
         -- ft = "norg",
         build = ":Neorg sync-parsers",
         dependencies = { "nvim-lua/plenary.nvim" },
-        -- event = "VeryLazy",
+        event = "VeryLazy",
         config = function()
             require("neorg").setup {
                 load = {
@@ -232,11 +236,11 @@ local plugins = {
         end,
     },
 
-    {'nacro90/numb.nvim', opts = {} }, -- non-intrusively preview while typing :432... 
+    {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
     -- Two colorschemes below
-    { 'rose-pine/neovim',      name = 'rose-pine',
-    -- Note: Use "config" for one theme, if multiple exist.
-        config = function()
+    {
+        'rose-pine/neovim',      name = 'rose-pine',
+        init = function()
             vim.cmd.colorscheme("rose-pine")
 
             vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
@@ -246,10 +250,16 @@ local plugins = {
             vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
         end
     },
-    { 'AlexvZyl/nordic.nvim',  name = 'nordic', config = {telescope = {style = 'classic'}} },
+    {
+        'AlexvZyl/nordic.nvim',
+        name = 'nordic',
+        event = "VeryLazy",
+        config = {telescope = {style = 'classic'}}
+    },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     {
         'nvim-lualine/lualine.nvim',
+        event = "UIEnter",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         opts = {},
     },
@@ -285,14 +295,16 @@ local plugins = {
     {
       -- This plugin
         "Zeioth/compiler.nvim",
-        cmd = { "CompilerOpen", "CompilerToggleResults" },
+        -- cmd = { "CompilerOpen", "CompilerToggleResults" },
+        event = "VeryLazy",
         dependencies = { "stevearc/overseer.nvim" },
         config = function(_, opts) require("compiler").setup(opts) end,
     },
     {
         "stevearc/overseer.nvim",
         commit = "3047ede61cc1308069ad1184c0d447ebee92d749", -- Recommended to to avoid breaking changes
-        cmd = { "CompilerOpen", "CompilerToggleResults" },
+        event = "VeryLazy",
+        -- cmd = { "CompilerOpen", "CompilerToggleResults" },
         opts = {
             -- Tasks are disposed 5 minutes after running to free resources.
             -- If you need to close a task inmediatelly:
@@ -310,10 +322,12 @@ local plugins = {
     },
     { -- useful keybinds: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
         "nvim-telescope/telescope-file-browser.nvim",
+        event = "VeryLazy",
         dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     },
     {
         "davisdude/vim-love-docs",
+        event = "VeryLazy",
         -- This plugin doesn't work out of the box.
         --[[ Extra steps to make this work:
         1. Get the dependencies.
@@ -332,8 +346,8 @@ local plugins = {
         -- 
     },
     -- not working for some reason 'm4xshen/autoclose.nvim',
-    'airblade/vim-gitgutter',
-    'nvim-treesitter/playground',
+    {'airblade/vim-gitgutter', event = "VeryLazy" },
+    {'nvim-treesitter/playground', cmd = "TSPlaygroundToggle"},
     {
         'theprimeagen/harpoon',
         config = function()
@@ -353,23 +367,29 @@ local plugins = {
     },
     {
         'mbbill/undotree',
+        event = "VeryLazy",
         config = function()
             vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
         end,
     },
     {
         'tpope/vim-fugitive',
+        event = "VeryLazy",
         config = function()
             vim.keymap.set('n', '<leader>gs', vim.cmd.Git);
         end,
     },
-    'f-person/git-blame.nvim',                 -- shows git blame
+    { 'f-person/git-blame.nvim', event = "VeryLazy" }, -- shows git blame
     {
         'folke/zen-mode.nvim',
+        -- cmd = "ZenMode", -- avoid if using vim.cmd or if it's on startup
+        -- event = "VeryLazy", -- avoid if it's on startup
+        lazy = true,
         config = function()
             require("zen-mode").setup {
                 window = {
                     width = 90,
+                    -- self-note: doesn't work, works on other PC for some reason.
                     options = {
                         number = true,
                         relativenumber = true,
@@ -406,9 +426,13 @@ local plugins = {
         }
     },
     -- piersolenski/telescope-import.nvim Autofill imports. Supports JS; lua; py; c++.
-    'nvim-treesitter/nvim-treesitter-context', -- shows functions from above
+
+    -- pins function names/definitons outside visible view
+    {'nvim-treesitter/nvim-treesitter-context', event = "VeryLazy" },
+
     {'nvim-treesitter/nvim-treesitter-textobjects',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        event = "VeryLazy",
         config = function()
             -- extremely basic setup is useful; has a ton of potential.
             -- see https://github.com/nvim-treesitter/nvim-treesitter-textobjects#text-objects-move
@@ -444,34 +468,44 @@ local plugins = {
         -- \/ once I yeet out of Joplin
         -- build = "cd app && yarn install",
         build = "cd app && npm install",
-        init = function() vim.g.mkdp_filetypes = { "markdown" } end,
+        config = function() vim.g.mkdp_filetypes = { "markdown" } end,
     },
     { 'nvim-telescope/telescope-media-files.nvim',
-        dependencies = { 'nvim-lua/popup.nvim', 'nvim-telescope/telescope.nvim' }
+        dependencies = { 'nvim-lua/popup.nvim', 'nvim-telescope/telescope.nvim' },
+        event = "VeryLazy",
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', opts = {} },
     { 'simrat39/symbols-outline.nvim', -- I use as function outline. no whitelist so there's a long list instead.
+        cmd = "SymbolsOutline",
         opts = { show_symbol_details = true,
             symbol_blacklist = {'File', 'Module', 'Namespace', 'Package', 'Class', 'Method', 'Property', 'Field', 'Constructor', 'Enum', 'Interface', --[[ 'Function', 'Variable', 'Constant', 'String', 'Number', 'Boolean', 'Array', 'Object', 'Key', 'Null', 'EnumMember', ]] 'Struct', 'Event', 'Operator', 'TypeParameter', 'Component', 'Fragment'}
         }
     },
     -- :Speedtyper to start typing practice
-    {'NStefan002/speedtyper.nvim', opts = {}},
+    {
+        'NStefan002/speedtyper.nvim',
+        cmd = "Speedtyper",
+        opts = {}
+    },
     -- leetcode: https://github.com/kawre/leetcode.nvim . Requires v0.9.0. See requirements b4 installing.
 
     -- currently not working: https://github.com/glacambre/firenvim/blob/master/TROUBLESHOOTING.md
     -- Below is made for browser extension firenvim.
     {
         "glacambre/firenvim",
+        event = "VeryLazy",
         -- lazy = not vim.g.started_by_firenvim,
         -- module = false,
         build = function()
             vim.fn["firenvim#install"](0)
         end,
     },
-    --
-    'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
+    {
+        'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
+        event = "VeryLazy",
+        -- event = "UIEnter",
+    },
     -- { 'stevearc/oil.nvim', opts = {}, },
     -- rm homepage. I don't really want it.
     -- - Trying out below; might delete later - --
