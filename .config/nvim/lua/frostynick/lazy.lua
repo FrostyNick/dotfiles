@@ -57,10 +57,12 @@ vim.g.mapleader = ' '
 
 local function telescopeConfig()
     local ts = require"telescope"
-    if not ts then
-        print('require"telescope" failed. Telescope is probably not installed. Telescope config has been skipped.')
-        return
-    end
+
+    -- If lazy becomes obsolete one day for some reason and separate files are needed, these checks might help.
+    -- if not ts then
+    --     print('require"telescope" failed. Telescope is probably not installed. Telescope config has been skipped.')
+    --     return
+    -- end
 
     ts.setup({
         defaults = {
@@ -95,7 +97,7 @@ local function telescopeConfig()
     k.set('n', '<leader>fk', tsb.help_tags,
     { desc="Telescope: help tags (documentation)" })
 
-    k.set('n', '<leader>f<BS>', tsb.resume,
+    k.set('n', '<leader><BS>', tsb.resume,
     {desc="Telescope: use prev picker"})
 
     -- error: k.set('n', '<leader>f/', builtin.grep_files, {})
@@ -137,7 +139,7 @@ local function telescopeConfig()
     success,msg = pcall(function()
         ts.load_extension"media_files"
         k.set('n', '<leader>fp',
-        "<cmd>Telescope media_files<CR>", { desc = "Telescope: pictures; media files"})
+        "<cmd>Telescope media_files<CR>", {desc = "Telescope: pictures; media files"})
     end)
 
     if not success then
