@@ -55,6 +55,96 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.g.mapleader = ' '
 
+local function telescopeConfig()
+    local ts = require"telescope"
+    if not ts then
+        print('require"telescope" failed. Telescope is probably not installed. Telescope config has been skipped.')
+        return
+    end
+
+    ts.setup({
+        defaults = {
+            -- layout_strategy = "vertical", -- better on vertical screens.
+            layout_config = {
+                width = 0.93
+            }
+        },
+        extensions = {
+            file_browser = {
+                hijack_netrw = true,
+            }
+        },
+        media_files = {
+            filetypes = {"png", "webp", "jpg", "jpeg"},
+            -- find command (defaults to `fd`)
+            find_cmd = "rg"
+        }
+        -- other configuration values here
+    })
+
+    local tsb = require('telescope.builtin')
+    local k = vim.keymap
+    -- vim.g.mapleader = ' '
+
+    k.set('n', '<leader><leader>', tsb.spell_suggest, {})
+    k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
+    k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
+    k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
+    k.set('n', '<leader>f?', function() print"use <leader>fk instead" end)
+
+    k.set('n', '<leader>fk', tsb.help_tags,
+    { desc="Telescope: help tags (documentation)" })
+
+    k.set('n', '<leader>f<BS>', tsb.resume,
+    {desc="Telescope: use prev picker"})
+
+    -- error: k.set('n', '<leader>f/', builtin.grep_files, {})
+    -- k.set('n', '<leader>ff', builtin.find_files, {})
+    k.set('n', '<leader>ff', "<cmd>Telescope find_files hidden=true<CR>",
+    {desc="Telescope: find files"})
+
+    k.set('n', '<leader>fj',
+    '<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/backup2022nov10/<CR>',
+    {desc="Telescope: find backup files; keyword: joplin"})
+
+    k.set('n', '<leader>fc',
+    '<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/p/<CR>',
+    {desc="Telescope: find code in projects directory"})
+
+    k.set('n', '<leader>gj',
+    '<cmd>Telescope live_grep search_dirs=/home/nicholas/backup2022nov10/<CR>',
+    {desc="Telescope: live grep (find text) in backup files; replacement to joplin. Requires rg."})
+
+    k.set('n', '<leader>fg', tsb.live_grep, {desc="Telescope: live grep"})
+    k.set('n', '<leader>fv', tsb.git_files, {desc="Telescope: git files"})
+
+    k.set('n', '<leader>fm', "<cmd>Telescope man_page<CR>", {})
+
+    k.set('n', '<leader>f/', function()
+        tsb.grep_string({ search = vim.fn.input("Grep > ") })
+    end, {desc="Telescope: Grep string"})
+
+    local success,msg = pcall(function()
+        ts.load_extension"file_browser"
+        k.set('n', '<leader>fb',
+        "<cmd>Telescope file_browser<CR>", {desc="Telescope: file browser"})
+    end)
+
+    if not success then
+        print("Error loading telescope file_browser: " .. msg)
+    end
+
+    success,msg = pcall(function()
+        ts.load_extension"media_files"
+        k.set('n', '<leader>fp',
+        "<cmd>Telescope media_files<CR>", { desc = "Telescope: pictures; media files"})
+    end)
+
+    if not success then
+        print("Error loading telescope media_files: " .. msg)
+    end
+end
+
 local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
@@ -153,14 +243,17 @@ local plugins = {
         -- tag = '0.1.1',
         tag = '0.1.5',
         -- or                       , branch = '0.1.x',
-        dependencies = { 'nvim-lua/plenary.nvim' }
-    },
-    {
-        'KaitlynEthylia/TreePin',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        -- event = "UIEnter",
         event = "VeryLazy",
-        dependencies = 'nvim-treesitter/nvim-treesitter',
-        opts = {} -- Might break. See commit on 2023-9-18 to rollback
+        config = telescopeConfig,
     },
+    -- {
+    --     'KaitlynEthylia/TreePin',
+    --     event = "VeryLazy",
+    --     dependencies = 'nvim-treesitter/nvim-treesitter',
+    --     opts = {} -- Might break. See commit on 2023-9-18 to rollback
+    -- },
     {
         'TarunDaCoder/sus.nvim',
         event = "VeryLazy",
@@ -225,6 +318,11 @@ local plugins = {
                             workspaces = { notes = "~/backup2022nov10/notes" },
                         },
                     },
+                    ["core.keybinds"] = {
+                        config = {
+                            default_keybinds = false
+                        }
+                    },
                     ["core.export"] = {},
                     ["core.export.markdown"] = {
                         config = {
@@ -259,9 +357,22 @@ local plugins = {
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     {
         'nvim-lualine/lualine.nvim',
-        event = "UIEnter",
+        -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         opts = {},
+        -- config = function()
+        --     require("lualine").setup({
+        --         sections = {
+        --             lualine_x = {
+        --                 {
+        --                     require("lazy.status").updates,
+        --                     cond = require("lazy.status").has_updates,
+        --                     color = { fg = "#ff9e64" },
+        --                 },
+        --             },
+        --         },
+        --     })
+        -- end
     },
     {
         'barrett-ruth/live-server.nvim',
@@ -347,6 +458,15 @@ local plugins = {
     },
     -- not working for some reason 'm4xshen/autoclose.nvim',
     {'airblade/vim-gitgutter', event = "VeryLazy" },
+    {
+        "windwp/nvim-autopairs",
+        event = "VeryLazy",
+        config = function()
+            require("nvim-autopairs").setup {
+                check_ts = true,
+            }
+        end
+    },
     {'nvim-treesitter/playground', cmd = "TSPlaygroundToggle"},
     {
         'theprimeagen/harpoon',
@@ -383,7 +503,7 @@ local plugins = {
     {
         'folke/zen-mode.nvim',
         cmd = "ZenMode", -- avoid these if on startup
-        -- event = "VeryLazy", 
+        -- event = "VeryLazy",
         init = function()
             vim.keymap.set("n", "<leader>zz", function()
                 vim.cmd("ZenMode")
@@ -460,7 +580,11 @@ local plugins = {
     },
     -- no longer works on here. probably bc of another plugin.
     -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
-    {"dhruvasagar/vim-table-mode", ft = "markdown"},
+    {
+        "dhruvasagar/vim-table-mode",
+        cmd = "TableModeToggle",
+        -- ft = "markdown"
+    },
     {"chrisbra/Colorizer", event = "VeryLazy"}, -- test if it still works
     -- {"ap/vim-css-color", ft = "css"},
     {"iamcco/markdown-preview.nvim",
@@ -503,7 +627,7 @@ local plugins = {
     },
     {
         'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
-        event = "VeryLazy",
+        event = "InsertEnter",
         -- event = "UIEnter",
     },
     -- { 'stevearc/oil.nvim', opts = {}, },
