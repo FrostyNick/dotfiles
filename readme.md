@@ -6,6 +6,11 @@ you want.
 If you learn something, consider adding a star or commenting.
 
 
+## Preview
+
+![Setup showcase](https://github.com/FrostyNick/dotfiles/assets/57016218/dc492a6c-f389-45b4-b874-b4850f5ea08a)
+
+
 ## File descriptions
 
 <details>
@@ -63,8 +68,12 @@ the config works.
   readme and modify config.
 - Sane defaults for coding, tabs, etc.
 - Minimal look and feel.
-- Loads in about 100ms as of today; after optimizing a few of the new plugins,
-  it would probably drop to around 80ms. Also benchmarks vary on other devices.
+- Startup time is about 32ms.
+    - "VeryLazy" is about 65ms (doesn't include plugins that aren't loaded
+  yet).
+    - Note: Benchmarks vary a lot. Startup time for neovim plugins
+  are 5-20x slower on Windows compared to Linux for some reason if you somehow
+  get it running there based on my rough testing (native nvim + Wezterm).
   Taking better advantage of lazy loading more would lower this a lot.
 - Several keybinds while being mindful about existing vim keybinds; especially
   if they're useful keybinds.
@@ -109,6 +118,7 @@ the config works.
 For all the icons to be displayed correctly in the terminal, you will need to install a nerd font. (If you use WezTerm, note it has a nerd font pre-installed as a fallback and glyph characters, so no setup is needed with nerd fonts.)
 
 Click Download on any of the fonts in the link below; they all contain nerd fonts.
+
 [NerdFonts Install](https://nerdfonts.com/font-downloads)
 
 Place it in [`~/.local/share/fonts`](.local/share/fonts) and create the fonts
@@ -165,6 +175,3 @@ rm Mononoki.zip
 - https://dotfiles.github.io/ (I haven't looked at this it just looks promising)
 - DT YT video about dotfiles + take notes + comment section.
 
-## Showcase
-
-![image](https://github.com/FrostyNick/dotfiles/assets/57016218/dc492a6c-f389-45b4-b874-b4850f5ea08a)
