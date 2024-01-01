@@ -22,6 +22,7 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 --
 k.set("n", "Q", "<nop>")
 k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
+k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
 k.set("n", "<leader>dj", vim.diagnostic.goto_next, {desc="LSP: next diagnostic"})
@@ -50,7 +51,7 @@ k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 -- k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 -- k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
-k.set("n", "<leader>zo", [[:SymbolsOutline<CR>:sl! 100m<CR>:winc p<CR>]], {desc="Function outline. I configured it as a def outline like used in Geany. Works by using :SymbolsOutline with config."}) -- Note that adding ! to :sl doesn't work in regular vim. All it does is not hide the cursor while sleeping.
+-- <leader>zo moved to lazy.lua
 k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"})
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
 k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")

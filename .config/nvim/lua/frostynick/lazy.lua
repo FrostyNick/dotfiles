@@ -95,6 +95,7 @@ local function telescopeConfig()
     k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
 
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
+    k.del('n', '<leader>,')
     k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
     k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
     k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
@@ -615,11 +616,24 @@ local plugins = {
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', event = "VeryLazy", opts = {} },
-    { 'simrat39/symbols-outline.nvim', -- I use as function outline. no whitelist so there's a long list instead.
-        cmd = "SymbolsOutline",
-        opts = { show_symbol_details = true,
-            symbol_blacklist = {'File', 'Module', 'Namespace', 'Package', 'Class', 'Method', 'Property', 'Field', 'Constructor', 'Enum', 'Interface', --[[ 'Function', 'Variable', 'Constant', 'String', 'Number', 'Boolean', 'Array', 'Object', 'Key', 'Null', 'EnumMember', ]] 'Struct', 'Event', 'Operator', 'TypeParameter', 'Component', 'Fragment'}
-        }
+    { -- improved simrat39/symbols-outline
+        "hedyhli/outline.nvim",
+        lazy = true,
+        cmd = "Outline", -- { "Outline", "OutlineOpen" },
+        keys = {
+            { "<leader>zo", "<cmd>Outline!<CR>", desc = "Code outline. Previously :SymbolsOutline. Can be used with :Outline" },
+        },
+        opts = {
+            symbols = {
+                filter = {
+                    default = {"String", "Variable", exclude = true},
+                    lua = {
+                        'Function', 'Class'
+                    }
+                }
+            }
+            -- Your setup opts here
+        },
     },
     -- :Speedtyper to start typing practice
     {
@@ -645,6 +659,25 @@ local plugins = {
         event = "InsertEnter",
         -- event = "UIEnter",
     },
+    -- { -- error: couldn't find github username
+    --     'vimdev/lspsaga.nvim',
+    --     -- event = "VeryLazy",
+    -- },
+    -- { -- dependency: curl; looks like this needs a paid subscription. I guess I'll stick with the web interface.
+    --     "jackMort/ChatGPT.nvim",
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("chatgpt").setup({
+    --             api_key_cmd = "gpg --decrypt " .. vim.fn.expand("$HOME") .. "/locked.txt.gpg"
+    --         })
+    --     end,
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-telescope/telescope.nvim"
+    --     }
+    -- },
+
     -- { 'stevearc/oil.nvim', opts = {}, },
     -- rm homepage. I don't really want it.
     -- - Trying out below; might delete later - --
