@@ -2,9 +2,6 @@
 -- keys for vim https://vimdoc.sourceforge.net/htmldoc/intro.html#key-notation
 -- Migration: Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
 --[[ Open issues:
-*** [Bye to files in after/plugin](https://github.com/FrostyNick/dotfiles/issues/5)
-[Telescope plugin errors with default config](https://github.com/FrostyNick/dotfiles/issues/6)
-[Replace npm with yarn](https://github.com/FrostyNick/dotfiles/issues/4)
 [Neovim config should be more backwards compatible](https://github.com/FrostyNick/dotfiles/issues/1)
 Additionally, clean code. Remove extra comments.
 --]]
@@ -392,7 +389,11 @@ local plugins = {
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
         -- cmd = "LiveServerStart",  -- Note: "LiveServerToggle" isn't in plugin.
-        build = 'npm install -g live-server',
+        -- if switching from npm you can uninstall by (might need sudo):
+        -- npm uninstall -g live-server
+        -- yarn global add @compodoc/live-server # less security issues with this live-server command
+        -- build = 'npm install -g live-server', -- If using npm
+        build = 'yarn global add @compodoc/live-server', -- in theory this is needed after installing this plugin. Couldn't test it right now.
         config = function() -- should be in init some of this maybe. fix later. slows down start time slightly.
             local l = require('live-server')
             l.setup( --[[ args = {"--browser=librewolf"} ]])
@@ -605,9 +606,8 @@ local plugins = {
     -- {"ap/vim-css-color", ft = "css"},
     {"iamcco/markdown-preview.nvim",
         ft = "markdown",
-        -- \/ once I yeet out of Joplin
-        -- build = "cd app && yarn install",
-        build = "cd app && npm install", -- yarn??
+        build = "cd app && yarn install", -- If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
+        -- build = "cd app && npm install", -- If using npm
         config = function() vim.g.mkdp_filetypes = { "markdown" } end,
     },
     { 'nvim-telescope/telescope-media-files.nvim',
@@ -616,7 +616,7 @@ local plugins = {
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
     { 'numToStr/Comment.nvim', event = "VeryLazy", opts = {} },
-    { -- improved simrat39/symbols-outline
+    { -- Improved simrat39/symbols-outline
         "hedyhli/outline.nvim",
         lazy = true,
         cmd = "Outline", -- { "Outline", "OutlineOpen" },
