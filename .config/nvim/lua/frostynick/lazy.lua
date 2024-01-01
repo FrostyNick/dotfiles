@@ -88,6 +88,12 @@ local function telescopeConfig()
     local k = vim.keymap
     -- vim.g.mapleader = ' '
 
+    --- file browser shortcuts: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
+    k.set("n", "<leader>dl", tsb.diagnostics, {desc="LSP: Telescope diagnostics"})
+    -- For some reason there is A being called after the below is run. Additionally
+    -- adding over one Esc keys aren't recognized. Might report as bug.
+    k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
+
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
     k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
     k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
@@ -320,11 +326,11 @@ local plugins = {
                             workspaces = { notes = "~/backup2022nov10/notes" },
                         },
                     },
-                    ["core.keybinds"] = {
-                        config = {
-                            default_keybinds = false
-                        }
-                    },
+                    -- ["core.keybinds"] = {
+                    --     config = {
+                    --         default_keybinds = false
+                    --     }
+                    -- },
                     ["core.export"] = {},
                     ["core.export.markdown"] = {
                         config = {
@@ -337,7 +343,7 @@ local plugins = {
     },
 
     {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
-    -- Two colorschemes below
+    --- Colorschemes below
     {
         'rose-pine/neovim',      name = 'rose-pine',
         init = function()
@@ -350,12 +356,16 @@ local plugins = {
             vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
         end
     },
-    {
-        'AlexvZyl/nordic.nvim',
-        name = 'nordic',
-        event = "VeryLazy",
-        config = {telescope = {style = 'classic'}}
-    },
+    -- {
+    --     'AlexvZyl/nordic.nvim',
+    --     name = 'nordic',
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("nordic").setup {
+    --             telescope = {style = 'classic'}
+    --         }
+    --     end
+    -- },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     {
         'nvim-lualine/lualine.nvim',
@@ -376,23 +386,24 @@ local plugins = {
         --     })
         -- end
     },
+
     {
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
-        -- cmd = "LiveServerStart", -- lazyload on command --> not working?
+        -- cmd = "LiveServerStart",  -- Note: "LiveServerToggle" isn't in plugin.
         build = 'npm install -g live-server',
-        config = function()
+        config = function() -- should be in init some of this maybe. fix later. slows down start time slightly.
             local l = require('live-server')
-            l.setup(--[[ args = {"--browser=librewolf"} ]])
+            l.setup( --[[ args = {"--browser=librewolf"} ]])
             vim.g.liveservertoggle = true
-            vim.keymap.set('n', '<leader>lf', function()
-                vim.g.liveservertoggle = true
-                l.start()
-            end)
-            vim.keymap.set('n', '<leader>lt', function()
-                vim.g.liveservertoggle = false
-                l.stop()
-            end)
+            -- vim.keymap.set('n', '<leader>lf', function()
+            --     vim.g.liveservertoggle = true
+            --     l.start()
+            -- end)
+            -- vim.keymap.set('n', '<leader>lt', function()
+            --     vim.g.liveservertoggle = false
+            --     l.stop()
+            -- end)
 
             vim.keymap.set('n', '<leader>ll', function()
                 if vim.g.liveservertoggle then
@@ -403,6 +414,8 @@ local plugins = {
                 vim.g.liveservertoggle = not vim.g.liveservertoggle
             end)
         end,
+        -- config = function()
+        -- end
     },
     -- How to install the required dependencies · Zeioth/compiler.nvim Wiki https://github.com/Zeioth/Compiler.nvim/wiki/how-to-install-the-required-dependencies
     {
@@ -470,23 +483,23 @@ local plugins = {
         end
     },
     {'nvim-treesitter/playground', cmd = "TSPlaygroundToggle"},
-    {
-        'theprimeagen/harpoon',
-        config = function()
-            local mark = require("harpoon.mark")
-            local ui = require("harpoon.ui")
-            local k = vim.keymap
-
-            k.set("n", "<leader>a", mark.add_file)
-            k.set("n", "<C-p>", ui.toggle_quick_menu) -- C-o overrides jumping in vim and C-e sucks in termux (scroll down action)
-
-            -- dvorak local keys = {"h", "t", "n", "s", "leader"}
-            local keys = {"h", "j", "k", "l"}
-            for i, key in ipairs(keys) do
-                k.set("n", "<C-"..key..">", function() ui.nav_file(i) end)
-            end
-        end,
-    },
+    -- {
+    --     'theprimeagen/harpoon',
+    --     config = function()
+    --         local mark = require("harpoon.mark")
+    --         local ui = require("harpoon.ui")
+    --         local k = vim.keymap
+    --
+    --         k.set("n", "<leader>a", mark.add_file)
+    --         k.set("n", "<C-p>", ui.toggle_quick_menu) -- C-o overrides jumping in vim and C-e sucks in termux (scroll down action)
+    --
+    --         -- dvorak local keys = {"h", "t", "n", "s", "leader"}
+    --         local keys = {"h", "j", "k", "l"}
+    --         for i, key in ipairs(keys) do
+    --             k.set("n", "<C-"..key..">", function() ui.nav_file(i) end)
+    --         end
+    --     end,
+    -- },
     {
         'mbbill/undotree',
         cmd = "UndotreeToggle",
@@ -593,7 +606,7 @@ local plugins = {
         ft = "markdown",
         -- \/ once I yeet out of Joplin
         -- build = "cd app && yarn install",
-        build = "cd app && npm install",
+        build = "cd app && npm install", -- yarn??
         config = function() vim.g.mkdp_filetypes = { "markdown" } end,
     },
     { 'nvim-telescope/telescope-media-files.nvim',
@@ -601,7 +614,7 @@ local plugins = {
         event = "VeryLazy",
     },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
-    { 'numToStr/Comment.nvim', opts = {} },
+    { 'numToStr/Comment.nvim', event = "VeryLazy", opts = {} },
     { 'simrat39/symbols-outline.nvim', -- I use as function outline. no whitelist so there's a long list instead.
         cmd = "SymbolsOutline",
         opts = { show_symbol_details = true,

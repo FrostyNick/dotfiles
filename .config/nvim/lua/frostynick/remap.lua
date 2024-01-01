@@ -1,7 +1,5 @@
---- file browser shortcuts: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
 
 local k = vim.keymap
-local telescopeBi = require("telescope.builtin")
 vim.g.mapleader = ' '
 k.set("v", "J", ":m '>+1<CR>gv=gv")
 k.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -27,7 +25,6 @@ k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:c
 
 k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
 k.set("n", "<leader>dj", vim.diagnostic.goto_next, {desc="LSP: next diagnostic"})
-k.set("n", "<leader>dl", telescopeBi.diagnostics, {desc="LSP: Telescope diagnostics"})
 
 -- Keep clipboard contents after pasting with p in visual mode.
 -- Thanks to: https://github.com/LunarVim/Neovim-from-scratch/blob/02-keymaps/lua/user/keymaps.lua#L52C1-L52C31
@@ -53,9 +50,8 @@ k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 -- k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 -- k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
--- :wincmd w
-k.set("n", "<leader>zo", [[:SymbolsOutline<CR>:sl! 100m<CR>:winc p<CR>]], {desc="Function outline. I configured it as a def outline like used in Geany. Works by using :SymbolsOutline with config."}) -- Note that adding ! to :sl is neovim exclusive. All it does is not hide the cursor while sleeping.
-k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"}) -- Note that adding ! to :sl is neovim exclusive. All it does is not hide the cursor while sleeping.
+k.set("n", "<leader>zo", [[:SymbolsOutline<CR>:sl! 100m<CR>:winc p<CR>]], {desc="Function outline. I configured it as a def outline like used in Geany. Works by using :SymbolsOutline with config."}) -- Note that adding ! to :sl doesn't work in regular vim. All it does is not hide the cursor while sleeping.
+k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"})
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
 k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
@@ -74,9 +70,6 @@ k.set("n", "<leader>vps", "<cmd>e ~/backup2022nov10/j/Sources/App_web sources.md
 -- below doesnt work because i is powerful af. fix later.
 k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 
--- For some reason there is A being called after the below is run. Additionally
--- adding over one Esc keys aren't recognized. Might report as bug.
-k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
 
 -- local leader = ' '
 -- I cannot get below to work. Above is the best solution I could make.
