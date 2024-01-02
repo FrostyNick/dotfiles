@@ -456,6 +456,7 @@ local plugins = {
     {
         "davisdude/vim-love-docs",
         event = "VeryLazy",
+        pin = true, -- there are errors on update, so this will stop updates.
         -- This plugin doesn't work out of the box.
         --[[ Extra steps to make this work:
         1. Get the dependencies.
@@ -659,6 +660,22 @@ local plugins = {
         event = "InsertEnter",
         -- event = "UIEnter",
     },
+    {
+        'rcarriga/nvim-notify',
+        event = "UIEnter",
+        config = function()
+            local notify = require("notify")
+            notify.setup({ render = "compact", background_colour = "#000000" })
+            vim.notify = notify
+
+            -- Do this before: require("telescope").load_extension("notify")
+            -- require('telescope').extensions.notify.notify(<opts>)
+            -- OR
+            -- :Telescope notify
+            -- No telescope? :Notifications # lua: require("notify").history()
+            -- compact
+        end
+    }
     -- { -- error: couldn't find github username
     --     'vimdev/lspsaga.nvim',
     --     -- event = "VeryLazy",
