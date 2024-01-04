@@ -119,7 +119,6 @@ k.set("n", "<leader>r", function() print"code: run general code soon. also try <
 k.set("n", "<leader>dc", function() print"code: run docs soon. (see tj tutorial)" end)
 -- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
 
-k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
 k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 
@@ -127,9 +126,17 @@ k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 -- <leader>cx is in lazy.lua if it still exists
 
 --- Vim shortcuts
-k.set("n", "<leader>ws", function()
-    vim.cmd("w | so")
-end)
+k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
+k.set("n", "<leader>w", [[:w<CR>]])
+k.set("n", "<leader>e", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+
+--[[ above todo:
+- Doesn't delete empty buffer. Avoid :bd!
+- IP: Use marks instead of paragraph jumps. Otherwise date will be inserted incorrectly. Or changelist?
+- Because of above, new lines don't work.
+- This won't work outside of Linux because of date command. Might consider lua os.date() instead. Pros: Cross-platform; might be faster. Cons: Only neovim.
+- g`"
+--]]
 
 -- k.set("n", "<leader>pv", vim.cmd.Ex)
 k.set("n", "<leader>pv", vim.cmd.Ex); -- function()
