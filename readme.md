@@ -74,7 +74,6 @@ the config works.
     - Note: Benchmarks vary a lot. Startup time for neovim plugins
   are 5-20x slower on Windows compared to Linux for some reason if you somehow
   get it running there based on my rough testing (native nvim + Wezterm).
-  Taking better advantage of lazy loading more would lower this a lot.
 - Several keybinds while being mindful about existing vim keybinds; especially
   if they're useful keybinds.
     - <kbd>leader + ,</kbd> to see previous files. In plain vim, <kbd>:bro
