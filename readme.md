@@ -22,27 +22,30 @@ If you learn something, consider adding a star or commenting.
   `ip`     = planning support <br>
   ` `      = not supported <br>
   `%%%`    = not git pushed <br>
-  `?`      = no clue <br>
 
-  ##### Info
-  | Config file                                        | Description                                           | Ubuntu | Termux | Windows 10 |
-  | ---                                                | ---                                                   | -      | -      | -          |
-  | [~/.config/nvim](.config/nvim/)                    | Config for Neovim; powerful text editor / PDE         | x      | !      | ?          |
-  | [~/.config/ranger](.config/ranger)                 | File manager in terminal; planning to remove later    | x      | x      |
-  | [~/.config/Vencord](.config/Vencord)               | Vencord is a Discord client                           | ?      | ?      |
-  | [~/.config/Kvantum](.config/Kvantum)               | Force dark mode on some apps                          | x      | ?      |
-  | [~/.config/i3](.config/i3)                         | Window Manager for X11 compositor on Linux            | x      | ?      |
-  | [~/.config/kitty](.config/kitty)                   | Terminal emulator                                     | x      |
-  | [~/.config/mimeapps.list](.config/mimeapps.list)   | Fix for i3 default links on Ubuntu                    | x      |
-  | [~/.config/picom.conf](.config/picom.conf)         | Compositor for X11; allows for transparent windows    | x      | ?      |
-  | [~/.config/screenkey.json](.config/screenkey.json) | See keys typed on screen                              | x      | ?      |
-  | [~/.termux/font.tff%%%](.termux/font.tff)          | Set default font in Termux                            |        | x      |
-  | [~/.local/share/fonts](.local/share/fonts)         | Set default font in Ubuntu                            | x      |
-  | [~/.fzf](.fzf)                                     | file fuzzy finder                                     | x      | ?      | ?          |
-  | [~/.newsboat](.newsboat)                           | Terminal RSS reader with vim keybinds in config       | x      | ?      | ?          |
-  | [~/.bashrc](.bashrc)                               | bash shell config                                     | x      | ?      |
-  | [~/.bash_aliases](.bash_aliases)                   | aliases for shell                                     | x      | ?      |
-  | [~/.profile](.profile)                             | another startup file found by default in Ubuntu 20.04 | x      | ?      |
+  ##### Descriptions
+  | Config file                                                                            | Description                                            | Ubuntu | Termux | Windows 10 |
+  | ---                                                                                    | ---                                                    | -      | -      | -          |
+  | [~/.config/nvim](.config/nvim/)                                                        | Config for Neovim; powerful text editor / PDE          | x      | !      | ip         |
+  | [~/.config/doom](.config/doom/)                                                        | Config for Doom Emacs; IDE I haven't used much         | x      | ?      |
+  | [~/.config/Vencord](.config/Vencord)                                                   | Vencord is a Discord client                            | x      |        | x          |
+  | [~/.config/VencordDesktop/VencordDesktop/themes](.config/VencordDesktop/V...p/themes/) | Vesktop is a (Discord) Vencord client                  | x      |        | x          |
+  | [~/.config/alacritty](.config/alacritty)                                               | (soon) Terminal emulator (made for speed; yaml conf)   | x      |        | x          |
+  | [~/.config/kitty](.config/kitty)                                                       | Terminal emulator                                      | x      |
+  | [~/.config/wezterm](.config/wezterm)                                                   | Terminal emulator (more features built-in; lua conf)   | x      |        | x          |
+  | [~/.config/Kvantum](.config/Kvantum)                                                   | Force dark mode on some apps                           | x      |
+  | [~/.config/mimeapps.list](.config/mimeapps.list)                                       | Fix for i3 default links on Ubuntu                     | x      |
+  | [~/.config/i3](.config/i3)                                                             | Window Manager for X11 compositor on Linux             | x      |
+  | [~/.config/picom.conf](.config/picom.conf)                                             | Compositor for X11; transparent windows, effects, etc. | x      |
+  | [~/.config/screenkey.json](.config/screenkey.json)                                     | See keys typed on screen                               | x      |
+  | [~/.config/zathura/](.config/zathura/)                                                 | Tiny vim-like PDF/epub/other viewer                    | x      |
+  | [~/.termux/font.tff%%%](.termux/font.tff)                                              | Set default font in Termux                             |        | x      |
+  | [~/.local/share/fonts](.local/share/fonts)                                             | Set default font in Ubuntu                             | x      |
+  | [~/.fzf](.fzf)                                                                         | Fuzzy finder                                           | x      | !      |
+  | [~/.newsboat](.newsboat)                                                               | Terminal RSS+atom reader with vim keybinds in config   | x      | x      |
+  | [~/.bashrc](.bashrc)                                                                   | Bash shell config                                      | x      | ?      |
+  | [~/.bash_aliases](.bash_aliases)                                                       | Aliases for bash shell                                 | x      | x      |
+  | [~/.profile](.profile)                                                                 | Another startup file found by default in Ubuntu 20.04  | x      |
  
 </details>
 
