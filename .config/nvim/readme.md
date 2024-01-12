@@ -94,6 +94,9 @@ local k = vim.keymap
 k.set("n", "<leader>lo", function() vim.cmd("!love %/..") end, {desc="Run with Love2D; assuming that parent is project root folder."})
 k.set("n", "<leader>,", function() vim.cmd("bro o") end, {desc=":bro o -> Telescope oldfiles"})
 k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
+k.set("n", "<leader>w", "<cmd>w<CR>")
+k.set("n", "<leader>t", "<cmd>winc v<CR><cmd>term<CR>")
+k.set("t", "<Esc>q", [[<C-\><C-n>]]) -- this line has not been tested. might do nothing.
 
 print("See oldfiles: <leader>,")
 
