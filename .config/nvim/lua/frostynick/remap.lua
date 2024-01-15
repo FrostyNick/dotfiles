@@ -6,8 +6,8 @@ k.set("v", "K", ":m '<-2<CR>gv=gv")
 
 --- cursors are better
 k.set("n", "J", "mzJ`z", { desc = "keeps cursor in same place when doing J"})
-k.set("n", "<C-d>", "<C-d>zz")
-k.set("n", "<C-u>", "<C-u>zz")
+-- k.set("n", "<C-d>", "<C-d>zz")
+-- k.set("n", "<C-u>", "<C-u>zz")
 k.set("n", "n", "nzzzv")
 k.set("n", "N", "Nzzzv") -- greatest remap ever k.set("x", "<leader>p", [["_dP]])
 
@@ -86,6 +86,7 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
 k.set("n", "<leader>po", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
+-- For windows, replace xdg-open with explorer.
 
 k.set("n", "<leader>o",
 "<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
@@ -138,8 +139,7 @@ k.set("n", "<leader>e", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watc
 - g`"
 --]]
 
--- k.set("n", "<leader>pv", vim.cmd.Ex)
-k.set("n", "<leader>pv", vim.cmd.Ex); -- function()
+k.set("n", "<leader>pv", vim.cmd.Ex)
 
 -- if vim.g.vscode then
 -- --[[ Original:
