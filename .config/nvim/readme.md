@@ -53,9 +53,26 @@ o.swapfile = false -- don't use swap files
 o.shellslash = true -- On Windows, this will use '/' instead of the default '\'
 ```
 
-<details>
-  <summary>Example: Shorter config on Windows 10 with transparent theme, Telescope, comment.nvim, leader key, and keymaps</summary>
+<!-- old example was here -->
 
+Learn more about Neovim + Lua here: `:help lua-guide`. If your neovim is too old, check out [nanotee\/nvim\-lua\-guide\: A guide to using Lua in Neovim](https://github.com/nanotee/nvim-lua-guide). Newest guide online: [Lua\-guide \- Neovim docs](https://neovim.io/doc/user/lua-guide.html#lua-guide)
+
+Lua vs Vimscript:
+
+- Thanks to [LuaJIT](https://github.com/LuaJIT/LuaJIT) (based on Lua 5.1),
+this is generally about 10x faster than vimscript8. vimscript9 might be much
+closer in speed to LuaJIT. Take benchmarks with a grain of salt though.
+- Lua is a skill that can be used outside of Vimscript. Vimscript is stuck in
+Vim world. If you go deeper into the language, you probably should learn some
+Vimscript and Vim API to use Lua in Neovim though.
+- It's worth noting that Neovim is backwards compatible with vimscript8 and not vimscript9.
+
+</details>
+
+<details>
+  <summary>init.lua but less minimalist (Neovim)</summary>
+
+  This example has a transparent theme, Telescope, comment.nvim, leader key, and keymaps.
   This will work on Windows, Linux, and likely macOS as well.
 
 ```lua
@@ -156,28 +173,13 @@ local plugins = {
 require("lazy").setup(plugins, {})
 -- lua vim.print(vim.api.nvim_get_color_map().Brown)
 ```
-
 </details>
 
-Learn more about Neovim + Lua here: `:help lua-guide`. If your neovim is too old, check out [nanotee\/nvim\-lua\-guide\: A guide to using Lua in Neovim](https://github.com/nanotee/nvim-lua-guide). Newest guide online: [Lua\-guide \- Neovim docs](https://neovim.io/doc/user/lua-guide.html#lua-guide)
-
-Lua vs Vimscript:
-
-- Thanks to [LuaJIT](https://github.com/LuaJIT/LuaJIT) (based on Lua 5.1),
-this is generally about 10x faster than vimscript8. vimscript9 might be much
-closer in speed to LuaJIT. Take benchmarks with a grain of salt though.
-- Lua is a skill that can be used outside of Vimscript. Vimscript is stuck in
-Vim world. If you go deeper into the language, you probably should learn some
-Vimscript and Vim API to use Lua in Neovim though.
-- It's worth noting that Neovim is backwards compatible with vimscript8 and not vimscript9.
-
-</details>
 
 <details>
 <summary>
 init.vim (Neovim; Vim; Vi)
 </summary>
-
 
 This is not updated much as I mostly focus on lua script lately.
 
@@ -226,7 +228,7 @@ I paste this link so many times I should be using markdown slightly better..
 
 One might work better for you than others.
 
-- *best starting point for learning to make your config in Lua* [nvim\-lua\/kickstart\.nvim\: A launch point for your personal nvim configuration](https://github.com/nvim-lua/kickstart.nvim)
+- *probably best option* [nvim\-lua\/kickstart\.nvim\: A launch point for your personal nvim configuration](https://github.com/nvim-lua/kickstart.nvim)
 - [jmbuhr\/quarto\-nvim\-kickstarter\: A neovim configuration to get you up to speed](https://github.com/jmbuhr/quarto-nvim-kickstarter "This sounds like a promising alternative to kickstart\.nvim\. Haven't tried this though\.")
 - [0 to LSP \: Neovim RC From Scratch \- YouTube](https://youtu.be/w7i4amO_zaE)
 - [Effective Neovim\: Instant IDE \- YouTube](https://youtu.be/stqUbv-5u2s&t=171s)
@@ -239,7 +241,35 @@ One might work better for you than others.
 
 ## Neovim Installation
 
-[Tags (for releases) · neovim\/neovim](https://github.com/neovim/neovim/tags)
+- [Tags (for releases) · neovim\/neovim](https://github.com/neovim/neovim/tags)
+#### Windows
+- If you have [scoop](https://github.com/ScoopInstaller/Scoop) installed:
+
+##### Stable
+```powershell
+scoop bucket add main
+scoop install main/neovim
+```
+
+Run this to get the latest update:
+```powershell
+scoop update neovim
+```
+
+##### Nightly
+*Note: You might run into dependency hell if you have both stable and nightly installed.*
+```powershell
+scoop bucket add versions
+scoop install versions/neovim-nightly
+```
+
+Run this to get the latest update:
+```powershell
+scoop update neovim-nightly
+```
+
+##### Alternative frontends
+[Scoop - Apps (neovim)](https://scoop.sh/#/apps?q=neovim)
 
 #### Ubuntu
 
