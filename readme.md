@@ -26,23 +26,23 @@ If you learn something, consider adding a star or commenting.
   ##### Descriptions
   | Config file                                                                            | Description                                            | Ubuntu | Termux | Windows 10 |
   | ---                                                                                    | ---                                                    | -      | -      | -          |
-  | [~/.config/nvim](.config/nvim/)                                                        | Config for Neovim; powerful text editor / PDE          | x      | !      | ip         |
-  | [~/.config/doom](.config/doom/)                                                        | Config for Doom Emacs; IDE I haven't used much         | x      | ?      |
-  | [~/.config/Vencord](.config/Vencord)                                                   | Vencord is a Discord client                            | x      |        | x          |
-  | [~/.config/VencordDesktop/VencordDesktop/themes](.config/VencordDesktop/V...p/themes/) | Vesktop is a (Discord) Vencord client                  | x      |        | x          |
-  | [~/.config/alacritty](.config/alacritty)                                               | (soon) Terminal emulator (made for speed; yaml conf)   | x      |        | x          |
-  | [~/.config/kitty](.config/kitty)                                                       | Terminal emulator                                      | x      |
-  | [~/.config/wezterm](.config/wezterm)                                                   | Terminal emulator (more features built-in; lua conf)   | x      |        | x          |
-  | [~/.config/Kvantum](.config/Kvantum)                                                   | Force dark mode on some apps                           | x      |
+  | [~/.config/nvim/](.config/nvim/)                                                       | Neovim config; powerful text editor / PDE              | x      | !      | ip         |
+  | [~/.config/doom/](.config/doom/)                                                       | Doom Emacs config; IDE I rarely use; favorite mode     | x      | ?      |
+  | [~/.config/Vencord/](.config/Vencord)                                                  | Vencord is a Discord client                            | x      |        | x          |
+  | [~/.config/VencordDesktop/VencordDesktop/themes/](.config/VencordDesktop/V.../themes/) | Vesktop is a (Discord) Vencord client                  | x      |        | x          |
+  | [~/.config/alacritty.toml](.config/alacritty.toml)                                     | Terminal emulator (made for speed; .toml conf)         | x      |        | x          |
+  | [~/.config/kitty/](.config/kitty)                                                      | Terminal emulator                                      | x      |
+  | [~/.config/wezterm/](.config/wezterm)                                                  | Terminal emulator (more features built-in; .lua conf)  | x      |        | x          |
+  | [~/.config/Kvantum/](.config/Kvantum)                                                  | Force dark mode on some apps                           | x      |
   | [~/.config/mimeapps.list](.config/mimeapps.list)                                       | Fix for i3 default links on Ubuntu                     | x      |
-  | [~/.config/i3](.config/i3)                                                             | Window Manager for X11 compositor on Linux             | x      |
+  | [~/.config/i3/](.config/i3)                                                            | Window Manager for X11 compositor on Linux             | x      |
   | [~/.config/picom.conf](.config/picom.conf)                                             | Compositor for X11; transparent windows, effects, etc. | x      |
   | [~/.config/screenkey.json](.config/screenkey.json)                                     | See keys typed on screen                               | x      |
   | [~/.config/zathura/](.config/zathura/)                                                 | Tiny vim-like PDF/epub/other viewer                    | x      |
   | [~/.termux/font.tff%%%](.termux/font.tff)                                              | Set default font in Termux                             |        | x      |
-  | [~/.local/share/fonts](.local/share/fonts)                                             | Set default font in Ubuntu                             | x      |
-  | [~/.fzf](.fzf)                                                                         | Fuzzy finder                                           | x      | !      |
-  | [~/.newsboat](.newsboat)                                                               | Terminal RSS+atom reader with vim keybinds in config   | x      | x      |
+  | [~/.local/share/fonts/](.local/share/fonts)                                            | Set default font in Ubuntu                             | x      |
+  | [~/.fzf](.fzf/)                                                                        | Fuzzy finder                                           | x      | !      |
+  | [~/.newsboat/](.newsboat)                                                              | Terminal RSS+atom reader with vim keybinds in config   | x      | x      |
   | [~/.bashrc](.bashrc)                                                                   | Bash shell config                                      | x      | ?      |
   | [~/.bash_aliases](.bash_aliases)                                                       | Aliases for bash shell                                 | x      | x      |
   | [~/.profile](.profile)                                                                 | Another startup file found by default in Ubuntu 20.04  | x      |
