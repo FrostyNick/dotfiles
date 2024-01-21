@@ -1,0 +1,56 @@
+live_config_reload = false
+
+[colors.primary]
+background = "#000000"
+
+[cursor.style]
+shape = "Underline"
+
+[font]
+size = 13.0
+
+[font.bold]
+family = "Mononoki Nerd Font Propo"
+style = "Bold"
+
+[font.bold_italic]
+family = "Mononoki Nerd Font Propo"
+style = "Bold Italic"
+
+[font.italic]
+family = "Mononoki Nerd Font Propo"
+style = "Italic"
+
+[font.normal]
+family = "Mononoki Nerd Font Propo"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Equals"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "Quit"
+key = "Q"
+mods = "Control"
+
+[scrolling]
+multiplier = 6
+
+[window]
+decorations = "none"
+dynamic_title = true
+opacity = 0.8
+resize_increments = true
+startup_mode = "Maximized"
