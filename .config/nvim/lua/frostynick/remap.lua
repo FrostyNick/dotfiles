@@ -6,8 +6,6 @@ k.set("v", "K", ":m '<-2<CR>gv=gv")
 
 --- cursors are better
 k.set("n", "J", "mzJ`z", { desc = "keeps cursor in same place when doing J"})
--- k.set("n", "<C-d>", "<C-d>zz")
--- k.set("n", "<C-u>", "<C-u>zz")
 k.set("n", "n", "nzzzv")
 k.set("n", "N", "Nzzzv") -- greatest remap ever k.set("x", "<leader>p", [["_dP]])
 
