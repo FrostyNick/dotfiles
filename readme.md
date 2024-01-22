@@ -27,11 +27,11 @@ If you learn something, consider adding a star or commenting.
   | Config file                                                                            | Description                                            | Ubuntu | Termux | Windows 10 |
   | ---                                                                                    | ---                                                    | -      | -      | -          |
   | [~/.config/nvim/](.config/nvim/)                                                       | Neovim config; powerful text editor / PDE              | x      | !      | ip         |
-  | [~/.config/doom/](.config/doom/)                                                       | Doom Emacs config; IDE I rarely use; favorite mode     | x      | ?      |
-  | [~/.config/Vencord/](.config/Vencord)                                                  | Vencord is a Discord client                            | x      |        | x          |
-  | [~/.config/VencordDesktop/VencordDesktop/themes/](.config/VencordDesktop/V.../themes/) | Vesktop is a (Discord) Vencord client                  | x      |        | x          |
+  | [~/.config/doom/](.config/doom/)                                                       | Doom Emacs config; IDE I rarely use; vim-like emacs    | x      | ?      |
+  | [~/.config/Vencord/](.config/Vencord)                                                  | Vencord is a Discord client; injects javascript        | x      |        | x          |
+  | [~/.config/VencordDesktop/VencordDesktop/themes/](.config/VencordDesktop/V.../themes/) | Vesktop is a desktop app for Vencord; by Vencord devs  | x      |        | x          |
   | [~/.config/alacritty.toml](.config/alacritty.toml)                                     | Terminal emulator (made for speed; .toml conf)         | x      |        | x          |
-  | [~/.config/kitty/](.config/kitty)                                                      | Terminal emulator                                      | x      |
+  | [~/.config/kitty/](.config/kitty)                                                      | Terminal emulator (no longer testing)                   | x      |
   | [~/.config/wezterm/](.config/wezterm)                                                  | Terminal emulator (more features built-in; .lua conf)  | x      |        | x          |
   | [~/.config/Kvantum/](.config/Kvantum)                                                  | Force dark mode on some apps                           | x      |
   | [~/.config/mimeapps.list](.config/mimeapps.list)                                       | Fix for i3 default links on Ubuntu                     | x      |
@@ -79,8 +79,8 @@ the config works.
   get it running there based on my rough testing (native nvim + Wezterm).
 - Several keybinds while being mindful about existing vim keybinds; especially
   if they're useful keybinds.
-    - <kbd>leader + ,</kbd> to see previous files. In plain vim, <kbd>:bro
-      o</kbd> is the shortest alternative.
+    - <kbd>leader + ,</kbd> to see previous files. In vim, <kbd>:bro
+      ol</kbd> is the shortest alternative.
     - <kbd>leader + t</kbd> to open terminal in a vertical split.
     - <kbd>leader + b</kbd> to switch/see buffers.
     - <kbd>leader + z + d</kbd> to get definition of a word. (Needs dependency
