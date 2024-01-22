@@ -64,14 +64,10 @@ local function telescopeConfig()
     ts.setup({
         defaults = {
             -- layout_strategy = "vertical", -- better on vertical screens.
-            layout_config = {
-                width = 0.93
-            }
+            layout_config = { width = 0.93 }
         },
         extensions = {
-            file_browser = {
-                hijack_netrw = true,
-            }
+            file_browser = { hijack_netrw = true, }
         },
         media_files = {
             filetypes = {"png", "webp", "jpg", "jpeg"},
@@ -265,6 +261,67 @@ local plugins = {
         event = "VeryLazy",
         opts = {}
     },
+    {
+        "nomnivore/ollama.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+
+        -- All the user commands added by the plugin
+        cmd = { "Ollama", "OllamaModel", "OllamaServe", "OllamaServeStop" },
+
+        keys = {
+            -- Sample keybind for prompt menu. Note that the <c-u> is important for selections to work properly.
+            {
+                "<leader>oo",
+                ":<c-u>lua require('ollama').prompt()<cr>",
+                desc = "ollama prompt",
+                mode = { "n", "v" },
+            },
+
+            -- Sample keybind for direct prompting. Note that the <c-u> is important for selections to work properly.
+            {
+                "<leader>oG",
+                ":<c-u>lua require('ollama').prompt('Generate_Code')<cr>",
+                desc = "ollama Generate Code",
+                mode = { "n", "v" },
+            },
+        },
+
+        ---@type Ollama.Config
+        opts = {
+            -- your configuration overrides
+        }
+    },
+    {
+        "chrishrb/gx.nvim",
+        -- event = "VeryLazy",
+        keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" }} },
+        cmd = { "Browse" },
+        init = function ()
+            vim.g.netrw_nogx = 1 -- disable netrw gx
+        end,
+        dependencies = { "nvim-lua/plenary.nvim" },
+        -- config = true, -- default settings
+
+        -- you can specify also another config if you want
+        config = function() require("gx").setup {
+            -- open_browser_app = "os_specific", -- specify your browser app; default for macOS is "open", Linux "xdg-open" and Windows "powershell.exe"
+            -- open_browser_args = { "--background" }, -- specify any arguments, such as --background for macOS' "open".
+            handlers = {
+                plugin = true,
+                github = true,
+                brewfile = false, -- Homebrew
+                package_json = true,
+                search = true, -- search the web if nothing else is found
+            },
+            handler_options = {
+                search_engine = "duckduckgo", -- select between google, bing, duckduckgo, and ecosia
+                -- search_engine = "https://search.brave.com/search?q=", -- or custom search engine
+            },
+        } end,
+    },
     -- { --[[ commented out codeium for now because
     --  * Termux: Doesn't work + errors + planned to not be supported.
     --  * It gets a bit in the way when trying to do projects. Opt-in would be
@@ -314,8 +371,7 @@ local plugins = {
                     ["core.defaults"] = {}, -- Loads default behaviour
                     -- https://github.com/nvim-neorg/neorg/wiki/Concealer
                     ["core.concealer"] = {
-                        config = {
-                            -- folds = false,
+                        config = { --[[ folds = false, ]]
                             icon_preset = "diamond"
                         }
                     },                  -- Adds pretty icons to your documents
@@ -331,9 +387,7 @@ local plugins = {
                     -- },
                     ["core.export"] = {},
                     ["core.export.markdown"] = {
-                        config = {
-                            extensions = "all",
-                        },
+                        config = { extensions = "all", },
                     },
                 },
             }
@@ -680,20 +734,8 @@ local plugins = {
     --     'vimdev/lspsaga.nvim',
     --     -- event = "VeryLazy",
     -- },
-    -- { -- dependency: curl; looks like this needs a paid subscription. I guess I'll stick with the web interface.
-    --     "jackMort/ChatGPT.nvim",
-    --     event = "VeryLazy",
-    --     config = function()
-    --         require("chatgpt").setup({
-    --             api_key_cmd = "gpg --decrypt " .. vim.fn.expand("$HOME") .. "/locked.txt.gpg"
-    --         })
-    --     end,
-    --     dependencies = {
-    --         "MunifTanjim/nui.nvim",
-    --         "nvim-lua/plenary.nvim",
-    --         "nvim-telescope/telescope.nvim"
-    --     }
-    -- },
+    -- takes over S and s btw [backdround/improved-ft.nvim: Improve default f/t hop abilities](https://github.com/backdround/improved-ft.nvim)
+    -- norcalli/nvim-terminal.lua
 
     -- { 'stevearc/oil.nvim', opts = {}, },
     -- rm homepage. I don't really want it.
