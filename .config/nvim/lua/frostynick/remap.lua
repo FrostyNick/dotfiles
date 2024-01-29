@@ -97,10 +97,11 @@ k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I thi
 "<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
 { silent = true })
 
-k.set("n", "<leader>gf", vim.cmd.Git)
+k.set("n", "<leader>gg", vim.cmd.Git)
 k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
 k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
+-- Above should use git fugitive ... I just have a terminal dependant password inserting thing that makes git fugitive not work well. (:G push)
 
 --- Run prgm
 k.set("n", "<leader>lo", function() vim.cmd("!love %:h") end, {desc="Run with Love2D; assuming that parent is project root folder."})
