@@ -77,6 +77,8 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias rm='rm -i'
+
 alias f=fcd
 alias _="nv ~/.bash_aliases"
 # alias b_="_"
@@ -98,7 +100,7 @@ alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
 alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
 alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share ; echo xdg-open + kdeconnect works better'
-alias discordU="echo use diU now"
+alias discordU="echo Vesktop exists proably. Proceed? (use diU)"
 alias diU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb || echo Failed to remove .deb file, maybe due to update error? Run diRm to continue removing ; cd && echo Also run discordV.'
 alias diRm='rm ~/Downloads/discord-0.0.*.deb'
 
@@ -111,6 +113,9 @@ discordV() {
     fi
     cd -
 }
+
+alias pulseaudioD="pipewireE"
+alias pipewireD="pulseaudioE"
 
 pipewireE() {
     systemctl --user --now disable pulseaudio.service pulseaudio.socket
