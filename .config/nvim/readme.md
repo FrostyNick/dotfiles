@@ -228,11 +228,12 @@ I paste this link so many times I should be using markdown slightly better..
 
 One might work better for you than others.
 
-- *probably best option* [nvim\-lua\/kickstart\.nvim\: A launch point for your personal nvim configuration](https://github.com/nvim-lua/kickstart.nvim)
+- *probably best series* [From 0 to IDE in NEOVIM from scratch \- typescript \- YouTube](https://www.youtube.com/watch?v=zHTeCSVAFNY&list=PLsz00TDipIffreIaUNk64KxTIkQaGguqn)
+- *good start config* [nvim\-lua\/kickstart\.nvim\: A launch point for your personal nvim configuration](https://github.com/nvim-lua/kickstart.nvim)
 - [jmbuhr\/quarto\-nvim\-kickstarter\: A neovim configuration to get you up to speed](https://github.com/jmbuhr/quarto-nvim-kickstarter "This sounds like a promising alternative to kickstart\.nvim\. Haven't tried this though\.")
-- [0 to LSP \: Neovim RC From Scratch \- YouTube](https://youtu.be/w7i4amO_zaE)
+- [0 to LSP \: Neovim RC From Scratch \- ThePrimeagen \- YouTube](https://youtu.be/w7i4amO_zaE)
 - [Effective Neovim\: Instant IDE \- YouTube](https://youtu.be/stqUbv-5u2s&t=171s)
-- Install Nvchad / Astrovim to have a good config setup right away. Might be a bit complex to change it to your specific use case though.
+- Install LazyVim to have a good config setup right away. Might be time consuming to remove default mappings / plugins; but it seems like the most configurable neovim distro. NvChad has more features .. less configurable though.
 
 #### More ideas
 
