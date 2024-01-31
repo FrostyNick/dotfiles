@@ -6,35 +6,6 @@
 Additionally, clean code. Remove extra comments.
 --]]
 
---[[
-use()
-    use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-
-    -- different dependencies so ill keep this here just in case
-    use {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v1.x',
-        requires = {
-            -- LSP Support
-            {'neovim/nvim-lspconfig'},
-            {'williamboman/mason.nvim'},
-            {'williamboman/mason-lspconfig.nvim'},
-
-            -- Autocompletion
-            {'hrsh7th/nvim-cmp'},
-            {'hrsh7th/cmp-buffer'},
-            {'hrsh7th/cmp-path'},
-            {'saadparwaiz1/cmp_luasnip'},
-            {'hrsh7th/cmp-nvim-lsp'},
-            {'hrsh7th/cmp-nvim-lua'},
-
-            -- Snippets
-            {'L3MON4D3/LuaSnip'},
-            {'rafamadriz/friendly-snippets'},
-        }
-    }
-
-]]
 
 -- Idea: vim windows integrate with i3
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -202,21 +173,49 @@ local plugins = {
     }, -- Optional
     { 'neovim/nvim-lspconfig', event = "VeryLazy" }, -- Required
 
-    -- Autocompletion
-    -- { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-    -- { 'hrsh7th/nvim-cmp' },     -- Required
-    -- { 'hrsh7th/cmp-path' },     -- Required
-    -- { 'L3MON4D3/LuaSnip' },     -- Required Asks lsp to do extra tricks
-    -- { 'folke/neodev.nvim' },    -- trying out.
-    -- neodev Neovim setup for init.lua and plugin development with full signature help, docs and completion for the nvim lua API.
-    -- -- autocomplete (not required)
-    -- 'hrsh7th/cmp-buffer',
-    -- 'hrsh7th/cmp-path',
-    -- "L3MON4D3/LuaSnip", -- errors on init, haven't configured yet.
-    -- -- 'hrsh7th/cmp-cmdline',
-    -- -- autocomplete (required)
-    { 'hrsh7th/nvim-cmp', event = "VeryLazy" },
-    { 'hrsh7th/cmp-nvim-lsp', event = "VeryLazy" },
+    -- Autocompletion (taken with minimal changes from https://github.com/cpow/neovim-for-newbs/blob/7cee93b394359c2fee4f134d27903af65742247d/lua/plugins/completions.lua )
+    {
+        "hrsh7th/cmp-nvim-lsp"
+    },
+    {
+        "L3MON4D3/LuaSnip",
+        dependencies = {
+            "saadparwaiz1/cmp_luasnip",
+            "rafamadriz/friendly-snippets",
+        },
+    },
+    {
+        "hrsh7th/nvim-cmp",
+        config = function()
+            local cmp = require("cmp")
+            require("luasnip.loaders.from_vscode").lazy_load()
+
+            cmp.setup({
+                snippet = {
+                    expand = function(args)
+                        require("luasnip").lsp_expand(args.body)
+                    end,
+                },
+                -- window = {
+                --     completion = cmp.config.window.bordered(),
+                --     documentation = cmp.config.window.bordered(),
+                -- },
+                mapping = cmp.mapping.preset.insert({
+                    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                    ["<C-Space>"] = cmp.mapping.complete(),
+                    ["<C-e>"] = cmp.mapping.abort(),
+                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                }),
+                sources = cmp.config.sources({
+                    { name = "nvim_lsp" },
+                    { name = "luasnip" }, -- For luasnip users.
+                }, {
+                    { name = "buffer" },
+                }),
+            })
+        end,
+    },
 
     -- uses ys; which stands for you surround; see `:h nvim-surround.usage` for more info
     {
