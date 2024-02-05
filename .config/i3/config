@@ -577,3 +577,6 @@ exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openNeorg.sh"
 # THIS WORKS only on startup: exec /home/nicholas/.config/i3/xrandr.sh
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
 # Above ruins bc Vencord broke with Discord update.
+
+# Auto-launch Vesktop
+exec vencorddesktop
