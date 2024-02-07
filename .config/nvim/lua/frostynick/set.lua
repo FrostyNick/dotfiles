@@ -71,6 +71,7 @@ augroup vimStartup
 augroup END
 ]])
 
+vim.cmd("ca tan tabnew")
 -- src: https://web.archive.org/web/20230117225946/https://stackoverflow.com/questions/7894330/preserve-last-editing-position-in-vim
 -- Try when ya got time. Works but could be improved maybe.
 --[[ Restore cursor position
