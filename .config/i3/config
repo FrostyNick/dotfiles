@@ -356,6 +356,7 @@ mode "$mode_launcher" {
     # below should be symln'd to /usr/local/bin
     # joplin has went byee
     bindsym j exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
+    bindsym g exec i3-sensible-terminal -e "godot"
     # NOT WORKING bindsym y exec xdg-open syncthing
     # TRY L8R exec --no-startup-id
 # L8R: mv below to /usr/local/bin/ or /usr/bin/
@@ -490,6 +491,8 @@ for_window [class="jetbrains-studio"] focus
 assign [class="Codium"] $ws4 # it changes to this sometimes.
 assign [class="Geany"] $ws4
 for_window [class="Geany"] focus
+assign [class="Godot"] $ws4
+for_window [class="Godot"] focus
 assign [class="VSCodium"] $ws4
 for_window [class="VSCodium"] focus
 
