@@ -156,3 +156,20 @@ k.set("n", "<leader>pv", vim.cmd.Ex)
 --     -- k.set({"x", "n", "o"}, "gc", "<Plug>(VSCodeCommentary)")
 --     -- k.set("n", "gcc", "<Plug>(VSCodeCommentaryLine)")
 -- end
+
+--- not keyboard shortcut
+vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
+    vim.cmd("!godot project.godot")
+end, {})
+k.set("n", "<leader>go", vim.cmd.Godot)
+
+-- https://youtu.be/9gUatBHuXE0
+-- Autorun on save. Useful but not in this case. Useful example: .md -> .html
+-- vim.api.nvim_create_autocmd("BufWritePost", {
+--     group = vim.api.nvim_create_augroup("Codeee", { clear = true }),
+--     pattern = "project.godot",
+--     callback = function()
+--         vim.cmd("!godot project.godot")
+--     end,
+-- })
+
