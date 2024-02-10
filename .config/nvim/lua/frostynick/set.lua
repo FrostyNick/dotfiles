@@ -52,6 +52,11 @@ vim.g.diff_translations = 0
 o.virtualedit = "block"
 o.inccommand = "split"
 
+-- Make <c-x><c-s> work without the underlines
+-- Add groups from `:help spell` if other groups reoccur too often.
+o.spell = true
+vim.cmd.hi("clear", "SpellBad") -- note this is also in colorscheme config.
+
 -- src: https://github.com/vim/vim/blob/master/runtime/defaults.vim
 vim.cmd([[
 " Put these in an autocmd group, so that you can revert them with:
