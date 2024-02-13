@@ -179,6 +179,7 @@ local plugins = {
     },
     {
         "L3MON4D3/LuaSnip",
+        event = "VeryLazy",
         dependencies = {
             "saadparwaiz1/cmp_luasnip",
             "rafamadriz/friendly-snippets",
@@ -186,6 +187,7 @@ local plugins = {
     },
     {
         "hrsh7th/nvim-cmp",
+        event = "VeryLazy",
         config = function()
             local cmp = require("cmp")
             require("luasnip.loaders.from_vscode").lazy_load()
@@ -249,12 +251,11 @@ local plugins = {
         event = "VeryLazy",
         config = telescopeConfig,
     },
-    -- {
-    --     'KaitlynEthylia/TreePin',
-    --     event = "VeryLazy",
-    --     dependencies = 'nvim-treesitter/nvim-treesitter',
-    --     opts = {} -- Might break. See commit on 2023-9-18 to rollback
-    -- },
+    {
+        'cbochs/grapple.nvim',
+        event = "VeryLazy",
+        dependencies = { 'nvim-lua/plenary.nvim' }
+    },
     {
         'TarunDaCoder/sus.nvim',
         event = "VeryLazy",
