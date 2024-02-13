@@ -179,6 +179,7 @@ local plugins = {
     },
     {
         "L3MON4D3/LuaSnip",
+        event = "VeryLazy",
         dependencies = {
             "saadparwaiz1/cmp_luasnip",
             "rafamadriz/friendly-snippets",
@@ -186,6 +187,7 @@ local plugins = {
     },
     {
         "hrsh7th/nvim-cmp",
+        event = "VeryLazy",
         config = function()
             local cmp = require("cmp")
             require("luasnip.loaders.from_vscode").lazy_load()
@@ -249,16 +251,20 @@ local plugins = {
         event = "VeryLazy",
         config = telescopeConfig,
     },
-    -- {
-    --     'KaitlynEthylia/TreePin',
-    --     event = "VeryLazy",
-    --     dependencies = 'nvim-treesitter/nvim-treesitter',
-    --     opts = {} -- Might break. See commit on 2023-9-18 to rollback
-    -- },
+    { -- might rm l8r; lualine also has grapple
+        'cbochs/grapple.nvim',
+        event = "VeryLazy",
+        dependencies = { 'nvim-lua/plenary.nvim' }
+    },
     {
         'TarunDaCoder/sus.nvim',
         event = "VeryLazy",
         opts = {}
+    },
+    { -- guesses indents apparently
+        'nmac427/guess-indent.nvim',
+        event = "VeryLazy",
+        opts = {},
     },
     {
         "nomnivore/ollama.nvim",
@@ -425,9 +431,17 @@ local plugins = {
         -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         opts = {},
-        -- config = function()
-        --     require("lualine").setup({
-        --         sections = {
+        config = function()
+            require("lualine").setup({
+                sections = {
+                    lualine_b = {
+                        {
+                            function()
+                                return " " .. require("grapple").key()
+                            end,
+                            cond = require("grapple").exists,
+                        }
+                    },
         --             lualine_x = {
         --                 {
         --                     require("lazy.status").updates,
@@ -435,9 +449,9 @@ local plugins = {
         --                     color = { fg = "#ff9e64" },
         --                 },
         --             },
-        --         },
-        --     })
-        -- end
+                },
+            })
+        end
     },
 
     {
