@@ -251,7 +251,7 @@ local plugins = {
         event = "VeryLazy",
         config = telescopeConfig,
     },
-    {
+    { -- might rm l8r; lualine also has grapple
         'cbochs/grapple.nvim',
         event = "VeryLazy",
         dependencies = { 'nvim-lua/plenary.nvim' }
@@ -426,9 +426,17 @@ local plugins = {
         -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         opts = {},
-        -- config = function()
-        --     require("lualine").setup({
-        --         sections = {
+        config = function()
+            require("lualine").setup({
+                sections = {
+                    lualine_b = {
+                        {
+                            function()
+                                return " " .. require("grapple").key()
+                            end,
+                            cond = require("grapple").exists,
+                        }
+                    },
         --             lualine_x = {
         --                 {
         --                     require("lazy.status").updates,
@@ -436,9 +444,9 @@ local plugins = {
         --                     color = { fg = "#ff9e64" },
         --                 },
         --             },
-        --         },
-        --     })
-        -- end
+                },
+            })
+        end
     },
 
     {
