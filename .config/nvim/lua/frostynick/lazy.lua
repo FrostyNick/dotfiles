@@ -261,6 +261,11 @@ local plugins = {
         event = "VeryLazy",
         opts = {}
     },
+    { -- guesses indents apparently
+        'nmac427/guess-indent.nvim',
+        event = "VeryLazy",
+        opts = {},
+    },
     {
         "nomnivore/ollama.nvim",
         event = "VeryLazy",

@@ -8,9 +8,11 @@ o.rnu = true
 
 -- o.splitbelow = true
 
-o.tabstop = 4
-o.softtabstop = 4
-o.shiftwidth = 4
+-- guess-indent loads on buffer enter, unless manually with ":GuessIndent"
+-- commented out below is not needed bc nmac427/guess-indent.nvim plugin.
+-- o.tabstop = 4
+-- o.softtabstop = 4
+-- o.shiftwidth = 4
 o.expandtab = true -- spaces instead of tabs
 
 o.smartindent = true
