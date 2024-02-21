@@ -35,6 +35,7 @@ k.set("n", "gt", vim.lsp.buf.type_definition, {desc="LSP: type definition"})
 k.set("n", "gr", vim.lsp.buf.rename, {desc="LSP: rename"})
 -- ga overrides vim keybind which could be useful in the future
 k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
+k.set("n", "gf", "<cmd>e <cfile><CR>", {desc="gf but also create file if it doesn't exist."})
 
 -- yank/put: " + macro + y/p
 -- useless macro: isusu€kb
