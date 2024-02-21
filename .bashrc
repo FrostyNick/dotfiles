@@ -98,7 +98,10 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# fzf keyboard shortcuts (*not* completion)
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash # Ubuntu
+[ -f $PREFIX/share/fzf/key-bindings.bash ] && source $PREFIX/share/fzf/key-bindings.bash # Termux. Note: If it doesn't work remove everything before "source" (that has been tested as of "0.46 (devel)").
 
 # environment variables | test: `printenv | grep TERM`
 export PATH="$HOME/.config/emacs/bin:/home/nicholas/.local/bin:$PATH"
