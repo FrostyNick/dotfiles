@@ -1,5 +1,5 @@
 # Convert most .bashrc stuff to Powershell bc I have to use it sometimes.
-# Mostly tested. Presumeably will have bugs.
+# EXPERIMENTAL. Presumeably will have bugs.
 
 # Tested on Windows 10 and 11 .. powershell version is more important tho.
 
@@ -98,17 +98,11 @@ function gits {
     git branch ; git status
 }
 function gitp {
-    git push;procn
+    git push # ; procn # currently errors, with whitespace too
 }
 function gitpl {
-    git pull;procn
+    git pull # ; procn
 }
-# function gitp {
-#     anticn && git push;procn
-# }
-# function gitpl {
-#     anticn && git pull;procn
-# }
 nal gita 'git add'
 nal gitd 'git diff'
 nal gitm 'git commit -m'
@@ -186,15 +180,15 @@ nal br2 "pomodoro 'games' &"
 nal testbr "pomodoro 'test' &"
 
 # alias.txt from tui app related
-function mo {
-    # moname=$*
-    moname=${*%.*}
-    # idea.txt becomes idea
-    nv ~/backup2022nov10/markor/$moname\.md
-    # nv "$(ls ~/backup2022nov10/markor/ | fzf)"
-}
-nal ia "nv ~\selfnotes\ideas.md"
-nal 2j "nv ~\selfnotes\2j.md"
+# function mo {
+#     # moname=$*
+#     moname=${*%.*}
+#     # idea.txt becomes idea
+#     nv ~/backup2022nov10/markor/$moname\.md
+#     # nv "$(ls ~/backup2022nov10/markor/ | fzf)"
+# }
+nal ia "nvim ~\selfnotes\ideas.md"
+nal 2j "nvim ~\selfnotes\2j.md"
 
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one
