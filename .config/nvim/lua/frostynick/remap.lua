@@ -60,7 +60,6 @@ k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
 k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clipboard
 k.set("n", "<leader>mr", [[:put =range(1,)<Left>]], { desc="Insert text: math range" })
-k.set("n", "<leader>da", [[:.!date '+\%Y-\%-m-\%-d' && cat<CR>o<Esc>j]], { desc="Insert text: date + opinionated me", silent = true })
 k.set("n", "<leader>cm", "<cmd>!chmod +x %<CR>", { silent = true })
 
 k.set("n", "<leader>vpp",
