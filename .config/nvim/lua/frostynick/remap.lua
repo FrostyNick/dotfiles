@@ -165,6 +165,25 @@ vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
 end, {})
 k.set("n", "<leader>go", vim.cmd.Godot)
 
+-- l8r: make it like an API that can be accessed anywhere
+local function i_txt(txt)
+    vim.cmd("norm O")
+
+    -- :help nvim_buf_set_text
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { txt })
+end
+
+local function i_date()
+    i_txt( os.date():gsub(
+        -- To learn more: https://www.lua.org/pil/20.2.html
+        -- '(%d+)/(%d+)/(%d+) (%d+:%d+:%d+)','%3-%1-%2 %4'))
+        '(%d+)/(%d+)/(%d+) (%d+:%d+:%d+).*','%3-%1-%2'))
+end
+
+vim.api.nvim_create_user_command("Date", i_date, {})
+k.set("n", "<leader>da", i_date, {desc="Insert date"})
+
 -- https://youtu.be/9gUatBHuXE0
 -- Autorun on save. Useful but not in this case. Useful example: .md -> .html
 -- vim.api.nvim_create_autocmd("BufWritePost", {
