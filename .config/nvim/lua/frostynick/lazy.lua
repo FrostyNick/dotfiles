@@ -116,6 +116,13 @@ local function telescopeConfig()
     if not success then
         print("Error loading telescope media_files: " .. msg)
     end
+
+    -- nvim-telescope/telescope-ui-select.nvim
+    success,msg = pcall(function() ts.load_extension'ui-select' end)
+
+    if not success then
+        print("Error loading telescope ui-select: " .. msg)
+    end
 end
 
 local plugins = {
@@ -665,6 +672,10 @@ local plugins = {
             }
         end
     },
+    {
+        'nvim-telescope/telescope-ui-select.nvim',
+        lazy = true
+    }
     -- no longer works on here. probably bc of another plugin.
     -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
     {
