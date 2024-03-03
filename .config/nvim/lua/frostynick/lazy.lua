@@ -213,7 +213,7 @@ local plugins = {
                     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
                     ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<C-e>"] = cmp.mapping.abort(),
+                    -- ["<C-e>"] = cmp.mapping.abort(), -- Not recommended in Termux.
                     ["<C-y>"] = cmp.mapping.confirm({ select = true }),
                 }),
                 sources = cmp.config.sources({
@@ -572,10 +572,10 @@ local plugins = {
     --         k.set("n", "<leader>a", mark.add_file)
     --         k.set("n", "<C-p>", ui.toggle_quick_menu) -- C-o overrides jumping in vim and C-e sucks in termux (scroll down action)
     --
-    --         -- dvorak local keys = {"h", "t", "n", "s", "leader"}
-    --         local keys = {"h", "j", "k", "l"}
-    --         for i, key in ipairs(keys) do
-    --             k.set("n", "<C-"..key..">", function() ui.nav_file(i) end)
+    --         -- dvorak local keymaps = {"h", "t", "n", "s", "leader"}
+    --         local keymaps = {"h", "j", "k", "l"}
+    --         for i, keym in ipairs(keymaps) do
+    --             k.set("n", "<C-"..keym..">", function() ui.nav_file(i) end)
     --         end
     --     end,
     -- },
@@ -675,7 +675,21 @@ local plugins = {
     {
         'nvim-telescope/telescope-ui-select.nvim',
         lazy = true
-    }
+    },
+    {
+        "ziontee113/icon-picker.nvim", -- emoji's too
+        config = function()
+            require("icon-picker").setup({ disable_legacy_commands = true })
+
+            local opts = { noremap = true, silent = true }
+
+            -- vim.keymap.set("n", "<Leader><Leader>i", "<cmd>IconPickerNormal<cr>", opts)
+            -- vim.keymap.set("n", "<Leader><Leader>y", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
+            vim.keymap.set("i", "<c-E>", "<cmd>IconPickerInsert<cr>", opts) -- Default <c-i> == tab; no thanks. <c-e> sucks in termux. Haven't tested <c-E> in termux.
+        end,
+        event = "VeryLazy"
+    },
+
     -- no longer works on here. probably bc of another plugin.
     -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
     {
@@ -842,7 +856,7 @@ require("lazy").setup(plugins, opts)
 --         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
 --         ['<C-f>'] = cmp.mapping.scroll_docs(4),
 --         ['<C-Space>'] = cmp.mapping.complete(),
---         ['<C-e>'] = cmp.mapping.abort(),
+--         ['<C-e>'] = cmp.mapping.abort(), -- not recommended in Termux
 --         ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 --     }),
 --     sources = cmp.config.sources({
