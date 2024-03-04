@@ -101,8 +101,8 @@ the config works.
     - Format markdown tables with `:Tableize` or <kbd>leader + m + t</kbd>.
       Preview markdown in the web with `:MarkdownPreviewToggle` or <kbd>leader
       \+ m + m</kbd>. Requires `npm` or possibly `yarn` with config changes.
-    - Git fugitive. Access with <kbd>leader + g + f</kbd>
-    - Neorg support.
+    - Git fugitive. Access with <kbd>leader + g + g</kbd>
+    - Neorg plugin.
     - Comment.nvim (gcc to comment current line; gc(motions) to select where to
       comment; many vim like shortcuts supported)
     - Zen mode, Harpoon, Lua line.

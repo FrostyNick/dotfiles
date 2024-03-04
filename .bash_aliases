@@ -178,7 +178,7 @@ alias dtwarning='echo "All changes WILL be public."'
 alias dt='/nix/store/0cgj6agi5yzp4lyrzcnjwlidym2c84al-user-environment/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias dts='dt status'
 alias dtp='dtwarning && anticn && dt push;procn'
-alias dtpl='anticn && dt pull;procn'
+alias dtpl='dt pull'
 # aliasdota=function
 alias dtd='dt diff'
 alias dtm='dtwarning && dt commit -m'
