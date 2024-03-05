@@ -13,6 +13,7 @@
 # ^ this has stopped working. maybe the system has stopped recognizing this file for some reason??
 # wezterm can be replaced by kitty btw
 export TERMINAL=wezterm
+export EDITOR=vi
 # for dark theme on apps such as simplescrrec
 export QT_STYLE_OVERRIDE=kvantum
 # feh --randomize --bg-max ~/Pictures/wallpapers/*
