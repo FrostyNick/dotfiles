@@ -72,6 +72,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+alias ..='cd ..'
+
 alias lt='ls *.{txt,md}'
 alias ll='ls -alF'
 alias la='ls -A'
@@ -82,8 +84,11 @@ alias rm='rm -i'
 alias f=fcd
 alias _="nv ~/.bash_aliases"
 # alias b_="_"
+
+alias x='xdg-open .'
 alias py=python
-alias nv=nvim
+alias v=nvim
+alias nv=v
 
 # From my eyes, inspiration for better nvim (though to be fair it has a
 # different purpose). Emacs has a mature powerful ecosystem to learn from.
