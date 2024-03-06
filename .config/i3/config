@@ -565,8 +565,8 @@ assign [class="KeePassXC"] $ws100
 # not working on restarting i3:
 # exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
 # NOT WORKING exec_always i3-sensible-terminal -e "nvim ~/backup2022nov10/notes/todo.norg"
-# NOT WORKING exec_always /home/nicholas/.config/i3/openNeorg.sh
-exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openNeorg.sh"
+# NOT WORKING exec_always /home/nicholas/.config/i3/openTodo.sh
+exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openTodo.sh"
 # NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
 
