@@ -167,62 +167,63 @@ local plugins = {
     },
 
     -- LSP Support
-    { 'williamboman/mason.nvim', event = "VeryLazy"},-- Optional
-    { 'williamboman/mason-lspconfig.nvim',
-        dependencies = { 'williamboman/mason.nvim' },
-        event = "VeryLazy",
-        config = function()
-            require("mason").setup()
-            require("mason-lspconfig").setup {
-                ensure_installed = { "lua_ls", "rust_analyzer", "denols" },
-            }
-        end
-    }, -- Optional
+    -- { 'williamboman/mason.nvim', event = "VeryLazy"},-- Optional
+    -- { 'williamboman/mason-lspconfig.nvim',
+    --     dependencies = { 'williamboman/mason.nvim' },
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("mason").setup()
+    --         require("mason-lspconfig").setup {
+    --             ensure_installed = { "lua_ls", "rust_analyzer", "denols" },
+    --         }
+    --     end
+    -- }, -- Optional
     { 'neovim/nvim-lspconfig', event = "VeryLazy" }, -- Required
 
     -- Autocompletion (taken with minimal changes from https://github.com/cpow/neovim-for-newbs/blob/7cee93b394359c2fee4f134d27903af65742247d/lua/plugins/completions.lua )
     {
         "hrsh7th/cmp-nvim-lsp"
     },
-    {
-        "L3MON4D3/LuaSnip",
-        event = "VeryLazy",
-        dependencies = {
-            "saadparwaiz1/cmp_luasnip",
-            "rafamadriz/friendly-snippets",
-        },
-    },
+    -- {
+    --     "L3MON4D3/LuaSnip",
+    --     event = "VeryLazy",
+    --     dependencies = {
+    --         "saadparwaiz1/cmp_luasnip",
+    --         "rafamadriz/friendly-snippets",
+    --     },
+    -- },
     {
         "hrsh7th/nvim-cmp",
         event = "VeryLazy",
         config = function()
             local cmp = require("cmp")
-            require("luasnip.loaders.from_vscode").lazy_load()
+            -- require("luasnip.loaders.from_vscode").lazy_load()
 
-            cmp.setup({
-                snippet = {
-                    expand = function(args)
-                        require("luasnip").lsp_expand(args.body)
-                    end,
-                },
-                -- window = {
-                --     completion = cmp.config.window.bordered(),
-                --     documentation = cmp.config.window.bordered(),
-                -- },
-                mapping = cmp.mapping.preset.insert({
-                    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    -- ["<C-e>"] = cmp.mapping.abort(), -- Not recommended in Termux.
-                    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-                }),
-                sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" }, -- For luasnip users.
-                }, {
-                    { name = "buffer" },
-                }),
-            })
+            cmp.setup({})
+            -- cmp.setup({
+            --     -- snippet = {
+            --     --     expand = function(args)
+            --     --         require("luasnip").lsp_expand(args.body)
+            --     --     end,
+            --     -- },
+            --     -- window = {
+            --     --     completion = cmp.config.window.bordered(),
+            --     --     documentation = cmp.config.window.bordered(),
+            --     -- },
+            --     mapping = cmp.mapping.preset.insert({
+            --         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+            --         ["<C-f>"] = cmp.mapping.scroll_docs(4),
+            --         ["<C-Space>"] = cmp.mapping.complete(),
+            --         -- ["<C-e>"] = cmp.mapping.abort(), -- Not recommended in Termux.
+            --         ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+            --     }),
+            --     sources = cmp.config.sources({
+            --         { name = "nvim_lsp" },
+            --         { name = "luasnip" }, -- For luasnip users.
+            --     }, {
+            --         { name = "buffer" },
+            --     }),
+            -- })
         end,
     },
 
@@ -754,22 +755,22 @@ local plugins = {
         event = "InsertEnter",
         -- event = "UIEnter",
     },
-    {
-        'rcarriga/nvim-notify',
-        event = "UIEnter",
-        config = function()
-            local notify = require("notify")
-            notify.setup({ render = "compact", background_colour = "#000000" })
-            vim.notify = notify
-
-            -- Do this before: require("telescope").load_extension("notify")
-            -- require('telescope').extensions.notify.notify(<opts>)
-            -- OR
-            -- :Telescope notify
-            -- No telescope? :Notifications # lua: require("notify").history()
-            -- compact
-        end
-    }
+    -- {
+    --     'rcarriga/nvim-notify',
+    --     event = "UIEnter",
+    --     config = function()
+    --         local notify = require("notify")
+    --         notify.setup({ render = "compact", background_colour = "#000000" })
+    --         vim.notify = notify
+    --
+    --         -- Do this before: require("telescope").load_extension("notify")
+    --         -- require('telescope').extensions.notify.notify(<opts>)
+    --         -- OR
+    --         -- :Telescope notify
+    --         -- No telescope? :Notifications # lua: require("notify").history()
+    --         -- compact
+    --     end
+    -- }
     -- { -- error: couldn't find github username
     --     'vimdev/lspsaga.nvim',
     --     -- event = "VeryLazy",
@@ -881,13 +882,13 @@ local a,b = pcall(function()
     -- }
     -- How would this be worse than say LspZero other than it doesn't
     -- automatically have all the plugins that Mason has?
-    local lspLs = { 'lua_ls', 'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
-    'denols', 'emmet_ls', 'lua_ls', 'tsserver', 'zk', }
-    for _,v in ipairs(lspLs) do
-        require('lspconfig')[v].setup {
-            capabilities = capabilities
-        }
-    end
+    -- local lspLs = { 'lua_ls', 'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
+    -- 'denols', 'emmet_ls', 'lua_ls', 'tsserver', 'zk', }
+    -- for _,v in ipairs(lspLs) do
+    --     require('lspconfig')[v].setup {
+    --         capabilities = capabilities
+    --     }
+    -- end
 end)
 if not a then
 	print("failed to setup lspconfig: "..b)
