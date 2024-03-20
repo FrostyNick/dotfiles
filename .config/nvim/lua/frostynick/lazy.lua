@@ -420,6 +420,7 @@ local plugins = {
             vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 
             vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
+            vim.cmd.hi("clear", "SpellCap")
         end
     },
     -- {

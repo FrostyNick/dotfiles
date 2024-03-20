@@ -57,7 +57,9 @@ o.inccommand = "split"
 -- Make <c-x><c-s> work without the underlines
 -- Add groups from `:help spell` if other groups reoccur too often.
 o.spell = true
-vim.cmd.hi("clear", "SpellBad") -- note this is also in colorscheme config.
+-- note these need to be also set in colorscheme config.
+vim.cmd.hi("clear", "SpellBad")
+vim.cmd.hi("clear", "SpellCap")
 
 -- src: https://github.com/vim/vim/blob/master/runtime/defaults.vim
 vim.cmd([[
