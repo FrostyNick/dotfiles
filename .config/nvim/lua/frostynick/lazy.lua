@@ -770,7 +770,11 @@ local plugins = {
             -- No telescope? :Notifications # lua: require("notify").history()
             -- compact
         end
-    }
+    },
+    { -- see how regex works with :Hypersonic
+        "tomiis4/hypersonic.nvim",
+        cmd = "Hypersonic",
+    },
     -- { -- error: couldn't find github username
     --     'vimdev/lspsaga.nvim',
     --     -- event = "VeryLazy",
