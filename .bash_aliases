@@ -72,18 +72,16 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-alias ..='cd ..'
-
 alias lt='ls *.{txt,md}'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias ..='cd ..'
 alias rm='rm -i'
 
 alias f=fcd
 alias _="nv ~/.bash_aliases"
-# alias b_="_"
 
 alias x='xdg-open .'
 alias py=python
@@ -93,6 +91,7 @@ alias nv=v
 # From my eyes, inspiration for better nvim (though to be fair it has a
 # different purpose). Emacs has a mature powerful ecosystem to learn from.
 alias emacs="doom run"
+alias govi="nvim --listen ~/.cache/nvim/godot.pipe ."
 
 # self-notes: see rank
 # APIs are yes. https://wiki.quavergame.com/docs/api/users
@@ -170,18 +169,22 @@ alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev"
 alias anticn='aoeu && echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo -k cat ~/.antichenalog | xclip -sel "clip"'
 alias procn='echo $(xclip -sel "secondary" -o) | xclip -sel "clip"'
 
-alias gits='git branch;git status'
-alias gitp='anticn && git push;procn'
-alias gitpl='anticn && git pull;procn'
+alias gits='git remote -v;git branch;git status'
+alias gitp='git push'
+alias gitpl='git pull'
 alias gita='git add'
 alias gitd='git diff'
 alias gitm='git commit -m'
 alias gitcb='git checkout -b'
-alias gitf='anticn && git fetch;procn'
+alias gitf='git fetch'
+
+alias gitpp='anticn && git push;procn'
+alias gitplp='anticn && git pull;procn'
+alias gitfp='anticn && git fetch;procn'
 
 alias dtwarning='echo "All changes WILL be public."'
 alias dt='/nix/store/0cgj6agi5yzp4lyrzcnjwlidym2c84al-user-environment/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-alias dts='dt status'
+alias dts='dt branch;dt status'
 alias dtp='dtwarning && anticn && dt push;procn'
 alias dtpl='dt pull'
 # aliasdota=function
