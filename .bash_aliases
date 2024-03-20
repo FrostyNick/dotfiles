@@ -101,7 +101,7 @@ alias apiQuaver="echo $(curl -s 'https://api.quavergame.com/v1/users/scores/rece
 alias live="live-server --browser=librewolf"
 alias ytc="cd ~/p/commentsaver && live"
 # below especially useful when the config inevitably breaks
-alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
+alias lazy='nvim ~/.config/nvim/lua/frostynick/lazy.lua'
 alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
 alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share ; echo xdg-open + kdeconnect works better'
@@ -239,11 +239,11 @@ mo() {
     # moname=$*
     moname=${*%.*}
     # idea.txt becomes idea
-    nv ~/backup2022nov10/markor/$moname\.md
-    # nv "$(ls ~/backup2022nov10/markor/ | fzf)"
+    nvim ~/backup2022nov10/markor/$moname\.md
+    # nvim "$(ls ~/backup2022nov10/markor/ | fzf)"
 }
-alias ia='nv ~/backup2022nov10/markor/ideas.md'
-alias 2j="nv ~/backup2022nov10/markor/j/$(date +%Y)/$(date +%m | sed 's/^0*//').md" # date doesn't work on FreeBSD or OSX based on some quick research. Instead see: man strftime
+alias ia='nvim ~/backup2022nov10/markor/ideas.md'
+alias 2j="nvim ~/backup2022nov10/markor/j/$(date +%Y)/$(date +%m | sed 's/^0*//').md" # date doesn't work on FreeBSD or OSX based on some quick research. Instead see: man strftime
 
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one
