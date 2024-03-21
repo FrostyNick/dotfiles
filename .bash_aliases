@@ -72,18 +72,16 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-alias ..='cd ..'
-
 alias lt='ls *.{txt,md}'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias ..='cd ..'
 alias rm='rm -i'
 
 alias f=fcd
 alias _="nv ~/.bash_aliases"
-# alias b_="_"
 
 alias x='xdg-open .'
 alias py=python
@@ -93,6 +91,7 @@ alias nv=v
 # From my eyes, inspiration for better nvim (though to be fair it has a
 # different purpose). Emacs has a mature powerful ecosystem to learn from.
 alias emacs="doom run"
+alias govi="nvim --listen ~/.cache/nvim/godot.pipe ."
 
 # self-notes: see rank
 # APIs are yes. https://wiki.quavergame.com/docs/api/users
@@ -101,7 +100,7 @@ alias apiQuaver="echo $(curl -s 'https://api.quavergame.com/v1/users/scores/rece
 alias live="live-server --browser=librewolf"
 alias ytc="cd ~/p/commentsaver && live"
 # below especially useful when the config inevitably breaks
-alias lazy='nv ~/.config/nvim/lua/frostynick/lazy.lua'
+alias lazy='nvim ~/.config/nvim/lua/frostynick/lazy.lua'
 alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
 alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share ; echo xdg-open + kdeconnect works better'
@@ -170,18 +169,22 @@ alias obsn="ls /home/nicholas/20*.mkv | xargs | rev | cut -d\  -f1 | rev"
 alias anticn='aoeu && echo $(xclip -sel "clip" -o) | xclip -sel "secondary" && sudo -k cat ~/.antichenalog | xclip -sel "clip"'
 alias procn='echo $(xclip -sel "secondary" -o) | xclip -sel "clip"'
 
-alias gits='git branch;git status'
-alias gitp='anticn && git push;procn'
-alias gitpl='anticn && git pull;procn'
+alias gits='git remote -v;git branch;git status'
+alias gitp='git push'
+alias gitpl='git pull'
 alias gita='git add'
 alias gitd='git diff'
 alias gitm='git commit -m'
 alias gitcb='git checkout -b'
-alias gitf='anticn && git fetch;procn'
+alias gitf='git fetch'
+
+alias gitpp='anticn && git push;procn'
+alias gitplp='anticn && git pull;procn'
+alias gitfp='anticn && git fetch;procn'
 
 alias dtwarning='echo "All changes WILL be public."'
 alias dt='/nix/store/0cgj6agi5yzp4lyrzcnjwlidym2c84al-user-environment/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-alias dts='dt status'
+alias dts='dt branch;dt status'
 alias dtp='dtwarning && anticn && dt push;procn'
 alias dtpl='dt pull'
 # aliasdota=function
@@ -239,11 +242,11 @@ mo() {
     # moname=$*
     moname=${*%.*}
     # idea.txt becomes idea
-    nv ~/backup2022nov10/markor/$moname\.md
-    # nv "$(ls ~/backup2022nov10/markor/ | fzf)"
+    nvim ~/backup2022nov10/markor/$moname\.md
+    # nvim "$(ls ~/backup2022nov10/markor/ | fzf)"
 }
-alias ia='nv ~/backup2022nov10/markor/ideas.md'
-alias 2j="nv ~/backup2022nov10/markor/j/$(date +%Y)/$(date +%m | sed 's/^0*//').md" # date doesn't work on FreeBSD or OSX based on some quick research. Instead see: man strftime
+alias ia='nvim ~/backup2022nov10/markor/ideas.md'
+alias 2j="nvim ~/backup2022nov10/markor/j/$(date +%Y)/$(date +%m | sed 's/^0*//').md" # date doesn't work on FreeBSD or OSX based on some quick research. Instead see: man strftime
 
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one

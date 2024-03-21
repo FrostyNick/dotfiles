@@ -309,10 +309,11 @@ local plugins = {
     {
         "chrishrb/gx.nvim",
         -- event = "VeryLazy",
-        keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" }} },
+        -- it conflicts once in a while but usually saves time
+        keys = { { "gz", "<cmd>Browse<cr>", mode = { "n", "x" }} },
         cmd = { "Browse" },
         init = function ()
-            vim.g.netrw_nogx = 1 -- disable netrw gx
+            -- vim.g.netrw_nogx = 1 -- disable netrw gx
         end,
         dependencies = { "nvim-lua/plenary.nvim" },
         -- config = true, -- default settings
@@ -420,6 +421,7 @@ local plugins = {
             vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 
             vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
+            vim.cmd.hi("clear", "SpellCap")
         end
     },
     -- {
@@ -769,7 +771,11 @@ local plugins = {
             -- No telescope? :Notifications # lua: require("notify").history()
             -- compact
         end
-    }
+    },
+    { -- see how regex works with :Hypersonic
+        "tomiis4/hypersonic.nvim",
+        cmd = "Hypersonic",
+    },
     -- { -- error: couldn't find github username
     --     'vimdev/lspsaga.nvim',
     --     -- event = "VeryLazy",
