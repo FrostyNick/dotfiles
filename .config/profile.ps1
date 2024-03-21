@@ -34,7 +34,13 @@ function lt {
     ls *.txt; ls *.md
 }
 # nal ll 'ls -alF'
+nal ll ls
 nal la 'gci -Force'
+
+# <c-d> only works in newer powershell. There are multiple versions installed on Windows by default...
+function e {exit}
+nal ^D e # Doesn't work. Newer powershell version?
+
 
 # nal f fcd
 nal v nvim
@@ -46,7 +52,7 @@ nal _ "nv ~\Documents\WindowsPowerShell\profile.ps1"
 nal emacs "doom run"
 
 # APIs are yes. https://wiki.quavergame.com/docs/api/users
-# curl is an alias to a command in powershell (pain)
+# curl is an alias to a command in powershell (pain) (just on powershell in Windows)
 # nal apiQuaver "Write-Output $(curl -s 'https://api.quavergame.com/v1/users/scores/recent?id=479240&mode=1&limit=10' 2>&1 | jq .scores[].\"max_combo\")"
 
 nal live "live-server --browser=librewolf"
@@ -69,14 +75,14 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 #>
 
 function notify-send { # Used in a .sh script, so it's a function
-    # see above for dependencies; might not work in different versions of powershell
+    # see above for dependencies; doesn't work when switching to older versions of powershell
     New-BurntToastNotification -Text "$args"
     # New-BurntToastNotification -Text 'release now', "it's so late"
 }
 
 nal invert "Write-Output l8r"
 
-# nal fnalias "cat ~/.bash_aliases | grep '()'"
+function fnalias { gcm | Out-String -Stream | Select-String "Function" }
 
 ## not done
 # nal asdf "setxkbmap dvorak"
@@ -108,7 +114,7 @@ nal gitd 'git diff'
 nal gitm 'git commit -m'
 nal gitcb 'git checkout -b'
 function gitf {
-    <# anticn && #>git fetch;procn
+    <# anticn && #>git fetch#;procn
 }
 
 # dt* aliases not tested
