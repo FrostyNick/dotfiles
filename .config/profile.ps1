@@ -37,7 +37,7 @@ function lt {
 nal ll ls
 nal la 'gci -Force'
 
-# <c-d> only works in newer powershell. There are multiple versions installed on Windows by default...
+# <c-d> is built-in to a different mode in newer powershell. There are multiple versions installed on Windows by default...
 function e {exit}
 nal ^D e # Doesn't work. Newer powershell version?
 
@@ -193,8 +193,8 @@ nal testbr "pomodoro 'test' &"
 #     nv ~/backup2022nov10/markor/$moname\.md
 #     # nv "$(ls ~/backup2022nov10/markor/ | fzf)"
 # }
-nal ia "nvim ~\selfnotes\ideas.md"
-nal 2j "nvim ~\selfnotes\2j.md"
+function ia { nv $HOME\selfnotes\ideas.md }
+function 2j { nv $HOME\selfnotes\2j.md }
 
 # maybe future: create python/rust code to convert tui alias.txt format to .bash_aliases that
 # are compatible with bash (such as url)... unless someone else already made one
@@ -202,3 +202,5 @@ nal 2j "nvim ~\selfnotes\2j.md"
 # until then, it's saved in android t-ui.
 # syntax: tui <alias>
 
+## Below makes fzf work with <c-r> and <c-t> with `scoop install fzf psfzf`
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
