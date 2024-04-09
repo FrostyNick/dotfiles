@@ -6,16 +6,16 @@
 
 --[[ Other perks (compared to kitty):
 
-- Lua config file: Lua is powerful, made to embed, not that hard to learn, and takes about 4KB
+- Lua config file: Lua is powerful, made to embed, not that hard to learn, and takes about 100KB
 - Way more welcoming dev compared to kitty dev
-- Made in Rust, which is less resource intensive than Python.
+- Made in Rust, which is less prone to unexpected errors than Python.
 - More user friendly defaults.
-- Supposedly some features that are pretty good.
+- Many things work out of the box like tabs, spaces, etc.
 
 --]]
 
 -- Pull in the wezterm API
-local wezterm = require 'wezterm'
+local wezterm = require'wezterm'
 
 -- This table will hold the configuration.
 local config = {}
@@ -27,7 +27,7 @@ if wezterm.config_builder then
 end
 
 -- Theme
-config.font = wezterm.font 'Mononoki Nerd Font Mono'
+config.font = wezterm.font'Mononoki Nerd Font Mono'
 -- to see fonts that wezterm detects:wezterm ls-fonts
 
 config.hide_tab_bar_if_only_one_tab = true
@@ -40,6 +40,12 @@ config.colors = {
         background = "#000",
     }
 }
+
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+table.insert(config.hyperlink_rules, {
+  regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]],
+  format = 'https://www.github.com/$1/$3',
+})
 
 -- On Linux with X11, I use picom compositor to get this working.
 -- On Linux with Wayland, Windows, and MacOS it works out of the box according to docs.
