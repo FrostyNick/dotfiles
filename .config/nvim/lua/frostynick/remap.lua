@@ -161,8 +161,19 @@ k.set("n", "<leader>pv", vim.cmd.Ex)
 
 --- not keyboard shortcut
 vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
-    vim.cmd("!godot project.godot")
+    -- vim.cmd("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
+    -- vim.call("jobstart(['cd', '%:p'], ['godot', 'project.godot'])") -- not working
+    require'plenary.job':new({
+        command = "godot",
+        args = {"project.godot"},
+        -- cwd = vim.fn.getcwd(), -- getcwd() can be used in vim too
+        cwd = vim.loop.cwd(),
+        on_exit = function(j, res) print(j:result()); print(res) end
+    }):start()
+
+    print("Launching Godot.")
 end, {})
+
 k.set("n", "<leader>go", vim.cmd.Godot)
 
 -- l8r: make it like an API that can be accessed anywhere
