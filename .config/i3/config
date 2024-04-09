@@ -465,6 +465,8 @@ assign [class="org.wezfurlong.wezterm"] $ws2
 for_window [class="org.wezfurlong.wezterm"] focus
 assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
+assign [class="Alacritty"] $ws2
+for_window [class="Alacritty"] focus
 
 # notes + educational + not terminal
 assign [class="Joplin"] $ws3
@@ -507,6 +509,9 @@ assign [class="2048-qt"] $ws5
 for_window [class="love"] focus
 assign [class="love"] $ws5
 for_window [class="Lutris"] focus
+# Below doesnt work
+assign [class="GodotProject"] $ws5
+# game (continued)
 assign [class="Lutris"] $ws5
 assign [class="steam"] $ws5
 assign [class="steam_app*"] $ws5

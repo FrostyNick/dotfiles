@@ -11,8 +11,8 @@
 # for i3-sensible-terminal
 # TERMINAL=wezterm; export TERMINAL 
 # ^ this has stopped working. maybe the system has stopped recognizing this file for some reason??
-# wezterm can be replaced by kitty btw
-export TERMINAL=wezterm
+# alternatives to kitty: wezterm, alacritty, st
+export TERMINAL=alacritty
 export EDITOR=vi
 # for dark theme on apps such as simplescrrec
 export QT_STYLE_OVERRIDE=kvantum
