@@ -14,6 +14,7 @@
 #     this will fix this mysterious bug always?
 # Possible solution: Updated i3 from stable i3 ppa from sur5r in
 # https://i3wm.org/docs/repositories.html which is recommended just in Ubuntu
+# Update: This did not fix Mod1 + fn key bug.
 
 # -- QA --
 # topbar config: https://github.com/vivien/i3blocks/blob/master/i3blocks.sh
@@ -165,7 +166,7 @@ set $ws5 "5:󰍳"
 set $ws6 "6:󰙯"
 set $ws7 "7"
 set $ws8 "8"
-set $ws9 "9"
+set $ws9 "9:❓"
 set $ws10 "10:󰑋"
 set $ws100 " "
 
@@ -536,7 +537,6 @@ assign [class="qimgv"] $ws5
 
 # social
 assign [class="VencordDesktop"] $ws6
-for_window [class="VencordDesktop"] focus
 assign [class="discord"] $ws6
 assign [class="Caprine"] $ws6
 
