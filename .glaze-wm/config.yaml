@@ -1,0 +1,366 @@
+## https://github.com/glzr-io/glazewm
+# This config is located in ~/.glaze-wm/config.yaml
+# This mimics i3 when I can only use Windows.
+
+## Missing so far:
+## - no highlighted focus (in i3 it highlights red) 
+
+## Dependencies (Might have missing ones): mononoki font (or a nerd font, it's configured here somewhere)
+
+## Below is all optional, for removing the default Windows bottom bar.
+## (this step might not be required) win+s taskbar -> hide taskbar # this will hide taskbar unless your mouse is at the bottom of the screen.
+## To persistantly remove taskbar (Disclaimer: `nircmd` is not FOSS. There could be a better solution but I haven't found it yet):
+## Download here: https://www.nirsoft.net/utils/nircmd-x64.zip or https://www.nirsoft.net/utils/nircmd.zip and set environment variables.
+## Alternatively with scoop:
+# scoop install nircmd
+## After installing you can run this from the terminal:
+# nircmd.exe win trans class Shell_TrayWnd 256
+## To undo above:
+# nircmd.exe win trans class Shell_TrayWnd 255
+## For this to run on startup: Put the code with 256 from above in a .bat file and place it in one of these files:
+# %AppData%\Microsoft\Windows\Start Menu\Programs\Startup # For Local User
+# %ProgramData%\Microsoft\Windows\Start Menu\Programs\Startup # For All Users
+
+
+general:
+  # Whether to automatically focus windows underneath the cursor.
+  focus_follows_cursor: false
+
+  # Whether to jump the cursor between windows focused by the WM.
+  cursor_follows_focus: false
+
+  # Whether to switch back and forth between the previously focused workspace
+  # when focusing the current workspace.
+  toggle_workspace_on_refocus: false # temporarily disabled because config auto unfocuses sometimes.
+
+  # Whether to show floating windows as always on top.
+  show_floating_on_top: false
+
+  # Amount to move floating windows by (eg. when using `alt+<hjkl>` on a floating window)
+  floating_window_move_amount: "5%"
+
+  # Whether to center new floating windows.
+  center_new_floating_windows: true
+
+  # *Strongly* recommended to set to 'false'. Whether to globally enable/disable
+  # window transition animations (on minimize, close, etc). Set to 'unchanged'
+  # to make no setting changes.
+  window_animations: "unchanged"
+
+gaps:
+  # Gap between adjacent windows.
+  inner_gap: "20px"
+
+  # Gap between windows and the screen edge.
+  outer_gap: "20px"
+
+# Highlight active/inactive windows with a colored border.
+# ** Exclusive to Windows 11 due to API limitations.
+focus_borders:
+  active:
+    enabled: true
+    color: "#bb0000"
+
+  inactive:
+    enabled: true # false by default
+    color: "#660000"
+
+bar:
+  height: "30px"
+  # position: "top"
+  position: "bottom"
+  opacity: 1.0
+  background: "#000000c4"
+  foreground: "#ffffff"
+  # font_family: "Segoe UI"
+  font_family: "Mononoki Nerd Font Propo" # If this font doesn't exist this will error. Use font above as fallback.
+  font_size: "16px"
+  # padding: "4px 6px"
+  padding: "0px 0px"
+  offset_x: "0"
+  offset_y: "0"
+  border_radius: "3px"
+  components_left:
+    - type: "workspaces"
+      focused_workspace_background: "#00ff0033"
+      displayed_workspace_background: "#00000033"
+      default_workspace_background: "transparent"
+  components_center:
+    - type: "window title"
+  components_right:
+    - type: "system tray"
+      margin: "6px 6px"
+      # padding: "4px 4px"
+    - type: "tiling direction"
+      label_horizontal: "⮂"
+      label_vertical: "⮁"
+      background: "#ffffff33"
+      margin: "0 4px"
+      padding: "0 8px"
+    - type: "binding mode"
+      background: "#ffffff33"
+      margin: "0 4px 0 0"
+      padding: "0 8px"
+    - type: "clock"
+      # Documentation on formatting date/time string:
+      # https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
+      time_formatting: "hh:mm tt  ddd MMM d"
+
+
+workspaces:
+  - name: "1"
+    display_name: "󰖟"
+  - name: "2"
+    display_name: ""
+  - name: "3"
+    display_name: "󰎛"
+  - name: "4"
+    display_name: ""
+  - name: "5"
+    display_name: "󰍳"
+  - name: "6"
+    display_name: "󰙯"
+  - name: "7"
+    display_name: "7"
+  - name: "8"
+    display_name: "8"
+  - name: "9"
+    display_name: "❓"
+  - name: "10"
+    display_name: "󰑋"
+  - name: "100"
+    display_name: ""
+
+
+      # useful -- more info here: https://github.com/glzr-io/glazewm#window-rules
+window_rules:
+  # Task Manager requires admin privileges to manage and should be ignored unless running
+  # the WM as admin.
+  - command: "ignore"
+    match_process_name: "/Taskmgr|ScreenClippingHost/"
+
+  # Launches system dialogs as floating by default (eg. File Explorer save/open dialog).
+  - command: "set floating"
+    match_class_name: "#32770"
+
+  # Do not manage picture-in-picture windows for browsers. Note that the default is for
+  # English; change `match_title` to the window's title if you use another language.
+  - command: "ignore"
+    match_title: "[Pp]icture.in.[Pp]icture"
+    match_class_name: "Chrome_WidgetWin_1|MozillaDialogClass"
+
+  # Some applications (eg. Steam) have borders that extend past the normal border size.
+  # Open this in Explorer and organize later:
+  # C:\Users\nicholas\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Scoop Apps
+  - command: "resize borders 0px -7px -7px -7px"
+    match_process_name: "steam"
+
+  - command: "move to workspace 1"
+    match_process_name: "librewolf|vivaldi|qutebrowser|floorp"
+
+  - command: "move to workspace 2"
+    match_process_name: "alacritty|git-bash|nvim|cmd|powershell|wezterm-gui"
+
+  - command: "move to workspace 3"
+    match_process_name: "notepad|nvim|kdeconnect-app|soffice|scalc"
+
+  - command: "move to workspace 4"
+    match_process_name: "VirtualBox|Godot_v*|GodotManager|VSCodium"
+
+  - command: "move to workspace 5"
+    match_process_name: "VirtualBoxVM|steam|steamservice|steamwebhelper|Super Animal Royale|scrcpy|mpv" # haven't tested if scrcpy works
+
+  - command: "move to workspace 6"
+    match_process_name: "Vesktop|Zoom"
+
+  - command: "move to workspace 10"
+    match_process_name: "obs64"
+
+  - command: "move to workspace 100"
+    match_process_name: "KeePassXC|Picocrypt"
+
+
+binding_modes:
+  - name: "resize"
+    keybindings:
+      # Resize focused window by a percentage or pixel amount.
+      - command: "resize width -2%"
+        bindings: ["H", "Left"]
+      - command: "resize width +2%"
+        bindings: ["L", "Right"]
+      - command: "resize height +2%"
+        bindings: ["K", "Up"]
+      - command: "resize height -2%"
+        bindings: ["J", "Down"]
+      # Press enter/escape to return to default keybindings.
+      - command: "binding mode none"
+        bindings: ["Escape", "Enter"]
+
+keybindings:
+  # workspace 1
+  - commands: ["exec %ProgramFiles%/LibreWolf/librewolf.exe", "focus workspace 1"]
+    binding: "Alt+B"
+
+  # workspace 2
+  ## Not sure if this is set by another program so I'll list it here: %UserProfile% -> %HomeDrive%%HomePath%
+  - commands: ['exec %UserProfile%/scoop/apps/alacritty/current/alacritty.exe --config-file "C:/Users/nicholas/scoop/persist/alacritty/alacritty.toml"', "focus workspace 2"] # [Only when toggle_workspace_on_refocus is true] Fix later? It automatically focuses sometimes and goes to recent workspace (because it focuses 2 times)
+  # - command: 'exec C:/Users/nicholas/scoop/apps/alacritty/current/alacritty.exe --config-file "C:/Users/nicholas/scoop/persist/alacritty/alacritty.toml"'
+    binding: "Alt+Z"
+
+  - commands: ['exec %UserProfile%/scoop/apps/alacritty/current/alacritty.exe --config-file "C:/Users/nicholas/scoop/persist/alacritty/alacritty.toml" -e "C:/Users/nicholas/scoop/apps/neovim/current/bin/nvim.exe', "focus workspace 2"] # it should focus only if I'm not in workspace 2. otherwise it will go back to previous focus instead.
+    binding: "Alt+V"
+
+
+
+  # %USERPROFILE% doesn't work here.
+  - commands: ['exec mpv C:/Users/nicholas/Music/@q_usb/* --no-audio-display --volume=50 --shuffle']
+    binding: "Alt+S" # s for song. m is taken.
+
+  - commands: ['exec mpv C:/Users/nicholas/Music/@q_usb/* --no-audio-display --volume=50'] # the first song is yes
+    binding: "Alt+A+S" # must hold buttons. <c-a> could contain many shortcuts.
+
+  # Shift focus in a given direction.
+  - command: "focus left"
+    # bindings: ["Alt+H", "Alt+Left"] # this is the default; it takes away my keyboard back button in browsers
+    binding: "Alt+H"
+  - command: "focus right"
+    # bindings: ["Alt+L", "Alt+Right"]
+    binding: "Alt+L"
+  - command: "focus up"
+    # bindings: ["Alt+K", "Alt+Up"]
+    binding: "Alt+K"
+  - command: "focus down"
+    # bindings: ["Alt+J", "Alt+Down"]
+    binding: "Alt+J"
+
+  # Move focused window in a given direction.
+  - command: "move left"
+    bindings: ["Alt+Shift+H", "Alt+Shift+Left"]
+  - command: "move right"
+    bindings: ["Alt+Shift+L", "Alt+Shift+Right"]
+  - command: "move up"
+    bindings: ["Alt+Shift+K", "Alt+Shift+Up"]
+  - command: "move down"
+    bindings: ["Alt+Shift+J", "Alt+Shift+Down"]
+
+  # Resize focused window by a percentage or pixel amount.
+  - command: "resize width -2%"
+    binding: "Alt+U"
+  - command: "resize width +2%"
+    binding: "Alt+P"
+  - command: "resize height +2%"
+    binding: "Alt+O"
+  - command: "resize height -2%"
+    binding: "Alt+I"
+
+  # As an alternative to the resize keybindings above, resize mode enables resizing via
+  # HJKL or arrow keys. The binding mode is defined above with the name "resize".
+  - command: "binding mode resize"
+    binding: "Alt+R"
+
+  # Change tiling direction. This determines where new tiling windows will be inserted.
+  - command: "tiling direction toggle"
+    binding: "Alt+V"
+
+  # Change focus between floating / tiling windows.
+  - command: "focus mode toggle"
+    binding: "Alt+Space"
+
+  # Change the focused window to be floating / tiling.
+  - command: "toggle floating"
+    binding: "Alt+Shift+Space"
+
+  # Change the focused window to be maximized / unmaximized.
+  - command: "toggle maximized"
+    binding: "Alt+X"
+
+  # Minimize focused window.
+  - command: "set minimized"
+    binding: "Alt+M"
+
+  # Close focused window.
+  - command: "close"
+    binding: "Alt+Shift+Q"
+
+  # Kill GlazeWM process safely.
+  - command: "exit wm"
+    binding: "Alt+Shift+E"
+
+  # Re-evaluate configuration file.
+  - command: "reload config"
+    binding: "Alt+Shift+R"
+
+  # Launch CMD terminal (alternatively `exec wt` or `exec %ProgramFiles%/Git/git-bash.exe`
+  # to start Windows Terminal and Git Bash respectively.
+  - command: "exec cmd"
+  # - command: "exec alacritty" # unfortunately it also has an extra window when making it, which sucks.
+    binding: "Alt+Enter"
+
+  # Focus the workspace that last had focus.
+  - command: "focus workspace recent"
+    binding: "Alt+Y"
+
+  # useful
+  # Focus the next/previous workspace defined in `workspaces` config.
+  - command: "focus workspace next"
+    binding: "Alt+T"
+  - command: "focus workspace prev"
+    binding: "Alt+Shift+T"
+
+  # Change focus to a workspace defined in `workspaces` config.
+  - command: "focus workspace 1"
+    binding: "Alt+1"
+  - command: "focus workspace 2"
+    binding: "Alt+2"
+  - command: "focus workspace 3"
+    binding: "Alt+3"
+  - command: "focus workspace 4"
+    binding: "Alt+4"
+  - command: "focus workspace 5"
+    binding: "Alt+5"
+  - command: "focus workspace 6"
+    binding: "Alt+6"
+  - command: "focus workspace 7"
+    binding: "Alt+7"
+  - command: "focus workspace 8"
+    binding: "Alt+8"
+  - command: "focus workspace 9"
+    binding: "Alt+9"
+  - command: "focus workspace 10"
+    binding: "Alt+0"
+
+  # Move focused workspace to a monitor in a given direction.
+  # I don't use these right now so they have a shift. alt+{a,s} are used with something else.
+  - command: "move workspace left"
+    binding: "Alt+Shift+A"
+  - command: "move workspace right"
+    binding: "Alt+Shift+F"
+  - command: "move workspace up"
+    binding: "Alt+Shift+D"
+  - command: "move workspace down"
+    binding: "Alt+Shift+S"
+
+  # Move focused window to a workspace defined in `workspaces` config.
+  - commands: ["move to workspace 1"]
+    binding: "Alt+Shift+1"
+  - commands: ["move to workspace 2"]
+    binding: "Alt+Shift+2"
+  - commands: ["move to workspace 3"]
+    binding: "Alt+Shift+3"
+  - commands: ["move to workspace 4"]
+    binding: "Alt+Shift+4"
+  - commands: ["move to workspace 5"]
+    binding: "Alt+Shift+5"
+  - commands: ["move to workspace 6"]
+    binding: "Alt+Shift+6"
+  - commands: ["move to workspace 7"]
+    binding: "Alt+Shift+7"
+  - commands: ["move to workspace 8"]
+    binding: "Alt+Shift+8"
+  - commands: ["move to workspace 9"]
+    bindings: ["Alt+Shift+9"]
+  - commands: ["move to workspace 10"]
+  # Below line is the original behavior for these lines in glazewm. I prefer i3 behavior better.
+  # - commands: ["move to workspace 10", "focus workspace 10"] 
+    binding: "Alt+Shift+0"
+
