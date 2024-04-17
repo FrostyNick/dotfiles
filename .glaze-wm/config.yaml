@@ -5,9 +5,11 @@
 ## Missing so far:
 ## - no highlighted focus (in i3 it highlights red) 
 
-## Dependencies (Might have missing ones): mononoki font (or a nerd font, it's configured here somewhere)
+## Extra setup (Might have missing ones):
+## - Mononoki nerd font (or another nerd font, make sure to change it somewhere in this config)
+## - Find and replace all "nicholas" in this file with your device username.
+## - [Optional instructions below] Remove the default Windows bottom bar.
 
-## Below is all optional, for removing the default Windows bottom bar.
 ## (this step might not be required) win+s taskbar -> hide taskbar # this will hide taskbar unless your mouse is at the bottom of the screen.
 ## To persistantly remove taskbar (Disclaimer: `nircmd` is not FOSS. There could be a better solution but I haven't found it yet):
 ## Download here: https://www.nirsoft.net/utils/nircmd-x64.zip or https://www.nirsoft.net/utils/nircmd.zip and set environment variables.
