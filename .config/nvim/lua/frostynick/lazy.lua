@@ -436,7 +436,7 @@ local plugins = {
     --     end
     -- },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
-    {
+    { -- might replace later. this slows down startup time by 5% (6.5-7ms on my PC) ... grapple might be part of it too
         'nvim-lualine/lualine.nvim',
         -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
@@ -557,11 +557,11 @@ local plugins = {
     {'airblade/vim-gitgutter', event = "VeryLazy" },
     {
         "windwp/nvim-autopairs",
-        event = "VeryLazy",
+        event = "InsertEnter",
         config = function()
-            require("nvim-autopairs").setup {
-                check_ts = true,
-            }
+            local p = require("nvim-autopairs")
+            p.setup { check_ts = true }
+            p.remove_rule('`')
         end
     },
     {'nvim-treesitter/playground', cmd = "TSPlaygroundToggle"},
