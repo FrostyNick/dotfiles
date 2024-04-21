@@ -1,4 +1,4 @@
--- This file can be loaded by calling `lua require('frostynick.plugins')` from your init.vim
+-- This file can be loaded by calling `lua require('frostynick.plugins')` from your init.vimlaz
 -- keys for vim https://vimdoc.sourceforge.net/htmldoc/intro.html#key-notation
 -- Migration: Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
 --[[ Open issues:
@@ -123,6 +123,21 @@ local function telescopeConfig()
     if not success then
         print("Error loading telescope ui-select: " .. msg)
     end
+end
+
+local function invisiBkgd(colorscheme)
+    pcall(function()
+        vim.cmd.colorscheme("midnight" or colorscheme)
+    end)
+
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+
+    vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
+    vim.cmd.hi("clear", "SpellCap")
 end
 
 local plugins = {
@@ -254,7 +269,6 @@ local plugins = {
         tag = '0.1.5',
         -- or                       , branch = '0.1.x',
         dependencies = { 'nvim-lua/plenary.nvim' },
-        -- event = "UIEnter",
         event = "VeryLazy",
         config = telescopeConfig,
     },
@@ -268,7 +282,7 @@ local plugins = {
         event = "VeryLazy",
         opts = {}
     },
-    { -- guesses indents apparently
+    {
         'nmac427/guess-indent.nvim',
         event = "VeryLazy",
         opts = {},
@@ -375,7 +389,7 @@ local plugins = {
     {
         "nvim-neorg/neorg",
         -- ft = "norg",
-        build = ":Neorg sync-parsers",
+        -- build = ":Neorg sync-parsers", -- if in doubt, :Lazy build neorg 
         dependencies = { "nvim-lua/plenary.nvim" },
         event = "VeryLazy",
         config = function()
@@ -409,21 +423,8 @@ local plugins = {
 
     {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
     --- Colorschemes below
-    {
-        'rose-pine/neovim',      name = 'rose-pine',
-        init = function()
-            vim.cmd.colorscheme("rose-pine")
-
-            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-
-            vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-
-            vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
-            vim.cmd.hi("clear", "SpellCap")
-        end
-    },
+    {'dasupradyumna/midnight.nvim', lazy = false, priority = 1000, init = invisiBkgd },
+    -- { 'rose-pine/neovim', name = 'rose-pine', init = invisiBkgd, event = "VeryLazy" },
     -- {
     --     'AlexvZyl/nordic.nvim',
     --     name = 'nordic',
