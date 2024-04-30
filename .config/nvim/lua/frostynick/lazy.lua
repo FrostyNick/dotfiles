@@ -265,8 +265,8 @@ local plugins = {
     },
     {
         'nvim-telescope/telescope.nvim',
-        -- tag = '0.1.1',
-        tag = '0.1.5',
+        tag = '0.1.4', -- tested to not break in Termux (0.1.5 breaks Termux)
+        -- tag = '0.1.6', -- newest as of 2024 Apr 27. 
         -- or                       , branch = '0.1.x',
         dependencies = { 'nvim-lua/plenary.nvim' },
         event = "VeryLazy",
@@ -388,10 +388,11 @@ local plugins = {
     -- },
     {
         "nvim-neorg/neorg",
-        -- ft = "norg",
+        ft = "norg",
         -- build = ":Neorg sync-parsers", -- if in doubt, :Lazy build neorg 
         dependencies = { "nvim-lua/plenary.nvim" },
-        event = "VeryLazy",
+        -- event = "VeryLazy",
+        version = "v7.0.0", -- v8.0.0 might not work in Termux because luarocks has issues there. Plus, it requires (at least for now) more setup and this config should be easy to start on any device.
         config = function()
             require("neorg").setup {
                 load = {
@@ -502,16 +503,15 @@ local plugins = {
     {
       -- This plugin
         "Zeioth/compiler.nvim",
-        cmd = { "CompilerOpen", "CompilerToggleResults" },
-        -- event = "VeryLazy",
+        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+        event = "VeryLazy",
         dependencies = { "stevearc/overseer.nvim" },
-        config = function(_, opts) require("compiler").setup(opts) end,
+        opts = {},
     },
     {
         "stevearc/overseer.nvim",
-        commit = "3047ede61cc1308069ad1184c0d447ebee92d749", -- Recommended to to avoid breaking changes
-        event = "VeryLazy",
-        -- cmd = { "CompilerOpen", "CompilerToggleResults" },
+        commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
+        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
         opts = {
             -- Tasks are disposed 5 minutes after running to free resources.
             -- If you need to close a task inmediatelly:
