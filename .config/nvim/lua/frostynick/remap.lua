@@ -124,11 +124,11 @@ k.set("n", "<leader>dc", function() print"code: run docs soon. (see tj tutorial)
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
 k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 
--- k.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");"
 -- <leader>cx is in lazy.lua if it still exists
 
 --- Vim shortcuts
-k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
+-- k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>") -- below not tested but it should work
+k.set("n", "<leader>t", "<cmd>tabnew<CR><cmd>term<CR>")
 k.set("n", "<leader>w", [[:w<CR>]])
 k.set("n", "<leader>e", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 
@@ -136,28 +136,10 @@ k.set("n", "<leader>e", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watc
 - Doesn't delete empty buffer. Avoid :bd!
 - IP: Use marks instead of paragraph jumps. Otherwise date will be inserted incorrectly. Or changelist?
 - Because of above, new lines don't work.
-- This won't work outside of Linux because of date command. Might consider lua os.date() instead. Pros: Cross-platform; might be faster. Cons: Only neovim.
 - g`"
 --]]
 
 k.set("n", "<leader>pv", vim.cmd.Ex)
-
--- if vim.g.vscode then
--- --[[ Original:
--- xmap gc  <Plug>VSCodeCommentary
--- nmap gc  <Plug>VSCodeCommentary
--- omap gc  <Plug>VSCodeCommentary
--- nmap gcc <Plug>VSCodeCommentaryLine
--- --]]
---
--- -- The alternative provided in the docs works worse from my experience :/
---
---     -- k.del({"x", "n", "o"}, "gc")
---     -- k.del("n", "gcc")
---
---     -- k.set({"x", "n", "o"}, "gc", "<Plug>(VSCodeCommentary)")
---     -- k.set("n", "gcc", "<Plug>(VSCodeCommentaryLine)")
--- end
 
 --- not keyboard shortcut
 vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
