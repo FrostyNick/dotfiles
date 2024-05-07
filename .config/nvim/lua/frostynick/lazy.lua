@@ -596,6 +596,18 @@ local plugins = {
             vim.keymap.set('n', '<leader>gs', vim.cmd.Git);
         end,
     },
+    { -- trying this out (possibly replaces git-fugitive)
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required (this is already in telescope btw)
+            "sindrets/diffview.nvim",        -- optional - Diff integration
+
+            -- Only one of these is needed, not both.
+            "nvim-telescope/telescope.nvim", -- optional
+            -- "ibhagwan/fzf-lua",              -- optional
+        },
+        config = true -- https://github.com/NeogitOrg/neogit?tab=readme-ov-file#configuration
+    },
     { 'f-person/git-blame.nvim', event = "VeryLazy" }, -- shows git blame
     {
         'folke/zen-mode.nvim',
