@@ -28,7 +28,7 @@ local function telescopeConfig()
 
     -- If lazy becomes obsolete one day for some reason and separate files are needed, these checks might help.
     -- if not ts then
-    --     print('require"telescope" failed. Telescope is probably not installed. Telescope config has been skipped.')
+    --     vim.notify('require"telescope" failed. Telescope is probably not installed. Telescope config has been skipped.')
     --     return
     -- end
 
@@ -59,11 +59,18 @@ local function telescopeConfig()
     k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
 
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
-    k.del('n', '<leader>,')
+
+    local a = pcall(function()
+        k.del('n', '<leader>,')
+    end)
+    if not a then
+        vim.notify("No mapping to remove for <leader>, ... skipping.")
+    end
+
     k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
     k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
     k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
-    k.set('n', '<leader>f?', function() print"use <leader>fk instead" end)
+    k.set('n', '<leader>f?', function() vim.notify("use <leader>fk instead") end)
 
     k.set('n', '<leader>fk', tsb.help_tags,
     { desc="Telescope: help tags (documentation)" })
@@ -106,7 +113,7 @@ local function telescopeConfig()
         end)
 
         if not success then
-            print("Error loading telescope " .. name .. ": " .. msg)
+            vim.notify("Error loading telescope " .. name .. ": " .. msg)
         end
     end
 
@@ -921,7 +928,7 @@ local a,b = pcall(function()
     end
 end)
 if not a then
-	print("failed to setup lspconfig: "..b)
+	vim.notify("failed to setup lspconfig: "..b)
 end
 
 
@@ -931,4 +938,4 @@ end
 vim.g.neovide_scale_factor = 0.7
 --vim.cmd('colorscheme kanagawa-dragon')
 -- init.lua file to look at later https://github.com/wincent/wincent/blob/a54fb501a4e331a7c197088f9f744bfb9c6d2e1f/aspects/nvim/files/.config/nvim/init.lua#L213
---print("Lazy loaded")
+--vim.notify("Lazy loaded")
