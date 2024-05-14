@@ -1,6 +1,7 @@
 
 local k = vim.keymap
 vim.g.mapleader = ' '
+vim.g.treesitterOn = true
 k.set("v", "J", ":m '>+1<CR>gv=gv")
 k.set("v", "K", ":m '<-2<CR>gv=gv")
 
@@ -54,6 +55,7 @@ k.set("n", "gf", "<cmd>e <cfile><CR>", {desc="gf but also create file if it does
 k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"})
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
 k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
+k.set("t", "<Esc><Esc>", "<c-\\><c-n>")
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 k.set("n", "<leader>myt", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
@@ -62,6 +64,7 @@ k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
 k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clipboard
 k.set("n", "<leader>mr", [[:put =range(1,)<Left>]], { desc="Insert text: math range" })
 k.set("n", "<leader>cm", "<cmd>!chmod +x %<CR>", { silent = true })
+k.set("n", "<leader>cs", "<cmd>!chmod +x %<CR>", { silent = true })
 
 k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
@@ -113,7 +116,15 @@ k.set("n", "<leader>p5",
 
 ---- Markdown shortcuts
 k.set("n", "<leader>mm", "<cmd>MarkdownPreviewToggle<CR>")
-k.set("n", "<leader>mt", "<cmd>TableModeToggle<CR>")
+k.set("n", "<leader>mt", function()
+    vim.g.treesitterOn = not vim.g.treesitterOn
+    vim.cmd.TableModeToggle()
+    if vim.g.treesitterOn then
+        vim.treesitter.start()
+    else
+        vim.treesitter.stop()
+    end
+end)
 
 ---- Compiler shortcuts
 -- Replace later with vim autogroup to an extent maybe.
@@ -127,10 +138,13 @@ k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 -- <leader>cx is in lazy.lua if it still exists
 
 --- Vim shortcuts
--- k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>") -- below not tested but it should work
-k.set("n", "<leader>t", "<cmd>tabnew<CR><cmd>term<CR>")
-k.set("n", "<leader>w", [[:w<CR>]])
-k.set("n", "<leader>e", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
+k.set("n", "<leader>zt", "<cmd>tabnew<CR><cmd>term<CR>")
+k.set("n", "<leader>w", vim.cmd.w)
+k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+k.set("n", "<leader>e", vim.cmd.enew)
+k.set("n", "<leader>`", vim.cmd.cd) -- In future: if cd == ~ .. otherwise go to current dir
+k.set("n", "<leader>~", "<cmd>cd %:h<CR>")
 
 --[[ above todo:
 - Doesn't delete empty buffer. Avoid :bd!
@@ -168,7 +182,7 @@ local function i_txt(txt)
 end
 
 local function i_date()
-    i_txt( os.date("%x"):gsub(
+    i_txt( tostring(os.date("%x")):gsub(
         -- To learn more: https://www.lua.org/pil/20.2.html
         -- Update: the docs don't show Linux output correctly ... bruh
         -- [that's why this commit blame exists here]
@@ -177,7 +191,7 @@ local function i_date()
 end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
-k.set("n", "<leader>da", i_date, {desc="Insert date"})
+k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- for Termux, and Windows. With Arch / Ubuntu-based: LuaSnip.
 
 -- https://youtu.be/9gUatBHuXE0
 -- Autorun on save. Useful but not in this case. Useful example: .md -> .html
