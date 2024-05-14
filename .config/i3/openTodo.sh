@@ -1,3 +1,3 @@
 #!/bin/bash
-nvim ~/backup2022nov/checkDaily/index.md
+nvim ~/selfnotes/todo.md
 wait

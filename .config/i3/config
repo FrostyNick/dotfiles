@@ -1,9 +1,12 @@
-# !!SWAY!! if switching to sway one day. https://github.com/swaywm/sway/wiki
-# Also consider hyprland, KDE Plasma, etc.
+# https://github.com/swaywm/sway/wiki
+# All of this works under swaywm with no errors (except for input {} which is commented out)
+# See !!SWAY!! for places to improve sway.
+# Search waypaper in this file to setup wallpapers
+
 # https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway
 # https://github.com/swaywm/sway/wiki/i3-Migration-Guide
 
-# arch dependencies: pacman -S extra/network-manager-applet extra/brightnessctl extra/bemenu
+# arch dependencies: pacman -S extra/network-manager-applet extra/brightnessctl # extra/bemenu
 
 # Issues:
 # https://wezfurlong.org/wezterm/config/launch.html#launching-a-different-program-as-a-one-off-via-the-cli
@@ -86,6 +89,11 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# # This errors under i3. Under sway, maps capslock to esc.
+# input "type:keyboard" {
+#     xkb_options caps:escape
+# }
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym Control+Mod1+t exec i3-sensible-terminal
@@ -93,8 +101,9 @@ bindsym Control+Mod1+t exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+q kill
 
-# start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+# program launcher from terminal (alternative to dmenu)
+bindsym $mod+d exec alacritty --class 'launcher' --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
+# bindsym $mod+d exec dmenu_run
 # !!SWAY!! Use https://github.com/Cloudef/bemenu # bemenu's wayland backend only works in compositors which implement wlr-layer-shell.
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -312,14 +321,18 @@ client.urgent           #2f343a #900000 #cccccc #900000   #900000
 client.placeholder      #000000 #0c0c0c #484848 #000000   #0c0c0c
 client.background       #00ee78
 
-# using feh instead. originally: exec always nitrogen --restore
-# in '~/.profile': 'feh --randomize --bg-max ~/Pictures/wallpapers/*'
-# would be better with phone downloads / Twitter handpicked to wallpapers dir
+# install waypaper: https://anufrievroman.gitbook.io/waypaper/installation (alternative link: https://github.com/anufrievroman/waypaper?tab=readme-ov-file#waypaper)
+# then run waypaper to set it up. Works in both X11 and Wayland.
+exec waypaper --restore --random
 
-# 107 = Print
-bindsym Print exec flameshot gui
+# Same as above, this also works if you use X11 with a file in `~/.profile`, `~/.bash_profile`, etc:
+# `feh --randomize --bg-max ~/Pictures/wallpapers/*`
+
+# 107 = Print, so below also works:
 # bindcode 107 flameshot gui
-workspace_auto_back_and_forth yes # repeat mod + num to go to previous ws
+bindsym Print exec flameshot gui
+# below: repeat mod + num to go to previous ws
+workspace_auto_back_and_forth yes
 # i dont want this anymore go awayyy. might change my mind later:
 focus_follows_mouse no
 hide_edge_borders smart
@@ -338,7 +351,6 @@ bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
     bindsym l exec librewolf
-    bindsym a exec i3-sensible-terminal -e "ranger"
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/obs.sh' &"
     # WORKING bindsym o exec obs
@@ -570,6 +582,7 @@ for_window [class="SimpleScreenRecorder"] focus,layout tabbed
 
 # private (cannot be accessed w keyboard shortcuts. mouse scroll on bar works though.)
 assign [class="KeePassXC"] $ws100
+assign [class="org.keepassxc.KeePassXC"] $ws100
 
 
 # opens by default
