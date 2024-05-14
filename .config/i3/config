@@ -1,7 +1,9 @@
 # !!SWAY!! if switching to sway one day. https://github.com/swaywm/sway/wiki
-# Also consider hyprland
+# Also consider hyprland, KDE Plasma, etc.
 # https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway
 # https://github.com/swaywm/sway/wiki/i3-Migration-Guide
+
+# arch dependencies: pacman -S extra/network-manager-applet extra/brightnessctl extra/bemenu
 
 # Issues:
 # https://wezfurlong.org/wezterm/config/launch.html#launching-a-different-program-as-a-one-off-via-the-cli
@@ -62,13 +64,17 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+exec --no-startup-id nm-applet 
 
 # !!SWAY!!
 # picom is a compositor for X11; allows for transparent background in kitty.
+# doesn't work from arch repo for some reason
 exec --no-startup-id picom -b
 # credit: https://github.com/i3/i3/discussions/4841
 # NOT SURE THIS WORKS exec picom # /usr/local/bin/picom
+
+bindsym XF86MonBrightnessUp exec brightnessctl set +2%
+bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -89,7 +95,8 @@ bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
-# !!SWAY!! Use https://github.com/Cloudef/bemenu
+# !!SWAY!! Use https://github.com/Cloudef/bemenu # bemenu's wayland backend only works in compositors which implement wlr-layer-shell.
+
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -342,7 +349,7 @@ mode "$mode_launcher" {
     # bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
 
 # !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
-    bindsym d exec vencorddesktop || exec discord || exec discord-canary
+    bindsym d exec vesktop || exec vencorddesktop || exec discord || exec discord-canary
     bindsym m exec caprine
 
     bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
@@ -454,6 +461,9 @@ assign [class="Brave-browser"] $ws1
 for_window [class="Brave-browser"] focus
 assign [class="Luakit"] $ws1
 for_window [class="Luakit"] focus
+assign [class="LibreWolf"] $ws1
+for_window [class="LibreWolf"] focus
+# above is just in arch or is in newer librewolf
 assign [class="librewolf-default"] $ws1
 for_window [class="librewolf-default"] focus
 
@@ -537,6 +547,7 @@ assign [class="qimgv"] $ws5
 
 # social
 assign [class="VencordDesktop"] $ws6
+assign [class="vesktop"] $ws6
 assign [class="discord"] $ws6
 assign [class="Caprine"] $ws6
 
@@ -586,5 +597,5 @@ exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openTodo.sh"
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
 # Above ruins bc Vencord broke with Discord update.
 
-# Auto-launch Vesktop
-exec vencorddesktop
+# Auto-launch Vesktop ("vestop" is newer or varies per OS)
+exec vesktop || exec vencorddesktop
