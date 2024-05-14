@@ -309,11 +309,11 @@ pkg install nvim rg dictd
 ## Neovim config installation
 
 ```bash
-# cd to ~ and clone directory tree
-cd && git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
+# clone directory tree
+git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.git
 # Only download/checkout files from .config/nvim
 cd dotfiles/ && git sparse-checkout set --no-cone .config/nvim
-git checkout && cd
+git checkout && cd ..
 
 # Create ~/.config/ if it doesn't already exist
 mkdir -p ~/.config

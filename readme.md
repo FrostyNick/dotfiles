@@ -31,7 +31,7 @@ If you learn something, consider adding a star or commenting.
   | [~/.config/Vencord/](.config/Vencord)                                                  | Vencord is a Discord client; injects javascript        | x      |        | x          |
   | [~/.config/VencordDesktop/VencordDesktop/themes/](.config/VencordDesktop/V.../themes/) | Vesktop is a desktop app for Vencord; by Vencord devs  | x      |        | x          |
   | [~/.config/alacritty.toml](.config/alacritty.toml)                                     | Terminal emulator (made for speed; .toml conf)         | x      |        | x          |
-  | [~/.config/kitty/](.config/kitty)                                                      | Terminal emulator (no longer testing)                   | x      |
+  | [~/.config/kitty/](.config/kitty)                                                      | Terminal emulator (no longer testing)                  | x      |
   | [~/.config/wezterm/](.config/wezterm)                                                  | Terminal emulator (more features built-in; .lua conf)  | x      |        | x          |
   | [~/.config/Kvantum/](.config/Kvantum)                                                  | Force dark mode on some apps                           | x      |
   | [~/.config/mimeapps.list](.config/mimeapps.list)                                       | Fix for i3 default links on Ubuntu                     | x      |
@@ -157,9 +157,11 @@ rm Mononoki.zip
 
 # (My preference) black mode + padding theme + modern notifications:
 
-# Follow instructions: https://refact0r.github.io/midnight-discord/
-# See ~/.config/VencordDesktop/VencordDesktop/themes/midnight.theme.css from my dotfiles for css variables to quickcss in Vencord to add opinionated padding + make the theme black rather than just dark.
-# Add to Vencord: https://discord-extensions.github.io/modern-indicators/src/source.css
+# For you own flavor of this theme: https://refact0r.github.io/midnight-discord/
+# Add to Vencord:
+# - https://discord-extensions.github.io/modern-indicators/src/source.css
+# - https://refact0r.github.io/midnight-discord/midnight.css + modified css (alternatively: https://github.com/refact0r/midnight-discord/raw/master/flavors/midnight-catppuccin-mocha.theme.css )
+# (Ignore this line: File is missing at the moment. If you want to remind me make an issue.) See ~/.config/VencordDesktop/VencordDesktop/themes/midnight.theme.css from my dotfiles for css variables to quickcss in Vencord to add opinionated padding + make the theme black rather than just dark. 
 
 # video game themed discord:
 # https://saltssaumure.github.io/pios-discord-theme/piOS.theme.css

@@ -7,7 +7,7 @@ background = "#000000"
 shape = "Underline"
 
 [font]
-size = 12.0
+size = 11.0
 
 [font.bold]
 family = "Mononoki Nerd Font Propo"
@@ -40,6 +40,6 @@ multiplier = 6
 [window]
 decorations = "none"
 dynamic_title = true
-opacity = 0.8
+opacity = 0.8 # In X11: Requires a compositor
 resize_increments = true
 startup_mode = "Maximized"
