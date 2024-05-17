@@ -55,7 +55,7 @@ k.set("n", "gf", "<cmd>e <cfile><CR>", {desc="gf but also create file if it does
 k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"})
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
 k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
-k.set("t", "<Esc><Esc>", "<c-\\><c-n>")
+k.set("t", "<Esc>q", "<c-\\><c-n>")
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 k.set("n", "<leader>myt", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
@@ -101,6 +101,9 @@ k.set("n", "<leader>q", "<cmd>bd<CR>", {desc=":bd Delete buffer"})
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
 "<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
 { silent = true })
+k.set("n", "<leader>ghs", -- rare edge-case: breaks when git exists earlier I think
+"<cmd>!gh status<CR>",
+{ silent = true, desc = "github status (requires gh / github-cli)" })
 
 k.set("n", "<leader>gg", vim.cmd.Git)
 k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
