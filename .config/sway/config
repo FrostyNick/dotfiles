@@ -39,6 +39,8 @@ font pango:Mononoki Nerd Font Propo Regular 12
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+# Insert lock screen here. swaylock?
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec nm-applet --indicator
@@ -46,6 +48,9 @@ exec nm-applet --indicator
 
 # Notification Daemon !!wayland!!
 exec swaync
+# below doesn't work
+# exec brightnessctl --min-value
+
 bindsym $mod+Shift+n exec swaync-client -t -sw
 
 bindsym XF86MonBrightnessUp exec brightnessctl set +2%
@@ -69,6 +74,15 @@ floating_modifier $mod
 input type:keyboard {
     xkb_layout us,us(dvorak),us(rus)
     xkb_options grp:rctrl_rshift_toggle,grp_led:caps,caps:escape
+}
+
+input type:touchpad {
+    tap enabled
+    # natural_scroll enabled/disabled
+    # accel_profile "flat" # disable mouse acceleration
+    # pointer_accel 0.5 # set mouse sensitivity (between -1 and 1)
+    tap_button_map lrm
+    # want zoom? see https://github.com/swaywm/sway/issues/2781
 }
 
 # start a terminal
@@ -327,7 +341,7 @@ default_floating_border pixel
 floating_maximum_size 0 x 0
 
 # set $mode_launcher Launch: [l]ibrewolf, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
-set $mode_launcher Open: [l]wlf, r[a]nger, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat, fb[m]sg
+set $mode_launcher Open: [l]wlf, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat, fb[m]sg
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
@@ -342,7 +356,7 @@ mode "$mode_launcher" {
     # bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
 
 # !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
-    bindsym d exec vesktop || exec vencorddesktop || exec discord || exec discord-canary
+    bindsym d exec vesktop --ozone-platform-hint=auto || exec vencorddesktop || exec discord || exec discord-canary
     bindsym m exec caprine
 
     bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
@@ -382,9 +396,9 @@ mode "$mode_launcher" {
 # shutdown / restart / suspend...
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot (broke), (CTRL+s) shutdown, (i) restart i3, (p) enable pulseaudio
 bindsym $mod+BackSpace mode "$mode_system"
-bindsym Mod1+BackSpace mode "$mode_system"
-bindsym Control+Mod1+Delete mode "$mode_system"
-# once in a long while mod key stops working so that's why above exists
+# bindsym Mod1+BackSpace mode "$mode_system"
+# bindsym Control+Mod1+Delete mode "$mode_system"
+# once in a long while mod key stops working so that's why above comments exist
 # !!!! not Ctrl but Control !!!!
 
 # will systemctl work everywhere? I think not. change that later.
@@ -443,7 +457,6 @@ for_window [window_role="task_dialog"] floating enable
 
 # web
 # selenium uses firefox.. and i dont need to focus on selenium always
-assign [class="qBittorrent"] $ws1
 assign [class="firefox"] $ws1
 for_window [class="firefox"] focus
 assign [class="Chromium-browser"] $ws1
@@ -477,7 +490,7 @@ for_window [class="Alacritty"] focus
 assign [app_id="Alacritty"] $ws2
 for_window [app_id="Alacritty"] focus
 
-# notes + educational + not terminal
+# notes + educational + not terminal + files
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
@@ -493,6 +506,7 @@ assign [class="FeatherPad"] $ws3
 for_window [class="FeatherPad"] focus
 assign [class="nobleNote"] $ws3
 for_window [class="nobleNote"] focus
+assign [class="qBittorrent"] $ws3
 # del sharik
 
 # android studio
@@ -513,6 +527,7 @@ for_window [class="VSCodium"] focus
 for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
+assign [class="Virt-manager"] $ws5
 
 # game
 for_window [class="2048-qt"] focus
@@ -534,6 +549,8 @@ assign [class="osu!"] $ws5
 assign [class="minecraft-launcher"] $ws5
 assign [class="Minecraft Launcher"] $ws5
 assign [class="Minecraft 1.19"] $ws5
+assign [class="Minecraft Linux Launcher UI"] $ws5
+assign [class="mcpelauncher-client"] $ws5
 
 # art editing
 assign [class="Gimp"] $ws5
@@ -548,6 +565,7 @@ assign [class="qimgv"] $ws5
 # social
 assign [class="VencordDesktop"] $ws6
 assign [class="vesktop"] $ws6
+assign [app_id="vesktop"] $ws6
 assign [class="discord"] $ws6
 assign [class="Caprine"] $ws6
 
@@ -571,6 +589,7 @@ for_window [class="SimpleScreenRecorder"] focus,layout tabbed
 # private (cannot be accessed w keyboard shortcuts. mouse scroll on bar works though.)
 assign [class="KeePassXC"] $ws100
 assign [class="org.keepassxc.KeePassXC"] $ws100
+assign [app_id="org.keepassxc.KeePassXC"] $ws100
 
 
 # opens by default
@@ -594,7 +613,8 @@ exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openTodo.sh"
 # THIS WORKS only on startup: exec /home/nicholas/.config/i3/xrandr.sh
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
 
-# Auto-launch Vesktop ("vesktop" is newer or varies per OS)
-exec vesktop || exec vencorddesktop
+# Auto-launch Vesktop. The flag below forces vesktop through wayland if
+# xwayland is an option; you may want to disable if it causes issues.
+exec vesktop --ozone-platform-hint=auto || exec vencorddesktop
 
 include /etc/sway/config.d/*
