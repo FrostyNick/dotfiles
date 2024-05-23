@@ -59,6 +59,9 @@ k.set("t", "<Esc>q", "<c-\\><c-n>")
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 k.set("n", "<leader>myt", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
+k.set("n", "<leader>mk", ":norm blysiw]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
+k.set("n", "<leader>mw", ":norm blysiw]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
+-- yes yes yes yes [yes]() yes yes [yes]() [yes]() 
 k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
 k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clipboard
@@ -146,8 +149,20 @@ k.set("n", "<leader>zt", "<cmd>tabnew<CR><cmd>term<CR>")
 k.set("n", "<leader>w", vim.cmd.w)
 k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>e", vim.cmd.enew)
-k.set("n", "<leader>`", vim.cmd.cd) -- In future: if cd == ~ .. otherwise go to current dir
-k.set("n", "<leader>~", "<cmd>cd %:h<CR>")
+k.set("n", "<leader>`", function()
+    vim.cmd.cd()
+    vim.notify("cwd: ~")
+end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current dir
+
+k.set("n", "<leader>~", --[[ "<cmd>cd %:h<CR>") ]] function()
+    vim.cmd("cd %:h")
+    vim.notify(vim.loop.cwd())
+end, {desc="Move cwd .. of current file"})
+
+k.set("n", "<leader>.", function()
+    vim.cmd("cd ..")
+    vim.notify(vim.loop.cwd())
+end, {desc="Move cwd .."})
 
 --[[ above todo:
 - Doesn't delete empty buffer. Avoid :bd!
@@ -194,7 +209,7 @@ local function i_date()
 end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
-k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- for Termux, and Windows. With Arch / Ubuntu-based: LuaSnip.
+k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
 
 -- https://youtu.be/9gUatBHuXE0
 -- Autorun on save. Useful but not in this case. Useful example: .md -> .html
