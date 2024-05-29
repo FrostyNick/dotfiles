@@ -340,12 +340,13 @@ default_floating_border pixel
 # fixes windows that are too big. Side effect: Affects all floating windows.
 floating_maximum_size 0 x 0
 
-# set $mode_launcher Launch: [l]ibrewolf, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
-set $mode_launcher Open: [l]wlf, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat, fb[m]sg
+# set $mode_launcher Launch: [l]ibrewolf -Profile[M]anager, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
+set $mode_launcher Open: [l]wlf [m]ng, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
     bindsym l exec librewolf
+    bindsym m exec librewolf -ProfileManager
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/obs.sh' &"
     # WORKING bindsym o exec obs
@@ -357,7 +358,7 @@ mode "$mode_launcher" {
 
 # !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
     bindsym d exec vesktop --ozone-platform-hint=auto || exec vencorddesktop || exec discord || exec discord-canary
-    bindsym m exec caprine
+    # bindsym n exec caprine
 
     bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
     bindsym n exec i3-sensible-terminal -e "newsboat"
@@ -394,7 +395,7 @@ mode "$mode_launcher" {
 }
 
 # shutdown / restart / suspend...
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot (broke), (CTRL+s) shutdown, (i) restart i3, (p) enable pulseaudio
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot (not Ubuntu), (CTRL+s) shutdown, (i) restart i3
 bindsym $mod+BackSpace mode "$mode_system"
 # bindsym Mod1+BackSpace mode "$mode_system"
 # bindsym Control+Mod1+Delete mode "$mode_system"
@@ -407,7 +408,6 @@ mode "$mode_system" {
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $i3lockwall && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $i3lockwall && systemctl hibernate, mode "default"
-    bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/pulseaudio-temp-fix.sh' &"
 
     # systemctl reboot
     bindsym r exec --no-startup-id "shutdown -r now", mode "default" # this might NOT work
@@ -574,6 +574,8 @@ assign [class="zoom"] $ws6
 # video creation
 assign [class="obs"] $ws10
 for_window [class="obs"] focus
+assign [app_id="com.obsproject.Studio"] $ws10
+for_window [app_id="com.obsproject.Studio"] focus
 assign [class="kdenlive"] $ws10
 for_window [class="kdenlive"] focus
 assign [class="Shotcut"] $ws10
@@ -595,7 +597,6 @@ assign [app_id="org.keepassxc.KeePassXC"] $ws100
 # opens by default
 # exec i3-sensible-terminal -e "vi"
 # exec i3-sensible-terminal
-# exec ./Apps/KeePassXC-2.7.4-x86_64.AppImage
 # no longer needed thanks to assign: exec i3-msg "workspace 2;"
 # exec "xdg-open ~/backup2022nov10/checkDaily/index.html" # opens in ws1
 # not working on restarting i3:
