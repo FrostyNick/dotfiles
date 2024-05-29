@@ -49,7 +49,14 @@ local function telescopeConfig()
 
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
     k.del('n', '<leader>,')
-    k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
+    k.set('n', '<leader>fo', tsb.oldfiles, { desc="Telescope: old files" })
+    local a,b = pcall(function()
+        -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })
+        k.set('n', '<leader>,', "<cmd>Telescope frecency<CR>", { desc="Telescope: frecency" })
+    end)
+    if not a then
+        vim.notify("Failed to load frecency keymap:\n"..tostring(b))
+    end
     k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
     k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
     k.set('n', '<leader>f?', function() print"use <leader>fk instead" end)
@@ -112,6 +119,8 @@ local function telescopeConfig()
     if not success then
         print("Error loading telescope ui-select: " .. msg)
     end
+
+    require("telescope").load_extension "frecency"
 end
 
 local function invisiBkgd(colorscheme)
@@ -261,6 +270,10 @@ local plugins = {
         event = "VeryLazy",
         config = telescopeConfig,
     },
+    {
+        "nvim-telescope/telescope-frecency.nvim",
+        event = "VeryLazy"
+    },
     { -- might rm l8r; lualine also has grapple
         'cbochs/grapple.nvim',
         event = "VeryLazy",
@@ -375,6 +388,25 @@ local plugins = {
     --
     --     end
     -- },
+    {
+        'cameron-wags/rainbow_csv.nvim',
+        config = true,
+        ft = {
+            'csv',
+            'tsv',
+            'csv_semicolon',
+            'csv_whitespace',
+            'csv_pipe',
+            'rfc_csv',
+            'rfc_semicolon'
+        },
+        cmd = {
+            'RainbowDelim',
+            'RainbowDelimSimple',
+            'RainbowDelimQuoted',
+            'RainbowMultiDelim'
+        }
+    },
     {
         "nvim-neorg/neorg",
         ft = "norg",
