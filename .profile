@@ -14,6 +14,7 @@
 # alternatives to kitty: wezterm, alacritty, st
 export TERMINAL=alacritty
 export EDITOR=vi
+export VISUAL=vi
 # for dark theme on apps such as simplescrrec
 export QT_STYLE_OVERRIDE=kvantum
 # feh --randomize --bg-max ~/Pictures/wallpapers/*

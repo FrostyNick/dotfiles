@@ -99,6 +99,16 @@ if ! shopt -oq posix; then
   fi
 fi
 
+clear_console () {
+    # originally from default .bash_logout before it was removed
+    # when leaving the console clear the screen to increase privacy
+    if [ "$SHLVL" = 1 ]; then
+        [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
+    fi
+}
+
+trap clear_console EXIT
+
 # fzf keyboard shortcuts (*not* completion)
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash # Ubuntu
 [ -f $PREFIX/share/fzf/key-bindings.bash ] && source $PREFIX/share/fzf/key-bindings.bash # Termux. Note: If it doesn't work remove everything before "source" (that has been tested as of "0.46 (devel)").
