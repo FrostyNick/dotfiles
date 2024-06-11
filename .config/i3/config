@@ -483,6 +483,8 @@ for_window [class="LibreWolf"] focus
 # above is just in arch or is in newer librewolf
 assign [class="librewolf-default"] $ws1
 for_window [class="librewolf-default"] focus
+assign [class="Vivaldi-stable"] $ws1
+for_window [class="Vivaldi-stable"] focus
 
 # terminal
 assign [class="qterminal"] $ws2
@@ -622,4 +624,5 @@ exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openTodo.sh"
 
 # Auto-launch Vesktop. The flag below forces vesktop through wayland if
 # xwayland is an option; you may want to disable if it causes issues.
-exec vesktop --ozone-platform-hint=auto || exec vencorddesktop
+# exec vesktop --ozone-platform-hint=auto
+exec vesktop || exec vencorddesktop

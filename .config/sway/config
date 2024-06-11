@@ -74,6 +74,7 @@ floating_modifier $mod
 input type:keyboard {
     xkb_layout us,us(dvorak),us(rus)
     xkb_options grp:rctrl_rshift_toggle,grp_led:caps,caps:escape
+    # hold esc to have ctrl would be nice too .. needs more than just sway tho ... good enough!
 }
 
 input type:touchpad {
@@ -475,6 +476,8 @@ for_window [class="LibreWolf"] focus
 # above is just in arch or is in newer librewolf
 assign [class="librewolf-default"] $ws1
 for_window [class="librewolf-default"] focus
+assign [class="Vivaldi-stable"] $ws1
+for_window [class="Vivaldi-stable"] focus
 
 # terminal
 assign [class="qterminal"] $ws2
@@ -528,6 +531,7 @@ for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
 assign [class="Virt-manager"] $ws5
+assign [app_id="Waydroid"] $ws5
 
 # game
 for_window [class="2048-qt"] focus
@@ -614,8 +618,13 @@ exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openTodo.sh"
 # THIS WORKS only on startup: exec /home/nicholas/.config/i3/xrandr.sh
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
 
-# Auto-launch Vesktop. The flag below forces vesktop through wayland if
-# xwayland is an option; you may want to disable if it causes issues.
-exec vesktop --ozone-platform-hint=auto || exec vencorddesktop
-
 include /etc/sway/config.d/*
+
+# Auto-launch Vesktop. The flag below forces vesktop through
+# native wayland; disabled since it causes issues.
+# exec vesktop --ozone-platform-hint=auto
+exec vesktop || exec vencorddesktop
+# move below file to i3 dir
+exec /usr/local/bin/notifyBattery.sh
+
+# [Displaying pop-ups as floating windows. #3095 - GitHub](https://github.com/swaywm/sway/issues/3095 "I came up with a super hacky workaround - a userscript that tries to detect pop-up windows based on the window.titlebar.visible or window.menubar.visible properties, and if either one is false I prepend a well-known string to the window title. I check for this string inside my Sway config and float matching")
