@@ -274,10 +274,24 @@ local plugins = {
         "nvim-telescope/telescope-frecency.nvim",
         event = "VeryLazy"
     },
-    { -- might rm l8r; lualine also has grapple
-        'cbochs/grapple.nvim',
-        event = "VeryLazy",
-        dependencies = { 'nvim-lua/plenary.nvim' }
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        -- lazy = false,
+        keys = {
+            {
+                "<leader>ft",
+                "<cmd>NvimTreeToggle<CR>",
+                desc = "Toggle nvim tree",
+                mode = "n",
+            }
+        },
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("nvim-tree").setup {}
+        end,
     },
     {
         'TarunDaCoder/sus.nvim',
@@ -322,7 +336,17 @@ local plugins = {
             -- your configuration overrides
         }
     },
-    {
+    -- {
+    --     "pwntester/octo.nvim", -- tags: github gh
+    --     cmd = "Octo",
+    --     dependencies = {
+    --         'nvim-lua/plenary.nvim',
+    --         'nvim-telescope/telescope.nvim', -- or ibhagwan/fzf-lua
+    --         'nvim-tree/nvim-web-devicons'
+    --     },
+    --     config = true
+    -- },
+    { -- this takes a couple MB ... might not be best idea if you're low on space
         "chrishrb/gx.nvim",
         -- event = "VeryLazy",
         -- it conflicts once in a while but usually saves time
@@ -407,7 +431,7 @@ local plugins = {
             'RainbowMultiDelim'
         }
     },
-    {
+    { -- remove in future?
         "nvim-neorg/neorg",
         ft = "norg",
         -- build = ":Neorg sync-parsers", -- if in doubt, :Lazy build neorg 
@@ -442,6 +466,16 @@ local plugins = {
             }
         end,
     },
+    {
+        "folke/todo-comments.nvim",
+        config = true,
+        event = "VeryLazy",
+    },
+    { -- markdown / neorg / etc
+        "lukas-reineke/headlines.nvim",
+        config = true,
+        event = "VeryLazy",
+    },
 
     {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
     --- Colorschemes below
@@ -458,34 +492,13 @@ local plugins = {
     --     end
     -- },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
-    { -- might replace later. this slows down startup time by 5% (6.5-7ms on my PC) ... grapple might be part of it too
+    {
         'nvim-lualine/lualine.nvim',
         -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         opts = {},
-        config = function()
-            require("lualine").setup({
-                sections = {
-                    lualine_b = {
-                        {
-                            function()
-                                return " " .. require("grapple").key()
-                            end,
-                            cond = require("grapple").exists,
-                        }
-                    },
-        --             lualine_x = {
-        --                 {
-        --                     require("lazy.status").updates,
-        --                     cond = require("lazy.status").has_updates,
-        --                     color = { fg = "#ff9e64" },
-        --                 },
-        --             },
-                },
-            })
-        end
+        config = true
     },
-
     {
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
@@ -692,13 +705,16 @@ local plugins = {
         config = function()
             require("icon-picker").setup({ disable_legacy_commands = true })
 
-            local opts = { noremap = true, silent = true }
-
-            -- vim.keymap.set("n", "<Leader><Leader>i", "<cmd>IconPickerNormal<cr>", opts)
-            -- vim.keymap.set("n", "<Leader><Leader>y", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
-            vim.keymap.set("i", "<c-E>", "<cmd>IconPickerInsert<cr>", opts) -- Default <c-i> == tab; no thanks. <c-e> sucks in termux. Haven't tested <c-E> in termux.
+            -- local opts = { noremap = true, silent = true }
+            --
+            -- -- vim.keymap.set("n", "<Leader><Leader>i", "<cmd>IconPickerNormal<cr>", opts)
+            -- -- vim.keymap.set("n", "<Leader><Leader>y", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
+            -- vim.keymap.set("i", "<c-E>", "<cmd>IconPickerInsert<cr>", opts) -- Default <c-i> == tab; no thanks. <c-e> sucks in termux. Haven't tested <c-E> in termux.
         end,
-        event = "VeryLazy"
+        keys = {
+            { "<c-e>", vim.cmd.IconPickerInsert, desc = "Pick icons and emojis", mode = "i" }
+        },
+        -- event = "VeryLazy"
     },
 
     -- no longer works on here. probably bc of another plugin.
