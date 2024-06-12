@@ -342,12 +342,12 @@ default_floating_border pixel
 floating_maximum_size 0 x 0
 
 # set $mode_launcher Launch: [l]ibrewolf -Profile[M]anager, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
-set $mode_launcher Open: [l]wlf [m]ng, ..[c]py, [a]nroi, [o]bs, [d]uwu, sim[r], n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat
+set $mode_launcher Open: [l]wlf m., [m]c, ..[c]py, [a]nroi, [o]bs, [d]uwu, [r]ec, n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
-    bindsym l exec librewolf
-    bindsym m exec librewolf -ProfileManager
+    bindsym l exec librewolf -ProfileManager
+    bindsym m exec mcpelauncher-ui-qt -p main1_20
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/obs.sh' &"
     # WORKING bindsym o exec obs
