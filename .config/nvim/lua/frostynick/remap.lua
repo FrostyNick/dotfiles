@@ -20,7 +20,7 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 
 --
 k.set("n", "Q", "<nop>")
-k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
+k.set("n", "<leader>pwd", function() vim.notify(vim.loop.cwd()) end)
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
@@ -59,9 +59,12 @@ k.set("t", "<Esc>q", "<c-\\><c-n>")
 
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
-k.set("n", "<leader>myt", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
-k.set("n", "<leader>mk", ":norm blysiw]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
-k.set("n", "<leader>mw", ":norm blysiw]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
+--- I should make a different mode at this point...
+-- *insert removing end of yt links*
+k.set("n", "<leader>myts", [[:%s#www.youtube.com/shorts/#youtu.be/#gI<CR>]], {desc="Shorten YouTube short URLs"})
+k.set("n", "<leader>mytv", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
+k.set("n", "<leader>mk", ":norm blysiW]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
+k.set("n", "<leader>mw", ":norm blysiW]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
 
 k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
@@ -91,11 +94,11 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 -- Future: If using Windows or MacOS, alias different open command
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
 k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
-k.set("n", "<leader>po", -- project open
+k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
 -- For windows, replace xdg-open with explorer.
 
-k.set("n", "<leader>o",
+k.set("n", "<leader>po",
 "<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
 { silent = true, desc = "xdg-open file" })
 
@@ -108,6 +111,9 @@ k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I thi
 k.set("n", "<leader>ghs", -- rare edge-case: breaks when git exists earlier I think
 "<cmd>!gh status<CR>",
 { silent = true, desc = "github status (requires gh / github-cli)" })
+k.set("n", "<leader>gho", -- rare edge-case: breaks when git exists earlier I think
+"<cmd>Octo<CR>",
+{ silent = true, desc = "octo list (requires gh)" })
 
 k.set("n", "<leader>gg", vim.cmd.Git)
 k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
@@ -172,7 +178,10 @@ end, {desc="Move cwd .."})
 - g`"
 --]]
 
-k.set("n", "<leader>pv", vim.cmd.Ex)
+k.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Project view :Ex"})
+k.set("n", "<leader>pt", vim.cmd.TodoLocList, { desc = ":TodoLocList"})
+k.set("n", "<leader>pd", function()
+end, { desc = "Project directory"})
 
 --- not keyboard shortcut
 vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
