@@ -1,14 +1,16 @@
-I am open to PR requests, issues or questions (in discussions). Just make an
-issue and then after getting my feedback you can work on the PR. Other than
-that, feel free to learn and take any amount of code to tweak or do whatever
-you want.
-
 If you learn something, consider adding a star or commenting.
 
 
 ## Preview
 
 ![Setup showcase](https://github.com/FrostyNick/dotfiles/assets/57016218/dc492a6c-f389-45b4-b874-b4850f5ea08a)
+
+
+## What to see in this config
+
+- Neovim remaps, config and [readme](.config/nvim/). Designed for EndeavorOS (pretty much Arch), Ubuntu, and Termux.
+- Bash aliases.
+- Vim like keymaps for newsboat and zathura.
 
 
 ## File descriptions
@@ -58,6 +60,8 @@ the config works.
 <details>
     <summary>What's in this config?</summary>
 
+- <kbd>leader + ?</kbd> to see keyboard shortcuts from this config.
+  (leader key is space)
 - Working LSP. Search LSP in <kbd>leader + ?</kbd> for LSP
   keybinds.
     - <kbd>gr</kbd> - rename variable based on code context. (it won't mess up
@@ -108,14 +112,12 @@ the config works.
     - Zen mode, Harpoon, Lua line.
     - Much more.
 - Lua based plugins whenever it's better in speed or functionality.
-- Not familiar with the keybinds for this config? <kbd>leader + ?</kbd>
-  (leaderkey is space for everything)
 - Rose pine theme. (The Showcase screenshot is likely outdated if it has a
   different theme)
 
 </details>
 
-## Install nerd fonts
+## Install Nerd Fonts
 
 For all the icons to be displayed correctly in the terminal, you will need to install a nerd font. (If you use WezTerm, note it has a nerd font pre-installed as a fallback and glyph characters, so no setup is needed with nerd fonts.)
 
@@ -162,7 +164,7 @@ rm Mononoki.zip
 # - https://discord-extensions.github.io/modern-indicators/src/source.css
 # - https://refact0r.github.io/midnight-discord/midnight.css + modified css (alternatively: https://github.com/refact0r/midnight-discord/raw/master/flavors/midnight-catppuccin-mocha.theme.css )
 # (Ignore this line: File is missing at the moment. If you want to remind me make an issue.) See ~/.config/VencordDesktop/VencordDesktop/themes/midnight.theme.css from my dotfiles for css variables to quickcss in Vencord to add opinionated padding + make the theme black rather than just dark. 
-
+ don't
 # video game themed discord:
 # https://saltssaumure.github.io/pios-discord-theme/piOS.theme.css
 
@@ -174,8 +176,14 @@ rm Mononoki.zip
 -->
 
 
-## Dotfile info
+## Contributing
 
-- https://dotfiles.github.io/ (I haven't looked at this it just looks promising)
+I am open to discuss anything in issues or discussions. Other than that, feel
+free to learn and take any amount of code to tweak or do whatever you want.
+
+
+## Learn more about dotfiles
+
+- https://dotfiles.github.io/
 - DT YT video about dotfiles + take notes + comment section.
 

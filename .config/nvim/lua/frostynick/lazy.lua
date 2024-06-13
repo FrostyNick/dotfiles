@@ -123,10 +123,74 @@ local function telescopeConfig()
     require("telescope").load_extension "frecency"
 end
 
-local function invisiBkgd(colorscheme)
-    pcall(function()
-        vim.cmd.colorscheme("midnight" or colorscheme)
+local function lspConfig()
+    local a,b = pcall(function()
+        local lspc = require('lspconfig')
+        local lspLs = {
+            {
+                'lua_ls',
+                {
+                    -- there are no vim warnings everywhere with below code
+                    -- src for below: https://github.com/neovim/neovim/discussions/24119
+                    on_init = function(client)
+                        local path = client.workspace_folders[1].name
+                        if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+                            return
+                        end
+
+                        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                            -- runtime = {
+                            --     -- Tell the language server which version of Lua you're using
+                            --     -- (most likely LuaJIT in the case of Neovim)
+                            --     version = 'LuaJIT'
+                            -- },
+                            -- Make the server aware of Neovim runtime files
+                            workspace = {
+                                checkThirdParty = false,
+                                library = {
+                                    vim.env.VIMRUNTIME
+                                    -- Depending on the usage, you might want to add additional paths here.
+                                    -- "${3rd}/luv/library"
+                                    -- "${3rd}/busted/library",
+                                }
+                                -- or pull in all of 'runtimepath'. note: this is a lot slower
+                                -- library = vim.api.nvim_get_runtime_file("", true)
+                            },
+                            telemetry = { enable = false },
+                        })
+                    end,
+                    settings = {
+                        Lua = {}
+                    }
+                }
+            },
+            'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
+        'denols', 'emmet_ls', 'tsserver', 'zk', } -- denols might be deno
+        for _,v in ipairs(lspLs) do
+            if type(v) ~= "table" then
+                lspc[v].setup { capabilities = capabilities }
+            else
+                lspc[v[1]].setup(v[2])
+            end
+        end
     end)
+    if not a then
+        print("failed to setup lspconfig: "..b)
+    end
+end
+
+local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplicate of this function but global.
+    local a,b = pcall(function()
+        if type(color) == "table" then
+            color = color.name -- automatically passed from Lazy
+        elseif not color then
+            color = "midnight"
+        end
+        vim.cmd.colorscheme(color)
+    end)
+    if not a then
+        vim.notify("Could not apply colorscheme: "..tostring(b))
+    end
 
     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
@@ -134,8 +198,10 @@ local function invisiBkgd(colorscheme)
     vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
     vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 
-    vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
-    vim.cmd.hi("clear", "SpellCap")
+    if not isSpell then
+        vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
+        vim.cmd.hi("clear", "SpellCap")
+    end
 end
 
 local plugins = {
@@ -191,7 +257,7 @@ local plugins = {
             }
         end
     }, -- Optional
-    { 'neovim/nvim-lspconfig', event = "VeryLazy" }, -- Required
+    { 'neovim/nvim-lspconfig', event = "VeryLazy", config = lspConfig }, -- Required
 
     -- Autocompletion (taken with minimal changes from https://github.com/cpow/neovim-for-newbs/blob/7cee93b394359c2fee4f134d27903af65742247d/lua/plugins/completions.lua )
     {
@@ -230,12 +296,32 @@ local plugins = {
                     ["<C-y>"] = cmp.mapping.confirm({ select = true }),
                 }),
                 sources = cmp.config.sources({
+                    -- { name = "crates" }, -- rust crates.nvim -- the autocmd below does lazyloading which this line doesn't do.
+                    -- { name = "codeium" }, -- AI cmp. Should be easier to toggle for what file exists.
                     { name = "nvim_lsp" },
                     { name = "luasnip" }, -- For luasnip users.
+                    { name = "nvim_lua" },
                 }, {
                     { name = "buffer" },
                 }),
             })
+
+            vim.api.nvim_create_autocmd("BufRead", {
+                group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
+                pattern = "Cargo.toml",
+                callback = function()
+                    cmp.setup.buffer({ sources = { { name = "crates" } } }) -- alternative cmp lazyloading way according to https://github.com/Saecki/crates.nvim/wiki/Documentation-v0.4.0
+                end,
+            })
+
+            -- vim.api.nvim_create_autocmd("BufRead", {
+            --     group = vim.api.nvim_create_augroup("CmpSourceCodeium", { clear = true }),
+            --     pattern = "*.lua",
+            --     callback = function()
+            --         cmp.setup.buffer({ sources = { { name = "codeium" } } })
+            --     end,
+            -- })
+
         end,
     },
 
@@ -244,11 +330,7 @@ local plugins = {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
         event = "VeryLazy",
-        config = function()
-            require("nvim-surround").setup({
-                -- Configuration here, or leave empty to use defaults
-            })
-        end
+        config = true,
     },
     -- visualize jump to character
     {
@@ -375,6 +457,26 @@ local plugins = {
             },
         } end,
     },
+    {
+        'saecki/crates.nvim',
+        ft = "toml",
+        tag = 'stable',
+        config = true
+    },
+    -- { -- testing nvim plugin ... Very useful, but it needs an easier way to toggle on and off. An online AI tool should not see every file by default. Maybe just python and rust files and should be opt-in.
+    --     -- If below is not commented out, also uncomment this in cmp. FIX: codeium should only be enabled when it's supposed to be enabled imo
+    --     "Exafunction/codeium.nvim",
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --         "hrsh7th/nvim-cmp",
+    --     },
+    --     event = "VeryLazy",
+    --     config = true,
+    --     -- config = function()
+    --     --     require("codeium").setup({
+    --     --     })
+    --     -- end
+    -- },
     -- { --[[ commented out codeium for now because
     --  * Termux: Doesn't work + errors + planned to not be supported.
     --  * It gets a bit in the way when trying to do projects. Opt-in would be
@@ -431,7 +533,7 @@ local plugins = {
             'RainbowMultiDelim'
         }
     },
-    { -- remove in future?
+    { -- NOTE: remove neorg in future?
         "nvim-neorg/neorg",
         ft = "norg",
         -- build = ":Neorg sync-parsers", -- if in doubt, :Lazy build neorg 
@@ -466,7 +568,7 @@ local plugins = {
             }
         end,
     },
-    {
+    { -- PERF, HACK, TODO, NOTE, FIX, WARNING
         "folke/todo-comments.nvim",
         config = true,
         event = "VeryLazy",
@@ -479,8 +581,8 @@ local plugins = {
 
     {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
     --- Colorschemes below
-    {'dasupradyumna/midnight.nvim', lazy = false, priority = 1000, init = invisiBkgd },
-    -- { 'rose-pine/neovim', name = 'rose-pine', init = invisiBkgd, event = "VeryLazy" },
+    {'dasupradyumna/midnight.nvim', name = "midnight", lazy = false, priority = 999, init = invisiBkgd },
+    -- { 'rose-pine/neovim', name = 'rose-pine', init = ColorMyPencils, event = "VeryLazy" },
     -- {
     --     'AlexvZyl/nordic.nvim',
     --     name = 'nordic',
@@ -499,13 +601,15 @@ local plugins = {
         opts = {},
         config = true
     },
-    {
+    { -- NOTE: See below instructions for live server to work.
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
         -- cmd = "LiveServerStart",  -- Note: "LiveServerToggle" isn't in plugin.
-        -- if switching from npm you can uninstall by (might need sudo):
-        -- npm uninstall -g live-server
-        -- yarn global add @compodoc/live-server # less security issues with this live-server command
+        --[[ if switching from npm you can uninstall by (might need sudo):
+        npm uninstall -g live-server
+        yarn global add @compodoc/live-server # less security issues with this live-server command
+        -- If it doesn't work after everything above has been done, try reinstalling this plugin. Then it should work.
+        --]]
         -- build = 'npm install -g live-server', -- If using npm
         build = 'yarn global add @compodoc/live-server', -- in theory this is needed after installing this plugin. Couldn't test it right now.
         config = function() -- should be in init some of this maybe. fix later. slows down start time slightly.
@@ -531,7 +635,7 @@ local plugins = {
         cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
         event = "VeryLazy",
         dependencies = { "stevearc/overseer.nvim" },
-        opts = {},
+        config = true,
     },
     {
         "stevearc/overseer.nvim",
@@ -547,7 +651,7 @@ local plugins = {
                 max_height = 25,
                 default_detail = 1,
                 bindings = {
-                    ["q"] = function() vim.cmd("OverseerClose") end,
+                    ["q"] = vim.cmd.OverseerClose,
                 },
             },
         },
@@ -628,7 +732,7 @@ local plugins = {
         -- event = "VeryLazy",
         init = function()
             vim.keymap.set("n", "<leader>zz", function()
-                vim.cmd("ZenMode")
+                vim.cmd.ZenMode()
                 vim.wo.wrap = false
                 -- not working ColorMyPencils()
             end)
@@ -728,7 +832,7 @@ local plugins = {
     -- {"ap/vim-css-color", ft = "css"},
     {"iamcco/markdown-preview.nvim",
         ft = "markdown",
-        build = "cd app && yarn install", -- If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
+        build = "cd app && yarn install", -- NOTE: If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
         -- build = "cd app && npm install", -- If using npm
         config = function() vim.g.mkdp_filetypes = { "markdown" } end,
     },
@@ -783,8 +887,9 @@ local plugins = {
     },
     {
         'rcarriga/nvim-notify',
-        event = "UIEnter",
-        config = function()
+        -- event = "UIEnter",
+        priority = 1000, -- error messages even before startup are less disruptive
+        init = function()
             local notify = require("notify")
             notify.setup({ render = "compact", background_colour = "#000000" })
             vim.notify = notify
@@ -841,62 +946,6 @@ local opts = {}
 
 require("lazy").setup(plugins, opts)
 
-local a,b = pcall(function()
-    local lspc = require('lspconfig')
-    local lspLs = {
-        {
-            'lua_ls',
-            {
-                -- there are no vim warnings everywhere with below code
-                -- src for below: https://github.com/neovim/neovim/discussions/24119
-                on_init = function(client)
-                    local path = client.workspace_folders[1].name
-                    if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
-                        return
-                    end
-
-                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                        -- runtime = {
-                        --     -- Tell the language server which version of Lua you're using
-                        --     -- (most likely LuaJIT in the case of Neovim)
-                        --     version = 'LuaJIT'
-                        -- },
-                        -- Make the server aware of Neovim runtime files
-                        workspace = {
-                            checkThirdParty = false,
-                            library = {
-                                vim.env.VIMRUNTIME
-                                -- Depending on the usage, you might want to add additional paths here.
-                                -- "${3rd}/luv/library"
-                                -- "${3rd}/busted/library",
-                            }
-                            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                            -- library = vim.api.nvim_get_runtime_file("", true)
-                        },
-                        telemetry = { enable = false },
-                    })
-                end,
-                settings = {
-                    Lua = {}
-                }
-            }
-        },
-        'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
-    'denols', 'emmet_ls', 'tsserver', 'zk', } -- denols might be deno
-    for _,v in ipairs(lspLs) do
-        if type(v) ~= "table" then
-            lspc[v].setup { capabilities = capabilities }
-        else
-            lspc[v[1]].setup(v[2])
-        end
-    end
-end)
-if not a then
-	print("failed to setup lspconfig: "..b)
-end
-
-
--- -- end cmp setup
 
 -- vim.print(plugins);
 vim.g.neovide_scale_factor = 0.7
