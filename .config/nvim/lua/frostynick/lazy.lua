@@ -573,7 +573,7 @@ local plugins = {
         config = true,
         event = "VeryLazy",
     },
-    { -- markdown / neorg / etc
+    { -- markdown (supports neorg according to docs. i don't see the difference)
         "lukas-reineke/headlines.nvim",
         config = true,
         event = "VeryLazy",
@@ -631,6 +631,7 @@ local plugins = {
     -- How to install the required dependencies · Zeioth/compiler.nvim Wiki https://github.com/Zeioth/Compiler.nvim/wiki/how-to-install-the-required-dependencies
     {
       -- This plugin
+        -- note if using nvim 0.9: 43e316b break!: Dropping deprecated nvim 0.9 functions. `:checkhealth` now requires `nvim 0.10`. No more breaking changes are expected. (3 weeks ago)
         "Zeioth/compiler.nvim",
         cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
         event = "VeryLazy",
@@ -774,7 +775,7 @@ local plugins = {
     -- piersolenski/telescope-import.nvim Autofill imports. Supports JS; lua; py; c++.
 
     -- pins function names/definitons outside visible view
-    {'nvim-treesitter/nvim-treesitter-context', event = "VeryLazy" },
+    -- {'nvim-treesitter/nvim-treesitter-context', event = "VeryLazy" }, -- This is erroring a lot so I disabled it for now. Due to [Crash on empty first line when number line is on (markdown) · Issue #442 · nvim-treesitter/nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context/issues/442)
     {'nvim-treesitter/nvim-treesitter-textobjects',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         event = "VeryLazy",
