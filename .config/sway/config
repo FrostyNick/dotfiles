@@ -290,8 +290,8 @@ bar {
         # inactive_workspace #333333 #22222200 #888888
         # urgent_workspace   #2f343a #90000000 #ffffff
         # binding_mode       #2f343a #90000000 #ffffff
-        focused_workspace  #005500 #005500 #ffffff
-        active_workspace   #000000 #5f676a #ffffff
+        focused_workspace  #004400 #004400 #ffffff
+        active_workspace   #000000 #4d5a60 #ffffff
         inactive_workspace #000000 #000000 #888888
         urgent_workspace   #ff0000 #900000 #ffffff
         binding_mode       #000000 #900000 #ffffff
@@ -328,8 +328,7 @@ exec waypaper --restore --random
 bindsym $mod+Print exec flameshot gui
 bindsym Print exec grimshot save area
 # below: repeat mod + num to go to previous ws
-workspace_auto_back_and_forth yes
-# i dont want this anymore go awayyy. might change my mind later:
+# workspace_auto_back_and_forth yes
 focus_follows_mouse no
 hide_edge_borders smart
 # remove title bar
@@ -549,12 +548,13 @@ assign [class="steam_app*"] $ws5
 assign [class="Quaver"] $ws5
 assign [class="supertuxkart"] $ws5
 assign [class="osu!"] $ws5
+assign [class="Minecraft Linux Launcher UI"] $ws5
+for_window [class="mcpelauncher-client"] fullscreen enable
+assign [class="mcpelauncher-client"] $ws5
 # below not working
 assign [class="minecraft-launcher"] $ws5
 assign [class="Minecraft Launcher"] $ws5
 assign [class="Minecraft 1.19"] $ws5
-assign [class="Minecraft Linux Launcher UI"] $ws5
-assign [class="mcpelauncher-client"] $ws5
 
 # art editing
 assign [class="Gimp"] $ws5
