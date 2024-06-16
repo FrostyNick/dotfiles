@@ -18,7 +18,14 @@ convert() {
         ffmpeg -i $nin $nout
     done
 }
-fcd() {
+ys() { # youtube summary .. AI tool that saves time :)
+    # parses yt links (youtu.be or youtube.com) and removes extra link bloat.
+    id=$(echo $1 | sed 's/.*\=//' | sed 's/.*\///' | sed 's/\?.*//') 
+    echo Downloading for $id
+    curl https://www.summarize.tech/youtu.be/$id | pup 'section text{}'
+}
+# alias test="echo $1"
+f() {
     cd "$(find -type d | fzf)" # taken from BugsWriter
 }
 yts() {
@@ -80,13 +87,24 @@ alias l='ls -CF'
 alias ..='cd ..'
 alias rm='rm -i'
 
-alias f=fcd
 alias _="nv ~/.bash_aliases"
 
 alias x='xdg-open .'
 alias py=python
 alias v=nvim
-alias nv=v
+alias n=newsboat
+
+alias yy="wl-copy --trim-newline"
+alias yyd="wl-copy --clear"
+alias pp=wl-paste
+
+alias xyy='xclip -sel "clip"' # I haven't tested x{yy{,c},pp} yet
+alias xyyd='echo "" | xclip -sel "clip"'
+alias xpp='xclip -sel "clip" -o'
+
+# below works according to network chuck. Though I like xsel tool better, I'd rather use xclip just bc dependencies use it more for some reason.
+# alias xyy='xsel --input --clipboard'
+# alias xpp='xsel --output --clipboard'
 
 # From my eyes, inspiration for better nvim (though to be fair it has a
 # different purpose). Emacs has a mature powerful ecosystem to learn from.
@@ -123,11 +141,11 @@ alias pipewireD="pulseaudioE"
 
 pipewireE() {
     systemctl --user --now disable pulseaudio.service pulseaudio.socket
-    systemctl --user --now enable pipewire{,-pulse}.{socket,service}
+    systemctl --user --now enable pipewire{,-pulse}.s{ocket,ervice}
 }
 
 pulseaudioE() {
-    systemctl --user --now disable pipewire{,-pulse}.{socket,service}
+    systemctl --user --now disable pipewire{,-pulse}.s{ocket,ervice}
     systemctl --user --now enable pulseaudio.service pulseaudio.socket
 }
 
