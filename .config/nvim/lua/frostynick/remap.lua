@@ -93,7 +93,7 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 --- xdg-open miscellaneous
 -- Future: If using Windows or MacOS, alias different open command
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
-k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
+k.set("n", "<leader>n", function() vim.notify"Future: list of sessions" end, {desc="future: list of sessions"})
 k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
 -- For windows, replace xdg-open with explorer.
@@ -141,8 +141,8 @@ end)
 
 ---- Compiler shortcuts
 -- Replace later with vim autogroup to an extent maybe.
-k.set("n", "<leader>r", function() print"code: run general code soon. also try <leader>co. self-note: see tj tutorial" end)
-k.set("n", "<leader>dc", function() print"code: run docs soon. (see tj tutorial)" end)
+k.set("n", "<leader>r", function() vim.notify"code: run general code soon. also try <leader>co. self-note: see tj tutorial" end)
+k.set("n", "<leader>dc", function() vim.notify"code: run docs soon. (see tj tutorial)" end)
 -- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
 
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
@@ -166,10 +166,10 @@ k.set("n", "<leader>~", --[[ "<cmd>cd %:h<CR>") ]] function()
     vim.notify(vim.loop.cwd())
 end, {desc="Move cwd .. of current file"})
 
-k.set("n", "<leader>.", function()
+k.set("n", "<leader>m.", function()
     vim.cmd("cd ..")
     vim.notify(vim.loop.cwd())
-end, {desc="Move cwd .."})
+end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
 --[[ above todo:
 - Doesn't delete empty buffer. Avoid :bd!
@@ -195,7 +195,7 @@ vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
         on_exit = function(j, res) print(j:result()); print(res) end
     }):start()
 
-    print("Launching Godot.")
+    vim.notify "Launching Godot."
 end, {})
 
 k.set("n", "<leader>go", vim.cmd.Godot)

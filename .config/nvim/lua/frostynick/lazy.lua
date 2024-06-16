@@ -48,10 +48,11 @@ local function telescopeConfig()
     k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
 
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
-    k.del('n', '<leader>,')
-    k.set('n', '<leader>fo', tsb.oldfiles, { desc="Telescope: old files" })
+    k.set('n', '<leader>.', tsb.oldfiles, { desc="Telescope: old files" })
+    k.set('n', '<leader>fo', function() print("use <leader>. instead") end)
     local a,b = pcall(function()
         -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })
+        k.del('n', '<leader>,')
         k.set('n', '<leader>,', "<cmd>Telescope frecency<CR>", { desc="Telescope: frecency" })
     end)
     if not a then
@@ -594,7 +595,7 @@ local plugins = {
     --     end
     -- },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
-    {
+    { -- WARNING: Might remove later if there's a quicker alternative.
         'nvim-lualine/lualine.nvim',
         -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
@@ -630,12 +631,14 @@ local plugins = {
     },
     -- How to install the required dependencies · Zeioth/compiler.nvim Wiki https://github.com/Zeioth/Compiler.nvim/wiki/how-to-install-the-required-dependencies
     {
-      -- This plugin
-        -- note if using nvim 0.9: 43e316b break!: Dropping deprecated nvim 0.9 functions. `:checkhealth` now requires `nvim 0.10`. No more breaking changes are expected. (3 weeks ago)
         "Zeioth/compiler.nvim",
         cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
         event = "VeryLazy",
         dependencies = { "stevearc/overseer.nvim" },
+        -- Below is the last officially supported commit for nvim 0.9.
+        -- Also (maybe) fixes error in nvim 0.10 that keeps showing up
+        -- (or it was the reinstall of this and dependency or both).
+        commit = "43e316b",
         config = true,
     },
     {
