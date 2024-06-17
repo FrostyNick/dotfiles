@@ -115,3 +115,11 @@ export HOMEBREW_NO_ENV_FILTERING=1
 
 # for nix command to work
 # . /home/nicholas/.nix-profile/etc/profile.d/nix.sh
+
+# Automatically added by the Guix install script.
+if [ -n "$GUIX_ENVIRONMENT" ]; then
+    if [[ $PS1 =~ (.*)"\\$" ]]; then
+        PS1="${BASH_REMATCH[1]} [env]\\\$ "
+    fi
+fi
+

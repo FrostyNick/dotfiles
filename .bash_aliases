@@ -178,6 +178,7 @@ alias gitm='git commit -m'
 alias gitcb='git checkout -b'
 alias gitf='git fetch'
 
+alias gitmu='git fetch upstream && git checkout main && git merge upstream/main'
 alias gitpp='anticn && git push;procn'
 alias gitplp='anticn && git pull;procn'
 alias gitfp='anticn && git fetch;procn'
