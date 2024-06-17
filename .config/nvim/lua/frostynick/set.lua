@@ -30,7 +30,7 @@ o.incsearch = true
 
 o.termguicolors = true -- full color support
 
-o.scrolloff = 6 -- This should be dynamically determined based on how many lines are on the screen. sucks on small screens.
+o.scrolloff = 2 -- This should be dynamically determined based on how many lines are on the screen. sucks on small screens.
 -- o.signcolumn = "yes"
 -- o.isfname:append("@-@")
 

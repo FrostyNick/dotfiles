@@ -20,7 +20,7 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 
 --
 k.set("n", "Q", "<nop>")
-k.set("n", "<leader>cd", "<cmd>cd %:h<CR>", {desc="cd to current file parent (:cd %:h)"})
+k.set("n", "<leader>pwd", function() vim.notify(vim.loop.cwd()) end)
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
@@ -56,9 +56,16 @@ k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git ver
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
 k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
 k.set("t", "<Esc>q", "<c-\\><c-n>")
+
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
 k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
-k.set("n", "<leader>myt", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
+--- I should make a different mode at this point...
+-- *insert removing end of yt links*
+k.set("n", "<leader>myts", [[:%s#www.youtube.com/shorts/#youtu.be/#gI<CR>]], {desc="Shorten YouTube short URLs"})
+k.set("n", "<leader>mytv", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
+k.set("n", "<leader>mk", ":norm blysiW]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
+k.set("n", "<leader>mw", ":norm blysiW]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
+
 k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
 k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clipboard
@@ -86,12 +93,12 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 --- xdg-open miscellaneous
 -- Future: If using Windows or MacOS, alias different open command
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
-k.set("n", "<leader>n", "<cmd>e ~/backup2022nov10/notes/index.norg<CR>")
-k.set("n", "<leader>po", -- project open
+k.set("n", "<leader>n", function() vim.notify"Future: list of sessions" end, {desc="future: list of sessions"})
+k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
 -- For windows, replace xdg-open with explorer.
 
-k.set("n", "<leader>o",
+k.set("n", "<leader>po",
 "<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
 { silent = true, desc = "xdg-open file" })
 
@@ -104,6 +111,9 @@ k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I thi
 k.set("n", "<leader>ghs", -- rare edge-case: breaks when git exists earlier I think
 "<cmd>!gh status<CR>",
 { silent = true, desc = "github status (requires gh / github-cli)" })
+k.set("n", "<leader>gho", -- rare edge-case: breaks when git exists earlier I think
+"<cmd>Octo<CR>",
+{ silent = true, desc = "octo list (requires gh)" })
 
 k.set("n", "<leader>gg", vim.cmd.Git)
 k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
@@ -131,8 +141,8 @@ end)
 
 ---- Compiler shortcuts
 -- Replace later with vim autogroup to an extent maybe.
-k.set("n", "<leader>r", function() print"code: run general code soon. also try <leader>co. self-note: see tj tutorial" end)
-k.set("n", "<leader>dc", function() print"code: run docs soon. (see tj tutorial)" end)
+k.set("n", "<leader>r", function() vim.notify"code: run general code soon. also try <leader>co. self-note: see tj tutorial" end)
+k.set("n", "<leader>dc", function() vim.notify"code: run docs soon. (see tj tutorial)" end)
 -- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
 
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
@@ -146,8 +156,20 @@ k.set("n", "<leader>zt", "<cmd>tabnew<CR><cmd>term<CR>")
 k.set("n", "<leader>w", vim.cmd.w)
 k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>e", vim.cmd.enew)
-k.set("n", "<leader>`", vim.cmd.cd) -- In future: if cd == ~ .. otherwise go to current dir
-k.set("n", "<leader>~", "<cmd>cd %:h<CR>")
+k.set("n", "<leader>`", function()
+    vim.cmd.cd()
+    vim.notify("cwd: ~")
+end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current dir
+
+k.set("n", "<leader>~", --[[ "<cmd>cd %:h<CR>") ]] function()
+    vim.cmd("cd %:h")
+    vim.notify(vim.loop.cwd())
+end, {desc="Move cwd .. of current file"})
+
+k.set("n", "<leader>m.", function()
+    vim.cmd("cd ..")
+    vim.notify(vim.loop.cwd())
+end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
 --[[ above todo:
 - Doesn't delete empty buffer. Avoid :bd!
@@ -156,7 +178,10 @@ k.set("n", "<leader>~", "<cmd>cd %:h<CR>")
 - g`"
 --]]
 
-k.set("n", "<leader>pv", vim.cmd.Ex)
+k.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Project view :Ex"})
+k.set("n", "<leader>pt", vim.cmd.TodoLocList, { desc = ":TodoLocList"})
+k.set("n", "<leader>pd", function()
+end, { desc = "Project directory"})
 
 --- not keyboard shortcut
 vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
@@ -170,7 +195,7 @@ vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
         on_exit = function(j, res) print(j:result()); print(res) end
     }):start()
 
-    print("Launching Godot.")
+    vim.notify "Launching Godot."
 end, {})
 
 k.set("n", "<leader>go", vim.cmd.Godot)
@@ -194,7 +219,7 @@ local function i_date()
 end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
-k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- for Termux, and Windows. With Arch / Ubuntu-based: LuaSnip.
+k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
 
 -- https://youtu.be/9gUatBHuXE0
 -- Autorun on save. Useful but not in this case. Useful example: .md -> .html

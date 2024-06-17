@@ -1,5 +1,6 @@
 -- Get started with config:
 -- https://wezfurlong.org/wezterm/config/appearance.html
+-- https://wezfurlong.org/wezterm/config/launch.html#launching-a-different-program-as-a-one-off-via-the-cli
 
 -- As a result of having Windows on my laptop (kitty doesn't support) and
 -- dev is meh in kitty, wezterm!

@@ -1,13 +1,8 @@
 -- This file can be loaded by calling `lua require('frostynick.plugins')` from your init.vimlaz
 -- keys for vim https://vimdoc.sourceforge.net/htmldoc/intro.html#key-notation
 -- Migration: Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
---[[ Open issues:
-[Neovim config should be more backwards compatible](https://github.com/FrostyNick/dotfiles/issues/1)
-Additionally, clean code. Remove extra comments.
---]]
 
 
--- Idea: vim windows integrate with i3
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -25,12 +20,6 @@ vim.g.mapleader = ' '
 
 local function telescopeConfig()
     local ts = require"telescope"
-
-    -- If lazy becomes obsolete one day for some reason and separate files are needed, these checks might help.
-    -- if not ts then
-    --     print('require"telescope" failed. Telescope is probably not installed. Telescope config has been skipped.')
-    --     return
-    -- end
 
     ts.setup({
         defaults = {
@@ -59,8 +48,16 @@ local function telescopeConfig()
     k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
 
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
-    k.del('n', '<leader>,')
-    k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
+    k.set('n', '<leader>.', tsb.oldfiles, { desc="Telescope: old files" })
+    k.set('n', '<leader>fo', function() print("use <leader>. instead") end)
+    local a,b = pcall(function()
+        -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })
+        k.del('n', '<leader>,')
+        k.set('n', '<leader>,', "<cmd>Telescope frecency<CR>", { desc="Telescope: frecency" })
+    end)
+    if not a then
+        vim.notify("Failed to load frecency keymap:\n"..tostring(b))
+    end
     k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
     k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
     k.set('n', '<leader>f?', function() print"use <leader>fk instead" end)
@@ -85,7 +82,7 @@ local function telescopeConfig()
     {desc="Telescope: find code in projects directory"})
 
     k.set('n', '<leader>gj',
-    '<cmd>Telescope live_grep search_dirs=/home/nicholas/backup2022nov10/<CR>',
+    '<cmd>Telescope live_grep search_dirs= /home/nicholas/backup2022nov/<CR>',
     {desc="Telescope: live grep (find text) in backup files; replacement to joplin. Requires rg."})
 
     k.set('n', '<leader>fg', tsb.live_grep, {desc="Telescope: live grep"})
@@ -123,12 +120,78 @@ local function telescopeConfig()
     if not success then
         print("Error loading telescope ui-select: " .. msg)
     end
+
+    require("telescope").load_extension "frecency"
 end
 
-local function invisiBkgd(colorscheme)
-    pcall(function()
-        vim.cmd.colorscheme("midnight" or colorscheme)
+local function lspConfig()
+    local a,b = pcall(function()
+        local lspc = require('lspconfig')
+        local lspLs = {
+            {
+                'lua_ls',
+                {
+                    -- there are no vim warnings everywhere with below code
+                    -- src for below: https://github.com/neovim/neovim/discussions/24119
+                    on_init = function(client)
+                        local path = client.workspace_folders[1].name
+                        if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+                            return
+                        end
+
+                        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                            -- runtime = {
+                            --     -- Tell the language server which version of Lua you're using
+                            --     -- (most likely LuaJIT in the case of Neovim)
+                            --     version = 'LuaJIT'
+                            -- },
+                            -- Make the server aware of Neovim runtime files
+                            workspace = {
+                                checkThirdParty = false,
+                                library = {
+                                    vim.env.VIMRUNTIME
+                                    -- Depending on the usage, you might want to add additional paths here.
+                                    -- "${3rd}/luv/library"
+                                    -- "${3rd}/busted/library",
+                                }
+                                -- or pull in all of 'runtimepath'. note: this is a lot slower
+                                -- library = vim.api.nvim_get_runtime_file("", true)
+                            },
+                            telemetry = { enable = false },
+                        })
+                    end,
+                    settings = {
+                        Lua = {}
+                    }
+                }
+            },
+            'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
+        'denols', 'emmet_ls', 'tsserver', 'zk', } -- denols might be deno
+        for _,v in ipairs(lspLs) do
+            if type(v) ~= "table" then
+                lspc[v].setup { capabilities = capabilities }
+            else
+                lspc[v[1]].setup(v[2])
+            end
+        end
     end)
+    if not a then
+        print("failed to setup lspconfig: "..b)
+    end
+end
+
+local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplicate of this function but global.
+    local a,b = pcall(function()
+        if type(color) == "table" then
+            color = color.name -- automatically passed from Lazy
+        elseif not color then
+            color = "midnight"
+        end
+        vim.cmd.colorscheme(color)
+    end)
+    if not a then
+        vim.notify("Could not apply colorscheme: "..tostring(b))
+    end
 
     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
@@ -136,8 +199,10 @@ local function invisiBkgd(colorscheme)
     vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
     vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 
-    vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
-    vim.cmd.hi("clear", "SpellCap")
+    if not isSpell then
+        vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
+        vim.cmd.hi("clear", "SpellCap")
+    end
 end
 
 local plugins = {
@@ -193,7 +258,7 @@ local plugins = {
             }
         end
     }, -- Optional
-    { 'neovim/nvim-lspconfig', event = "VeryLazy" }, -- Required
+    { 'neovim/nvim-lspconfig', event = "VeryLazy", config = lspConfig }, -- Required
 
     -- Autocompletion (taken with minimal changes from https://github.com/cpow/neovim-for-newbs/blob/7cee93b394359c2fee4f134d27903af65742247d/lua/plugins/completions.lua )
     {
@@ -232,12 +297,32 @@ local plugins = {
                     ["<C-y>"] = cmp.mapping.confirm({ select = true }),
                 }),
                 sources = cmp.config.sources({
+                    -- { name = "crates" }, -- rust crates.nvim -- the autocmd below does lazyloading which this line doesn't do.
+                    -- { name = "codeium" }, -- AI cmp. Should be easier to toggle for what file exists.
                     { name = "nvim_lsp" },
                     { name = "luasnip" }, -- For luasnip users.
+                    { name = "nvim_lua" },
                 }, {
                     { name = "buffer" },
                 }),
             })
+
+            vim.api.nvim_create_autocmd("BufRead", {
+                group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
+                pattern = "Cargo.toml",
+                callback = function()
+                    cmp.setup.buffer({ sources = { { name = "crates" } } }) -- alternative cmp lazyloading way according to https://github.com/Saecki/crates.nvim/wiki/Documentation-v0.4.0
+                end,
+            })
+
+            -- vim.api.nvim_create_autocmd("BufRead", {
+            --     group = vim.api.nvim_create_augroup("CmpSourceCodeium", { clear = true }),
+            --     pattern = "*.lua",
+            --     callback = function()
+            --         cmp.setup.buffer({ sources = { { name = "codeium" } } })
+            --     end,
+            -- })
+
         end,
     },
 
@@ -246,11 +331,7 @@ local plugins = {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
         event = "VeryLazy",
-        config = function()
-            require("nvim-surround").setup({
-                -- Configuration here, or leave empty to use defaults
-            })
-        end
+        config = true,
     },
     -- visualize jump to character
     {
@@ -272,10 +353,28 @@ local plugins = {
         event = "VeryLazy",
         config = telescopeConfig,
     },
-    { -- might rm l8r; lualine also has grapple
-        'cbochs/grapple.nvim',
-        event = "VeryLazy",
-        dependencies = { 'nvim-lua/plenary.nvim' }
+    {
+        "nvim-telescope/telescope-frecency.nvim",
+        event = "VeryLazy"
+    },
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        -- lazy = false,
+        keys = {
+            {
+                "<leader>ft",
+                "<cmd>NvimTreeToggle<CR>",
+                desc = "Toggle nvim tree",
+                mode = "n",
+            }
+        },
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("nvim-tree").setup {}
+        end,
     },
     {
         'TarunDaCoder/sus.nvim',
@@ -320,7 +419,17 @@ local plugins = {
             -- your configuration overrides
         }
     },
-    {
+    -- {
+    --     "pwntester/octo.nvim", -- tags: github gh
+    --     cmd = "Octo",
+    --     dependencies = {
+    --         'nvim-lua/plenary.nvim',
+    --         'nvim-telescope/telescope.nvim', -- or ibhagwan/fzf-lua
+    --         'nvim-tree/nvim-web-devicons'
+    --     },
+    --     config = true
+    -- },
+    { -- this takes a couple MB ... might not be best idea if you're low on space
         "chrishrb/gx.nvim",
         -- event = "VeryLazy",
         -- it conflicts once in a while but usually saves time
@@ -341,7 +450,7 @@ local plugins = {
                 github = true,
                 brewfile = false, -- Homebrew
                 package_json = true,
-                search = true, -- search the web if nothing else is found
+                search = false, -- search the web if nothing else is found
             },
             handler_options = {
                 search_engine = "duckduckgo", -- select between google, bing, duckduckgo, and ecosia
@@ -349,6 +458,26 @@ local plugins = {
             },
         } end,
     },
+    {
+        'saecki/crates.nvim',
+        ft = "toml",
+        tag = 'stable',
+        config = true
+    },
+    -- { -- testing nvim plugin ... Very useful, but it needs an easier way to toggle on and off. An online AI tool should not see every file by default. Maybe just python and rust files and should be opt-in.
+    --     -- If below is not commented out, also uncomment this in cmp. FIX: codeium should only be enabled when it's supposed to be enabled imo
+    --     "Exafunction/codeium.nvim",
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --         "hrsh7th/nvim-cmp",
+    --     },
+    --     event = "VeryLazy",
+    --     config = true,
+    --     -- config = function()
+    --     --     require("codeium").setup({
+    --     --     })
+    --     -- end
+    -- },
     -- { --[[ commented out codeium for now because
     --  * Termux: Doesn't work + errors + planned to not be supported.
     --  * It gets a bit in the way when trying to do projects. Opt-in would be
@@ -387,6 +516,25 @@ local plugins = {
     --     end
     -- },
     {
+        'cameron-wags/rainbow_csv.nvim',
+        config = true,
+        ft = {
+            'csv',
+            'tsv',
+            'csv_semicolon',
+            'csv_whitespace',
+            'csv_pipe',
+            'rfc_csv',
+            'rfc_semicolon'
+        },
+        cmd = {
+            'RainbowDelim',
+            'RainbowDelimSimple',
+            'RainbowDelimQuoted',
+            'RainbowMultiDelim'
+        }
+    },
+    { -- NOTE: remove neorg in future?
         "nvim-neorg/neorg",
         ft = "norg",
         -- build = ":Neorg sync-parsers", -- if in doubt, :Lazy build neorg 
@@ -421,11 +569,21 @@ local plugins = {
             }
         end,
     },
+    { -- PERF, HACK, TODO, NOTE, FIX, WARNING
+        "folke/todo-comments.nvim",
+        config = true,
+        event = "VeryLazy",
+    },
+    { -- markdown (supports neorg according to docs. i don't see the difference)
+        "lukas-reineke/headlines.nvim",
+        config = true,
+        event = "VeryLazy",
+    },
 
     {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
     --- Colorschemes below
-    {'dasupradyumna/midnight.nvim', lazy = false, priority = 1000, init = invisiBkgd },
-    -- { 'rose-pine/neovim', name = 'rose-pine', init = invisiBkgd, event = "VeryLazy" },
+    {'dasupradyumna/midnight.nvim', name = "midnight", lazy = false, priority = 999, init = invisiBkgd },
+    -- { 'rose-pine/neovim', name = 'rose-pine', init = ColorMyPencils, event = "VeryLazy" },
     -- {
     --     'AlexvZyl/nordic.nvim',
     --     name = 'nordic',
@@ -437,56 +595,28 @@ local plugins = {
     --     end
     -- },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
-    { -- might replace later. this slows down startup time by 5% (6.5-7ms on my PC) ... grapple might be part of it too
+    { -- WARNING: Might remove later if there's a quicker alternative.
         'nvim-lualine/lualine.nvim',
         -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         opts = {},
-        config = function()
-            require("lualine").setup({
-                sections = {
-                    lualine_b = {
-                        {
-                            function()
-                                return " " .. require("grapple").key()
-                            end,
-                            cond = require("grapple").exists,
-                        }
-                    },
-        --             lualine_x = {
-        --                 {
-        --                     require("lazy.status").updates,
-        --                     cond = require("lazy.status").has_updates,
-        --                     color = { fg = "#ff9e64" },
-        --                 },
-        --             },
-                },
-            })
-        end
+        config = true
     },
-
-    {
+    { -- NOTE: See below instructions for live server to work.
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
         -- cmd = "LiveServerStart",  -- Note: "LiveServerToggle" isn't in plugin.
-        -- if switching from npm you can uninstall by (might need sudo):
-        -- npm uninstall -g live-server
-        -- yarn global add @compodoc/live-server # less security issues with this live-server command
+        --[[ if switching from npm you can uninstall by (might need sudo):
+        npm uninstall -g live-server
+        yarn global add @compodoc/live-server # less security issues with this live-server command
+        -- If it doesn't work after everything above has been done, try reinstalling this plugin. Then it should work.
+        --]]
         -- build = 'npm install -g live-server', -- If using npm
         build = 'yarn global add @compodoc/live-server', -- in theory this is needed after installing this plugin. Couldn't test it right now.
         config = function() -- should be in init some of this maybe. fix later. slows down start time slightly.
             local l = require('live-server')
             l.setup( --[[ args = {"--browser=librewolf"} ]])
             vim.g.liveservertoggle = true
-            -- vim.keymap.set('n', '<leader>lf', function()
-            --     vim.g.liveservertoggle = true
-            --     l.start()
-            -- end)
-            -- vim.keymap.set('n', '<leader>lt', function()
-            --     vim.g.liveservertoggle = false
-            --     l.stop()
-            -- end)
-
             vim.keymap.set('n', '<leader>ll', function()
                 if vim.g.liveservertoggle then
                     l.start()
@@ -501,12 +631,15 @@ local plugins = {
     },
     -- How to install the required dependencies · Zeioth/compiler.nvim Wiki https://github.com/Zeioth/Compiler.nvim/wiki/how-to-install-the-required-dependencies
     {
-      -- This plugin
         "Zeioth/compiler.nvim",
         cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
         event = "VeryLazy",
         dependencies = { "stevearc/overseer.nvim" },
-        opts = {},
+        -- Below is the last officially supported commit for nvim 0.9.
+        -- Also (maybe) fixes error in nvim 0.10 that keeps showing up
+        -- (or it was the reinstall of this and dependency or both).
+        commit = "43e316b",
+        config = true,
     },
     {
         "stevearc/overseer.nvim",
@@ -522,7 +655,7 @@ local plugins = {
                 max_height = 25,
                 default_detail = 1,
                 bindings = {
-                    ["q"] = function() vim.cmd("OverseerClose") end,
+                    ["q"] = vim.cmd.OverseerClose,
                 },
             },
         },
@@ -603,7 +736,7 @@ local plugins = {
         -- event = "VeryLazy",
         init = function()
             vim.keymap.set("n", "<leader>zz", function()
-                vim.cmd("ZenMode")
+                vim.cmd.ZenMode()
                 vim.wo.wrap = false
                 -- not working ColorMyPencils()
             end)
@@ -645,8 +778,7 @@ local plugins = {
     -- piersolenski/telescope-import.nvim Autofill imports. Supports JS; lua; py; c++.
 
     -- pins function names/definitons outside visible view
-    {'nvim-treesitter/nvim-treesitter-context', event = "VeryLazy" },
-
+    -- {'nvim-treesitter/nvim-treesitter-context', event = "VeryLazy" }, -- This is erroring a lot so I disabled it for now. Due to [Crash on empty first line when number line is on (markdown) · Issue #442 · nvim-treesitter/nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context/issues/442)
     {'nvim-treesitter/nvim-treesitter-textobjects',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         event = "VeryLazy",
@@ -675,22 +807,22 @@ local plugins = {
             }
         end
     },
-    {
-        'nvim-telescope/telescope-ui-select.nvim',
-        lazy = true
-    },
+    { 'nvim-telescope/telescope-ui-select.nvim', lazy = true },
     {
         "ziontee113/icon-picker.nvim", -- emoji's too
         config = function()
             require("icon-picker").setup({ disable_legacy_commands = true })
 
-            local opts = { noremap = true, silent = true }
-
-            -- vim.keymap.set("n", "<Leader><Leader>i", "<cmd>IconPickerNormal<cr>", opts)
-            -- vim.keymap.set("n", "<Leader><Leader>y", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
-            vim.keymap.set("i", "<c-E>", "<cmd>IconPickerInsert<cr>", opts) -- Default <c-i> == tab; no thanks. <c-e> sucks in termux. Haven't tested <c-E> in termux.
+            -- local opts = { noremap = true, silent = true }
+            --
+            -- -- vim.keymap.set("n", "<Leader><Leader>i", "<cmd>IconPickerNormal<cr>", opts)
+            -- -- vim.keymap.set("n", "<Leader><Leader>y", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
+            -- vim.keymap.set("i", "<c-E>", "<cmd>IconPickerInsert<cr>", opts) -- Default <c-i> == tab; no thanks. <c-e> sucks in termux. Haven't tested <c-E> in termux.
         end,
-        event = "VeryLazy"
+        keys = {
+            { "<c-e>", vim.cmd.IconPickerInsert, desc = "Pick icons and emojis", mode = "i" }
+        },
+        -- event = "VeryLazy"
     },
 
     -- no longer works on here. probably bc of another plugin.
@@ -704,7 +836,7 @@ local plugins = {
     -- {"ap/vim-css-color", ft = "css"},
     {"iamcco/markdown-preview.nvim",
         ft = "markdown",
-        build = "cd app && yarn install", -- If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
+        build = "cd app && yarn install", -- NOTE: If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
         -- build = "cd app && npm install", -- If using npm
         config = function() vim.g.mkdp_filetypes = { "markdown" } end,
     },
@@ -743,15 +875,15 @@ local plugins = {
 
     -- currently not working: https://github.com/glacambre/firenvim/blob/master/TROUBLESHOOTING.md
     -- Below is made for browser extension firenvim.
-    {
-        "glacambre/firenvim",
-        event = "VeryLazy",
-        -- lazy = not vim.g.started_by_firenvim,
-        -- module = false,
-        build = function()
-            vim.fn["firenvim#install"](0)
-        end,
-    },
+    -- {
+    --     "glacambre/firenvim",
+    --     event = "VeryLazy",
+    --     -- lazy = not vim.g.started_by_firenvim,
+    --     -- module = false,
+    --     build = function()
+    --         vim.fn["firenvim#install"](0)
+    --     end,
+    -- },
     {
         'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
         event = "InsertEnter",
@@ -759,8 +891,9 @@ local plugins = {
     },
     {
         'rcarriga/nvim-notify',
-        event = "UIEnter",
-        config = function()
+        -- event = "UIEnter",
+        priority = 1000, -- error messages even before startup are less disruptive
+        init = function()
             local notify = require("notify")
             notify.setup({ render = "compact", background_colour = "#000000" })
             vim.notify = notify
@@ -777,42 +910,6 @@ local plugins = {
         "tomiis4/hypersonic.nvim",
         cmd = "Hypersonic",
     },
-    -- { -- error: couldn't find github username
-    --     'vimdev/lspsaga.nvim',
-    --     -- event = "VeryLazy",
-    -- },
-    -- takes over S and s btw [backdround/improved-ft.nvim: Improve default f/t hop abilities](https://github.com/backdround/improved-ft.nvim)
-    -- norcalli/nvim-terminal.lua
-
-    -- { 'stevearc/oil.nvim', opts = {}, },
-    -- rm homepage. I don't really want it.
-    -- - Trying out below; might delete later - --
-    -- I find it annoying about 20 seconds in. maybe i should look at config.
-    -- { -- for better vim habits. if it's not super annoying I'll keep it.
-    --     "m4xshen/hardtime.nvim",
-    --     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    --     opts = {}
-    -- },
-    -- new alt to which-key: Cassin01/wf.nvim
-    -- new thing that depends on which-key: roobert/surround-ui.nvim -- for nvim-surround help
-    -- {
-    --     "folke/which-key.nvim",
-    --     event = "VeryLazy",
-    --     init = function()
-    --         vim.o.timeout = true
-    --         vim.o.timeoutlen = 1000
-    --     end,
-    --     opts = {
-    --         plugins = {
-    --             operators = false
-    --         }
-    --         -- your configuration comes here
-    --         -- or leave it empty to use the default settings
-    --         -- refer to the configuration section below
-    --     }
-    -- },
-    -- Not working for me https://github.com/jghauser/follow-md-links.nvim/issues/15 'jghauser/follow-md-links.nvim',
-    -- {'andweeb/presence.nvim', event="VeryLazy"}, -- Not working with BetterDiscord so far. Tried: `ln -svf $XDG_RUNTIME_DIR/{app/com.discord.Discord,}/discord-ipc-0` and `ln -svf $XDG_RUNTIME_DIR/{app/com.discordapp.Discord,}/discord-ipc-0`
 }
 --[[
 -- alternative plugins maybe
@@ -828,8 +925,22 @@ local plugins = {
     sudoedit
     vim-closetag
     https://twitter.com/learnvim - future problem
+    -- { -- error: couldn't find github username
+    --     'vimdev/lspsaga.nvim', },
+    -- takes over S and s btw [backdround/improved-ft.nvim: Improve default f/t hop abilities](https://github.com/backdround/improved-ft.nvim)
+    -- norcalli/nvim-terminal.lua
+    -- { 'stevearc/oil.nvim', opts = {}, },
+    -- rm homepage. I don't really want it.
+    -- new alt to which-key: Cassin01/wf.nvim
+    -- new thing that depends on which-key: roobert/surround-ui.nvim -- for nvim-surround help
+    -- { "folke/which-key.nvim", },
+    -- {'andweeb/presence.nvim', event="VeryLazy"}, -- Not working with BetterDiscord so far. Tried: `ln -svf $XDG_RUNTIME_DIR/{app/com.discord.Discord,}/discord-ipc-0` and `ln -svf $XDG_RUNTIME_DIR/{app/com.discordapp.Discord,}/discord-ipc-0`
 
 -- troubleshooting --
+nvim 0.9+
+vim.print(plugins)
+
+nvim <0.9
 for k,v in pairs(plugins) do
     print(k,v)
 end
@@ -838,73 +949,7 @@ end
 local opts = {}
 
 require("lazy").setup(plugins, opts)
--- move below to init l8r
--- require("oil").setup()
--- require("lspconfig").tsserver.setup()
 
--- -- cmp setup
--- local cmp = require'cmp'
--- 
--- cmp.setup({
---     snippet = {
---         -- REQUIRED - you must specify a snippet engine
---         expand = function(args)
---             -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
---             require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
---             -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
---             -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
---         end,
---     },
---     window = {
---         -- completion = cmp.config.window.bordered(),
---         -- documentation = cmp.config.window.bordered(),
---     },
---     mapping = cmp.mapping.preset.insert({
---         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
---         ['<C-f>'] = cmp.mapping.scroll_docs(4),
---         ['<C-Space>'] = cmp.mapping.complete(),
---         ['<C-e>'] = cmp.mapping.abort(), -- not recommended in Termux
---         ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
---     }),
---     sources = cmp.config.sources({
---         { name = 'nvim_lsp' },
---         { name = 'luasnip' }, -- For luasnip users.
---         -- { name = 'vsnip' }, -- For vsnip users.
---         -- { name = 'ultisnips' }, -- For ultisnips users.
---         -- { name = 'snippy' }, -- For snippy users.
---     })
--- })
--- 
--- -- Set up lspconfig.
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
--- -- self-reminder: check termux device or checkout with lsp servers
--- 
---This is what needs to be changed to fix this commit
---not that hard; just done for today
-local a,b = pcall(function()
-    -- it can't find deno, which is fine require('lspconfig')['deno'].setup {
-    --     capabilities = capabilities
-    -- }
-    -- How would this be worse than say LspZero other than it doesn't
-    -- automatically have all the plugins that Mason has?
-    local lspLs = { 'lua_ls', 'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
-    'denols', 'emmet_ls', 'lua_ls', 'tsserver', 'zk', }
-    for _,v in ipairs(lspLs) do
-        require('lspconfig')[v].setup {
-            capabilities = capabilities
-        }
-    end
-end)
-if not a then
-	print("failed to setup lspconfig: "..b)
-end
-
-
--- -- end cmp setup
 
 -- vim.print(plugins);
 vim.g.neovide_scale_factor = 0.7
---vim.cmd('colorscheme kanagawa-dragon')
--- init.lua file to look at later https://github.com/wincent/wincent/blob/a54fb501a4e331a7c197088f9f744bfb9c6d2e1f/aspects/nvim/files/.config/nvim/init.lua#L213
---print("Lazy loaded")
