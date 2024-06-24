@@ -3,17 +3,20 @@
 # for examples
 
 # If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+[[ $- != *i* ]] && return
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
 
+# vi mode
+set -o vi
+
 # append to the history file, don't overwrite it
 shopt -s histappend
+
+# prepend a "cd" if there's no cd when typing path to directory
+shopt -s autocd
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=500000
@@ -112,6 +115,7 @@ trap clear_console EXIT
 # fzf keyboard shortcuts (*not* completion)
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash # Ubuntu
 [ -f $PREFIX/share/fzf/key-bindings.bash ] && source $PREFIX/share/fzf/key-bindings.bash # Termux. Note: If it doesn't work remove everything before "source" (that has been tested as of "0.46 (devel)").
+command -v zoxide >/dev/null && eval "$(zoxide init bash)"
 
 # environment variables | test: `printenv | grep TERM`
 export PATH="$HOME/.config/emacs/bin:/home/nicholas/.local/bin:$PATH"
