@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # sleep 5
 # notify-send "xrandr mode sus"
 xrandr --output DP-2 --mode 1360x768 --panning 1360x768 && sleep 5

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Credit: https://steamcommunity.com/sharedfiles/filedetails/?id=2921972296
 # not sure if useful for later: https://developer.valvesoftware.com/wiki/Steam_Skins
 #

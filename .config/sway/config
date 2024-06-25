@@ -58,8 +58,8 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3statusconf
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3statusconf
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
@@ -341,14 +341,14 @@ default_floating_border pixel
 floating_maximum_size 0 x 0
 
 # set $mode_launcher Launch: [l]ibrewolf -Profile[M]anager, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
-set $mode_launcher Open: [l]wlf m., [m]c, ..[c]py, [a]nroi, [o]bs, [d]uwu, [r]ec, n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat
+set $mode_launcher Open: [l]wlf m., [m]c, [c]py, [a]nroi, [o]bs, [d]uwu, [r]ec, n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
     bindsym l exec librewolf -ProfileManager
-    bindsym m exec mcpelauncher-ui-qt -p main1_20
+    bindsym m exec mcpelauncher-ui-qt -p Default
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
-    bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/obs.sh' &"
+    bindsym o exec "i3-sensible-terminal -e './.config/i3/obs.sh' &"
     # WORKING bindsym o exec obs
 # below temporarily removed
     # bindsym s exec steam
@@ -467,16 +467,16 @@ assign [class="Brave-browser"] $ws1
 for_window [class="Brave-browser"] focus
 assign [class="Luakit"] $ws1
 for_window [class="Luakit"] focus
-assign [app_id="LibreWolf"] $ws1
-for_window [app_id="LibreWolf"] focus
-
-assign [class="LibreWolf"] $ws1
-for_window [class="LibreWolf"] focus
-# above is just in arch or is in newer librewolf
 assign [class="librewolf-default"] $ws1
 for_window [class="librewolf-default"] focus
 assign [class="Vivaldi-stable"] $ws1
 for_window [class="Vivaldi-stable"] focus
+
+# web (arch)
+assign [class="Chromium"] $ws1
+for_window [class="Chromium"] focus
+assign [app_id="LibreWolf"] $ws1
+for_window [app_id="LibreWolf"] focus
 
 # terminal
 assign [class="qterminal"] $ws2
@@ -487,8 +487,6 @@ assign [class="org.wezfurlong.wezterm"] $ws2
 for_window [class="org.wezfurlong.wezterm"] focus
 assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
-assign [class="Alacritty"] $ws2
-for_window [class="Alacritty"] focus
 assign [app_id="Alacritty"] $ws2
 for_window [app_id="Alacritty"] focus
 
@@ -549,7 +547,7 @@ assign [class="Quaver"] $ws5
 assign [class="supertuxkart"] $ws5
 assign [class="osu!"] $ws5
 assign [class="Minecraft Linux Launcher UI"] $ws5
-for_window [class="mcpelauncher-client"] fullscreen enable
+for_window [class="mcpelauncher-client"] focus,layout toggle split
 assign [class="mcpelauncher-client"] $ws5
 # below not working
 assign [class="minecraft-launcher"] $ws5
@@ -607,7 +605,7 @@ assign [app_id="org.keepassxc.KeePassXC"] $ws100
 # exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
 # NOT WORKING exec_always i3-sensible-terminal -e "nvim ~/backup2022nov10/notes/todo.norg"
 # NOT WORKING exec_always /home/nicholas/.config/i3/openTodo.sh
-exec i3-sensible-terminal -e "/home/nicholas/.config/i3/openTodo.sh"
+exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
 
@@ -625,6 +623,7 @@ include /etc/sway/config.d/*
 # exec vesktop --ozone-platform-hint=auto
 exec vesktop || exec vencorddesktop
 # move below file to i3 dir
-exec /usr/local/bin/notifyBattery.sh
+# exec /usr/local/bin/notifyBattery.sh
+exec $HOME/.config/sway/notifyBattery.sh
 
 # [Displaying pop-ups as floating windows. #3095 - GitHub](https://github.com/swaywm/sway/issues/3095 "I came up with a super hacky workaround - a userscript that tries to detect pop-up windows based on the window.titlebar.visible or window.menubar.visible properties, and if either one is false I prepend a well-known string to the window title. I check for this string inside my Sway config and float matching")
