@@ -1,12 +1,6 @@
 # IF you're using sway, some things work slightly better here ../sway/config
 
 # Things that don't work when switching between i3 and sway config
-# - if waypaper is configured with feh / swaywm then that will need to be rerun when switching.
-
-# Search waypaper in this file to setup wallpapers
-
-# https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway
-# https://github.com/swaywm/sway/wiki/i3-Migration-Guide
 
 # arch dependencies: pacman -S extra/network-manager-applet extra/brightnessctl # (there are dependencies missing here probably)
 
@@ -354,7 +348,7 @@ bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
     bindsym l exec librewolf -ProfileManager
-    bindsym m exec mcpelauncher-ui-qt -p main1_20
+    bindsym m exec mcpelauncher-ui-qt -p Default || mcpelauncher -p Default
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/obs.sh' &"
     # WORKING bindsym o exec obs
@@ -479,9 +473,10 @@ for_window [class="Luakit"] focus
 
 assign [class="LibreWolf"] $ws1
 for_window [class="LibreWolf"] focus
-# above is just in arch or is in newer librewolf
+# (LibreWolf) Above is for Arch; below for Ubuntu
 assign [class="librewolf-default"] $ws1
 for_window [class="librewolf-default"] focus
+
 assign [class="Vivaldi-stable"] $ws1
 for_window [class="Vivaldi-stable"] focus
 
