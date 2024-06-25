@@ -626,7 +626,7 @@ include /etc/sway/config.d/*
 
 # Auto-launch Vesktop. The flag below forces vesktop through
 # native wayland; disabled since it causes issues.
-exec vesktop --ozone-platform-hint=auto
+# exec vesktop --ozone-platform-hint=auto
 exec vesktop || exec vencorddesktop
 # move below file to i3 dir
 exec $HOME/.config/sway/notifyBattery.sh
