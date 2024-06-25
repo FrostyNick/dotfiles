@@ -18,6 +18,7 @@ inode/directory=pcmanfm-qt.desktop
 image/png=qimgv.desktop
 image/jpeg=qimgv.desktop
 image/webp=qimgv.desktop
+x-scheme-handler/discord-962073502469459999=discord-962073502469459999.desktop
 
 [Added Associations]
 application/x-desktop=vim.desktop;
