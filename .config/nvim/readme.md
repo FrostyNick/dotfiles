@@ -395,6 +395,13 @@ show up. Wait for everything to install.
 
 ### Codeium setup
 
+Warning: `codeium.vim` is not supported in Termux and I haven't gotten it to
+work. There might have a workaround though. See issue 8 from
+[here](https://github.com/Exafunction/codeium.vim/issues?q=is%3Aissue+termux+is%3Aclosed).
+Haven't tested `codeium.nvim` on Termux yet.
+<!-- GitHub will send a notification to everyone in that issue
+if I directly paste the issue here 🙁 -->
+
 Note: If you don't set this up, there will be warnings or errors depending on
 your version of Codeium. Remove it (or comment it out) from your plugin config
 or set it up.
