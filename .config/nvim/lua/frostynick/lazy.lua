@@ -363,9 +363,14 @@ local plugins = {
         -- lazy = false,
         keys = {
             {
-                "<leader>ft",
+                "<leader>ls",
                 "<cmd>NvimTreeToggle<CR>",
                 desc = "Toggle nvim tree",
+                mode = "n",
+            },
+            {
+                "<leader>ft",
+                function() vim.notify("Use <leader>ls") end,
                 mode = "n",
             }
         },

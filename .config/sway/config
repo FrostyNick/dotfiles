@@ -410,7 +410,7 @@ bindsym $mod+BackSpace mode "$mode_system"
 # will systemctl work everywhere? I think not. change that later.
 mode "$mode_system" {
     bindsym l exec --no-startup-id $i3lockwall, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym e exec --no-startup-id swaymsg exit, mode "default"
     bindsym s exec --no-startup-id $i3lockwall && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $i3lockwall && systemctl hibernate, mode "default"
 
