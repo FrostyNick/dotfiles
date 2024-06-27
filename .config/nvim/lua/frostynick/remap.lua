@@ -153,6 +153,12 @@ k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 --- Vim shortcuts
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
 k.set("n", "<leader>zt", "<cmd>tabnew<CR><cmd>term<CR>")
+k.set("n", "<leader>zm", function() -- move buffer to newtab
+    local id = vim.api.nvim_get_current_buf()
+    vim.api.nvim_win_hide(0)
+    vim.cmd.tabnew()
+    vim.api.nvim_set_current_buf(id)
+end)
 k.set("n", "<leader>w", vim.cmd.w)
 k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>e", vim.cmd.enew)
@@ -220,6 +226,10 @@ end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
 k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
+
+-- -- future problem
+-- vim.api.nvim_create_autocmd("NerdTreeAutocd", {
+-- })
 
 -- https://youtu.be/9gUatBHuXE0
 -- Autorun on save. Useful but not in this case. Useful example: .md -> .html
