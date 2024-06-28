@@ -356,13 +356,13 @@ mode "$mode_launcher" {
     # bindsym s exec steam
     bindsym c exec scrcpy
     bindsym r exec simplescreenrecorder
-    # bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
+    # bindsym r exec "i3-sensible-terminal -e './.config/i3/ssr.sh'"
 
 # !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
     bindsym d exec vesktop --ozone-platform-hint=auto || exec vencorddesktop || exec discord || exec discord-canary
     # bindsym n exec caprine
 
-    bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
+    bindsym v exec i3-sensible-terminal -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
     bindsym n exec i3-sensible-terminal -e "newsboat"
     # FAIL bindsym i exec "nvim"
     # FAIL bindsym v exec i3-sensible-terminal -e "nvim ~/p"
@@ -583,7 +583,6 @@ for_window [class="kdenlive"] focus
 assign [class="Shotcut"] $ws10
 for_window [class="Shotcut"] focus
 assign [class="SimpleScreenRecorder"] $ws10
-# layout tabbed not working.. bc of workspace config ig
 for_window [class="SimpleScreenRecorder"] focus,layout tabbed
 
 # should auto full scr l8r. or change window mode to fit the whole screen.
@@ -603,7 +602,7 @@ assign [class="org.keepassxc.KeePassXC"] $ws100
 # not working on restarting i3:
 # exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
 # NOT WORKING exec_always i3-sensible-terminal -e "nvim ~/backup2022nov10/notes/todo.norg"
-# NOT WORKING exec_always /home/nicholas/.config/i3/openTodo.sh
+# NOT WORKING exec_always ./.config/i3/openTodo.sh
 exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
@@ -614,8 +613,8 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # sudo ln -s /home/YOUR_USERNAME_HERE/Apps/nvim-linux64/bin/nvim /usr/bin/nvim
 
 # This is at the bottom just in case it's not asyncronous
-# THIS WORKS when restarting i3: exec_always /home/nicholas/.config/i3/xrandr.sh
-# THIS WORKS only on startup: exec /home/nicholas/.config/i3/xrandr.sh
+# THIS WORKS when restarting i3: exec_always ./.config/i3/xrandr.sh
+# THIS WORKS only on startup: exec ./.config/i3/xrandr.sh
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
 # Above ruins bc Vencord broke with Discord update.
 

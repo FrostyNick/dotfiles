@@ -361,13 +361,13 @@ mode "$mode_launcher" {
     # bindsym s exec steam
     bindsym c exec scrcpy
     bindsym r exec simplescreenrecorder
-    # bindsym r exec "i3-sensible-terminal -e '/home/nicholas/.config/i3/ssr.sh'"
+    # bindsym r exec "i3-sensible-terminal -e './.config/i3/ssr.sh'"
 
 # !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
-    bindsym d exec vesktop --ozone-platform-hint=auto || exec vencorddesktop || exec discord || exec discord-canary
+    bindsym d exec vesktop || exec vencorddesktop || exec discord || exec discord-canary
     # bindsym n exec caprine
 
-    bindsym v exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
+    bindsym v exec i3-sensible-terminal -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
     bindsym n exec i3-sensible-terminal -e "newsboat"
     # FAIL bindsym i exec "nvim"
     # FAIL bindsym v exec i3-sensible-terminal -e "nvim ~/p"
@@ -474,10 +474,14 @@ assign [class="Brave-browser"] $ws1
 for_window [class="Brave-browser"] focus
 assign [class="Luakit"] $ws1
 for_window [class="Luakit"] focus
-assign [class="librewolf-default"] $ws1
-for_window [class="librewolf-default"] focus
 assign [class="Vivaldi-stable"] $ws1
 for_window [class="Vivaldi-stable"] focus
+assign [app_id="librewolf-default"] $ws1
+for_window [app_id="librewolf-default"] focus
+
+# web (remove in future; LibreWolf 126 and below)
+assign [class="librewolf-default"] $ws1
+for_window [class="librewolf-default"] focus
 
 # web (arch)
 assign [class="Chromium"] $ws1
@@ -574,6 +578,7 @@ assign [class="qimgv"] $ws5
 
 # social
 assign [class="VencordDesktop"] $ws6
+assign [app_id="VencordDesktop"] $ws6
 assign [class="vesktop"] $ws6
 assign [app_id="vesktop"] $ws6
 assign [class="discord"] $ws6
@@ -590,9 +595,8 @@ assign [class="kdenlive"] $ws10
 for_window [class="kdenlive"] focus
 assign [class="Shotcut"] $ws10
 for_window [class="Shotcut"] focus
-assign [class="SimpleScreenRecorder"] $ws10
-# layout tabbed not working.. bc of workspace config ig
-for_window [class="SimpleScreenRecorder"] focus,layout tabbed
+assign [app_id="SimpleScreenRecorder"] $ws10
+for_window [app_id="SimpleScreenRecorder"] focus,layout tabbed
 
 # should auto full scr l8r. or change window mode to fit the whole screen.
 # for_window [class="mpv"] focus
@@ -612,7 +616,7 @@ assign [app_id="org.keepassxc.KeePassXC"] $ws100
 # not working on restarting i3:
 # exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
 # NOT WORKING exec_always i3-sensible-terminal -e "nvim ~/backup2022nov10/notes/todo.norg"
-# NOT WORKING exec_always /home/nicholas/.config/i3/openTodo.sh
+# NOT WORKING exec_always ./.config/i3/openTodo.sh
 exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
@@ -620,15 +624,15 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # WORKING exec_always i3-sensible-terminal -e "nvim"
 
 # This is at the bottom just in case it's not asyncronous
-# THIS WORKS when restarting i3: exec_always /home/nicholas/.config/i3/xrandr.sh
-# THIS WORKS only on startup: exec /home/nicholas/.config/i3/xrandr.sh
+# THIS WORKS when restarting i3: exec_always ./.config/i3/xrandr.sh
+# THIS WORKS only on startup: exec ./.config/i3/xrandr.sh
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
 
 include /etc/sway/config.d/*
 
 # Auto-launch Vesktop. The flag below forces vesktop through
 # native wayland; disabled since it causes issues.
-# exec vesktop --ozone-platform-hint=auto
+# exec vesktop --ozone-platform-hint=auto || exec vencorddesktop --ozone-platform-hint=auto
 exec vesktop || exec vencorddesktop
 # move below file to i3 dir
 exec $HOME/.config/sway/notifyBattery.sh
