@@ -116,7 +116,7 @@ k.set("n", "<leader>gho", -- rare edge-case: breaks when git exists earlier I th
 { silent = true, desc = "octo list (requires gh)" })
 
 k.set("n", "<leader>gg", vim.cmd.Git)
-k.set("n", "<leader>gl", "<cmd>Git log --oneline --decorate --graph --all<CR>")
+k.set("n", "<leader>gl", "<cmd>Git log --shortstat --oneline --decorate --graph --all<CR>")
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
 k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
 -- Above should use git fugitive ... I just have a terminal dependant password inserting thing that makes git fugitive not work well. (:G push)

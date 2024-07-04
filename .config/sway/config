@@ -233,10 +233,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 3 ppt
+        bindsym j resize grow height 10 px or 3 ppt
+        bindsym k resize shrink height 10 px or 3 ppt
+        bindsym l resize grow width 10 px or 3 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -332,8 +332,9 @@ exec waypaper --restore --random
 # 107 = Print, so below also works:
 # bindcode 107 flameshot gui
 # FIX: flameshot doesn't work
-bindsym $mod+Print exec flameshot gui
-bindsym Print exec grimshot save area
+# bindsym $mod+Print exec flameshot gui
+bindsym $mod+Print exec grimshot save anything && notify-send "Saved screenshot"
+bindsym Print exec grimshot save && notify-send "Saved full screenshot (mod+print also works)"
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
 focus_follows_mouse no
