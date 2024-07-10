@@ -448,8 +448,11 @@ local plugins = {
 
         -- you can specify also another config if you want
         config = function() require("gx").setup {
-            -- open_browser_app = "os_specific", -- specify your browser app; default for macOS is "open", Linux "xdg-open" and Windows "powershell.exe"
-            -- open_browser_args = { "--background" }, -- specify any arguments, such as --background for macOS' "open".
+
+            open_browser_app = "os_specific",
+            -- -- below is an example if you want to use handlr instead of xdg-open
+            -- open_browser_app = "handlr", -- specify your browser app; default for macOS is "open", Linux "xdg-open" and Windows "powershell.exe"
+            -- open_browser_args = { "open" }, -- specify any arguments, such as --background for macOS' "open".
             handlers = {
                 plugin = true,
                 github = true,

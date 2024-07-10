@@ -216,12 +216,11 @@ local function i_txt(txt)
 end
 
 local function i_date()
-    i_txt( tostring(os.date("%x")):gsub(
+    i_txt(tostring(os.date("%x"))
         -- To learn more: https://www.lua.org/pil/20.2.html
-        -- Update: the docs don't show Linux output correctly ... bruh
-        -- [that's why this commit blame exists here]
-        -- Anyway, it works on Windows and Linux (with a bonus zero).
-        '(%d+)/(%d+)/(%d+)','%3-%1-%2'))
+        :gsub('(%d+)/(%d+)/(%d+)', '%3-%1-%2')
+        -- Leading zeros show up only on some operating systems.
+        :gsub("-0", "-"))
 end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
