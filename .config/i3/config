@@ -481,6 +481,8 @@ assign [class="Chromium"] $ws1
 for_window [class="Chromium"] focus
 assign [class="LibreWolf"] $ws1
 for_window [class="LibreWolf"] focus
+assign [class="Ladybird"] $ws1
+for_window [class="Ladybird"] focus
 
 # terminal
 assign [class="qterminal"] $ws2
@@ -511,6 +513,8 @@ for_window [class="FeatherPad"] focus
 assign [class="nobleNote"] $ws3
 for_window [class="nobleNote"] focus
 assign [class="qBittorrent"] $ws3
+for_window [class="dolphin"] focus
+assign [class="dolphin"] $ws3
 # del sharik
 
 # android studio
