@@ -77,9 +77,9 @@ k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
 
 k.set("n", "<leader>vpr", "<cmd>e ~/p/Rhythm-Swipe<CR>");
-k.set("n", "<leader>vps", "<cmd>e ~/backup2022nov10/j/Sources/App_web sources.md<CR>");
+k.set("n", "<leader>vps", "<cmd>e ~/backup2022nov*/j/Sources/App_web sources.md<CR>");
 -- below doesnt work because i is powerful af. fix later.
-k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
+k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
 
 
 -- local leader = ' '
@@ -88,7 +88,7 @@ k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
 -- k.set("n", "<leader>vpv", "<cmd>nmap " .. space .. "vp<CR>");
 -- k.set("n", "<leader>vpv", [[:execute 'nmap ' .. mapleader .. 'vp' | echomsg ''<CR>]]);
 -- k.set("n", "<leader>vpv", [[:echo 'nmap <leader>vp'<CR>]]);
-k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov10/markor/ideas.md<CR>");
+k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
 
 --- xdg-open miscellaneous
 -- Future: If using Windows or MacOS, alias different open command
@@ -101,8 +101,6 @@ k.set("n", "<leader>o", -- project open
 k.set("n", "<leader>po",
 "<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
 { silent = true, desc = "xdg-open file" })
-
-k.set("n", "<leader>q", "<cmd>bd<CR>", {desc=":bd Delete buffer"})
 
 --- Git shortcuts
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
@@ -128,7 +126,7 @@ k.set("n", "<leader>p5",
 { silent = false }) -- "open" not tested yet on Windows / MacOS.
 
 ---- Markdown shortcuts
-k.set("n", "<leader>mm", "<cmd>MarkdownPreviewToggle<CR>")
+k.set("n", "<leader>mm", vim.cmd.MarkdownPreviewToggle)
 k.set("n", "<leader>mt", function()
     vim.g.treesitterOn = not vim.g.treesitterOn
     vim.cmd.TableModeToggle()
@@ -150,17 +148,23 @@ k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 
 -- <leader>cx is in lazy.lua if it still exists
 
---- Vim shortcuts
+--- Open terminal shortcuts
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
 k.set("n", "<leader>zt", "<cmd>tabnew<CR><cmd>term<CR>")
+k.set("n", "<leader><CR>", vim.cmd.term)
+
+--- Buffer shortcuts
+k.set("n", "<leader>q", vim.cmd.bd, {desc=":bd Delete buffer"})
 k.set("n", "<leader>zm", function() -- move buffer to newtab
     local id = vim.api.nvim_get_current_buf()
     vim.api.nvim_win_hide(0)
     vim.cmd.tabnew()
     vim.api.nvim_set_current_buf(id)
 end)
+
+--- Vim shortcuts
 k.set("n", "<leader>w", vim.cmd.w)
-k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov10/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>e", vim.cmd.enew)
 k.set("n", "<leader>`", function()
     vim.cmd.cd()

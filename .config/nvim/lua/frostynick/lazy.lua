@@ -74,7 +74,7 @@ local function telescopeConfig()
     {desc="Telescope: find files"})
 
     k.set('n', '<leader>fj',
-    '<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/backup2022nov10/<CR>',
+    '<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/backup2022nov*/<CR>',
     {desc="Telescope: find backup files; keyword: joplin"})
 
     k.set('n', '<leader>fc',
@@ -82,13 +82,13 @@ local function telescopeConfig()
     {desc="Telescope: find code in projects directory"})
 
     k.set('n', '<leader>gj',
-    '<cmd>Telescope live_grep search_dirs= /home/nicholas/backup2022nov/<CR>',
+    '<cmd>Telescope live_grep search_dirs=/home/nicholas/backup2022nov*/<CR>',
     {desc="Telescope: live grep (find text) in backup files; replacement to joplin. Requires rg."})
 
-    k.set('n', '<leader>fg', tsb.live_grep, {desc="Telescope: live grep"})
-    k.set('n', '<leader>fv', tsb.git_files, {desc="Telescope: git files"})
-
     k.set('n', '<leader>fm', "<cmd>Telescope man_page<CR>", {})
+
+    k.set('n', '<leader>fv', tsb.git_files, {desc="Telescope: git files"})
+    k.set('n', '<leader>fg', tsb.live_grep, {desc="Telescope: live grep"})
 
     k.set('n', '<leader>f/', function()
         tsb.grep_string({ search = vim.fn.input("Grep > ") })
@@ -465,6 +465,12 @@ local plugins = {
                 -- search_engine = "https://search.brave.com/search?q=", -- or custom search engine
             },
         } end,
+    },
+    { -- WARNING: minimum version 0.10.0 according to GitHub (based on my testing, 0.9.0 - 0.9.5 seem to work perfectly fine.)
+        "NStefan002/screenkey.nvim",
+        -- lazy = false,
+        cmd = "Screenkey",
+        version = "*", -- or branch = "dev", to use the latest commit
     },
     {
         'saecki/crates.nvim',
