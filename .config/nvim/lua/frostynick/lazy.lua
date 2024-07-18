@@ -179,7 +179,10 @@ local function lspConfig()
         print("failed to setup lspconfig: "..b)
     end
 end
-
+-- Example: invisiBkgd("ron")
+-- Example #2: invisiBkgd(nil, true)
+-- Example #3: invisiBkgd("vim", true)
+-- ^^ colorscheme=vim with typos underlined + invisible background.
 local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplicate of this function but global.
     local a,b = pcall(function()
         if type(color) == "table" then
@@ -293,8 +296,8 @@ local plugins = {
                     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
                     ["<C-Space>"] = cmp.mapping.complete(),
-                    -- ["<C-e>"] = cmp.mapping.abort(), -- Not recommended in Termux.
-                    ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+                    -- ["<C-e>"] = cmp.mapping.abort(), -- Not recommended in Termux
+                    ["<C-y>"] = cmp.mapping.confirm({ select = true }), -- Seems like new update automatically changed this to <CR>. Uncommenting and recommenting above fixed that for me, but any change will probably fix new update default.
                 }),
                 sources = cmp.config.sources({
                     -- { name = "crates" }, -- rust crates.nvim -- the autocmd below does lazyloading which this line doesn't do.
@@ -448,8 +451,7 @@ local plugins = {
 
         -- you can specify also another config if you want
         config = function() require("gx").setup {
-
-            open_browser_app = "os_specific",
+            -- open_browser_app = "os_specific",
             -- -- below is an example if you want to use handlr instead of xdg-open
             -- open_browser_app = "handlr", -- specify your browser app; default for macOS is "open", Linux "xdg-open" and Windows "powershell.exe"
             -- open_browser_args = { "open" }, -- specify any arguments, such as --background for macOS' "open".
@@ -898,32 +900,55 @@ local plugins = {
     --         vim.fn["firenvim#install"](0)
     --     end,
     -- },
-    {
-        'tpope/vim-endwise', -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
-        event = "InsertEnter",
-        -- event = "UIEnter",
-    },
+    -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
+    { 'tpope/vim-endwise', event = "InsertEnter" },
     {
         'rcarriga/nvim-notify',
         -- event = "UIEnter",
         priority = 1000, -- error messages even before startup are less disruptive
         init = function()
-            local notify = require("notify")
-            notify.setup({ render = "compact", background_colour = "#000000" })
-            vim.notify = notify
+            local n = require("notify")
+            n.setup({ render = "compact", background_colour = "#000000" })
+            vim.notify = n
 
             -- Do this before: require("telescope").load_extension("notify")
             -- require('telescope').extensions.notify.notify(<opts>)
-            -- OR
+            -- ORairglow923/suda.nvim
             -- :Telescope notify
             -- No telescope? :Notifications # lua: require("notify").history()
             -- compact
         end
     },
-    { -- see how regex works with :Hypersonic
-        "tomiis4/hypersonic.nvim",
-        cmd = "Hypersonic",
+    -- see how regex works with :Hypersonic
+    { "tomiis4/hypersonic.nvim", cmd = "Hypersonic" },
+    -- Below does the same as vim-sudo but lua-based. Same performace-wise.
+    -- { "airglow923/suda.nvim", config = true,
+    -- commit = "e5684c7395fede814bddb85dc39d14175a8f19c8" },
+    { -- basically adds "sudo write"
+        "lambdalisue/vim-suda", -- zero stars .. I checked the code of course
+        cmd = {"SudaRead", "SudaWrite"},
+        -- WARNING: Might need to update in the future.
+        commit = "b97fab52f9cdeabe2bbb5eb98d82356899f30829",
+        config = true
     },
+    {
+        --[[ HTTP REST-Client Interface
+        Requirements: nvim 0.10+ (according to docs not tested below)
+        Run `:TSInstall http`
+        For optional dependencies:
+        [Requirements | Kulala.nvim](https://kulala.mwco.app/docs/requirements)
+        Quick way to test this works: create file `test.http` with contents:
+        `GET https://meowfacts.herokuapp.com/ HTTP/1.1`
+        and run the code.. should return random cat fact if website still works. ]]
+
+        "mistweaverco/kulala.nvim",
+        config = true,
+        -- config = function()
+        --     local k = require('kulala')
+        --     k.setup({debug = true, additional_curl_options = {"-v"}})
+        --     vim.keymap.set('n', '<leader>zr', k.run)
+        -- end
+    }
 }
 --[[
 -- alternative plugins maybe
@@ -967,3 +992,11 @@ require("lazy").setup(plugins, opts)
 
 -- vim.print(plugins);
 vim.g.neovide_scale_factor = 0.7
+
+-- Run this also to make it work: `:TSInstall http`
+-- Adds treesitter (for highlighting so far) to HTTP files.
+vim.filetype.add({
+    extension = {
+        ['http'] = 'http',
+    },
+})
