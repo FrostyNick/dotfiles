@@ -888,7 +888,6 @@ local plugins = {
         opts = {}
     },
     -- leetcode: https://github.com/kawre/leetcode.nvim . Requires v0.9.0. See requirements b4 installing.
-
     -- currently not working: https://github.com/glacambre/firenvim/blob/master/TROUBLESHOOTING.md
     -- Below is made for browser extension firenvim.
     -- {
@@ -900,6 +899,7 @@ local plugins = {
     --         vim.fn["firenvim#install"](0)
     --     end,
     -- },
+
     -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
     { 'tpope/vim-endwise', event = "InsertEnter" },
     {
@@ -913,7 +913,7 @@ local plugins = {
 
             -- Do this before: require("telescope").load_extension("notify")
             -- require('telescope').extensions.notify.notify(<opts>)
-            -- ORairglow923/suda.nvim
+            -- OR
             -- :Telescope notify
             -- No telescope? :Notifications # lua: require("notify").history()
             -- compact
@@ -921,11 +921,14 @@ local plugins = {
     },
     -- see how regex works with :Hypersonic
     { "tomiis4/hypersonic.nvim", cmd = "Hypersonic" },
-    -- Below does the same as vim-sudo but lua-based. Same performace-wise.
-    -- { "airglow923/suda.nvim", config = true,
+    --[[ Below does the same as vim-sudo but:
+    - rewritten in lua
+    - no noticable improvement performace-wise.
+    - zero stars
+    --]] -- { "airglow923/suda.nvim", config = true,
     -- commit = "e5684c7395fede814bddb85dc39d14175a8f19c8" },
     { -- basically adds "sudo write"
-        "lambdalisue/vim-suda", -- zero stars .. I checked the code of course
+        "lambdalisue/vim-suda",
         cmd = {"SudaRead", "SudaWrite"},
         -- WARNING: Might need to update in the future.
         commit = "b97fab52f9cdeabe2bbb5eb98d82356899f30829",
@@ -979,7 +982,10 @@ local plugins = {
 nvim 0.9+
 vim.print(plugins)
 
-nvim <0.9
+nvim 0.8.x
+vim.pretty_print(plugins)
+
+nvim <0.8
 for k,v in pairs(plugins) do
     print(k,v)
 end
