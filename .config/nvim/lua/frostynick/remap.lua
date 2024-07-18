@@ -155,12 +155,18 @@ k.set("n", "<leader><CR>", vim.cmd.term)
 
 --- Buffer shortcuts
 k.set("n", "<leader>q", vim.cmd.bd, {desc=":bd Delete buffer"})
-k.set("n", "<leader>zm", function() -- move buffer to newtab
+local function bufToNewTab(isBackground)
     local id = vim.api.nvim_get_current_buf()
     vim.api.nvim_win_hide(0)
     vim.cmd.tabnew()
     vim.api.nvim_set_current_buf(id)
-end)
+    if isBackground then
+        vim.cmd.tabp()
+    end
+end
+
+k.set("n", "<leader>zm", bufToNewTab, {desc="Move to new tab"})
+k.set("n", "<leader>zM", function() bufToNewTab(true) end, {desc="Move to new tab (stay in same tab)"})
 
 --- Vim shortcuts
 k.set("n", "<leader>w", vim.cmd.w)
@@ -171,7 +177,7 @@ k.set("n", "<leader>`", function()
     vim.notify("cwd: ~")
 end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current dir
 
-k.set("n", "<leader>~", --[[ "<cmd>cd %:h<CR>") ]] function()
+k.set("n", "<leader>~", function()
     vim.cmd("cd %:h")
     vim.notify(vim.loop.cwd())
 end, {desc="Move cwd .. of current file"})
