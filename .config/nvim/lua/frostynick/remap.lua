@@ -140,7 +140,7 @@ end)
 ---- Compiler shortcuts
 -- Replace later with vim autogroup to an extent maybe.
 k.set("n", "<leader>r", function() vim.notify"code: run general code soon. also try <leader>co. self-note: see tj tutorial" end)
-k.set("n", "<leader>dc", function() vim.notify"code: run docs soon. (see tj tutorial)" end)
+-- k.set("n", "<leader>???", function() vim.notify"code: run docs soon. (see tj tutorial)" end)
 -- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
 
 k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
@@ -235,6 +235,52 @@ end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
 k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
+
+-- WARNING: only works in systems with "ls" and wildcards
+--- @return table|nil
+local function ls_filter(txt)
+    txt = txt or ""
+
+    -- WARNING: Nothing below handles stderr (why cursor text shows up on err)
+    local file, err
+    -- local isOk, err2 = pcall(function()
+        file, err = io.popen("ls " .. txt)
+    -- end)
+
+    if not file then -- lua lang server wants me to check for some reason
+        vim.notify("Error in probably ls_filter(): "..tostring(err)) return
+    -- elseif not isOk then
+    --     vim.notify("Error (2) in probably ls_filter(): "..tostring(err2)) return
+    end
+
+    local lines = vim.split(file:read('*a'), '\n', {trimempty=true})
+    -- local lines = file:lines()
+
+    file:close()
+    return lines
+end
+
+local function vsall(range)
+    local lines = ls_filter(range)
+    if not lines or #lines == 0 then
+        vim.notify("Canceled vsall")
+        return
+    end
+
+    vim.print(lines)
+    for _, name in pairs(lines) do
+        if name ~= "" then
+            vim.cmd.vs(name)
+        end
+    end
+end
+
+k.set("n", "<leader>dc", function()
+    -- sync conflict files made automatically by syncthing
+    vsall(vim.fn.expand('%:r') .. ".sync-conflict-*")
+end, {desc="Diff conflict files (might do more in future)"})
+
+k.set("n", "<leader>pt", vim.cmd.TodoLocList, { desc = ":TodoLocList"})
 
 -- -- future problem
 -- vim.api.nvim_create_autocmd("NerdTreeAutocd", {
