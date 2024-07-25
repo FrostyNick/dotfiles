@@ -1,11 +1,12 @@
 -- thicc cursor vim.opt.guicursor = ""
 -- :options
 -- set nohlsearch
--- vim.cmd("set autochdir") same as o.autochdir = true
 local o = vim.o -- vim.opt == vim.o 
+local cmd = vim.cmd
 o.nu = true
 o.rnu = true
 
+-- cmd("set autochdir") same as o.autochdir = true
 -- o.splitbelow = true
 
 -- guess-indent loads on buffer enter, unless manually with ":GuessIndent"
@@ -58,11 +59,11 @@ o.inccommand = "split"
 -- Add groups from `:help spell` if other groups reoccur too often.
 o.spell = true
 -- note these need to be also set in colorscheme config.
-vim.cmd.hi("clear", "SpellBad")
-vim.cmd.hi("clear", "SpellCap")
+cmd.hi("clear", "SpellBad")
+cmd.hi("clear", "SpellCap")
 
 -- src: https://github.com/vim/vim/blob/master/runtime/defaults.vim
-vim.cmd([[
+cmd([[
 " Put these in an autocmd group, so that you can revert them with:
 " ":augroup vimStartup | exe 'au!' | augroup END"
 augroup vimStartup
@@ -80,7 +81,8 @@ augroup vimStartup
 augroup END
 ]])
 
-vim.cmd("ca tan tabnew")
+cmd.ca("tan tabnew")
+-- cmd.ab("ao about")
 -- src: https://web.archive.org/web/20230117225946/https://stackoverflow.com/questions/7894330/preserve-last-editing-position-in-vim
 -- Try when ya got time. Works but could be improved maybe.
 --[[ Restore cursor position
@@ -99,8 +101,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 --     command = [[
 --     vim.o.au = false -- is this needed?
 --     -- still needs to be converted f vimscript. this is psudocode. might break vim. there's probably a better way to do this.
---     local pos = vim.cmd('line("\'\\"")') -- this probably won't work.
---     if pos >= 1 and pos <= vim.cmd(vim.cmd('line("$")')) and ???? then
+--     local pos = cmd('line("\'\\"")') -- this probably won't work.
+--     if pos >= 1 and pos <= cmd('line("$")') and ???? then
 --         -- press g`"
 --     end
 --     ]], 

@@ -4,7 +4,7 @@
 
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.loop.fs_stat(lazypath) then -- "vim.loop" is deprecated in nvim 0.10.0
     vim.fn.system({
         "git",
         "clone",
@@ -50,14 +50,14 @@ local function telescopeConfig()
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
     k.set('n', '<leader>.', tsb.oldfiles, { desc="Telescope: old files" })
     k.set('n', '<leader>fo', function() print("use <leader>. instead") end)
-    local a,b = pcall(function()
-        -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })
-        k.del('n', '<leader>,')
-        k.set('n', '<leader>,', "<cmd>Telescope frecency<CR>", { desc="Telescope: frecency" })
-    end)
-    if not a then
-        vim.notify("Failed to load frecency keymap:\n"..tostring(b))
-    end
+    -- local a,b = pcall(function()
+    --     -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })
+    --     k.del('n', '<leader>.')
+    --     k.set('n', '<leader>.', "<cmd>Telescope frecency<CR>", { desc="Telescope: frecency" })
+    -- end)
+    -- if not a then
+    --     vim.notify("Failed to load frecency keymap:\n"..tostring(b))
+    -- end
     k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
     k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
     k.set('n', '<leader>f?', function() print"use <leader>fk instead" end)
@@ -121,7 +121,7 @@ local function telescopeConfig()
         print("Error loading telescope ui-select: " .. msg)
     end
 
-    require("telescope").load_extension "frecency"
+    -- require("telescope").load_extension "frecency"
 end
 
 local function lspConfig()
@@ -356,10 +356,8 @@ local plugins = {
         event = "VeryLazy",
         config = telescopeConfig,
     },
-    {
-        "nvim-telescope/telescope-frecency.nvim",
-        event = "VeryLazy"
-    },
+    -- Removed bc too many bugs at least w/ my setup.
+    -- { "nvim-telescope/telescope-frecency.nvim", event = "VeryLazy" },
     {
         "nvim-tree/nvim-tree.lua",
         version = "*",
@@ -384,16 +382,8 @@ local plugins = {
             require("nvim-tree").setup {}
         end,
     },
-    {
-        'TarunDaCoder/sus.nvim',
-        event = "VeryLazy",
-        opts = {}
-    },
-    {
-        'nmac427/guess-indent.nvim',
-        event = "VeryLazy",
-        opts = {},
-    },
+    { 'TarunDaCoder/sus.nvim', event = "VeryLazy", config = true },
+    { 'nmac427/guess-indent.nvim', event = "VeryLazy", config = true },
     {
         "nomnivore/ollama.nvim",
         event = "VeryLazy",
@@ -474,12 +464,7 @@ local plugins = {
         cmd = "Screenkey",
         version = "*", -- or branch = "dev", to use the latest commit
     },
-    {
-        'saecki/crates.nvim',
-        ft = "toml",
-        tag = 'stable',
-        config = true
-    },
+    { 'saecki/crates.nvim', ft = "toml", tag = 'stable', config = true },
     -- { -- testing nvim plugin ... Very useful, but it needs an easier way to toggle on and off. An online AI tool should not see every file by default. Maybe just python and rust files and should be opt-in.
     --     -- If below is not commented out, also uncomment this in cmp. FIX: codeium should only be enabled when it's supposed to be enabled imo
     --     "Exafunction/codeium.nvim",
@@ -585,20 +570,15 @@ local plugins = {
             }
         end,
     },
-    { -- PERF, HACK, TODO, NOTE, FIX, WARNING
-        "folke/todo-comments.nvim",
-        config = true,
-        event = "VeryLazy",
-    },
-    { -- markdown (supports neorg according to docs. i don't see the difference)
-        "lukas-reineke/headlines.nvim",
-        config = true,
-        event = "VeryLazy",
-    },
+    -- PERF, HACK, TODO, NOTE, FIX, WARNING
+    { "folke/todo-comments.nvim", config = true, event = "VeryLazy", },
+
+    -- markdown (supports neorg according to docs. i don't see the difference)
+    { "lukas-reineke/headlines.nvim", config = true, event = "VeryLazy", },
 
     {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
     --- Colorschemes below
-    {'dasupradyumna/midnight.nvim', name = "midnight", lazy = false, priority = 999, init = invisiBkgd },
+    {'dasupradyumna/midnight.nvim', name = "midnight", lazy = false, priority = 998, init = invisiBkgd },
     -- { 'rose-pine/neovim', name = 'rose-pine', init = ColorMyPencils, event = "VeryLazy" },
     -- {
     --     'AlexvZyl/nordic.nvim',
@@ -815,6 +795,12 @@ local plugins = {
                             ["if"] = "@function.inner",
                             ["ac"] = "@class.outer",
                             ["ic"] = "@class.inner",
+                            ["ib"] = "@block.inner",
+                            ["ab"] = "@block.outer",
+                             -- I replaced default s with a, since I do use "sentence" in vim
+                            ["ia"] = "@scope.inner",
+                            ["aa"] = "@scope.outer",
+                            -- ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" }
                             -- How about inside of dates descriptions, like for
                             -- a log or journal?
                         }
@@ -899,7 +885,7 @@ local plugins = {
     {
         'rcarriga/nvim-notify',
         -- event = "UIEnter",
-        priority = 1000, -- error messages even before startup are less disruptive
+        priority = 997, -- error messages even before startup are less disruptive
         init = function()
             local n = require("notify")
             n.setup({ render = "compact", background_colour = "#000000" })
@@ -928,18 +914,32 @@ local plugins = {
         commit = "b97fab52f9cdeabe2bbb5eb98d82356899f30829",
         config = true
     },
+    -- below: nvim terminal opens nvim without nested nvim (so much better!)
+    -- No mention of alacritty in readme, but it works there too.
     {
-        --[[ HTTP REST-Client Interface
-        Requirements: nvim 0.10+ (according to docs not tested below)
-        Run `:TSInstall http`
-        For optional dependencies:
-        [Requirements | Kulala.nvim](https://kulala.mwco.app/docs/requirements)
-        Quick way to test this works: create file `test.http` with contents:
-        `GET https://meowfacts.herokuapp.com/ HTTP/1.1`
-        and run the code.. should return random cat fact if website still works. ]]
+        {
+            "willothy/flatten.nvim",
+            -- config = true,
+            -- or pass configuration with:
+            opts = { -- :help flatten.nvim-configuration
+                window = { open = "vsplit" }
+            },
+            -- Ensure that it runs first to minimize delay when opening file from terminal
+            lazy = false,
+            priority = 999,
+        },
+        --- ...
+    },
 
-        "mistweaverco/kulala.nvim",
-        config = true,
+    --[[ HTTP REST-Client Interface
+    Requirements: nvim 0.10+ (according to docs not tested below)
+    Run `:TSInstall http`
+    For optional dependencies:
+    [Requirements | Kulala.nvim](https://kulala.mwco.app/docs/requirements)
+    Quick way to test this works: create file `test.http` with contents:
+    `GET https://meowfacts.herokuapp.com/ HTTP/1.1`
+    and run the code.. should return random cat fact if website still works. ]]
+    { "mistweaverco/kulala.nvim", ft = "http", config = true,
         -- config = function()
         --     local k = require('kulala')
         --     k.setup({debug = true, additional_curl_options = {"-v"}})
