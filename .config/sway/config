@@ -112,8 +112,10 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
+# Only reason why I remove tabbed layout is because I don't like the default
+# having a visible title bar, which can't be changed in i3wm.
 # change default workspace layout. Instead of splitting, it will start tabbed.
-workspace_layout tabbed
+# workspace_layout tabbed
 
 # # alternatively, you can use the cursor keys:
 # bindsym $mod+Left focus left
@@ -575,11 +577,13 @@ assign [class="Minecraft 1.19"] $ws5
 assign [class="Gimp"] $ws5
 
 # pic / video player
+# not tested: sxiv
 assign [class="mpv"] $ws5
+assign [app_id="mpv"] $ws5
 assign [class="feh"] $ws5
-assign [class="sxiv"] $ws5 # not tested
-assign [class="vlc"] $ws5 # not tested
+assign [class="vlc"] $ws5
 assign [class="qimgv"] $ws5
+assign [class="sxiv"] $ws5
 
 # social
 assign [class="VencordDesktop"] $ws6
