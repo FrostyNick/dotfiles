@@ -336,7 +336,8 @@ exec waypaper --restore --random
 # FIX: flameshot doesn't work
 # bindsym $mod+Print exec flameshot gui
 bindsym $mod+Print exec grimshot save && notify-send "Saved full screenshot"
-bindsym Print exec grimshot save anything && notify-send "Saved screenshot"
+bindsym Print exec grimshot save area && notify-send "Saved screenshot"
+# if slurp dependency isn't ancient "area" above should be replaced with "anything" (missing slurp -o)
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
 focus_follows_mouse no
@@ -646,5 +647,6 @@ exec vesktop || exec vencorddesktop
 # move below file to i3 dir
 exec $HOME/.config/sway/notifyBattery.sh
 exec $HOME/.config/sway/setSwaybg.sh
+exec_always "notify-send Reloaded config"
 
 # [Displaying pop-ups as floating windows. #3095 - GitHub](https://github.com/swaywm/sway/issues/3095 "I came up with a super hacky workaround - a userscript that tries to detect pop-up windows based on the window.titlebar.visible or window.menubar.visible properties, and if either one is false I prepend a well-known string to the window title. I check for this string inside my Sway config and float matching")

@@ -629,3 +629,4 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # xwayland is an option; you may want to disable if it causes issues.
 # exec vesktop --ozone-platform-hint=auto
 exec vesktop || exec vencorddesktop
+exec_always "notify-send Reloaded config"
