@@ -843,9 +843,7 @@ local plugins = {
 
     -- no longer works on here. probably bc of another plugin.
     -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
-    {
-        "dhruvasagar/vim-table-mode",
-        cmd = "TableModeToggle",
+    { "dhruvasagar/vim-table-mode", cmd = "TableModeToggle",
         -- ft = "markdown"
     },
     {"chrisbra/Colorizer", event = "VeryLazy"}, -- test if it still works
@@ -882,11 +880,7 @@ local plugins = {
         },
     },
     -- :Speedtyper to start typing practice
-    {
-        'NStefan002/speedtyper.nvim',
-        cmd = "Speedtyper",
-        opts = {}
-    },
+    { 'NStefan002/speedtyper.nvim', cmd = "Speedtyper", opts = {} },
     -- leetcode: https://github.com/kawre/leetcode.nvim . Requires v0.9.0. See requirements b4 installing.
     -- currently not working: https://github.com/glacambre/firenvim/blob/master/TROUBLESHOOTING.md
     -- Below is made for browser extension firenvim.
