@@ -593,6 +593,7 @@ assign [class="vesktop"] $ws6
 assign [app_id="vesktop"] $ws6
 assign [class="discord"] $ws6
 assign [class="Caprine"] $ws6
+assign [app_id="betterbird"] $ws6
 
 assign [class="zoom"] $ws6
 
@@ -647,6 +648,6 @@ exec vesktop || exec vencorddesktop
 # move below file to i3 dir
 exec $HOME/.config/sway/notifyBattery.sh
 exec $HOME/.config/sway/setSwaybg.sh
-exec_always "notify-send Reloaded config"
+exec_always "notify-send 'Loaded config'"
 
 # [Displaying pop-ups as floating windows. #3095 - GitHub](https://github.com/swaywm/sway/issues/3095 "I came up with a super hacky workaround - a userscript that tries to detect pop-up windows based on the window.titlebar.visible or window.menubar.visible properties, and if either one is false I prepend a well-known string to the window title. I check for this string inside my Sway config and float matching")

@@ -48,7 +48,7 @@ local function telescopeConfig()
     k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
 
     k.set('n', '<leader><leader>', tsb.spell_suggest, {})
-    k.set('n', '<leader>.', tsb.oldfiles, { desc="Telescope: old files" })
+    k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
     k.set('n', '<leader>fo', function() print("use <leader>. instead") end)
     -- local a,b = pcall(function()
     --     -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })

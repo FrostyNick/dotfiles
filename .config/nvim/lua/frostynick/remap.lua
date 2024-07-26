@@ -9,6 +9,7 @@ k.set("v", "K", ":m '<-2<CR>gv=gv")
 k.set("n", "J", "mzJ`z", { desc = "keeps cursor in same place when doing J"})
 k.set("n", "n", "nzzzv")
 k.set("n", "N", "Nzzzv") -- greatest remap ever k.set("x", "<leader>p", [["_dP]])
+k.set("n", "~", "~h")
 
 --- system clipboard
 k.set({ "n", "v" }, "<leader>y", [["+y]])
@@ -243,14 +244,10 @@ local function ls_filter(txt)
 
     -- WARNING: Nothing below handles stderr (why cursor text shows up on err)
     local file, err
-    -- local isOk, err2 = pcall(function()
-        file, err = io.popen("ls " .. txt)
-    -- end)
+    file, err = io.popen("ls " .. txt)
 
     if not file then -- lua lang server wants me to check for some reason
         vim.notify("Error in probably ls_filter(): "..tostring(err)) return
-    -- elseif not isOk then
-    --     vim.notify("Error (2) in probably ls_filter(): "..tostring(err2)) return
     end
 
     local lines = vim.split(file:read('*a'), '\n', {trimempty=true})
@@ -261,9 +258,10 @@ local function ls_filter(txt)
 end
 
 local function vsall(range)
+    range = range:gsub(" ", "\\ ")
     local lines = ls_filter(range)
     if not lines or #lines == 0 then
-        vim.notify("Canceled vsall")
+        vim.notify("Canceled vsall. Expected: "..tostring(range))
         return
     end
 
