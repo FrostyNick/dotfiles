@@ -320,12 +320,10 @@ client.urgent           #2f343a #900000 #cccccc #900000   #900000
 client.placeholder      #000000 #0c0c0c #484848 #000000   #0c0c0c
 client.background       #00ee78
 
-# install waypaper: https://anufrievroman.gitbook.io/waypaper/installation (alternative link: https://github.com/anufrievroman/waypaper?tab=readme-ov-file#waypaper)
-# then run waypaper to set it up. Works in both X11 and Wayland.
-exec waypaper --restore --random
-
 # Same as above, this also works if you use X11 with a file in `~/.profile`, `~/.bash_profile`, etc:
 # `feh --randomize --bg-max ~/Pictures/wallpapers/*`
+# Below will probably work:
+# exec feh --randomize --bg-max ~/Pictures/wallpapers/*
 
 # 107 = Print, so below also works:
 # bindcode 107 flameshot gui
@@ -429,6 +427,11 @@ mode "$mode_system" {
 # probably not working: for_window [title="Special Offers" class="steam"] resize set 100 50
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
+# below not tested to improve anything yet (from sway config)
+for_window [window_role="bubble"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
 # doesn't do anything
 # for_window [urgent="latest"] focus
 
@@ -629,4 +632,5 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # xwayland is an option; you may want to disable if it causes issues.
 # exec vesktop --ozone-platform-hint=auto
 exec vesktop || exec vencorddesktop
+exec betterbird
 exec_always "notify-send 'Loaded config'"

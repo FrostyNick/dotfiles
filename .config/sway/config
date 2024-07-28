@@ -254,7 +254,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Warbar config: ~/.config/waybar/config.jsonc
+# Waybar config: ~/.config/waybar/config.jsonc
 exec waybar
 
 # class                 border  backgr. text    indicator child_border
@@ -264,13 +264,6 @@ client.unfocused        #333333 #222222 #696969 #292d2e   #222222
 client.urgent           #2f343a #900000 #cccccc #900000   #900000
 client.placeholder      #000000 #0c0c0c #484848 #000000   #0c0c0c
 client.background       #00ee78
-
-# install waypaper: https://anufrievroman.gitbook.io/waypaper/installation (alternative link: https://github.com/anufrievroman/waypaper?tab=readme-ov-file#waypaper)
-# then run waypaper to set it up. Works in both X11 and Wayland.
-exec waypaper --restore --random
-
-# Same as above, this also works if you use X11 with a file in `~/.profile`, `~/.bash_profile`, etc:
-# `feh --randomize --bg-max ~/Pictures/wallpapers/*`
 
 # 107 = Print, so below also works:
 # bindcode 107 flameshot gui
@@ -376,6 +369,14 @@ mode "$mode_system" {
 # probably not working: for_window [title="Special Offers" class="steam"] resize set 100 50
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [app_id="floating"] floating enable
+for_window [app_id="floating_update"] floating enable, resize set width 1000px height 600px
+for_window [title="Administrator privileges required"] floating enable
+for_window [title="Picture-in-Picture"] floating enable
 # doesn't do anything
 # for_window [urgent="latest"] focus
 
@@ -433,6 +434,7 @@ assign [class="Chromium"] $ws1
 for_window [class="Chromium"] focus
 assign [app_id="LibreWolf"] $ws1
 for_window [app_id="LibreWolf"] focus
+for_window [app_id="LibreWolf" title="Picture-in-Picture"] layout floating toggle
 assign [class="Ladybird"] $ws1
 for_window [class="Ladybird"] focus
 
@@ -585,7 +587,9 @@ include /etc/sway/config.d/*
 # Auto-launch Vesktop. The flag below forces vesktop through
 # native wayland; disabled since it causes issues.
 # exec vesktop --ozone-platform-hint=auto || exec vencorddesktop --ozone-platform-hint=auto
-exec vesktop || exec vencorddesktop
+exec vesktop || exec vencorddesktop || exec "notify-send 'Could not start Vesktop.'"
+exec betterbird
+
 # move below file to i3 dir
 exec $HOME/.config/sway/notifyBattery.sh
 exec $HOME/.config/sway/setSwaybg.sh
