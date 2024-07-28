@@ -7,7 +7,7 @@
 # yay wlprop # alternative to xprop that works well.
 
 # # Dependencies with Ubuntu 20.04 (list not exhaustive):
-# sudo apt install dunst 
+# sudo apt install dunst waybar
 # # Some dependencies can be installed with nix package manager:
 # nix-env -iA nixpkgs.tofi
 # nix-env -iA nixpkgs.wlprop # Alternatively, find the bash script online and paste the shell script for example in ~/.local/bin/ if that's in your PATH.
@@ -254,69 +254,10 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
+# Warbar config: ~/.config/waybar/config.jsonc
+exec waybar
 
-
-    mode hide
-    # position top
-    # disable clicking on the bar
-    bindsym button1 nop
-    strip_workspace_numbers yes
-	status_command i3status --config ~/.config/i3/i3status.conf
-    # !SWAY + no benefit i3bar_command i3bar --transparency
-
-    # colors {
-    #     background #00ff0088
-    # }
-    # Disable all tray icons
-    # tray_output none
-    # colors {
-    #     background $black2
-    #     statusline $white2
-    #     separator $white2
-
-    #     #                  border background text
-    #     focused_workspace  $background $background $red1
-    #     active_workspace   $black2 $black1 $white2
-    #     inactive_workspace $black1 $black2 $foreground
-    #     urgent_workspace   $red1 $red1 $white2
-    #     binding_mode       $background $red2 $white2
-    # }
-    colors {
-        background #000000
-        statusline #ffffff
-        # background #00ff0000 !SWAY
-        # statusline #ffffff00
-        separator #005800
-        #9a3800 # orange
-        # separator #ee5500aa # orange
-
-#          <colorclass> <border> <background> <text>
-        # focused_workspace  #4c7899 #28557700 #ffffff
-        # active_workspace   #333333 #5f676a00 #ffffff
-        # inactive_workspace #333333 #22222200 #888888
-        # urgent_workspace   #2f343a #90000000 #ffffff
-        # binding_mode       #2f343a #90000000 #ffffff
-        focused_workspace  #004400 #004400 #ffffff
-        active_workspace   #000000 #4d5a60 #ffffff
-        inactive_workspace #000000 #000000 #888888
-        urgent_workspace   #ff0000 #900000 #ffffff
-        binding_mode       #000000 #900000 #ffffff
-    }
-
-}
-# very basic WIP
 # class                 border  backgr. text    indicator child_border
-# client.focused         #4c7809 #28aa28 #000000 #28aa28   #287728
-# client.focused_inactive #033303 #5f676a #bbbbbb #484e50   #5f676a
-# client.unfocused        #333333 #222222 #666666 #292d2e   #222222
-# client.urgent           #2f343a #900000 #bbbbbb #900000   #900000
-# client.placeholder      #000000 #0c0c0c #bbbbbb #000000   #0c0c0c
-# client.background       #00ff88
-
-# these colors are probably not matching the theme since these aren't visible.
 client.focused          #002800 #002800 #b8b8b8 #002800   #001800
 client.focused_inactive #180000 #181818 #888888 #141414   #181818
 client.unfocused        #333333 #222222 #696969 #292d2e   #222222
