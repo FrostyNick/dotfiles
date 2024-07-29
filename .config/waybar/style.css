@@ -4,7 +4,6 @@
     /* font-family: "Ubuntu Nerd Font"; */
     font-family: "Mononoki Nerd Font Propo";
 
-    /* -- Mononoki Nerd Font Propo Regular 12 */
     font-size: 13px;
     min-height: 0;
 }
@@ -16,7 +15,7 @@ window#waybar {
 
 #window {
     font-weight: bold;
-    font-family: "Ubuntu";
+    font-family: "Mononoki";
 }
 /*
 #workspaces {
@@ -32,12 +31,14 @@ window#waybar {
 }
 
 #workspaces button.focused {
-    color: #c9545d;
-    border-top: 2px solid #c9545d;
+    /* color: #c9545d; */ /* red */
+    color: #5d3; /* green */
+    border-top: 2px solid #5d3;
 }
 
 #mode {
     background: #64727D;
+    /* background: rgba(100, 114, 125, 50%); */
     border-bottom: 3px solid white;
 }
 
@@ -102,3 +103,8 @@ window#waybar {
 #tray {
 }
 
+/* background of calendar too */
+tooltip {
+    background: #010;
+    /* background: none; */
+}
