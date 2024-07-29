@@ -1,10 +1,16 @@
-// if v0.9.5+, refresh with: `killall -SIGUSR2 waybar`
-// otherwise, `killall waybar && sleep 2 && waybar &` kind of does the trick.
+// if using sway and you have waybar in bar{}, you can just refresh sway
+// otherwise:
+// - if v0.9.5+, refresh with: `killall -SIGUSR2 waybar`
+// - `killall waybar && sleep 2 && waybar &` kind of does the trick.
+// - FIX: bar stays on top with waybar v0.9.0 + sway 1.4.
+
+// https://github.com/Alexays/Waybar/wiki/Configuration#minimal-config
 {
-    "layer": "top", // Waybar at top layer
+    "layer": "top", // Waybar on top or underneath programs
     "position": "bottom", // Waybar at the bottom of your screen
     "height": 24, // Waybar height
     // "width": 1366, // Waybar width
+    "ipc": true, // to autohide bar in sway
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "hyprland/workspaces", "sway/mode", "custom/spotify"],
     "modules-center": ["sway/window"],
@@ -26,6 +32,7 @@
         }
     },
     "hyprland/workspaces": {
+        // https://github.com/Alexays/Waybar/wiki/Module:-Hyprland
         "format": "{icon}",
         "on-click": "activate",
         "format-icons": {
@@ -50,26 +57,32 @@
         "spacing": 10
     },
     "clock": {
-        "format": "{:%Y-%m-%d}",
+        // "format-alt": "{:%H:%M}  ",
+        "format": "{:%A, %B %d, %Y (%R)}  ",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
-        "tooltip": true,
+        "smooth-scrolling-threshold": 1.0, // by default very sensitive
         "calendar": {
-            "mode": "month",
-            "mode-mon-col": 3,
-            "weeks-pos": "right",
-            "on-scroll": 1,
-            "on-click-right": "mode",
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "weeks-pos"     : "right",
+            "on-scroll"     : 1,
             "format": {
-                "months": "<span color='#ffead3'><b>{}</b></span>",
-                "days": "<span color='#ecc6d9'><b>{}</b></span>",
-                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
             }
+        },
+        "actions":  {
+            "on-click-right": "mode",
+            "on-click-middle": "shift_up",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
         }
-    // "clock": {
-    //     "format-alt": "{:%Y-%m-%d}"
-    // },
+    },
     },
     "cpu": {
         "format": "{usage}% "

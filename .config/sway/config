@@ -255,7 +255,13 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Waybar config: ~/.config/waybar/config.jsonc
-exec waybar
+bar {
+    swaybar_command waybar
+    # autohide bar (src: https://github.com/Alexays/Waybar/discussions/3225#discussioncomment-9334609)
+    hidden_state hide
+    mode hide
+    modifier $mod
+}
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #002800 #002800 #b8b8b8 #002800   #001800

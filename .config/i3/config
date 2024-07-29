@@ -631,6 +631,6 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # Auto-launch Vesktop. The flag below forces vesktop through wayland if
 # xwayland is an option; you may want to disable if it causes issues.
 # exec vesktop --ozone-platform-hint=auto
-exec vesktop || exec vencorddesktop
+exec vesktop || exec vencorddesktop || exec "notify-send 'Could not start Vesktop.'"
 exec betterbird
 exec_always "notify-send 'Loaded config'"
