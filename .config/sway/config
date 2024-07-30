@@ -296,7 +296,7 @@ set $mode_launcher Open: [l]wlf m., [m]c, [c]py, [a]nroi, [o]bs, [d]uwu, [r]ec, 
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
-    bindsym l exec librewolf -ProfileManager
+    bindsym l exec ./.config/sway/launchBrowser.sh $menu
     bindsym m exec mcpelauncher-ui-qt -p Default || mcpelauncher -p Default
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "i3-sensible-terminal -e './.config/i3/obs.sh' &"
@@ -438,6 +438,9 @@ for_window [class="librewolf-default"] focus
 # web (arch)
 assign [class="Chromium"] $ws1
 for_window [class="Chromium"] focus
+# xwayland librewolf has no app_id
+assign [class="LibreWolf"] $ws1
+for_window [class="LibreWolf"] focus
 assign [app_id="LibreWolf"] $ws1
 for_window [app_id="LibreWolf"] focus
 for_window [app_id="LibreWolf" title="Picture-in-Picture"] layout floating toggle
