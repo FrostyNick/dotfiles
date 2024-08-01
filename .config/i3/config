@@ -347,7 +347,7 @@ set $mode_launcher Open: [l]wlf m., [m]c, [c]py, [a]nroi, [o]bs, [d]uwu, [r]ec, 
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
-    bindsym l exec ~/.config/sway/launchBrowser.sh dmenu
+    bindsym l mode "default"; exec ~/.config/sway/launchBrowser.sh dmenu
     bindsym m exec mcpelauncher-ui-qt -p Default || mcpelauncher -p Default
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "i3-sensible-terminal -e './.config/i3/obs.sh' &"
@@ -383,7 +383,6 @@ mode "$mode_launcher" {
     bindsym a exec ./Apps/android-studio/bin/studio.sh
 # below = file manager that comes in Lubuntu 20.04. Likely not on your OS.
     bindsym f exec pcmanfm-qt # || exec nautilus || exec dolphin
-    bindsym Return exec i3-sensible-terminal
 
     # NOT WORKING	bindsym --release t exec i3-sensible-terminal -e "fzf"
     # NOT WORKING	bindsym t exec --no-startup-id i3-msg 'exec xterm -e fzf'
@@ -452,12 +451,6 @@ for_window [window_type="menu"] floating enable
 # i3-msg move left
 # xdotool key F11
 
-
-# Discord = pain
-# exec i3-msg "workspace 2;"
-# exec discord || exec discord-canary # opens in ws1?
-# exec "sh -c 'sleep 3;'"
-# exec i3-msg "workspace 3;"
 
 # exec librewolf
 # Thanks to https://unix.stackexchange.com/a/363848 --> `xprop | grep CLASS`
@@ -606,8 +599,6 @@ assign [class="org.keepassxc.KeePassXC"] $ws100
 # opens by default
 # exec i3-sensible-terminal -e "vi"
 # exec i3-sensible-terminal
-# no longer needed thanks to assign: exec i3-msg "workspace 2;"
-# exec "xdg-open ~/backup2022nov10/checkDaily/index.html" # opens in ws1
 # not working on restarting i3:
 # exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
 # NOT WORKING exec_always i3-sensible-terminal -e "nvim ~/backup2022nov10/notes/todo.norg"
