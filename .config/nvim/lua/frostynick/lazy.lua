@@ -94,34 +94,33 @@ local function telescopeConfig()
         tsb.grep_string({ search = vim.fn.input("Grep > ") })
     end, {desc="Telescope: Grep string"})
 
-    local success,msg = pcall(function()
-        ts.load_extension"file_browser"
+    local function loadExtension(name, fn)
+        local success,msg = pcall(function()
+            ts.load_extension(name)
+            if fn then
+                fn()
+            end
+        end)
+        if not success then
+            vim.notify("Error loading telescope " .. name .. ": " .. msg)
+        end
+    end
+
+    loadExtension("file_browser", function()
         k.set('n', '<leader>fb',
         "<cmd>Telescope file_browser<CR>", {desc="Telescope: file browser"})
     end)
 
-    if not success then
-        print("Error loading telescope file_browser: " .. msg)
-    end
-
-    success,msg = pcall(function()
-        ts.load_extension"media_files"
+    loadExtension("media_files", function()
         k.set('n', '<leader>fp',
         "<cmd>Telescope media_files<CR>", {desc = "Telescope: pictures; media files"})
     end)
 
-    if not success then
-        print("Error loading telescope media_files: " .. msg)
-    end
-
     -- nvim-telescope/telescope-ui-select.nvim
-    success,msg = pcall(function() ts.load_extension'ui-select' end)
+    loadExtension("ui-select")
+    loadExtension("possession")
 
-    if not success then
-        print("Error loading telescope ui-select: " .. msg)
-    end
-
-    -- require("telescope").load_extension "frecency"
+    -- loadExtension("frecency")
 end
 
 local function lspConfig()
@@ -711,6 +710,19 @@ local plugins = {
     --         end
     --     end,
     -- },
+    {
+        -- auto-session alternative with more lua and telescope integration
+        'jedrzejboczar/possession.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+        config = true,
+        event = "VeryLazy",
+        keys = {
+            { "<leader>sl", "<cmd>PossessionLoad fromExit<CR>", mode = "n"},
+            { "<leader>ss", "<cmd>PossessionSave fromExit<CR>", mode = "n"},
+            { "<leader>sn", ":PossessionSave ", mode = "n"},
+            { "<leader>fs", "<cmd>Telescope possession list<CR>", mode = "n"},
+        },
+    },
     {
         'mbbill/undotree',
         cmd = "UndotreeToggle",
