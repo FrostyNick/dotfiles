@@ -261,6 +261,7 @@ bar {
     hidden_state hide
     mode hide
     modifier $mod
+    position bottom
 }
 
 # class                 border  backgr. text    indicator child_border

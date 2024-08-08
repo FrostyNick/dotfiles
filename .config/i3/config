@@ -412,7 +412,7 @@ mode "$mode_system" {
     bindsym p exec "i3-sensible-terminal -e './.config/i3/pulseaudio-temp-fix.sh' &"
 
     # systemctl reboot
-    bindsym r exec --no-startup-id "shutdown -r now", mode "default" # this might NOT work
+    bindsym r exec --no-startup-id "shutdown -r now", mode "default"
 
     bindsym i restart, mode "default"
     bindsym Ctrl+s exec --no-startup-id shutdown now, mode "default"

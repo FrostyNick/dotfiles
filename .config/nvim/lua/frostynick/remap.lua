@@ -59,7 +59,7 @@ k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
 k.set("t", "<Esc>q", "<c-\\><c-n>")
 
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
-k.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
+k.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
 --- I should make a different mode at this point...
 -- *insert removing end of yt links*
 k.set("n", "<leader>myts", [[:%s#www.youtube.com/shorts/#youtu.be/#gI<CR>]], {desc="Shorten YouTube short URLs"})
@@ -220,8 +220,6 @@ k.set("n", "<leader>go", vim.cmd.Godot)
 
 -- l8r: make it like an API that can be accessed anywhere
 local function i_txt(txt)
-    vim.cmd("norm O")
-
     -- :help nvim_buf_set_text
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { txt })
