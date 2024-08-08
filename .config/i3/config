@@ -512,13 +512,13 @@ for_window [class="nobleNote"] focus
 assign [class="qBittorrent"] $ws3
 for_window [class="dolphin"] focus
 assign [class="dolphin"] $ws3
-# del sharik
+assign [class="unityhub"] $ws3
 
 # android studio
 assign [class="Emacs"] $ws4
 assign [class="jetbrains-studio"] $ws4
 for_window [class="jetbrains-studio"] focus
-assign [class="Codium"] $ws4 # it changes to this sometimes.
+assign [class="Codium"] $ws4
 assign [class="Geany"] $ws4
 for_window [class="Geany"] focus
 assign [instance="Godot_Editor"] $ws4
@@ -527,6 +527,7 @@ assign [class="Godot"] $ws4
 for_window [class="Godot"] focus
 assign [class="VSCodium"] $ws4
 for_window [class="VSCodium"] focus
+assign [class="Unity"] $ws4
 
 # emulator
 for_window [class="scrcpy"] focus
@@ -574,6 +575,8 @@ assign [class="VencordDesktop"] $ws6
 assign [class="vesktop"] $ws6
 assign [class="discord"] $ws6
 assign [class="Caprine"] $ws6
+assign [class="betterbird"] $ws6
+for_window [class="betterbird"] layout tabbed
 
 assign [class="zoom"] $ws6
 
@@ -623,4 +626,6 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # exec vesktop --ozone-platform-hint=auto
 exec vesktop || exec vencorddesktop || exec "notify-send 'Could not start Vesktop.'"
 exec betterbird
+
+# NOT WORKING exec i3-sensible-terminal -e "./.config/sway/notifyBattery.sh"
 exec_always "notify-send 'Loaded config'"
