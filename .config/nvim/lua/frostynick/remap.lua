@@ -97,6 +97,7 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
 k.set("n", "<leader>n", function() vim.notify"Future: list of sessions" end, {desc="future: list of sessions"})
 k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
+k.set("n", "<leader>fx", "<cmd>!chmod +x %<CR>", { silent = true }) -- cuts all text to clipboard
 -- For windows, replace xdg-open with explorer.
 
 k.set("n", "<leader>po",
@@ -272,6 +273,8 @@ local function vsall(range)
         end
     end
 end
+
+-- k.set("n", "<leader>md") -- markdown delete duplicates (better name / etc. l8r)
 
 k.set("n", "<leader>dc", function()
     -- sync conflict files made automatically by syncthing

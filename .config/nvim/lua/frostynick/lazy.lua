@@ -865,8 +865,10 @@ local plugins = {
             -- Your setup opts here
         },
     },
+    --- 2 games below
     -- :Speedtyper to start typing practice
-    { 'NStefan002/speedtyper.nvim', cmd = "Speedtyper", opts = {} },
+    { 'NStefan002/speedtyper.nvim', cmd = "Speedtyper", config = true },
+    { 'alec-gibson/nvim-tetris', cmd = "Tetris" },
     -- leetcode: https://github.com/kawre/leetcode.nvim . Requires v0.9.0. See requirements b4 installing.
     -- currently not working: https://github.com/glacambre/firenvim/blob/master/TROUBLESHOOTING.md
     -- Below is made for browser extension firenvim.
