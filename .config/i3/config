@@ -102,12 +102,6 @@ bindsym $mod+d exec dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-# bindsym $mod+j focus left
-# bindsym $mod+k focus down
-# bindsym $mod+l focus up
-# bindsym $mod+semicolon focus right
-# why reinvent the wheel? vim keybindings!!
-
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
@@ -123,11 +117,6 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
-# # can confirm below doesn't error in i3 but it does nothing there and requires an extra script !!WAYLAND!!
-# bindsym $mod+Left exec vim-sway-nav left 
-# bindsym $mod+Down exec vim-sway-nav down
-# bindsym $mod+Up exec vim-sway-nav up
-# bindsym $mod+Right exec vim-sway-nav right
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -422,7 +411,7 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-# floating pop up automatically
+# floating window pop up automatically
 # probably not working: for_window [title="Special Offers" class="steam"] resize set 100 50
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -467,11 +456,10 @@ assign [class="Brave-browser"] $ws1
 for_window [class="Brave-browser"] focus
 assign [class="Luakit"] $ws1
 for_window [class="Luakit"] focus
-assign [class="librewolf-default"] $ws1
-for_window [class="librewolf-default"] focus
-
 assign [class="Vivaldi-stable"] $ws1
 for_window [class="Vivaldi-stable"] focus
+assign [class="librewolf-default"] $ws1
+for_window [class="librewolf-default"] focus
 
 # web (arch)
 assign [class="Chromium"] $ws1
@@ -481,7 +469,7 @@ for_window [class="LibreWolf"] focus
 assign [class="Ladybird"] $ws1
 for_window [class="Ladybird"] focus
 
-# terminal
+# terminal + notepad
 assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
 assign [class="XTerm"] $ws2
@@ -492,8 +480,12 @@ assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
 assign [class="Alacritty"] $ws2
 for_window [class="Alacritty"] focus
+assign [class="FeatherPad"] $ws3
+for_window [class="FeatherPad"] focus
+assign [class="nobleNote"] $ws3
+for_window [class="nobleNote"] focus
 
-# notes + educational + not terminal + files
+# less minimal than notepad + not terminal + files
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
@@ -505,14 +497,12 @@ for_window [class="qpdfview"] focus
 assign [class="qpdfview"] $ws3
 for_window [class="libreoffice"] focus
 assign [class="libreoffice"] $ws3
-assign [class="FeatherPad"] $ws3
-for_window [class="FeatherPad"] focus
-assign [class="nobleNote"] $ws3
-for_window [class="nobleNote"] focus
 assign [class="qBittorrent"] $ws3
 for_window [class="dolphin"] focus
 assign [class="dolphin"] $ws3
 assign [class="unityhub"] $ws3
+assign [class="Unityhubnative"] $ws3
+for_window [class="Unityhubnative"] focus,floating enable
 
 # android studio
 assign [class="Emacs"] $ws4
@@ -534,6 +524,8 @@ for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
 assign [class="Virt-manager"] $ws5
+# below not tested
+assign [class="Waydroid"] $ws5
 
 # game
 for_window [class="2048-qt"] focus

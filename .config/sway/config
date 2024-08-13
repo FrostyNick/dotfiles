@@ -371,7 +371,7 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-# floating pop up automatically
+# floating window pop up automatically
 # probably not working: for_window [title="Special Offers" class="steam"] resize set 100 50
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -441,7 +441,7 @@ for_window [app_id="LibreWolf" title="Picture-in-Picture"] layout floating toggl
 assign [class="Ladybird"] $ws1
 for_window [class="Ladybird"] focus
 
-# terminal
+# terminal + notepad
 assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
 assign [class="XTerm"] $ws2
@@ -452,8 +452,12 @@ assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
 assign [app_id="Alacritty"] $ws2
 for_window [app_id="Alacritty"] focus
+assign [app_id="featherpad"] $ws2
+for_window [app_id="featherpad"] focus
+assign [class="nobleNote"] $ws2
+for_window [class="nobleNote"] focus
 
-# notes + educational + not terminal + files
+# less minimal than notepad + not terminal + files
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
@@ -463,16 +467,14 @@ for_window [class="Zathura"] focus
 assign [class="Zathura"] $ws3
 for_window [class="qpdfview"] focus
 assign [class="qpdfview"] $ws3
-for_window [class="libreoffice"] focus
-assign [class="libreoffice"] $ws3
-assign [class="FeatherPad"] $ws3
-for_window [class="FeatherPad"] focus
-assign [class="nobleNote"] $ws3
-for_window [class="nobleNote"] focus
+for_window [app_id="libreoffice-*"] focus
+assign [app_id="libreoffice-*"] $ws3
 assign [class="qBittorrent"] $ws3
 for_window [app_id="org.kde.dolphin"] focus
 assign [app_id="org.kde.dolphin"] $ws3
 assign [class="unityhub"] $ws3
+assign [app_id="UnityHubNative"] $ws3
+for_window [app_id="UnityHubNative"] focus,floating enable
 
 # android studio
 assign [class="Emacs"] $ws4
@@ -506,7 +508,6 @@ for_window [class="Lutris"] focus
 assign [class="GodotProject"] $ws5
 # game (continued)
 assign [class="Lutris"] $ws5
-
 assign [class="steam"] $ws5
 assign [class="steam_app*"] $ws5
 # name: steam_app_843380

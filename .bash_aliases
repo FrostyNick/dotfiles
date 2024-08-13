@@ -296,6 +296,8 @@ alias anticn='[ $WAYLAND_DISPLAY ] && anticnw || anticnx'
 alias procn='[ $WAYLAND_DISPLAY ] && (wl-copy --clear || echo Could not clear text in wl DONT PASTE) || echo -n | (xclip -sel clip || echo Could not clear text x11 DONT PASTE)'
 
 alias gits='git remote -v;(git --no-pager branch||git branch);git status'
+alias giths='gits;gh issue ls;gh pr ls' #gh repo view
+
 alias gitp='git push'
 alias gitpl='git pull'
 alias gita='git add'
