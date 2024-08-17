@@ -1,0 +1,74 @@
+/*
+Tip: Make it a background process with & if browser isn't open yet.
+
+This is a great alternative to relying on web browsers for search providers without ever needing to redo everything on a new computer!
+
+- syntax docs (you *can* use json too!): 
+- attribute docs: https://github.com/zquestz/s#configuration
+*/
+
+provider: duckduckgo;
+customProviders [
+  {
+    name: minecraftwiki
+    url: "https://minecraft.wiki/?search=%s"
+    # tags: [example]
+  }
+  {
+    name: xcancel
+    # url: "https://xcancel.com/search?f=users&q=%s"
+    url: "https://xcancel.com/%s"
+  }
+  {
+    name: scoop
+    url: "https://scoop.sh/#/apps?q=%s"
+  }
+]
+
+/*
+# src: https://github.com/vstakhov/libucl#basic-structure 
+# syntax examples:
+param = value;
+section {
+    param = value;
+    param1 = value1;
+    flag = true;
+    number = 10k;
+    time = 0.2s;
+    string = "something";
+    subsection {
+        host = {
+            host = "hostname";
+            port = 900;
+        }
+        host = {
+            host = "hostname";
+            port = 901;
+        }
+    }
+}
+# or in json
+{
+    "param": "value",
+    "section": {
+        "param": "value",
+        "param1": "value1",
+        "flag": true,
+        "number": 10000,
+        "time": "0.2s",
+        "string": "something",
+        "subsection": {
+            "host": [
+                {
+                    "host": "hostname",
+                    "port": 900
+                },
+                {
+                    "host": "hostname",
+                    "port": 901
+                }
+            ]
+        }
+    }
+}
+*/
