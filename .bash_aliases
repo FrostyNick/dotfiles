@@ -30,15 +30,22 @@ ys() { # youtube summary .. AI tool that saves time :)
     url=https://www.summarize.tech/youtu.be/$id
     echo $url
     # WARNING: Doesn't work with -L
-    curl $url | pup 'section text{}'
+    librewolf -p $FFP $url
+    # curl $url | pup 'section text{}'
     # TODO: If there's no results above, just open browser: xdg-open $url
 
     # curl https://www.summarize.tech/youtu.be/$id || xdg-open #| pup 'section text{}'
 }
 
+alias sm='s -b "librewolf -p $FFP" -p minecraftwiki'
+alias sy='s -b "librewolf -p $FFP" -p youtube'
+alias sz='s -b "librewolf -p $FFP"'
+
 gp() { # goto project
+    cd "$(ls -d --hyperlink=no ~/p/*$1* | head -n 1)"
+}
+gpf() { # goto project fzf
     cd "$(ls -d --hyperlink=no ~/p/*$1* | fzf)"
-    # cd "$(ls -d --hyperlink=no ~/p/*$1* | head -n 1)"
 }
 mp() { # mk project
     name=$1
@@ -191,7 +198,13 @@ alias rm='rm -i'
 
 alias _="nvim ~/.bash_aliases"
 
-alias x='xdg-open'
+x() {
+    xdg-open $1 &
+}
+xp() {
+    librewolf -p $FFP $1 &
+}
+
 alias cx='chmod +x '
 alias py=python
 alias v=nvim
@@ -217,8 +230,9 @@ alias govi="nvim --listen ~/.cache/nvim/godot.pipe ."
 # self-notes: see rank
 # APIs are yes. https://wiki.quavergame.com/docs/api/users
 
-# echo divide by zero error below line
-alias apiQuaver="echo $(curl -s 'https://api.quavergame.com/v1/users/scores/recent?id=479240&mode=1&limit=10' 2>&1 | jq .scores[].\"max_combo\" | awk '{ total += $1 } END { print total/NR }') is your average max combo based on the last 10 maps."
+apiQuaver() {
+    echo $(curl -s 'https://api.quavergame.com/v1/users/scores/recent?id=479240&mode=1&limit=10' 2>&1 | jq .scores[].\"max_combo\" | awk '{ total += $1 } END { print total/NR }') is your average max combo based on the last 10 maps.
+}
 
 alias live="live-server --browser=librewolf"
 alias ytc="cd ~/p/commentsaver && live"
@@ -227,7 +241,7 @@ alias lazy='nvim ~/.config/nvim/lua/frostynick/lazy.lua'
 alias uwuntu='qemu-system-x86_64 -enable-kvm -cdrom ~/Downloads/UwUntu-22.10-desktop-amd64.iso -boot menu=on -drive file=~/Uwubuntu.img -m 4G -cpu host -vga virtio -display gtk,gl=on'
 alias ndiff='nvim -d -R'
 alias sendEB='kdeconnect-cli -d 5e34c84b_9369_423e_b131_7269b94b0aae --share ; echo xdg-open + kdeconnect works better'
-alias discordU="echo Vesktop exists proably. Proceed? (use diU)"
+alias discordU="echo Vesktop exists proably. Proceed? \(use diU\)"
 alias diU='cd ~/Downloads/ && sudo apt install ./discord-0.0.*.deb && rm discord-0.0.*.deb || echo Failed to remove .deb file, maybe due to update error? Run diRm to continue removing ; cd && echo Also run discordV.'
 alias diRm='rm ~/Downloads/discord-0.0.*.deb'
 
@@ -238,7 +252,7 @@ discordV() {
     else
         curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh > ~/Vencord.sh && chmod +x ~/Vencord.sh && cat ~/Vencord.sh ; echo "# ./Vencord.sh if installer looks alright"
     fi
-    cd -
+    cd - ; echo oldcwd used btw
 }
 
 alias pulseaudioD="pipewireE"
@@ -273,7 +287,7 @@ alias pandocmd="echo Argument: file/URL. Result is in output.md if success && pa
 
 alias fnalias="cat ~/.bash_aliases | grep '()'"
 alias csci2050="echo sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks; sshpass -p \"xxxxxxxx\" ssh frostynick@woodducks"
-alias joplin-desktop="cd ~ && ./.joplin/Joplin.AppImage" # kms
+alias joplin-desktop="cd;./.joplin/Joplin.AppImage" # kms
 
 # src: Avoid the password suggestion though. https://web.archive.org/web/20230630174028/https://superuser.com/questions/548234/how-can-i-easily-toggle-between-dvorak-and-qwerty-keyboard-layouts-from-a-linux/548235
 alias asdf="setxkbmap dvorak"

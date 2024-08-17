@@ -11,6 +11,8 @@ HISTCONTROL=ignoreboth
 
 # vi mode
 set -o vi
+bind -m vi-insert "\C-l":clear-screen
+bind -m vi-command "\C-l":clear-screen
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -89,6 +91,9 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
+fi
+if [ -f ~/.bash_hidden ]; then
+    . ~/.bash_hidden
 fi
 
 # enable programmable completion features (you don't need to enable
