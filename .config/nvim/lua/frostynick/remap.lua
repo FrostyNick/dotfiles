@@ -116,7 +116,7 @@ k.set("n", "<leader>gho", -- rare edge-case: breaks when git exists earlier I th
 { silent = true, desc = "octo list (requires gh)" })
 
 k.set("n", "<leader>gg", vim.cmd.Git)
-k.set("n", "<leader>gl", "<cmd>Git log --shortstat --oneline --decorate --graph --all<CR>")
+k.set("n", "<leader>gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
 k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
 -- Above should use git fugitive ... I just have a terminal dependant password inserting thing that makes git fugitive not work well. (:G push)
@@ -152,15 +152,15 @@ k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 
 --- Open terminal shortcuts
 k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
-k.set("n", "<leader>zt", "<cmd>tabnew<CR><cmd>term<CR>")
+k.set("n", "<leader>zt", "<cmd>tabe<CR><cmd>term<CR>")
 k.set("n", "<leader><CR>", vim.cmd.term)
 
 --- Buffer shortcuts
-k.set("n", "<leader>q", vim.cmd.bd, {desc=":bd Delete buffer"})
+k.set("n", "<leader>qb", vim.cmd.bd, {desc=":bd Delete buffer"})
 local function bufToNewTab(isBackground)
     local id = vim.api.nvim_get_current_buf()
     vim.api.nvim_win_hide(0)
-    vim.cmd.tabnew()
+    vim.cmd.tabe()
     vim.api.nvim_set_current_buf(id)
     if isBackground then
         vim.cmd.tabp()
@@ -235,6 +235,7 @@ end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
 k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
+k.set("n", "<leader>qr", [[:!qrencode -t UTF8 "<c-r>+"<CR>]], {desc="Get QR code from system clipboard (+ register)"})
 
 -- WARNING: only works in systems with "ls" and wildcards
 --- @return table|nil

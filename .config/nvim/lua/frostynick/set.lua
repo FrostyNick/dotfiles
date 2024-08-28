@@ -81,7 +81,7 @@ augroup vimStartup
 augroup END
 ]])
 
-cmd.ca("tan tabnew")
+cmd.ca("tan tabe")
 -- cmd.ab("ao about")
 -- src: https://web.archive.org/web/20230117225946/https://stackoverflow.com/questions/7894330/preserve-last-editing-position-in-vim
 -- Try when ya got time. Works but could be improved maybe.

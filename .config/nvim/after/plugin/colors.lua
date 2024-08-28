@@ -2,7 +2,8 @@ function ColorMyPencils(color, isSpell) -- NOTE: duplicate fn in nv/lazy
     local a,b = pcall(function()
         if type(color) == "table" then
             color = color.name -- automatically passed from Lazy
-        elseif not color then
+        end
+        if not color then
             color = "midnight"
         end
         vim.cmd.colorscheme(color)

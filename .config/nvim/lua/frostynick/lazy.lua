@@ -186,7 +186,8 @@ local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplica
     local a,b = pcall(function()
         if type(color) == "table" then
             color = color.name -- automatically passed from Lazy
-        elseif not color then
+        end
+        if not color then
             color = "midnight"
         end
         vim.cmd.colorscheme(color)
@@ -416,16 +417,16 @@ local plugins = {
             -- your configuration overrides
         }
     },
-    -- {
-    --     "pwntester/octo.nvim", -- tags: github gh
-    --     cmd = "Octo",
-    --     dependencies = {
-    --         'nvim-lua/plenary.nvim',
-    --         'nvim-telescope/telescope.nvim', -- or ibhagwan/fzf-lua
-    --         'nvim-tree/nvim-web-devicons'
-    --     },
-    --     config = true
-    -- },
+    {
+        "pwntester/octo.nvim", -- tags: github gh
+        cmd = "Octo",
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim', -- or ibhagwan/fzf-lua
+            'nvim-tree/nvim-web-devicons'
+        },
+        config = true
+    },
     { -- this takes a couple MB ... might not be best idea if you're low on space
         "chrishrb/gx.nvim",
         -- event = "VeryLazy",
@@ -717,9 +718,10 @@ local plugins = {
         config = true,
         event = "VeryLazy",
         keys = {
-            { "<leader>sl", "<cmd>PossessionLoad fromExit<CR>", mode = "n"},
-            { "<leader>ss", "<cmd>PossessionSave fromExit<CR>", mode = "n"},
-            { "<leader>sn", ":PossessionSave ", mode = "n"},
+            { "<leader>stl", "<cmd>PossessionLoad temp<CR>", mode = "n", desc="possession load temp session"},
+            { "<leader>sts", "<cmd>PossessionSave temp<CR>", mode = "n", desc="possession save temp session"},
+            { "<leader>ss", ":PossessionSave ", mode = "n", desc="possession save a file"}, -- write
+            { "<leader>sl", ":PossessionLoad ", mode = "n", desc="possession load a file"}, -- read
             { "<leader>fs", "<cmd>Telescope possession list<CR>", mode = "n"},
         },
     },
@@ -921,13 +923,16 @@ local plugins = {
     - zero stars
     --]] -- { "airglow923/suda.nvim", config = true,
     -- commit = "e5684c7395fede814bddb85dc39d14175a8f19c8" },
-    { -- basically adds "sudo write"
-        "lambdalisue/vim-suda",
-        cmd = {"SudaRead", "SudaWrite"},
-        -- WARNING: Might need to update in the future.
-        commit = "b97fab52f9cdeabe2bbb5eb98d82356899f30829",
-        config = true
-    },
+    -- { -- basically adds "sudo write"
+    --     "lambdalisue/vim-suda",
+    --     -- BUG: Seems to not work? At least not reliably. I write the command, there's no errors, and it just doesn't save the changes. That's a deal breaker for me even if it might technically work sometimes.
+    --
+    --     cmd = {"SudaRead", "SudaWrite"},
+    --     -- WARNING: Might need to update in the future.
+    --     commit = "b97fab52f9cdeabe2bbb5eb98d82356899f30829",
+    --
+    --     config = true
+    -- },
     -- below: nvim terminal opens nvim without nested nvim (so much better!)
     -- No mention of alacritty in readme, but it works there too.
     {
@@ -959,7 +964,9 @@ local plugins = {
         --     k.setup({debug = true, additional_curl_options = {"-v"}})
         --     vim.keymap.set('n', '<leader>zr', k.run)
         -- end
-    }
+    },
+    -- { "norcalli/nvim-colorizer.lua", event = "VeryLazy", config = true}, -- requires nvim 0.4+
+    { "NvChad/nvim-colorizer.lua", event = "VeryLazy", config = true }, -- requires nvim 0.7+; active fork
 }
 --[[
 -- alternative plugins maybe
