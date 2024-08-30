@@ -27,9 +27,13 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
--- Theme
-config.font = wezterm.font'Mononoki Nerd Font Mono'
--- to see fonts that wezterm detects:wezterm ls-fonts
+-- config.prefer_egl = true -- HACK: Often fixes Wezterm in VMs. Might perform worse than defaults though.
+
+---- Theme
+-- config.font = wezterm.font'Mononoki Nerd Font Mono' -- this might work better
+config.font = wezterm.font('Mononoki Nerd Font Mono', { style = "Normal" })
+-- to see fonts that wezterm detects: wezterm ls-fonts --list-system
+-- https://wezfurlong.org/wezterm/config/fonts.html
 
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
@@ -42,17 +46,19 @@ config.colors = {
     }
 }
 
-config.hyperlink_rules = wezterm.default_hyperlink_rules()
-table.insert(config.hyperlink_rules, {
-  regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]],
-  format = 'https://www.github.com/$1/$3',
-})
-
 -- On Linux with X11, I use picom compositor to get this working.
 -- On Linux with Wayland, Windows, and MacOS it works out of the box according to docs.
 config.window_background_opacity = 0.8
 
 -- config.color_scheme = 'Batman'
+
+---- Theme end
+
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+table.insert(config.hyperlink_rules, {
+  regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]],
+  format = 'https://www.github.com/$1/$3',
+})
 
 local launch_menu = {}
 
