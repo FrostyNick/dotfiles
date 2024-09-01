@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-nvim ~/backup2022nov/markor/todo.md
+[ -d ~/backup2022nov10/ ] && nvim ~/backup2022nov10/markor/totodo.md || nvim ~/backup2022nov/markor/totodo.md
 wait

@@ -274,10 +274,11 @@ client.background       #00ee78
 
 # 107 = Print, so below also works:
 # bindcode 107 flameshot gui
-# FIX: flameshot doesn't work
+# FIX: grimshot alone kinda sucks
+# WARNING: flameshot doesn't work
 # bindsym $mod+Print exec flameshot gui
-bindsym $mod+Print exec grimshot save && notify-send "Saved full screenshot"
-bindsym Print exec grimshot save area && notify-send "Saved screenshot"
+bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save)"
+bindsym Print exec notify-send "Took screenshot: $(grimshot save area)"
 # if slurp dependency isn't ancient "area" above should be replaced with "anything" (missing slurp -o)
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
@@ -469,7 +470,7 @@ for_window [class="qpdfview"] focus
 assign [class="qpdfview"] $ws3
 for_window [app_id="libreoffice-*"] focus
 assign [app_id="libreoffice-*"] $ws3
-assign [class="qBittorrent"] $ws3
+assign [app_id="org.qbittorrent.qBittorrent"] $ws3
 for_window [app_id="org.kde.dolphin"] focus
 assign [app_id="org.kde.dolphin"] $ws3
 assign [class="unityhub"] $ws3
@@ -490,11 +491,15 @@ for_window [class="Godot"] focus
 assign [class="VSCodium"] $ws4
 for_window [class="VSCodium"] focus
 assign [class="Unity"] $ws4
+assign [app_id="Eclipse"] $ws4
+# below is in Eclipse
+assign [app_id="java"] $ws4
 
 # emulator
 for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
+assign [class="qemu-system-x86_64"] $ws5
 assign [class="Virt-manager"] $ws5
 assign [app_id="Waydroid"] $ws5
 
@@ -529,6 +534,7 @@ assign [class="Gimp"] $ws5
 # not tested: sxiv
 assign [class="mpv"] $ws5
 assign [app_id="mpv"] $ws5
+assign [app_id="swayimg"] $ws5
 assign [class="feh"] $ws5
 assign [class="vlc"] $ws5
 assign [class="qimgv"] $ws5
@@ -540,6 +546,7 @@ assign [app_id="VencordDesktop"] $ws6
 assign [class="vesktop"] $ws6
 assign [app_id="vesktop"] $ws6
 assign [class="discord"] $ws6
+assign [class="Element"] $ws6
 assign [class="Caprine"] $ws6
 assign [app_id="betterbird"] $ws6
 for_window [app_id="betterbird"] layout tabbed
@@ -595,7 +602,8 @@ exec vesktop || exec vencorddesktop || exec "notify-send 'Could not start Veskto
 exec betterbird
 
 exec $HOME/.config/sway/notifyBattery.sh
-exec $HOME/.config/sway/setSwaybg.sh
+
+exec_always $HOME/.config/sway/setSwaybg.sh
 exec_always "notify-send 'Loaded config'"
 
 # [Displaying pop-ups as floating windows. #3095 - GitHub](https://github.com/swaywm/sway/issues/3095 "I came up with a super hacky workaround - a userscript that tries to detect pop-up windows based on the window.titlebar.visible or window.menubar.visible properties, and if either one is false I prepend a well-known string to the window title. I check for this string inside my Sway config and float matching")

@@ -518,11 +518,16 @@ for_window [class="Godot"] focus
 assign [class="VSCodium"] $ws4
 for_window [class="VSCodium"] focus
 assign [class="Unity"] $ws4
+assign [class="Eclipse"] $ws4
+assign [class="Java"] $ws4
 
 # emulator
 for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
 assign [class="Qemu-system-x86_64"] $ws5
+assign [class="qemu-system-x86_64"] $ws5
+assign [class="Spicy"] $ws5
+assign [class="spicy"] $ws5
 assign [class="Virt-manager"] $ws5
 # below not tested
 assign [class="Waydroid"] $ws5
@@ -566,6 +571,7 @@ assign [class="qimgv"] $ws5
 assign [class="VencordDesktop"] $ws6
 assign [class="vesktop"] $ws6
 assign [class="discord"] $ws6
+assign [class="Element"] $ws6
 assign [class="Caprine"] $ws6
 assign [class="betterbird"] $ws6
 for_window [class="betterbird"] layout tabbed
