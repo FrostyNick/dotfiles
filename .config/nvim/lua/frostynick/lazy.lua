@@ -4,7 +4,7 @@
 
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then -- "vim.loop" is deprecated in nvim 0.10.0
+if not vim.loop.fs_stat(lazypath) then -- "vim.loop" will be deprecated in nvim 1.0 as of 2024-9-1
     vim.fn.system({
         "git",
         "clone",
@@ -125,6 +125,7 @@ end
 
 local function lspConfig()
     local a,b = pcall(function()
+        local path_mono_download = "/home/nicholas/Apps/omnisharp-lsp-1.38.2/"
         local lspc = require('lspconfig')
         local lspLs = {
             {
@@ -162,6 +163,20 @@ local function lspConfig()
                     settings = {
                         Lua = {}
                     }
+                },
+                -- omnisharp is 1.38.2 and many guides seems to fallback to that version. My guess: I think it doesn't work on the version of Unity I have to use.
+                -- https://dzfrias.dev/blog/neovim-unity-setup/
+                -- FIX: So far doesn't work. Errors in unity. Will do more research if I have time to prioritize this...
+                'omnisharp',
+                {
+                    cmd = {
+                        'mono',
+                        '--assembly-loader=strict',
+                        path_mono_download .. '/omnisharp/OmniSharp.exe',
+                    },
+                    -- Assuming you have an on_attach function. Delete this line if you don't.
+                    on_attach = on_attach,
+                    use_mono = true,
                 }
             },
             'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
@@ -182,7 +197,7 @@ end
 -- Example #2: invisiBkgd(nil, true)
 -- Example #3: invisiBkgd("vim", true)
 -- ^^ colorscheme=vim with typos underlined + invisible background.
-local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplicate of this function but global.
+local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplicate of this function but global. ../../after/plugin/colors.lua
     local a,b = pcall(function()
         if type(color) == "table" then
             color = color.name -- automatically passed from Lazy
@@ -625,7 +640,14 @@ local plugins = {
         -- config = function()
         -- end
     },
-    -- How to install the required dependencies · Zeioth/compiler.nvim Wiki https://github.com/Zeioth/Compiler.nvim/wiki/how-to-install-the-required-dependencies
+    {
+        "aliqyan-21/runTA.nvim",
+        cmd = "RunCode",
+        config = function()
+            require("runTA.commands").setup(
+                {output_window_configs={transparent=true}})
+        end,
+    },
     {
         "Zeioth/compiler.nvim",
         cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
