@@ -469,7 +469,7 @@ for_window [class="LibreWolf"] focus
 assign [class="Ladybird"] $ws1
 for_window [class="Ladybird"] focus
 
-# terminal + notepad
+# terminal
 assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
 assign [class="XTerm"] $ws2
@@ -480,12 +480,8 @@ assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
 assign [class="Alacritty"] $ws2
 for_window [class="Alacritty"] focus
-assign [class="FeatherPad"] $ws3
-for_window [class="FeatherPad"] focus
-assign [class="nobleNote"] $ws3
-for_window [class="nobleNote"] focus
 
-# less minimal than notepad + not terminal + files
+# not terminal + files
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
@@ -500,26 +496,32 @@ assign [class="libreoffice"] $ws3
 assign [class="qBittorrent"] $ws3
 for_window [class="dolphin"] focus
 assign [class="dolphin"] $ws3
-assign [class="unityhub"] $ws3
-assign [class="Unityhubnative"] $ws3
-for_window [class="Unityhubnative"] focus,floating enable
-
-# android studio
-assign [class="Emacs"] $ws4
-assign [class="jetbrains-studio"] $ws4
-for_window [class="jetbrains-studio"] focus
-assign [class="Codium"] $ws4
-assign [class="Geany"] $ws4
+# text editor
+assign [class="FeatherPad"] $ws3
+for_window [class="FeatherPad"] focus
+assign [class="nobleNote"] $ws3
+for_window [class="nobleNote"] focus
+# IDE
+assign [class="VSCodium"] $ws3
+for_window [class="VSCodium"] focus
+assign [class="Codium"] $ws3
+assign [class="Geany"] $ws3
 for_window [class="Geany"] focus
+assign [class="Emacs"] $ws3
+assign [class="jetbrains-studio"] $ws3
+for_window [class="jetbrains-studio"] focus
+assign [class="Eclipse"] $ws3
+assign [class="Java"] $ws3
+
+# IDE: gamedev
 assign [instance="Godot_Editor"] $ws4
 for_window [instance="Godot_Editor"] focus
 assign [class="Godot"] $ws4
 for_window [class="Godot"] focus
-assign [class="VSCodium"] $ws4
-for_window [class="VSCodium"] focus
 assign [class="Unity"] $ws4
-assign [class="Eclipse"] $ws4
-assign [class="Java"] $ws4
+assign [class="Unityhubnative"] $ws4
+for_window [class="Unityhubnative"] focus,floating enable
+assign [class="unityhub"] $ws8
 
 # emulator
 for_window [class="scrcpy"] focus

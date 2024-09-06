@@ -47,6 +47,8 @@ font pango:Mononoki Nerd Font Propo Regular 12
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec nm-applet --indicator
+# start foot server (use footclient to open terminals in this setup)
+exec foot -s
 # exec_always nm-applet --indicator
 
 # Notification Daemon !!wayland!!
@@ -442,7 +444,7 @@ for_window [app_id="LibreWolf" title="Picture-in-Picture"] layout floating toggl
 assign [class="Ladybird"] $ws1
 for_window [class="Ladybird"] focus
 
-# terminal + notepad
+# terminal
 assign [class="qterminal"] $ws2
 for_window [class="qterminal"] focus
 assign [class="XTerm"] $ws2
@@ -453,12 +455,11 @@ assign [class="kitty"] $ws2
 for_window [class="kitty"] focus
 assign [app_id="Alacritty"] $ws2
 for_window [app_id="Alacritty"] focus
-assign [app_id="featherpad"] $ws2
-for_window [app_id="featherpad"] focus
-assign [class="nobleNote"] $ws2
-for_window [class="nobleNote"] focus
-
-# less minimal than notepad + not terminal + files
+assign [app_id="foot"] $ws2
+for_window [app_id="foot"] focus
+assign [app_id="footclient"] $ws2
+for_window [app_id="footclient"] focus
+# not terminal + files
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
 assign [class="Anki"] $ws3
@@ -473,27 +474,32 @@ assign [app_id="libreoffice-*"] $ws3
 assign [app_id="org.qbittorrent.qBittorrent"] $ws3
 for_window [app_id="org.kde.dolphin"] focus
 assign [app_id="org.kde.dolphin"] $ws3
-assign [class="unityhub"] $ws3
-assign [app_id="UnityHubNative"] $ws3
-for_window [app_id="UnityHubNative"] focus,floating enable
-
-# android studio
-assign [class="Emacs"] $ws4
-assign [class="jetbrains-studio"] $ws4
-for_window [class="jetbrains-studio"] focus
-assign [class="Codium"] $ws4
-assign [class="Geany"] $ws4
+# text editor
+assign [app_id="featherpad"] $ws3
+for_window [app_id="featherpad"] focus
+assign [class="nobleNote"] $ws3
+for_window [class="nobleNote"] focus
+# IDE
+assign [class="Codium"] $ws3
+assign [class="code-oss"] $ws3
+for_window [class="code-oss"] focus
+assign [class="Geany"] $ws3
 for_window [class="Geany"] focus
+assign [class="Emacs"] $ws3
+assign [class="jetbrains-studio"] $ws3
+for_window [class="jetbrains-studio"] focus
+assign [app_id="Eclipse"] $ws3
+assign [app_id="java"] $ws3
+
+# IDE: gamedev
 assign [instance="Godot_Editor"] $ws4
 for_window [instance="Godot_Editor"] focus
 assign [class="Godot"] $ws4
 for_window [class="Godot"] focus
-assign [class="VSCodium"] $ws4
-for_window [class="VSCodium"] focus
 assign [class="Unity"] $ws4
-assign [app_id="Eclipse"] $ws4
-# below is in Eclipse
-assign [app_id="java"] $ws4
+assign [app_id="UnityHubNative"] $ws4
+for_window [app_id="UnityHubNative"] focus,floating enable
+assign [class="unityhub"] $ws8
 
 # emulator
 for_window [class="scrcpy"] focus
@@ -560,8 +566,8 @@ assign [app_id="com.obsproject.Studio"] $ws10
 for_window [app_id="com.obsproject.Studio"] focus
 assign [class="kdenlive"] $ws10
 for_window [class="kdenlive"] focus
-assign [class="Shotcut"] $ws10
-for_window [class="Shotcut"] focus
+assign [app_id="org.shotcut.Shotcut"] $ws10
+for_window [app_id="org.shotcut.Shotcut"] focus
 assign [app_id="SimpleScreenRecorder"] $ws10
 for_window [app_id="SimpleScreenRecorder"] focus,layout tabbed
 
