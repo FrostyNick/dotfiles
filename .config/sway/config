@@ -47,9 +47,11 @@ font pango:Mononoki Nerd Font Propo Regular 12
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec nm-applet --indicator
-# start foot server (use footclient to open terminals in this setup)
-exec foot -s
 # exec_always nm-applet --indicator
+
+# start foot server (use footclient to open terminals in this setup)
+# selfnote: below should be tested against conflicting stuff more before being used
+# exec foot -s
 
 # Notification Daemon !!wayland!!
 # Note: likely there will be issues if both are installed. Remove one of the lines below or uninstall one if you have both.
@@ -459,6 +461,7 @@ assign [app_id="foot"] $ws2
 for_window [app_id="foot"] focus
 assign [app_id="footclient"] $ws2
 for_window [app_id="footclient"] focus
+
 # not terminal + files
 assign [class="Joplin"] $ws3
 for_window [class="Anki"] focus
