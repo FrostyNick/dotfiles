@@ -5,10 +5,10 @@ vim.g.treesitterOn = true
 k.set("v", "J", ":m '>+1<CR>gv=gv")
 k.set("v", "K", ":m '<-2<CR>gv=gv")
 
---- cursors are better
+--- cursors are opinionated
 k.set("n", "J", "mzJ`z", { desc = "keeps cursor in same place when doing J"})
 k.set("n", "n", "nzzzv")
-k.set("n", "N", "Nzzzv") -- greatest remap ever k.set("x", "<leader>p", [["_dP]])
+k.set("n", "N", "Nzzzv")
 k.set("n", "~", "~h")
 
 --- system clipboard
@@ -21,7 +21,7 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 
 --
 k.set("n", "Q", "<nop>")
-k.set("n", "<leader>pwd", function() vim.notify(vim.loop.cwd()) end)
+k.set("n", "<leader>fwd", function() vim.notify(vim.loop.cwd()) end) -- WARNING: vim.loop will be deprecated in nvim 1.0 as of 2024-8-29 / nvim 0.10.1 docs ... use an alternative if it exists later
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
@@ -141,7 +141,7 @@ end)
 
 ---- Compiler shortcuts
 -- Replace later with vim autogroup to an extent maybe.
-k.set("n", "<leader>r", function() vim.notify"code: run general code soon. also try <leader>co. self-note: see tj tutorial" end)
+k.set("n", "<leader>r", vim.cmd.RunCode)
 -- k.set("n", "<leader>???", function() vim.notify"code: run docs soon. (see tj tutorial)" end)
 -- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
 
@@ -173,7 +173,7 @@ k.set("n", "<leader>zM", function() bufToNewTab(true) end, {desc="Move to new ta
 --- Vim shortcuts
 k.set("n", "<leader>w", vim.cmd.w)
 k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
-k.set("n", "<leader>e", vim.cmd.enew)
+k.set("n", "<leader>e", vim.cmd.tabe)
 k.set("n", "<leader>`", function()
     vim.cmd.cd()
     vim.notify("cwd: ~")
@@ -181,12 +181,12 @@ end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current
 
 k.set("n", "<leader>~", function()
     vim.cmd("cd %:h")
-    vim.notify(vim.loop.cwd())
+    vim.notify(vim.loop.cwd()) -- see WARNING about vim.loop
 end, {desc="Move cwd .. of current file"})
 
 k.set("n", "<leader>m.", function()
     vim.cmd("cd ..")
-    vim.notify(vim.loop.cwd())
+    vim.notify(vim.loop.cwd()) -- see WARNING about vim.loop
 end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
 --[[ above todo:
@@ -209,7 +209,7 @@ vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
         command = "godot",
         args = {"project.godot"},
         -- cwd = vim.fn.getcwd(), -- getcwd() can be used in vim too
-        cwd = vim.loop.cwd(),
+        cwd = vim.loop.cwd(), -- See WARNING about vim.loop
         on_exit = function(j, res) print(j:result()); print(res) end
     }):start()
 
@@ -235,7 +235,43 @@ end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
 k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
-k.set("n", "<leader>qr", [[:!qrencode -t UTF8 "<c-r>+"<CR>]], {desc="Get QR code from system clipboard (+ register)"})
+
+-- local function getReg()
+--     return vim.fn.getreg('+') -- no arguments = vim clipboard
+-- end
+
+local function getReg(reg)
+    reg = reg or '+'
+    return vim.fn.getreg(reg)
+    -- below technically works but why
+    -- return vim.api.nvim_exec2("echo @+", { output = true }).output
+end
+
+local function qrCmd()
+    -- vim.cmd("!qrencode -t UTF8 \"" .. getClipboard():gsub('"', '\\"') .. '\""')
+    local txt = tostring(getReg())
+    
+    -- prevents error when text starts with -- by adding space. broken with <leader>qr right now.
+    if string.sub(txt,1,2) == "--" then
+        txt = " " .. txt
+    end
+    txt = txt:gsub("\n", " ") -- new lines break stuff for some reason. `qrencode` does work with new lines.
+    -- txt = txt:gsub('-', '\\-')
+
+    -- \n test
+    vim.notify('after filtering: "' .. tostring(txt) .. '"')
+--[[
+
+this text is here for testing
+
+yup
+--]] 
+    vim.cmd('!qrencode -t UTF8 "' .. txt .. '"')
+end
+vim.api.nvim_create_user_command("Qr", qrCmd, {}) -- this is DIFFERENT than <leader>qr ... just in case there's more bugs with newer way
+
+-- k.set("n", "<leader>qr", qrCmd, {desc="Get QR code from system clipboard (+ register)"})
+k.set("n", "<leader>qr", [[:!qrencode -t UTF8 "<c-r>+"<CR>]], {desc="Get QR code from system clipboard (+ register) (escapes don't work for now)"})
 
 -- WARNING: only works in systems with "ls" and wildcards
 --- @return table|nil
