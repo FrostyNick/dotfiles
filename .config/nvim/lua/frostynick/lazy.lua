@@ -89,6 +89,7 @@ local function telescopeConfig()
 
     k.set('n', '<leader>fv', tsb.git_files, {desc="Telescope: git files"})
     k.set('n', '<leader>fg', tsb.live_grep, {desc="Telescope: live grep"})
+    k.set('n', '<leader>ft', "<cmd>TodoTelescope<CR>", {desc="Telescope: see tags from todo-comments.nvim"})
 
     k.set('n', '<leader>f/', function()
         tsb.grep_string({ search = vim.fn.input("Grep > ") })
@@ -384,11 +385,6 @@ local plugins = {
                 desc = "Toggle nvim tree",
                 mode = "n",
             },
-            {
-                "<leader>ft",
-                function() vim.notify("Use <leader>ls") end,
-                mode = "n",
-            }
         },
         dependencies = {
             "nvim-tree/nvim-web-devicons",
@@ -588,10 +584,7 @@ local plugins = {
     -- PERF, HACK, TODO, NOTE, FIX, WARNING
     { "folke/todo-comments.nvim", config = true, event = "VeryLazy", },
 
-    -- markdown (supports neorg according to docs. i don't see the difference)
-    { "lukas-reineke/headlines.nvim", config = true, event = "VeryLazy", },
-
-    {'nacro90/numb.nvim', event = "VeryLazy", opts = {} }, -- non-intrusively preview while typing :432... 
+    {'nacro90/numb.nvim', event = "VeryLazy", config = true }, -- non-intrusively preview while typing :432... 
     --- Colorschemes below
     {'dasupradyumna/midnight.nvim', name = "midnight", lazy = false, priority = 998, init = invisiBkgd },
     -- { 'rose-pine/neovim', name = 'rose-pine', init = ColorMyPencils, event = "VeryLazy" },
@@ -606,11 +599,10 @@ local plugins = {
     --     end
     -- },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
-    { -- WARNING: Might remove later if there's a quicker alternative.
+    { -- WARNING: Might remove later if there's a quicker alternative that has the same basic functionality.
         'nvim-lualine/lualine.nvim',
         -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
-        opts = {},
         config = true
     },
     { -- NOTE: See below instructions for live server to work.
@@ -648,34 +640,16 @@ local plugins = {
                 {output_window_configs={transparent=true}})
         end,
     },
+    --[[ Below has some more advanced features and supports different
+    languages. It errors on neovim startup sometimes leading to a broken
+    plugin, and is not as minimal, so I use above instead.
+    github.com/Zeioth/compiler.nvim
+    --]]
     {
-        "Zeioth/compiler.nvim",
-        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-        event = "VeryLazy",
-        dependencies = { "stevearc/overseer.nvim" },
-        -- Below is the last officially supported commit for nvim 0.9.
-        -- Also (maybe) fixes error in nvim 0.10 that keeps showing up
-        -- (or it was the reinstall of this and dependency or both).
-        commit = "43e316b",
-        config = true,
-    },
-    {
-        "stevearc/overseer.nvim",
-        commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
-        cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+        "tadmccorkle/markdown.nvim",
+        ft = "markdown", -- or 'event = "VeryLazy"'
         opts = {
-            -- Tasks are disposed 5 minutes after running to free resources.
-            -- If you need to close a task inmediatelly:
-            -- press ENTER in the menu you see after compiling on the task you want to close.
-            task_list = {
-                direction = "bottom",
-                min_height = 25,
-                max_height = 25,
-                default_detail = 1,
-                bindings = {
-                    ["q"] = vim.cmd.OverseerClose,
-                },
-            },
+            -- configuration here or empty for defaults
         },
     },
     { -- useful keybinds: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
@@ -716,23 +690,6 @@ local plugins = {
         end
     },
     {'nvim-treesitter/playground', cmd = "TSPlaygroundToggle"},
-    -- {
-    --     'theprimeagen/harpoon',
-    --     config = function()
-    --         local mark = require("harpoon.mark")
-    --         local ui = require("harpoon.ui")
-    --         local k = vim.keymap
-    --
-    --         k.set("n", "<leader>a", mark.add_file)
-    --         k.set("n", "<C-p>", ui.toggle_quick_menu) -- C-o overrides jumping in vim and C-e sucks in termux (scroll down action)
-    --
-    --         -- dvorak local keymaps = {"h", "t", "n", "s", "leader"}
-    --         local keymaps = {"h", "j", "k", "l"}
-    --         for i, keym in ipairs(keymaps) do
-    --             k.set("n", "<C-"..keym..">", function() ui.nav_file(i) end)
-    --         end
-    --     end,
-    -- },
     {
         -- auto-session alternative with more lua and telescope integration
         'jedrzejboczar/possession.nvim',
@@ -885,7 +842,7 @@ local plugins = {
     { -- Improved simrat39/symbols-outline
         "hedyhli/outline.nvim",
         lazy = true,
-        cmd = "Outline", -- { "Outline", "OutlineOpen" },
+        cmd = "Outline",
         keys = {
             { "<leader>zo", "<cmd>Outline!<CR>", desc = "Code outline. Previously :SymbolsOutline. Can be used with :Outline" },
         },
@@ -956,14 +913,16 @@ local plugins = {
     --     config = true
     -- },
     -- below: nvim terminal opens nvim without nested nvim (so much better!)
-    -- No mention of alacritty in readme, but it works there too.
-    {
+    -- No mention of alacritty or foot in readme, but it
+    -- works out of the box there too.
+    { -- WARNING: can't open nvim with just "nvim" and no arguments
         {
             "willothy/flatten.nvim",
             -- config = true,
             -- or pass configuration with:
             opts = { -- :help flatten.nvim-configuration
-                window = { open = "vsplit" }
+                -- window = { open = "vsplit" }
+                window = { open = "alternative" }
             },
             -- Ensure that it runs first to minimize delay when opening file from terminal
             lazy = false,
