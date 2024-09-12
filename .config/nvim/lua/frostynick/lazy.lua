@@ -351,7 +351,8 @@ local plugins = {
         end,
     },
 
-    -- uses ys; which stands for you surround; see `:h nvim-surround.usage` for more info
+    -- uses ys; which stands for you surround; very powerful and must have if
+    -- you know how to use it; see `:h nvim-surround.usage` for more info
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -376,8 +377,10 @@ local plugins = {
         event = "VeryLazy",
         config = telescopeConfig,
     },
-    -- Removed bc too many bugs at least w/ my setup.
-    -- { "nvim-telescope/telescope-frecency.nvim", event = "VeryLazy" },
+    { 'nvim-telescope/telescope-media-files.nvim',
+        dependencies = { 'nvim-lua/popup.nvim', 'nvim-telescope/telescope.nvim' },
+        event = "VeryLazy",
+    },
     {
         "nvim-tree/nvim-tree.lua",
         version = "*",
@@ -410,25 +413,27 @@ local plugins = {
         keys = {
             -- Sample keybind for prompt menu. Note that the <c-u> is important for selections to work properly.
             {
-                "<leader>oo",
+                "<leader>aio",
                 ":<c-u>lua require('ollama').prompt()<cr>",
-                desc = "ollama prompt",
+                desc = "ollama: prompt",
                 mode = { "n", "v" },
             },
 
             -- Sample keybind for direct prompting. Note that the <c-u> is important for selections to work properly.
             {
-                "<leader>oG",
+                "<leader>aiG",
                 ":<c-u>lua require('ollama').prompt('Generate_Code')<cr>",
-                desc = "ollama Generate Code",
+                desc = "ollama: Generate Code",
                 mode = { "n", "v" },
             },
+            {
+                "<leader>ai",
+                ":Telescope keymaps<CR>>ai",
+                desc = "Show AI keymaps",
+                mode = { "n", "v" }
+            }
         },
-
-        ---@type Ollama.Config
-        opts = {
-            -- your configuration overrides
-        }
+        config = true
     },
     {
         "pwntester/octo.nvim", -- tags: github gh
@@ -581,6 +586,19 @@ local plugins = {
         },
         },
     },
+    {"iamcco/markdown-preview.nvim",
+        ft = "markdown",
+        build = "cd app && yarn install", -- NOTE: If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
+        -- build = "cd app && npm install", -- If using npm
+        config = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    },
+    { -- headlines.nvim but way better
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = "markdown",
+    },
+    { "dhruvasagar/vim-table-mode", cmd = "TableModeToggle",
+        -- ft = "markdown"
+    },
     -- PERF, HACK, TODO, NOTE, FIX, WARNING
     { "folke/todo-comments.nvim", config = true, event = "VeryLazy", },
 
@@ -645,13 +663,6 @@ local plugins = {
     plugin, and is not as minimal, so I use above instead.
     github.com/Zeioth/compiler.nvim
     --]]
-    {
-        "tadmccorkle/markdown.nvim",
-        ft = "markdown", -- or 'event = "VeryLazy"'
-        opts = {
-            mappings = false -- Disable default keybinds. Collides with nvim-surround by default. I'll manually add shortcut "ym" explicitly if I want to later.
-        },
-    },
     { -- useful keybinds: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
         "nvim-telescope/telescope-file-browser.nvim",
         event = "VeryLazy",
@@ -808,23 +819,10 @@ local plugins = {
 
     -- no longer works on here. probably bc of another plugin.
     -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
-    { "dhruvasagar/vim-table-mode", cmd = "TableModeToggle",
-        -- ft = "markdown"
-    },
     {"chrisbra/Colorizer", event = "VeryLazy"}, -- test if it still works
     -- {"ap/vim-css-color", ft = "css"},
-    {"iamcco/markdown-preview.nvim",
-        ft = "markdown",
-        build = "cd app && yarn install", -- NOTE: If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
-        -- build = "cd app && npm install", -- If using npm
-        config = function() vim.g.mkdp_filetypes = { "markdown" } end,
-    },
-    { 'nvim-telescope/telescope-media-files.nvim',
-        dependencies = { 'nvim-lua/popup.nvim', 'nvim-telescope/telescope.nvim' },
-        event = "VeryLazy",
-    },
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
-    { 'numToStr/Comment.nvim', event = "VeryLazy", opts = {} },
+    { 'numToStr/Comment.nvim', event = "VeryLazy", config = true },
     { -- Improved simrat39/symbols-outline
         "hedyhli/outline.nvim",
         lazy = true,
@@ -953,7 +951,7 @@ local plugins = {
     --     'vimdev/lspsaga.nvim', },
     -- takes over S and s btw [backdround/improved-ft.nvim: Improve default f/t hop abilities](https://github.com/backdround/improved-ft.nvim)
     -- norcalli/nvim-terminal.lua
-    -- { 'stevearc/oil.nvim', opts = {}, },
+    -- { 'stevearc/oil.nvim', config = true },
     -- rm homepage. I don't really want it.
     -- new alt to which-key: Cassin01/wf.nvim
     -- new thing that depends on which-key: roobert/surround-ui.nvim -- for nvim-surround help
@@ -973,9 +971,7 @@ for k,v in pairs(plugins) do
 end
 ]]
 
-local opts = {}
-
-require("lazy").setup(plugins, opts)
+require("lazy").setup(plugins, {})
 
 
 -- vim.print(plugins);

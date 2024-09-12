@@ -14,7 +14,7 @@ k.set("n", "~", "~h")
 --- system clipboard
 k.set({ "n", "v" }, "<leader>y", [["+y]])
 k.set("n", "<leader>Y", [["+Y]])
-k.set({ "n", "v" }, "<leader>p", [["+p]])
+k.set({ "n", "v" }, "<leader>pp", [["+p]])
 k.set("n", "<leader>P", [["+P]])
 
 k.set({ "n", "v" }, "<leader>d", [["_d]])
