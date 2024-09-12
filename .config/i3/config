@@ -1,4 +1,4 @@
-# IF you're using sway, some things work slightly better here ../sway/config
+# ../sway/config (wayland alternative)
 
 # Things that don't work when switching between i3 and sway config
 

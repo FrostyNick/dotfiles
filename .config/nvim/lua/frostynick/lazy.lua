@@ -165,9 +165,13 @@ local function lspConfig()
                         Lua = {}
                     }
                 },
+            },
+            {
                 -- omnisharp is 1.38.2 and many guides seems to fallback to that version. My guess: I think it doesn't work on the version of Unity I have to use.
                 -- https://dzfrias.dev/blog/neovim-unity-setup/
-                -- FIX: So far doesn't work. Errors in unity. Will do more research if I have time to prioritize this...
+                -- FIX: (possibly fixed as of 2024-9-12 check again)
+                -- So far doesn't work. Errors in unity. Will do more research
+                -- if I have time to prioritize this...
                 'omnisharp',
                 {
                     cmd = {
@@ -180,12 +184,14 @@ local function lspConfig()
                     use_mono = true,
                 }
             },
-            'tsserver', 'bashls', 'pylsp', 'rust_analyzer',
-        'denols', 'emmet_ls', 'tsserver', 'zk', } -- denols might be deno
+            'bashls', 'denols', --[[denols might be deno]] 'emmet_ls', 'pylsp',
+            'rust_analyzer', 'ts_ls', 'zk',
+        }
         for _,v in ipairs(lspLs) do
             if type(v) ~= "table" then
                 lspc[v].setup { capabilities = capabilities }
             else
+                -- vim.notify(vim.inspect(v))
                 lspc[v[1]].setup(v[2])
             end
         end
@@ -356,12 +362,10 @@ local plugins = {
     {
         'jinh0/eyeliner.nvim',
         event = "VeryLazy",
-        config = function()
-            require 'eyeliner'.setup {
-                highlight_on_key = true,
-                dim = false
-            }
-        end
+        opts = {
+            highlight_on_key = true,
+            dim = false
+        }
     },
     {
         'nvim-telescope/telescope.nvim',
@@ -389,9 +393,7 @@ local plugins = {
         dependencies = {
             "nvim-tree/nvim-web-devicons",
         },
-        config = function()
-            require("nvim-tree").setup {}
-        end,
+        config = true,
     },
     { 'TarunDaCoder/sus.nvim', event = "VeryLazy", config = true },
     { 'nmac427/guess-indent.nvim', event = "VeryLazy", config = true },
@@ -451,7 +453,7 @@ local plugins = {
         -- config = true, -- default settings
 
         -- you can specify also another config if you want
-        config = function() require("gx").setup {
+        opts = {
             -- open_browser_app = "os_specific",
             -- -- below is an example if you want to use handlr instead of xdg-open
             -- open_browser_app = "handlr", -- specify your browser app; default for macOS is "open", Linux "xdg-open" and Windows "powershell.exe"
@@ -467,7 +469,7 @@ local plugins = {
                 search_engine = "duckduckgo", -- select between google, bing, duckduckgo, and ecosia
                 -- search_engine = "https://search.brave.com/search?q=", -- or custom search engine
             },
-        } end,
+        },
     },
     { -- WARNING: minimum version 0.10.0 according to GitHub (based on my testing, 0.9.0 - 0.9.5 seem to work perfectly fine.)
         "NStefan002/screenkey.nvim",
@@ -553,33 +555,31 @@ local plugins = {
         dependencies = { "nvim-lua/plenary.nvim" },
         -- event = "VeryLazy",
         version = "v7.0.0", -- v8.0.0 might not work in Termux because luarocks has issues there. Plus, it requires (at least for now) more setup and this config should be easy to start on any device.
-        config = function()
-            require("neorg").setup {
-                load = {
-                    ["core.defaults"] = {}, -- Loads default behaviour
-                    -- https://github.com/nvim-neorg/neorg/wiki/Concealer
-                    ["core.concealer"] = {
-                        config = { --[[ folds = false, ]]
-                            icon_preset = "diamond"
-                        }
-                    },                  -- Adds pretty icons to your documents
-                    ["core.dirman"] = { -- Manages Neorg workspaces
-                        config = {
-                            workspaces = { notes = "~/backup2022nov10/notes" },
-                        },
-                    },
-                    -- ["core.keybinds"] = {
-                    --     config = {
-                    --         default_keybinds = false
-                    --     }
-                    -- },
-                    ["core.export"] = {},
-                    ["core.export.markdown"] = {
-                        config = { extensions = "all", },
-                    },
+        opts = {
+            load = {
+                ["core.defaults"] = {}, -- Loads default behaviour
+                -- https://github.com/nvim-neorg/neorg/wiki/Concealer
+                ["core.concealer"] = {
+                    config = { --[[ folds = false, ]]
+                    icon_preset = "diamond"
+                }
+            },                  -- Adds pretty icons to your documents
+            ["core.dirman"] = { -- Manages Neorg workspaces
+                config = {
+                    workspaces = { notes = "~/backup2022nov10/notes" },
                 },
-            }
-        end,
+            },
+            -- ["core.keybinds"] = {
+            --     config = {
+            --         default_keybinds = false
+            --     }
+            -- },
+            ["core.export"] = {},
+            ["core.export.markdown"] = {
+                config = { extensions = "all", },
+            },
+        },
+        },
     },
     -- PERF, HACK, TODO, NOTE, FIX, WARNING
     { "folke/todo-comments.nvim", config = true, event = "VeryLazy", },
@@ -649,7 +649,7 @@ local plugins = {
         "tadmccorkle/markdown.nvim",
         ft = "markdown", -- or 'event = "VeryLazy"'
         opts = {
-            -- configuration here or empty for defaults
+            mappings = false -- Disable default keybinds. Collides with nvim-surround by default. I'll manually add shortcut "ym" explicitly if I want to later.
         },
     },
     { -- useful keybinds: https://github.com/nvim-telescope/telescope-file-browser.nvim#mappings
@@ -730,22 +730,16 @@ local plugins = {
                 -- not working ColorMyPencils()
             end)
         end,
-        config = function()
-            require("zen-mode").setup {
-                window = {
-                    width = 90,
-                    -- self-note: doesn't work, works on other PC for some reason.
-                    options = {
-                        number = true,
-                        relativenumber = true,
-                    }
-                },
-            }
-        end,
+        -- config = function()
+        --     require("zen-mode").setup {
+        --         -- same as opts below
+        --     }
+        -- end,
         opts = {
             window = {
                 backdrop = 0,
                 height = 0.7,
+                -- width = 90,
                 width = 0.9,
                 options = {
                     number = false,
@@ -804,16 +798,8 @@ local plugins = {
     },
     { 'nvim-telescope/telescope-ui-select.nvim', lazy = true },
     {
-        "ziontee113/icon-picker.nvim", -- emoji's too
-        config = function()
-            require("icon-picker").setup({ disable_legacy_commands = true })
-
-            -- local opts = { noremap = true, silent = true }
-            --
-            -- -- vim.keymap.set("n", "<Leader><Leader>i", "<cmd>IconPickerNormal<cr>", opts)
-            -- -- vim.keymap.set("n", "<Leader><Leader>y", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
-            -- vim.keymap.set("i", "<c-E>", "<cmd>IconPickerInsert<cr>", opts) -- Default <c-i> == tab; no thanks. <c-e> sucks in termux. Haven't tested <c-E> in termux.
-        end,
+        "ziontee113/icon-picker.nvim", -- Useful for emoji's too. See github for more info (use gz with my config to open up the link :) )
+        opts = { disable_legacy_commands = true },
         keys = {
             { "<c-e>", vim.cmd.IconPickerInsert, desc = "Pick icons and emojis", mode = "i" }
         },
