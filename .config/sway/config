@@ -108,6 +108,9 @@ input type:touchpad {
     # want zoom? see https://github.com/swaywm/sway/issues/2781
 }
 
+# makes everything 1.16 bigger
+output * scale 1.16
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym Control+Mod1+t exec i3-sensible-terminal
@@ -267,6 +270,7 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+bindsym $mod+z exec $HOME/.config/sway/setZoom.sh $menu
 
 # Waybar config: ~/.config/waybar/config.jsonc
 bar {
