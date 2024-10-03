@@ -2,6 +2,15 @@
 # https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway
 # https://github.com/swaywm/sway/wiki/i3-Migration-Guide
 
+# tldr: Easiest solution that always works (in my case, works with sddm): Use "downgrade xdg-desktop-protal" (this may be just for arch-based systems) and select 1.14.6 to fix flameshot.
+# sources: https://bbs.archlinux.org/viewtopic.php?id=284847 : "I can confirm downgrading xdg-desktop-portal to 1.14.6-1 is a known fix for this issue, despite 1.14.6-1 being a bit long in the tooth. It was anticipated that 1.16.0 would resolve this issue, but the consensus is it did not. The relevant discussion is here: https://github.com/flameshot-org/flameshot/issues/2872"
+
+# Flameshot BEST SOLUTION IF you can modify sway launch script:
+# Flameshot requires extra steps to work at the time of writing. Checkout [How To Use Flameshot Screenshots On Wlroots \& Sway \- YouTube](https://youtu.be/6O6WBtchg_c) and/or [flameshot\/docs\/Sway and wlroots support\.md at master · flameshot\-org\/flameshot](https://github.com/flameshot-org/flameshot/blob/master/docs/Sway%20and%20wlroots%20support.md))
+# In my case, I set the variables in /etc/environment
+# The default "include /etc/sway/ ... " works as replacement for second script
+# https://github.com/flameshot-org/flameshot/issues/2872#issuecomment-1215839730
+
 # # Dependencies with Arch:
 # pacman -S network-manager-applet brightnessctl swaync xdg-desktop-portal{,-wlr} grim xorg-xwayland # (dependencies may be missing on this list) 
 # pacman -S bemenu wmenu dmenu tofi # choose one of these for menu (set as bemenu by default; wmenu is dmenu for wayland basically)
@@ -283,7 +292,7 @@ client.background       #00ee78
 # WARNING: flameshot doesn't work
 # bindsym $mod+Print exec flameshot gui
 bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save)"
-bindsym Print exec notify-send "Took screenshot: $(grimshot save area)"
+bindsym Print exec flameshot gui || exec notify-send "Took screenshot: $(grimshot save area)"
 # if slurp dependency isn't ancient "area" above should be replaced with "anything" (missing slurp -o)
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
@@ -389,6 +398,8 @@ for_window [app_id="floating"] floating enable
 for_window [app_id="floating_update"] floating enable, resize set width 1000px height 600px
 for_window [title="Administrator privileges required"] floating enable
 for_window [title="Picture-in-Picture"] floating enable
+for_window [title="Password Required - Betterbird"] floating enable
+for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
 # doesn't do anything
 # for_window [urgent="latest"] focus
 
@@ -508,8 +519,8 @@ assign [class="unityhub"] $ws8
 # emulator
 for_window [class="scrcpy"] focus
 assign [class="scrcpy"] $ws5
-assign [class="Qemu-system-x86_64"] $ws5
-assign [class="qemu-system-x86_64"] $ws5
+assign [app_id="Qemu-system-x86_64"] $ws5
+assign [app_id="qemu-system-x86_64"] $ws5
 assign [class="Virt-manager"] $ws5
 assign [app_id="Waydroid"] $ws5
 
@@ -572,6 +583,8 @@ assign [class="kdenlive"] $ws10
 for_window [class="kdenlive"] focus
 assign [app_id="org.shotcut.Shotcut"] $ws10
 for_window [app_id="org.shotcut.Shotcut"] focus
+assign [app_id="simplescreenrecorder"] $ws10
+for_window [app_id="simplescreenrecorder"] focus,layout tabbed
 assign [app_id="SimpleScreenRecorder"] $ws10
 for_window [app_id="SimpleScreenRecorder"] focus,layout tabbed
 
