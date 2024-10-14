@@ -73,6 +73,9 @@ k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clip
 k.set("n", "<leader>mr", [[:put =range(1,)<Left>]], { desc="Insert text: math range" })
 k.set("n", "<leader>cm", "<cmd>!chmod +x %<CR>", { silent = true })
 k.set("n", "<leader>cs", "<cmd>!chmod +x %<CR>", { silent = true })
+-- k.set("n", "<leader>mb", [[}kI- ]], { desc="Markdown bullet points" }) -- does nothing cuz (macro != keymap function)
+k.set("n", "<leader>me", function()
+    vim.cmd.tabe(); vim.opt.filetype = 'markdown' end)
 
 k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
@@ -106,7 +109,7 @@ k.set("n", "<leader>po",
 
 --- Git shortcuts
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
-"<cmd>!xdg-open $(git remote -v | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
+"<cmd>!xdg-open $(git remote -v | grep FrostyNick | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
 { silent = true })
 k.set("n", "<leader>ghs", -- rare edge-case: breaks when git exists earlier I think
 "<cmd>!gh status<CR>",
@@ -172,7 +175,7 @@ k.set("n", "<leader>zM", function() bufToNewTab(true) end, {desc="Move to new ta
 
 --- Vim shortcuts
 k.set("n", "<leader>w", vim.cmd.w)
-k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+-- k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>e", vim.cmd.tabe)
 k.set("n", "<leader>`", function()
     vim.cmd.cd()

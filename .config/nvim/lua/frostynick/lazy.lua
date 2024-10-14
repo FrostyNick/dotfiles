@@ -594,13 +594,15 @@ local plugins = {
     },
     { -- headlines.nvim but way better
         "MeanderingProgrammer/render-markdown.nvim",
-        ft = "markdown",
+        ft = "markdown", -- :RenderMarkdown
     },
     { "dhruvasagar/vim-table-mode", cmd = "TableModeToggle",
         -- ft = "markdown"
     },
     -- PERF, HACK, TODO, NOTE, FIX, WARNING
     { "folke/todo-comments.nvim", config = true, event = "VeryLazy", },
+    -- -- in theory, works with .puml files and probably other UML files:
+    -- 'https://gitlab.com/itaranto/preview.nvim', version = '*', config = true
 
     {'nacro90/numb.nvim', event = "VeryLazy", config = true }, -- non-intrusively preview while typing :432... 
     --- Colorschemes below
@@ -610,11 +612,9 @@ local plugins = {
     --     'AlexvZyl/nordic.nvim',
     --     name = 'nordic',
     --     event = "VeryLazy",
-    --     config = function()
-    --         require("nordic").setup {
-    --             telescope = {style = 'classic'}
-    --         }
-    --     end
+    --     opts = {
+    --         telescope = {style = 'classic'}
+    --     }
     -- },
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     { -- WARNING: Might remove later if there's a quicker alternative that has the same basic functionality.
@@ -647,10 +647,8 @@ local plugins = {
                 vim.g.liveservertoggle = not vim.g.liveservertoggle
             end)
         end,
-        -- config = function()
-        -- end
     },
-    {
+    { -- Con: Appears to not usually work when multiple file are involved. Pro: Doesn't error like that other plugin..
         "aliqyan-21/runTA.nvim",
         cmd = "RunCode",
         config = function()
@@ -810,6 +808,7 @@ local plugins = {
     { 'nvim-telescope/telescope-ui-select.nvim', lazy = true },
     {
         "ziontee113/icon-picker.nvim", -- Useful for emoji's too. See github for more info (use gz with my config to open up the link :) )
+        -- One thing that could improve this is a freqently used list or previous emojis or filter to sometimes use exclusively emojis or icons.
         opts = { disable_legacy_commands = true },
         keys = {
             { "<c-e>", vim.cmd.IconPickerInsert, desc = "Pick icons and emojis", mode = "i" }
@@ -819,28 +818,39 @@ local plugins = {
 
     -- no longer works on here. probably bc of another plugin.
     -- 'airblade/vim-rooter',                     -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
-    {"chrisbra/Colorizer", event = "VeryLazy"}, -- test if it still works
-    -- {"ap/vim-css-color", ft = "css"},
     -- slower + doesn't work for me rn { 'notjedi/nvim-rooter.lua', --[[ 1.3 ms 0.44 ms 0.94 ms 0.47 ms 1.01 ms (not switching now 1ms 0.49 ms 0.61 ms ) ]] config = function() require'nvim-rooter'.setup() end },
+    -- { "norcalli/nvim-colorizer.lua", event = "VeryLazy", config = true}, -- requires nvim 0.4+
+    { "NvChad/nvim-colorizer.lua", event = "VeryLazy", config = true }, -- requires nvim 0.7+; active fork that always works + fastt
     { 'numToStr/Comment.nvim', event = "VeryLazy", config = true },
     { -- Improved simrat39/symbols-outline
         "hedyhli/outline.nvim",
+        -- url = "https://git.sr.ht/~hedy/outline.nvim" -- can replace above
         lazy = true,
-        cmd = "Outline",
+        -- cmd = "Outline",
+        event = "VeryLazy",
         keys = {
             { "<leader>zo", "<cmd>Outline!<CR>", desc = "Code outline. Previously :SymbolsOutline. Can be used with :Outline" },
         },
-        opts = {
-            symbols = {
-                filter = {
-                    default = {"String", "Variable", exclude = true},
-                    lua = {
-                        'Function', 'Class'
-                    }
-                }
-            }
-            -- Your setup opts here
-        },
+        config = function()
+            require("outline").setup({
+                symbols = {
+                    filter = {
+                        default = {"String", "Variable", exclude = true},
+                        lua = {
+                            'Function', 'Class'
+                        }
+                    },
+                    icon_fetcher = function() return "" end, -- remove all icons
+                },
+                symbol_folding = {
+                    autofold_depth = false, -- unfold everything by default
+                },
+                outline_items = {
+                    show_symbol_lineno = true, -- Line number of file. Super useful.
+                },
+            })
+            vim.cmd("Outline!") -- launch this by default
+        end,
     },
     --- 2 games below
     -- :Speedtyper to start typing practice
@@ -930,8 +940,6 @@ local plugins = {
         --     vim.keymap.set('n', '<leader>zr', k.run)
         -- end
     },
-    -- { "norcalli/nvim-colorizer.lua", event = "VeryLazy", config = true}, -- requires nvim 0.4+
-    { "NvChad/nvim-colorizer.lua", event = "VeryLazy", config = true }, -- requires nvim 0.7+; active fork
 }
 --[[
 -- alternative plugins maybe
@@ -957,7 +965,6 @@ local plugins = {
     -- new thing that depends on which-key: roobert/surround-ui.nvim -- for nvim-surround help
     -- { "folke/which-key.nvim", },
     -- {'andweeb/presence.nvim', event="VeryLazy"}, -- Not working with BetterDiscord so far. Tried: `ln -svf $XDG_RUNTIME_DIR/{app/com.discord.Discord,}/discord-ipc-0` and `ln -svf $XDG_RUNTIME_DIR/{app/com.discordapp.Discord,}/discord-ipc-0`
-
 -- troubleshooting --
 nvim 0.9+
 vim.print(plugins)
@@ -965,7 +972,7 @@ vim.print(plugins)
 nvim 0.8.x
 vim.pretty_print(plugins)
 
-nvim <0.8
+nvim - any version with lua support
 for k,v in pairs(plugins) do
     print(k,v)
 end
