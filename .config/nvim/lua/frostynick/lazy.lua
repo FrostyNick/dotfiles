@@ -625,6 +625,16 @@ local plugins = {
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         config = true
     },
+    { -- Makes tabs more configurable + friendly.
+      -- `:help tabby.txt` `:Tabby`
+        'nanozuki/tabby.nvim',
+        event = "VeryLazy",
+        dependencies = 'nvim-tree/nvim-web-devicons',
+        config = true,
+        keys = {
+            { "<leader>gtr", ":Tabby rename_tab ", mode = "n", desc = "Rename tab"},
+        },
+    },
     { -- NOTE: See below instructions for live server to work.
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
