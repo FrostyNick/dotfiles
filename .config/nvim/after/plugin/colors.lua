@@ -1,5 +1,5 @@
-function ColorMyPencils(color, isSpell) -- NOTE: duplicate fn in ../../lua/frostynick/lazy.lua 200
-    -- Note: aliqyan-21/runTA.nvim is hard-coded transparent
+function ColorMyPencils(color, isSpell) -- NOTE: duplicate fn in ../../lua/frostynick/lazy.lua 220
+    -- Note: aliqyan-21/runTA.nvim transparency is based on plugin
     local a,b = pcall(function()
         if type(color) == "table" then
             color = color.name -- automatically passed from Lazy

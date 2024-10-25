@@ -21,10 +21,15 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 
 --
 k.set("n", "Q", "<nop>")
-k.set("n", "<leader>fwd", function() vim.notify(vim.loop.cwd()) end) -- WARNING: vim.loop will be deprecated in nvim 1.0 as of 2024-8-29 / nvim 0.10.1 docs ... use an alternative if it exists later
+--[[ vim.fn.getcwd() alternatives:
+vim.loop.cwd() -- vim.loop deprecated in nvim 0.10 apparently (docs changed when it was deprecated a few times). Alternative is vim.uv. Search around :help luvref.txt you'll probably find what you're looking for (2024-10-16)
+vim.uv.cwd() -- in theory the alternative, lsp doesn't recognize it for some reason. I might be wrong. See :help uv.cwd
+]]
+k.set("n", "<leader>fwd", function() vim.notify(vim.fn.getcwd()) end)
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
-k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
+-- k.set("n", "<leader>dk", function() vim.diagnostic.jump({count=1, float=true}) end, {desc="LSP: prev diagnostic"})
+k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"}) -- WARNING: Deprecated in nvim 0.11 probably / nightly (2024-10-16)
 k.set("n", "<leader>dj", vim.diagnostic.goto_next, {desc="LSP: next diagnostic"})
 
 -- Keep clipboard contents after pasting with p in visual mode.
@@ -80,7 +85,10 @@ k.set("n", "<leader>me", function()
 k.set("n", "<leader>vpp",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
 
-k.set("n", "<leader>vpr", "<cmd>e ~/p/Rhythm-Swipe<CR>");
+k.set('n', '<leader>vpp',
+'<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/<CR>',
+{desc="Telescope: find code in projects directory"})
+
 k.set("n", "<leader>vps", "<cmd>e ~/backup2022nov*/j/Sources/App_web sources.md<CR>");
 -- below doesnt work because i is powerful af. fix later.
 k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
@@ -108,13 +116,13 @@ k.set("n", "<leader>po",
 { silent = true, desc = "xdg-open file" })
 
 --- Git shortcuts
-k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think
-"<cmd>!xdg-open $(git remote -v | grep FrostyNick | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
+k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think 
+"<cmd>!xdg-open $(git remote -v | grep -i $(git config user.name) | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
 { silent = true })
-k.set("n", "<leader>ghs", -- rare edge-case: breaks when git exists earlier I think
+k.set("n", "<leader>ghs",
 "<cmd>!gh status<CR>",
 { silent = true, desc = "github status (requires gh / github-cli)" })
-k.set("n", "<leader>gho", -- rare edge-case: breaks when git exists earlier I think
+k.set("n", "<leader>gho",
 "<cmd>Octo<CR>",
 { silent = true, desc = "octo list (requires gh)" })
 
@@ -154,8 +162,8 @@ k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
 -- <leader>cx is in lazy.lua if it still exists
 
 --- Open terminal shortcuts
-k.set("n", "<leader>t", "<C-w>v<cmd>term<CR>")
-k.set("n", "<leader>zt", "<cmd>tabe<CR><cmd>term<CR>")
+k.set("n", "<leader>zt", "<C-w>v<cmd>term<CR>")
+k.set("n", "<leader>t", "<cmd>tabe<CR><cmd>term<CR>")
 k.set("n", "<leader><CR>", vim.cmd.term)
 
 --- Buffer shortcuts
@@ -175,7 +183,7 @@ k.set("n", "<leader>zM", function() bufToNewTab(true) end, {desc="Move to new ta
 
 --- Vim shortcuts
 k.set("n", "<leader>w", vim.cmd.w)
--- k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>e", vim.cmd.tabe)
 k.set("n", "<leader>`", function()
     vim.cmd.cd()
@@ -184,12 +192,12 @@ end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current
 
 k.set("n", "<leader>~", function()
     vim.cmd("cd %:h")
-    vim.notify(vim.loop.cwd()) -- see WARNING about vim.loop
+    vim.notify(vim.fn.getcwd())
 end, {desc="Move cwd .. of current file"})
 
 k.set("n", "<leader>m.", function()
     vim.cmd("cd ..")
-    vim.notify(vim.loop.cwd()) -- see WARNING about vim.loop
+    vim.notify(vim.fn.getcwd())
 end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
 --[[ above todo:
@@ -212,7 +220,7 @@ vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
         command = "godot",
         args = {"project.godot"},
         -- cwd = vim.fn.getcwd(), -- getcwd() can be used in vim too
-        cwd = vim.loop.cwd(), -- See WARNING about vim.loop
+        cwd = vim.fn.getcwd(), -- See WARNING vim.loop for future change
         on_exit = function(j, res) print(j:result()); print(res) end
     }):start()
 
@@ -253,7 +261,7 @@ end
 local function qrCmd()
     -- vim.cmd("!qrencode -t UTF8 \"" .. getClipboard():gsub('"', '\\"') .. '\""')
     local txt = tostring(getReg())
-    
+
     -- prevents error when text starts with -- by adding space. broken with <leader>qr right now.
     if string.sub(txt,1,2) == "--" then
         txt = " " .. txt
@@ -268,7 +276,7 @@ local function qrCmd()
 this text is here for testing
 
 yup
---]] 
+--]]
     vim.cmd('!qrencode -t UTF8 "' .. txt .. '"')
 end
 vim.api.nvim_create_user_command("Qr", qrCmd, {}) -- this is DIFFERENT than <leader>qr ... just in case there's more bugs with newer way

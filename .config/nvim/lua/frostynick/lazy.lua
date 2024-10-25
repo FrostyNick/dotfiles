@@ -78,8 +78,9 @@ local function telescopeConfig()
     {desc="Telescope: find backup files; keyword: joplin"})
 
     k.set('n', '<leader>fc',
-    '<cmd>Telescope find_files hidden=true search_dirs=/home/nicholas/p/<CR>',
-    {desc="Telescope: find code in projects directory"})
+    function() vim.notify("Use `<leader>vpp`.") end,
+    {desc="Telescope: (deprecated) find code in projects directory"})
+    k.set('n', '<leader>gz', function() vim.notify("Use `2gx`.") end)
 
     k.set('n', '<leader>gj',
     '<cmd>Telescope live_grep search_dirs=/home/nicholas/backup2022nov*/<CR>',
@@ -245,7 +246,6 @@ local plugins = {
                 -- "vimdoc" might be "help" in some cases. When I tested v0.8.3 nvim on
                 -- another device it seems to still use vimdoc instead of help.
 
-                -- end
                 -- Install parsers synchronously (only applied to `ensure_installed`)
                 sync_install = false,
 
@@ -267,8 +267,10 @@ local plugins = {
                 },
             }
         end,
-        -- commit that (in theory) supports nvim 0.8.0 - <0.9.1
-        -- commit = "2aa9e9b0e655462890c6d2d8632a0d569be66482",
+        --[[ commit that (in theory) supports nvim 0.8.0 - <0.9.1
+        commit = "2aa9e9b0e655462890c6d2d8632a0d569be66482",
+        -- [\#7272](https://github.com/nvim-treesitter/nvim-treesitter/pull/7272) raises minimum Neovim version >= v0.10.0. Need to stay on Nvim 0.9.2? Lock nvim-treesitter to v0.9.3.
+        --]]
     },
 
     -- LSP Support
@@ -449,7 +451,7 @@ local plugins = {
         "chrishrb/gx.nvim",
         -- event = "VeryLazy",
         -- it conflicts once in a while but usually saves time
-        keys = { { "gz", "<cmd>Browse<cr>", mode = { "n", "x" }} },
+        keys = { { "2gx", "<cmd>Browse<cr>", mode = { "n", "x" }} },
         cmd = { "Browse" },
         init = function ()
             -- vim.g.netrw_nogx = 1 -- disable netrw gx
