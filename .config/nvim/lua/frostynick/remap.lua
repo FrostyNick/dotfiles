@@ -1,5 +1,6 @@
-
+local uv = vim.uv or vim.loop -- :help luvref.txt also vim.loop might break in future
 local k = vim.keymap
+
 vim.g.mapleader = ' '
 vim.g.treesitterOn = true
 k.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -21,11 +22,8 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 
 --
 k.set("n", "Q", "<nop>")
---[[ vim.fn.getcwd() alternatives:
-vim.loop.cwd() -- vim.loop deprecated in nvim 0.10 apparently (docs changed when it was deprecated a few times). Alternative is vim.uv. Search around :help luvref.txt you'll probably find what you're looking for (2024-10-16)
-vim.uv.cwd() -- in theory the alternative, lsp doesn't recognize it for some reason. I might be wrong. See :help uv.cwd
-]]
-k.set("n", "<leader>fwd", function() vim.notify(vim.fn.getcwd()) end)
+
+k.set("n", "<leader>cwd", function() vim.notify(uv.cwd()) end)
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 -- k.set("n", "<leader>dk", function() vim.diagnostic.jump({count=1, float=true}) end, {desc="LSP: prev diagnostic"})
@@ -192,12 +190,12 @@ end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current
 
 k.set("n", "<leader>~", function()
     vim.cmd("cd %:h")
-    vim.notify(vim.fn.getcwd())
+    vim.notify(uv.cwd())
 end, {desc="Move cwd .. of current file"})
 
 k.set("n", "<leader>m.", function()
     vim.cmd("cd ..")
-    vim.notify(vim.fn.getcwd())
+    vim.notify(uv.cwd())
 end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
 --[[ above todo:
@@ -209,22 +207,44 @@ end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
 k.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Project view :Ex"})
 k.set("n", "<leader>pt", vim.cmd.TodoLocList, { desc = ":TodoLocList"})
-k.set("n", "<leader>pd", function()
+k.set("n", "<leader>pd", function() vim.notify("stub: no prject dir fn")
 end, { desc = "Project directory"})
 
 --- not keyboard shortcut
 vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
-    -- vim.cmd("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
-    -- vim.call("jobstart(['cd', '%:p'], ['godot', 'project.godot'])") -- not working
-    require'plenary.job':new({
-        command = "godot",
-        args = {"project.godot"},
-        -- cwd = vim.fn.getcwd(), -- getcwd() can be used in vim too
-        cwd = vim.fn.getcwd(), -- See WARNING vim.loop for future change
-        on_exit = function(j, res) print(j:result()); print(res) end
-    }):start()
+    local path = "project.godot"
+    local pathExists = uv.fs_stat(path)
+    if not pathExists then
+        -- vim.notify("where u at godot????")
+        local handle = vim.uv.fs_scandir(".")
+        if not handle then
+            vim.notify("nvim godot: Failed to get directory contents from cwd.")
+            return
+        end
 
-    vim.notify "Launching Godot."
+        while true do -- check cwd
+            local name, typ = vim.uv.fs_scandir_next(handle)
+            if not name then break end
+            if typ == "directory" then
+                path = name .. "/project.godot"
+                pathExists = uv.fs_stat(path)
+                if pathExists then break end
+            end
+        end
+    end
+
+    if pathExists then
+        vim.notify("Launching Godot from " .. path)
+        -- vim.cmd("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
+
+        require'plenary.job':new({
+            command = "godot", args = {path}, cwd = uv.cwd(),
+            on_exit = function(j, res) print(j:result()); print(res) end
+        }):start()
+    else
+        vim.notify("Could not find project.godot.\ncwd: " .. uv.cwd())
+    end
+
 end, {})
 
 k.set("n", "<leader>go", vim.cmd.Godot)

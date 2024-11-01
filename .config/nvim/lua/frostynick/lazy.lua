@@ -4,11 +4,10 @@
 
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then -- "vim.loop" will be deprecated in nvim 1.0 as of 2024-9-1
+local uv = vim.uv or vim.loop -- `vim.loop` planned to be removed in nvim 1.0 as of 2024-11-1
+if not uv.fs_stat(lazypath) then
     vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
+        "git", "clone", "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
         "--branch=stable", -- latest stable release
         lazypath,
@@ -99,9 +98,7 @@ local function telescopeConfig()
     local function loadExtension(name, fn)
         local success,msg = pcall(function()
             ts.load_extension(name)
-            if fn then
-                fn()
-            end
+            if fn then fn() end
         end)
         if not success then
             vim.notify("Error loading telescope " .. name .. ": " .. msg)
@@ -137,7 +134,7 @@ local function lspConfig()
                     -- src for below: https://github.com/neovim/neovim/discussions/24119
                     on_init = function(client)
                         local path = client.workspace_folders[1].name
-                        if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+                        if uv.fs_stat(path..'/.luarc.json') or uv.fs_stat(path..'/.luarc.jsonc') then
                             return
                         end
 
@@ -243,7 +240,7 @@ local plugins = {
                 -- or "all" (five required parsers should always be installed)
                 ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim",
                 "query", "vimdoc" },
-                -- "vimdoc" might be "help" in some cases. When I tested v0.8.3 nvim on
+                -- "vimdoc" might be "help" in older versions. When I tested v0.8.3 nvim on
                 -- another device it seems to still use vimdoc instead of help.
 
                 -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -275,7 +272,8 @@ local plugins = {
 
     -- LSP Support
     { 'williamboman/mason.nvim', event = "VeryLazy"},-- Optional
-    { 'williamboman/mason-lspconfig.nvim',
+    { 'williamboman/mason-lspconfig.nvim', -- b950110 fix: update required nvim version to >= 0.9.0 (#478) (2024-10-22)
+
         dependencies = { 'williamboman/mason.nvim' },
         event = "VeryLazy",
         config = function()
@@ -854,9 +852,9 @@ local plugins = {
                     },
                     icon_fetcher = function() return "" end, -- remove all icons
                 },
-                symbol_folding = {
-                    autofold_depth = false, -- unfold everything by default
-                },
+                -- symbol_folding = {
+                --     autofold_depth = false, -- unfold everything by default
+                -- },
                 outline_items = {
                     show_symbol_lineno = true, -- Line number of file. Super useful.
                 },
