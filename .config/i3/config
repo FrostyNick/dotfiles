@@ -81,6 +81,11 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86Search exec dmenu_run
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -468,6 +473,8 @@ assign [class="LibreWolf"] $ws1
 for_window [class="LibreWolf"] focus
 assign [class="Ladybird"] $ws1
 for_window [class="Ladybird"] focus
+assign [class="zen-alpha"] $ws1
+for_window [class="zen-alpha"] focus
 
 # terminal
 assign [class="qterminal"] $ws2
@@ -553,6 +560,8 @@ assign [class="osu!"] $ws5
 assign [class="Minecraft Linux Launcher UI"] $ws5
 for_window [class="mcpelauncher-client"] focus,layout toggle split
 assign [class="mcpelauncher-client"] $ws5
+# sober not tested on X11 likely works
+assign [class="sober"] $ws5
 # below not working
 assign [class="minecraft-launcher"] $ws5
 assign [class="Minecraft Launcher"] $ws5
@@ -593,7 +602,6 @@ for_window [class="SimpleScreenRecorder"] focus,layout tabbed
 # should auto full scr l8r. or change window mode to fit the whole screen.
 # for_window [class="mpv"] focus
 
-
 # private (cannot be accessed w keyboard shortcuts. mouse scroll on bar works though.)
 assign [class="KeePassXC"] $ws100
 assign [class="org.keepassxc.KeePassXC"] $ws100
@@ -625,7 +633,7 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 # xwayland is an option; you may want to disable if it causes issues.
 # exec vesktop --ozone-platform-hint=auto
 exec vesktop || exec vencorddesktop || exec "notify-send 'Could not start Vesktop.'"
-exec betterbird
+# exec betterbird
 
 # NOT WORKING exec i3-sensible-terminal -e "./.config/sway/notifyBattery.sh"
 exec_always "notify-send 'Loaded config'"
