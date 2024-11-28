@@ -12,6 +12,7 @@
 # pacman -S network-manager-applet brightnessctl swaync xdg-desktop-portal{,-wlr} grim xorg-xwayland # (dependencies may be missing on this list) 
 # pacman -S bemenu wmenu dmenu tofi # choose one of these for menu (set as bemenu by default; wmenu is dmenu for wayland basically)
 # yay wob wlprop # (OPTIONAL) alternative to xprop that works well. `wob` is used for volume with how I set it up (may need to be uncommented in this config).
+# # Also: networkmanager for waitConnection.sh to work
 
 # # Dependencies with Ubuntu 20.04 (list not exhaustive):
 # sudo apt install dunst waybar
@@ -22,6 +23,7 @@
 # nix-env -iA nixpkgs.mpv # This installs mpv 0.35.0 on my machine.. might be newer for you which works too.
 # # Below requires elevated permissions. Make sure you find correct /nix/store path before proceeding. mv or rm below.. your choice.
 # cd /usr/bin; mv mpv mpv32; ln -s /nix/store/???????/bin/mpv mpv
+# # Not tested: wob, networkmanager for waitConnection.sh to work
 
 # alternative to wlprop that shows all running wayland applications:
 # swaymsg -t get_tree
@@ -72,6 +74,7 @@ exec nm-applet --indicator
 exec dunst
 # exec mako
 exec swaync 
+# exec_always $HOME/.config/sway/wobInit.sh
 # dbus-launch --exit-with-session exec mako
 
 # below doesn't work
@@ -84,10 +87,12 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3statusconf
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && exec $HOME/.config/sway/wobPush.sh
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && exec $HOME/.config/sway/wobPush.sh
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && notify-send "Mute toggled"
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && notify-send "Mic mute toggled"
 
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
@@ -301,7 +306,8 @@ client.background       #00ee78
 # WARNING: flameshot doesn't work
 # bindsym $mod+Print exec flameshot gui
 bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save)"
-bindsym Print exec flameshot gui || exec notify-send "Took screenshot: $(grimshot save area)"
+# bindsym Print exec flameshot gui || exec notify-send "Took screenshot: $(grimshot save area)"
+bindsym Print exec ./.config/sway/launchFlameshot.sh || exec notify-send "Took screenshot: $(grimshot save area)"
 # if slurp dependency isn't ancient "area" above should be replaced with "anything" (missing slurp -o)
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
@@ -637,15 +643,14 @@ exec $term -e "./.config/i3/openTodo.sh"
 
 include /etc/sway/config.d/*
 
-# Auto-launch Vesktop. The flag below forces vesktop through
-# native wayland; disabled since it causes issues.
-# exec vesktop --ozone-platform-hint=auto || exec vencorddesktop --ozone-platform-hint=auto
-exec vesktop || exec vencorddesktop || exec "notify-send 'Could not start Vesktop.'"
-# exec betterbird
-
 # exec $HOME/.config/sway/notifyBattery.sh
 
 exec_always $HOME/.config/sway/setSwaybg.sh
-exec_always "notify-send 'Loaded config'"
 
-# [Displaying pop-ups as floating windows. #3095 - GitHub](https://github.com/swaywm/sway/issues/3095 "I came up with a super hacky workaround - a userscript that tries to detect pop-up windows based on the window.titlebar.visible or window.menubar.visible properties, and if either one is false I prepend a well-known string to the window title. I check for this string inside my Sway config and float matching")
+# Auto-launch Vesktop. The flag below forces vesktop through
+# native wayland; disabled since it causes issues.
+# exec vesktop --ozone-platform-hint=auto || exec vencorddesktop --ozone-platform-hint=auto
+
+exec $HOME/.config/sway/startupPrograms.sh
+
+exec_always "notify-send 'Loaded config'"
