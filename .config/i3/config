@@ -4,6 +4,9 @@
 
 # arch dependencies: pacman -S extra/network-manager-applet extra/brightnessctl # (there are dependencies missing here probably)
 
+# To be in closer parity with sway:
+# - Add xob (wob exists)
+
 # Issues:
 # All issues below don't apply to my laptop (arch-based) for some reason. Just Ubuntu PC (tested on x11).
 # Control key stops working sometimes. Unknown reason.
@@ -38,6 +41,9 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference! #
 #############################################################################
 set $mod Mod4
+# below auto-detects your default terminal built-in to i3.
+# set $term i3-sensible-terminal
+set $term alacritty
 # Set above as Mod1 after resetting to avoid Mod4 if it breaks.
 # Errors are expected for now, since idk the fix, but it's workable.
 # otherwise above should be Mod4
@@ -90,8 +96,8 @@ bindsym XF86Search exec dmenu_run
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
-bindsym Control+Mod1+t exec i3-sensible-terminal
+bindsym $mod+Return exec $term
+bindsym Control+Mod1+t exec $term
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -163,6 +169,8 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # Add scratchpad like in sway?
+
+bindsym $mod+x exec $term -e "./.config/i3/openQuick.sh"
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -344,31 +352,32 @@ mode "$mode_launcher" {
     bindsym l mode "default"; exec ~/.config/sway/launchBrowser.sh dmenu
     bindsym m exec mcpelauncher-ui-qt -p Default || mcpelauncher -p Default
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
-    bindsym o exec "i3-sensible-terminal -e './.config/i3/obs.sh' &"
+    bindsym o exec "$term -e './.config/i3/obs.sh' &"
     # WORKING bindsym o exec obs
 # below temporarily removed
     # bindsym s exec steam
     bindsym c exec scrcpy
     bindsym r exec simplescreenrecorder
-    # bindsym r exec "i3-sensible-terminal -e './.config/i3/ssr.sh'"
+    # bindsym r exec "$term -e './.config/i3/ssr.sh'"
 
 # !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
+# might want to remove ozone-platform below??
     bindsym d exec vesktop --ozone-platform-hint=auto || exec vencorddesktop || exec discord || exec discord-canary
     # bindsym n exec caprine
 
-    bindsym v exec i3-sensible-terminal -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
-    bindsym n exec i3-sensible-terminal -e "newsboat"
+    bindsym v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi" || exec $term -e "nano" || exec notify-send "Failed to open fallback text editors"
+    bindsym n exec $term -e "newsboat"
     # FAIL bindsym i exec "nvim"
-    # FAIL bindsym v exec i3-sensible-terminal -e "nvim ~/p"
+    # FAIL bindsym v exec $term -e "nvim ~/p"
     # FAIL || vim || vi || nano
     # NOT WORKING	bindsym v exec xdg-open vi
     # NOT WORKING?	bindsym i exec qterminal -e "vi ~/.config/i3/config"
-    # WORKING		bindsym y exec i3-sensible-terminal -e "syncthing"
+    # WORKING		bindsym y exec $term -e "syncthing"
     bindsym y exec "syncthing"
     # below should be symln'd to /usr/local/bin
     # joplin has went byee
-    bindsym j exec i3-sensible-terminal -e "nvim" || exec i3-sensible-terminal -e "vim" || exec i3-sensible-terminal -e "vi"
-    bindsym g exec i3-sensible-terminal -e "godot"
+    bindsym j exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi"
+    bindsym g exec $term -e "godot"
     # NOT WORKING bindsym y exec xdg-open syncthing
     # TRY L8R exec --no-startup-id
 # L8R: mv below to /usr/local/bin/ or /usr/bin/
@@ -378,12 +387,12 @@ mode "$mode_launcher" {
 # below = file manager that comes in Lubuntu 20.04. Likely not on your OS.
     bindsym f exec pcmanfm-qt # || exec nautilus || exec dolphin
 
-    # NOT WORKING	bindsym --release t exec i3-sensible-terminal -e "fzf"
+    # NOT WORKING	bindsym --release t exec $term -e "fzf"
     # NOT WORKING	bindsym t exec --no-startup-id i3-msg 'exec xterm -e fzf'
     # NOT WORKING	bindsym t exec systemd-run --user fzf
     # NOT WORKING	bindsym t exec "fzf-tmux"
 
-    # i3-sensible-terminal -e setsid 	
+    # $term -e setsid 	
 
     # FOR LATER: i3 automation on start up (like open up projects with a keybind)
     bindsym Escape mode "default"
@@ -403,7 +412,7 @@ mode "$mode_system" {
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $i3lockwall && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $i3lockwall && systemctl hibernate, mode "default"
-    bindsym p exec "i3-sensible-terminal -e './.config/i3/pulseaudio-temp-fix.sh' &"
+    bindsym p exec "$term -e './.config/i3/pulseaudio-temp-fix.sh' &"
 
     # systemctl reboot
     bindsym r exec --no-startup-id "shutdown -r now", mode "default"
@@ -608,17 +617,17 @@ assign [class="org.keepassxc.KeePassXC"] $ws100
 
 
 # opens by default
-# exec i3-sensible-terminal -e "vi"
-# exec i3-sensible-terminal
+# exec $term -e "vi"
+# exec $term
 # not working on restarting i3:
 # exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
-# NOT WORKING exec_always i3-sensible-terminal -e "nvim ~/backup2022nov10/notes/todo.norg"
+# NOT WORKING exec_always $term -e "nvim ~/backup2022nov10/notes/todo.norg"
 # NOT WORKING exec_always ./.config/i3/openTodo.sh
-exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
+exec $term -e "./.config/i3/openTodo.sh"
 # NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
 
-# WORKING exec_always i3-sensible-terminal -e "nvim"
+# WORKING exec_always $term -e "nvim"
 # NOT WORKING exec_always "xdg-open ~/backup2022nov10/notes/todo.norg"
 # this made the command worse, but fixed it in other places:
 # sudo ln -s /home/YOUR_USERNAME_HERE/Apps/nvim-linux64/bin/nvim /usr/bin/nvim
@@ -635,5 +644,5 @@ exec i3-sensible-terminal -e "./.config/i3/openTodo.sh"
 exec vesktop || exec vencorddesktop || exec "notify-send 'Could not start Vesktop.'"
 # exec betterbird
 
-# NOT WORKING exec i3-sensible-terminal -e "./.config/sway/notifyBattery.sh"
+# NOT WORKING exec $term -e "./.config/sway/notifyBattery.sh"
 exec_always "notify-send 'Loaded config'"
