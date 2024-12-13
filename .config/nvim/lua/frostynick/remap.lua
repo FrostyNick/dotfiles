@@ -1,5 +1,6 @@
-local uv = vim.uv or vim.loop -- :help luvref.txt also vim.loop might break in future
+local uv = vim.uv or vim.loop -- :help luvref.txt
 local k = vim.keymap
+local c = vim.cmd
 
 vim.g.mapleader = ' '
 vim.g.treesitterOn = true
@@ -67,8 +68,9 @@ k.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><L
 -- *insert removing end of yt links*
 k.set("n", "<leader>myts", [[:%s#www.youtube.com/shorts/#youtu.be/#gI<CR>]], {desc="Shorten YouTube short URLs"})
 k.set("n", "<leader>mytv", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
-k.set("n", "<leader>mk", ":norm blysiW]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
-k.set("n", "<leader>mw", ":norm blysiW]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
+---- below is work in progress
+-- k.set("n", "<leader>mk", ":norm blysiW]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
+-- k.set("n", "<leader>mw", ":norm blysiW]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
 
 k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
@@ -78,18 +80,30 @@ k.set("n", "<leader>cm", "<cmd>!chmod +x %<CR>", { silent = true })
 k.set("n", "<leader>cs", "<cmd>!chmod +x %<CR>", { silent = true })
 -- k.set("n", "<leader>mb", [[}kI- ]], { desc="Markdown bullet points" }) -- does nothing cuz (macro != keymap function)
 k.set("n", "<leader>me", function()
-    vim.cmd.tabe(); vim.opt.filetype = 'markdown' end)
+    c.tabe(); vim.opt.filetype = 'markdown' end)
 
-k.set("n", "<leader>vpp",
+k.set("n", "<leader>vpc",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
 
 k.set('n', '<leader>vpp',
 '<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/<CR>',
 {desc="Telescope: find code in projects directory"})
 
-k.set("n", "<leader>vps", "<cmd>e ~/backup2022nov*/j/Sources/App_web sources.md<CR>");
+k.set('n', '<leader>vp2p',
+'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup*/p/<CR>',
+{desc="Telescope: find code in projects directory"})
+
+k.set('n', '<leader>vpb',
+'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup*/<CR>',
+{desc="Telescope: find code in backup directory"})
+
 -- below doesnt work because i is powerful af. fix later.
-k.set("n", "<leader>vpi", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
+k.set("n", "<leader>vpi", "<cmd>tabe ~/backup2022nov*/markor/ideas.md<CR>")
+k.set("n", "<leader>vpt", "<cmd>tabe ~/backup2022nov*/markor/todo.md<CR>")
+k.set("n", "<leader>vpg", function()
+    c.tabe("~/backup2022nov*/markor/gfl.md")
+    vim.notify("<leader>g{o,p} also make new branch")
+end);
 
 
 -- local leader = ' '
@@ -107,8 +121,8 @@ k.set("n", "<leader>n", function() vim.notify"Future: list of sessions" end, {de
 k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
 k.set("n", "<leader>fx", "<cmd>!chmod +x %<CR>", { silent = true }) -- cuts all text to clipboard
--- For windows, replace xdg-open with explorer.
 
+-- "explorer" is for Windows. Probably broken; needs Git Bash for pipes to work.
 k.set("n", "<leader>po",
 "<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
 { silent = true, desc = "xdg-open file" })
@@ -124,23 +138,39 @@ k.set("n", "<leader>gho",
 "<cmd>Octo<CR>",
 { silent = true, desc = "octo list (requires gh)" })
 
-k.set("n", "<leader>gg", vim.cmd.Git)
+k.set("n", "<leader>gg", c.Git)
 k.set("n", "<leader>gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
-k.set("n", "<leader>gp", "<C-w>v<cmd>term<CR>igitp") -- if in git repository, open 1st remote url.
+k.set("n", "<leader>gp", function()
+    c.vs()
+    c.term()
+
+    local keys -- changes based on if ":Vterm" exists from termim plugin
+    if vim.fn.exists(":Vterm") == 2 then
+        keys = "gitp"
+    else
+        keys = "igitp"
+    end
+
+    vim.api.nvim_feedkeys(keys, "n", false)
+    -- WARNING: If termim is removed, below should be "igitp"
+    -- c("<C-w>v<cmd>term<CR>igitp")
+end)
+
+-- if in git repository, open 1st remote url.
 -- Above should use git fugitive ... I just have a terminal dependant password inserting thing that makes git fugitive not work well. (:G push)
 
 --- Run prgm
-k.set("n", "<leader>lo", function() vim.cmd("!love %:h") end, {desc="Run with Love2D; assuming that parent is project root folder."})
+k.set("n", "<leader>lo", function() c("!love %:h") end, {desc="Run with Love2D; assuming that parent is project root folder."})
 k.set("n", "<leader>p5",
 "<cmd>!xdg-open ~/p/p5-reference/index.html || xdg-open https://p5js.org/reference/ || open https://p5js.org/reference/<CR><CR>",
 { silent = false }) -- "open" not tested yet on Windows / MacOS.
 
 ---- Markdown shortcuts
-k.set("n", "<leader>mm", vim.cmd.MarkdownPreviewToggle)
+k.set("n", "<leader>mm", c.MarkdownPreviewToggle)
 k.set("n", "<leader>mt", function()
     vim.g.treesitterOn = not vim.g.treesitterOn
-    vim.cmd.TableModeToggle()
+    c.TableModeToggle()
     if vim.g.treesitterOn then
         vim.treesitter.start()
     else
@@ -150,29 +180,29 @@ end)
 
 ---- Compiler shortcuts
 -- Replace later with vim autogroup to an extent maybe.
-k.set("n", "<leader>r", vim.cmd.RunCode)
+k.set("n", "<leader>r", c.RunCode)
 -- k.set("n", "<leader>???", function() vim.notify"code: run docs soon. (see tj tutorial)" end)
 -- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
 
-k.set("n", "<leader>cr", vim.cmd.CompilerOpen) -- compiler run
-k.set("n", "<leader>ct", vim.cmd.CompilerToggleResults)
+k.set("n", "<leader>cr", c.CompilerOpen) -- compiler run
+k.set("n", "<leader>ct", c.CompilerToggleResults)
 
 -- <leader>cx is in lazy.lua if it still exists
 
 --- Open terminal shortcuts
 k.set("n", "<leader>zt", "<C-w>v<cmd>term<CR>")
 k.set("n", "<leader>t", "<cmd>tabe<CR><cmd>term<CR>")
-k.set("n", "<leader><CR>", vim.cmd.term)
+k.set("n", "<leader><CR>", c.term)
 
 --- Buffer shortcuts
-k.set("n", "<leader>qb", vim.cmd.bd, {desc=":bd Delete buffer"})
+k.set("n", "<leader>qb", c.bd, {desc=":bd Delete buffer"})
 local function bufToNewTab(isBackground)
     local id = vim.api.nvim_get_current_buf()
     vim.api.nvim_win_hide(0)
-    vim.cmd.tabe()
+    c.tabe()
     vim.api.nvim_set_current_buf(id)
     if isBackground then
-        vim.cmd.tabp()
+        c.tabp()
     end
 end
 
@@ -180,21 +210,21 @@ k.set("n", "<leader>zm", bufToNewTab, {desc="Move to new tab"})
 k.set("n", "<leader>zM", function() bufToNewTab(true) end, {desc="Move to new tab (stay in same tab)"})
 
 --- Vim shortcuts
-k.set("n", "<leader>w", vim.cmd.w)
+k.set("n", "<leader>w", c.w)
 k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
-k.set("n", "<leader>e", vim.cmd.tabe)
+k.set("n", "<leader>e", c.tabe)
 k.set("n", "<leader>`", function()
-    vim.cmd.cd()
+    c.cd()
     vim.notify("cwd: ~")
 end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current dir
 
 k.set("n", "<leader>~", function()
-    vim.cmd("cd %:h")
+    c("cd %:h")
     vim.notify(uv.cwd())
 end, {desc="Move cwd .. of current file"})
 
 k.set("n", "<leader>m.", function()
-    vim.cmd("cd ..")
+    c("cd ..")
     vim.notify(uv.cwd())
 end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
@@ -205,8 +235,8 @@ end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 - g`"
 --]]
 
-k.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Project view :Ex"})
-k.set("n", "<leader>pt", vim.cmd.TodoLocList, { desc = ":TodoLocList"})
+k.set("n", "<leader>pv", c.Ex, { desc = "Project view :Ex"})
+k.set("n", "<leader>pt", c.TodoLocList, { desc = ":TodoLocList"})
 k.set("n", "<leader>pd", function() vim.notify("stub: no prject dir fn")
 end, { desc = "Project directory"})
 
@@ -235,7 +265,7 @@ vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
 
     if pathExists then
         vim.notify("Launching Godot from " .. path)
-        -- vim.cmd("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
+        -- c("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
 
         require'plenary.job':new({
             command = "godot", args = {path}, cwd = uv.cwd(),
@@ -247,7 +277,7 @@ vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
 
 end, {})
 
-k.set("n", "<leader>go", vim.cmd.Godot)
+k.set("n", "<leader>go", c.Godot)
 
 -- l8r: make it like an API that can be accessed anywhere
 local function i_txt(txt)
@@ -279,7 +309,7 @@ local function getReg(reg)
 end
 
 local function qrCmd()
-    -- vim.cmd("!qrencode -t UTF8 \"" .. getClipboard():gsub('"', '\\"') .. '\""')
+    -- c("!qrencode -t UTF8 \"" .. getClipboard():gsub('"', '\\"') .. '\""')
     local txt = tostring(getReg())
 
     -- prevents error when text starts with -- by adding space. broken with <leader>qr right now.
@@ -297,7 +327,7 @@ this text is here for testing
 
 yup
 --]]
-    vim.cmd('!qrencode -t UTF8 "' .. txt .. '"')
+    c('!qrencode -t UTF8 "' .. txt .. '"')
 end
 vim.api.nvim_create_user_command("Qr", qrCmd, {}) -- this is DIFFERENT than <leader>qr ... just in case there's more bugs with newer way
 
@@ -335,7 +365,7 @@ local function vsall(range)
     vim.print(lines)
     for _, name in pairs(lines) do
         if name ~= "" then
-            vim.cmd.vs(name)
+            c.vs(name)
         end
     end
 end
@@ -347,7 +377,20 @@ k.set("n", "<leader>dc", function()
     vsall(vim.fn.expand('%:r') .. ".sync-conflict-*")
 end, {desc="Diff conflict files (might do more in future)"})
 
-k.set("n", "<leader>pt", vim.cmd.TodoLocList, { desc = ":TodoLocList"})
+k.set("n", "<leader>pt", c.TodoLocList, { desc = ":TodoLocList"})
+
+local isVisible = false
+k.set("n", "<leader>ht", function()
+    isVisible = not isVisible
+    if isVisible then
+        c.hi("Normal", "guifg=#333333", "guibg=#000000")
+    else
+        c.hi("Normal", "guifg=xxx", "guibg=Clear")
+    end
+end, { desc = "Less visible text. tags: invisible, hidden"})
+
+k.set("n", "<leader>hh", "<cmd>nohl<CR>", { desc = "Hide highlight after searching. tags: invisible, hidden"})
+k.set("n", "<leader>hn", "<cmd>set nu! rnu!<CR>", { desc = "Toggle number / relative number. tags: invisible, hidden"})
 
 -- -- future problem
 -- vim.api.nvim_create_autocmd("NerdTreeAutocd", {
@@ -359,7 +402,8 @@ k.set("n", "<leader>pt", vim.cmd.TodoLocList, { desc = ":TodoLocList"})
 --     group = vim.api.nvim_create_augroup("Codeee", { clear = true }),
 --     pattern = "project.godot",
 --     callback = function()
---         vim.cmd("!godot project.godot")
+--         c("!godot project.godot")
 --     end,
 -- })
 
+-- !pup text{} | sed '/^\s*$/d' # doesn't work smh cuz sed and vim recognizing it differently... make new shell script i guess
