@@ -126,6 +126,10 @@ local function lspConfig()
     local a,b = pcall(function()
         local path_mono_download = "/home/nicholas/Apps/omnisharp-lsp-1.38.2/"
         local lspc = require('lspconfig')
+        require('lspconfig/configs')
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
+
         local lspLs = {
             {
                 'lua_ls',
@@ -182,7 +186,23 @@ local function lspConfig()
                     use_mono = true,
                 }
             },
-            'bashls', 'denols', --[[denols might be deno]] 'emmet_ls', 'pylsp',
+            { -- https://github.com/aca/emmet-ls#configuration
+                'emmet_ls', -- Installed from Mason
+                {
+                    -- on_attach = on_attach,
+                    capabilities = capabilities,
+                    filetypes = { "css", "eruby", "html", "javascript", "javascriptreact", "less", "sass", "scss", "svelte", "pug", "typescriptreact", "vue" },
+                    init_options = {
+                        html = {
+                            options = {
+                                -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+                                ["bem.enabled"] = true,
+                            },
+                        },
+                    }
+                }
+            },
+            'bashls', 'denols', --[[denols might be deno]] 'pylsp',
             'rust_analyzer', 'ts_ls', 'zk',
         }
         for _,v in ipairs(lspLs) do
@@ -202,7 +222,8 @@ end
 -- Example #2: invisiBkgd(nil, true)
 -- Example #3: invisiBkgd("vim", true)
 -- ^^ colorscheme=vim with typos underlined + invisible background.
-local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplicate of this function but global. ../../after/plugin/colors.lua
+
+local function invisiBkgd(color, isSpell, showBg) -- NOTE: ColorMyPencils() is a duplicate of this function but global. ../../after/plugin/colors.lua
     local a,b = pcall(function()
         if type(color) == "table" then
             color = color.name -- automatically passed from Lazy
@@ -212,16 +233,17 @@ local function invisiBkgd(color, isSpell) -- NOTE: ColorMyPencils() is a duplica
         end
         vim.cmd.colorscheme(color)
     end)
+
     if not a then
         vim.notify("Could not apply colorscheme: "..tostring(b))
     end
-
-    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-
-    vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
-    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-
+    if not showBg then
+        vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+        vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
+        vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    end
+    vim.notify("showBg = " .. vim.inspect(showBg))
     if not isSpell then
         vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
         vim.cmd.hi("clear", "SpellCap")
@@ -553,6 +575,7 @@ local plugins = {
             'RainbowMultiDelim'
         }
     },
+    -- markdown alternative to below: github.com/2kabhishek/tdo.nvim (may use this)
     { -- NOTE: remove neorg in future?
         "nvim-neorg/neorg",
         ft = "norg",
@@ -595,6 +618,27 @@ local plugins = {
     { -- headlines.nvim but way better
         "MeanderingProgrammer/render-markdown.nvim",
         ft = "markdown", -- :RenderMarkdown
+        config = function()
+            require("render-markdown").setup({
+                link = {
+                    custom = {
+                        youtube2 = { pattern = 'youtu%.be', icon = '󰗃 ' },
+                        twitter = { pattern = 'xcancel%.com', icon = ' '},
+                        twitter2 = { pattern = 'twitter%.com', icon = ' '},
+                        -- twitter3 = { pattern = 'x%.com', icon = '𝕏 '}, -- WARNING: this will match any domain that ends with "x.com" for example "roblox.com" or "xbox.com"
+                        arch = { pattern = 'archlinux%.org', icon = ' '},
+                        wikipedia = { pattern = 'wikipedia%.org', icon = ' '},
+                        google = { pattern = 'google%.com', icon = ' '},
+                        trello = { pattern = 'trello%.com', icon = '󰔲 '},
+                        discord = { pattern = 'discord%.gg', icon = '󰙯 '},
+                        godot = { pattern = 'godotengine%.org', icon = ' '},
+
+                        itch = { pattern = 'itch%.io', icon = '󰺷 '},
+                        github2 = { pattern = 'githubusercontent%.com', icon = '󰊤 '},
+                    }
+                }
+            })
+        end
     },
     { "dhruvasagar/vim-table-mode", cmd = "TableModeToggle",
         -- ft = "markdown"
@@ -633,10 +677,9 @@ local plugins = {
             { "<leader>gtr", ":Tabby rename_tab ", mode = "n", desc = "Rename tab"},
         },
     },
-    { -- NOTE: See below instructions for live server to work.
+    { -- WARNING: See below instructions for live server to work.
         'barrett-ruth/live-server.nvim',
         event = "VeryLazy",
-        -- cmd = "LiveServerStart",  -- Note: "LiveServerToggle" isn't in plugin.
         --[[ if switching from npm you can uninstall by (might need sudo):
         npm uninstall -g live-server
         yarn global add @compodoc/live-server # less security issues with this live-server command
@@ -644,19 +687,17 @@ local plugins = {
         --]]
         -- build = 'npm install -g live-server', -- If using npm
         build = 'yarn global add @compodoc/live-server', -- in theory this is needed after installing this plugin. Couldn't test it right now.
-        config = function() -- should be in init some of this maybe. fix later. slows down start time slightly.
-            local l = require('live-server')
-            l.setup( --[[ args = {"--browser=librewolf"} ]])
-            vim.g.liveservertoggle = true
-            vim.keymap.set('n', '<leader>ll', function()
-                if vim.g.liveservertoggle then
-                    l.start()
-                else
-                    l.stop()
-                end
-                vim.g.liveservertoggle = not vim.g.liveservertoggle
-            end)
-        end,
+        cmd = "LiveServerToggle", -- This is now built-in :)
+        keys = {
+            {
+                "<leader>ll",
+                -- vim.cmd.LiveServerToggle, -- not found
+                ":LiveServerToggle<CR>",
+                desc = "Toggle live server",
+                mode = "n",
+            },
+        },
+        config = true,
     },
     { -- Con: Appears to not usually work when multiple file are involved. Pro: Doesn't error like that other plugin..
         "aliqyan-21/runTA.nvim",
@@ -745,7 +786,7 @@ local plugins = {
         init = function()
             vim.keymap.set("n", "<leader>zz", function()
                 vim.cmd.ZenMode()
-                vim.wo.wrap = false
+                vim.wo.wrap = not vim.wo.wrap
                 -- not working ColorMyPencils()
             end)
         end,
@@ -950,6 +991,39 @@ local plugins = {
         --     vim.keymap.set('n', '<leader>zr', k.run)
         -- end
     },
+    { -- Better default terminal. (auto enter insert mode; auto-close process when done; etc.)
+        '2kabhishek/termim.nvim',
+        event = "VeryLazy", -- weirdly enough, below no longer works so lazyloading it is!
+        cmd = { 'Fterm', 'FTerm', 'Sterm', 'STerm', 'Vterm', 'VTerm' },
+        -- commit = "5834416", -- WARNING: not updated to prevent breaking workflow
+    },
+    {
+        "oysandvik94/curl.nvim",
+        cmd = { "CurlOpen" },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        config = true,
+    },
+    {
+        "stevearc/oil.nvim",
+        -- config = true
+        config = function()
+            require("oil").setup({
+                -- default_file_explorer = true -- :Ex works
+                -- columns = {
+                --     "icon", "permissions", "size", "mtime"
+                -- },
+                view_options = {
+                    show_hidden = true
+                }
+            })
+            -- vim.api.nvim_create_user_command("Ex", ":Oil", {})
+            for _,v in ipairs({"Ex", "Hex", "Lex", "Vex", "Tex", "Sex"}) do
+                vim.api.nvim_create_user_command(v, ":Oil", {})
+            end
+        end
+    }
 }
 --[[
 -- alternative plugins maybe
