@@ -115,10 +115,6 @@ local function telescopeConfig()
         "<cmd>Telescope media_files<CR>", {desc = "Telescope: pictures; media files"})
     end)
 
-    -- nvim-telescope/telescope-ui-select.nvim
-    loadExtension("ui-select")
-    loadExtension("possession")
-
     -- loadExtension("frecency")
 end
 
@@ -243,11 +239,19 @@ local function invisiBkgd(color, isSpell, showBg) -- NOTE: ColorMyPencils() is a
         vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
         vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
     end
-    vim.notify("showBg = " .. vim.inspect(showBg))
     if not isSpell then
         vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
         vim.cmd.hi("clear", "SpellCap")
     end
+end
+
+-- local function toggleZen(win) -- not working
+--     local isZen = not not win:is_floating() -- not vim.wo.nu
+local function toggleNotZen(isNotZen)
+    vim.cmd.GitGutterToggle()
+    vim.wo.wrap = isNotZen
+    vim.wo.nu = isNotZen
+    vim.wo.rnu = isNotZen
 end
 
 local plugins = {
@@ -469,7 +473,6 @@ local plugins = {
     },
     { -- this takes a couple MB ... might not be best idea if you're low on space
         "chrishrb/gx.nvim",
-        -- event = "VeryLazy",
         -- it conflicts once in a while but usually saves time
         keys = { { "2gx", "<cmd>Browse<cr>", mode = { "n", "x" }} },
         cmd = { "Browse" },
@@ -576,39 +579,6 @@ local plugins = {
         }
     },
     -- markdown alternative to below: github.com/2kabhishek/tdo.nvim (may use this)
-    { -- NOTE: remove neorg in future?
-        "nvim-neorg/neorg",
-        ft = "norg",
-        -- build = ":Neorg sync-parsers", -- if in doubt, :Lazy build neorg 
-        dependencies = { "nvim-lua/plenary.nvim" },
-        -- event = "VeryLazy",
-        version = "v7.0.0", -- v8.0.0 might not work in Termux because luarocks has issues there. Plus, it requires (at least for now) more setup and this config should be easy to start on any device.
-        opts = {
-            load = {
-                ["core.defaults"] = {}, -- Loads default behaviour
-                -- https://github.com/nvim-neorg/neorg/wiki/Concealer
-                ["core.concealer"] = {
-                    config = { --[[ folds = false, ]]
-                    icon_preset = "diamond"
-                }
-            },                  -- Adds pretty icons to your documents
-            ["core.dirman"] = { -- Manages Neorg workspaces
-                config = {
-                    workspaces = { notes = "~/backup2022nov10/notes" },
-                },
-            },
-            -- ["core.keybinds"] = {
-            --     config = {
-            --         default_keybinds = false
-            --     }
-            -- },
-            ["core.export"] = {},
-            ["core.export.markdown"] = {
-                config = { extensions = "all", },
-            },
-        },
-        },
-    },
     {"iamcco/markdown-preview.nvim",
         ft = "markdown",
         build = "cd app && yarn install", -- NOTE: If lazy asks to remove and install while going from npm to yarn, do that and it should be fixed.
@@ -663,7 +633,6 @@ local plugins = {
     -- { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
     { -- WARNING: Might remove later if there's a quicker alternative that has the same basic functionality.
         'nvim-lualine/lualine.nvim',
-        -- event = "VeryLazy",
         dependencies = { 'nvim-tree/nvim-web-devicons', lazy = true },
         config = true
     },
@@ -685,6 +654,7 @@ local plugins = {
         yarn global add @compodoc/live-server # less security issues with this live-server command
         -- If it doesn't work after everything above has been done, try reinstalling this plugin. Then it should work.
         --]]
+        -- alternative which probably isn't compatible: five-server
         -- build = 'npm install -g live-server', -- If using npm
         build = 'yarn global add @compodoc/live-server', -- in theory this is needed after installing this plugin. Couldn't test it right now.
         cmd = "LiveServerToggle", -- This is now built-in :)
@@ -739,7 +709,7 @@ local plugins = {
         -- 
     },
     -- not working for some reason 'm4xshen/autoclose.nvim',
-    {'airblade/vim-gitgutter', event = "VeryLazy" },
+    {'airblade/vim-gitgutter', event = "VeryLazy" }, -- git signs
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
@@ -755,12 +725,14 @@ local plugins = {
         'jedrzejboczar/possession.nvim',
         dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
         config = true,
-        event = "VeryLazy",
+        cmd = { "PossessionLoad", "PossessionDelete", "PossessionSave" },
         keys = {
-            { "<leader>stl", "<cmd>PossessionLoad temp<CR>", mode = "n", desc="possession load temp session"},
-            { "<leader>sts", "<cmd>PossessionSave temp<CR>", mode = "n", desc="possession save temp session"},
-            { "<leader>ss", ":PossessionSave ", mode = "n", desc="possession save a file"}, -- write
-            { "<leader>sl", ":PossessionLoad ", mode = "n", desc="possession load a file"}, -- read
+            { "<leader>stl", "<cmd>PossessionLoad temp<CR>", mode = "n", desc="possession: load temp session"},
+            { "<leader>sts", "<cmd>PossessionSave temp<CR>", mode = "n", desc="possession: save temp session"},
+            { "<leader>std", "<cmd>PossessionDelete temp<CR>", mode = "n", desc="possession: delete temp session"},
+            { "<leader>ss", ":PossessionSave ", mode = "n", desc="possession: save a file"},
+            { "<leader>sl", ":PossessionLoad ", mode = "n", desc="possession: load a file"},
+            { "<leader>sl", ":PossessionDelete ", mode = "n", desc="possession: delete a file"},
             { "<leader>fs", "<cmd>Telescope possession list<CR>", mode = "n"},
         },
     },
@@ -778,45 +750,22 @@ local plugins = {
             vim.keymap.set('n', '<leader>gs', vim.cmd.Git);
         end,
     },
+    -- { -- This is instant (way faster than below). Does same as below, but:
+    -- - Has a modified git signs added to the side which blocks other plugin I prefer.
+    -- - I like grey text better. (not big deal tho)
+    --     'hougesen/blame-me.nvim',
+    --     event = "VeryLazy",
+    --     opts = { delay = 0 }
+    --     -- config = true
+    -- },
     { 'f-person/git-blame.nvim', event = "VeryLazy" }, -- shows git blame
     {
-        'folke/zen-mode.nvim',
-        cmd = "ZenMode", -- avoid these if on startup
-        -- event = "VeryLazy",
-        init = function()
-            vim.keymap.set("n", "<leader>zz", function()
-                vim.cmd.ZenMode()
-                vim.wo.wrap = not vim.wo.wrap
-                -- not working ColorMyPencils()
-            end)
-        end,
-        -- config = function()
-        --     require("zen-mode").setup {
-        --         -- same as opts below
-        --     }
-        -- end,
-        opts = {
-            window = {
-                backdrop = 0,
-                height = 0.7,
-                -- width = 90,
-                width = 0.9,
-                options = {
-                    number = false,
-                    relativenumber = false,
-                },
-            },
-            plugins = {
-                kitty = {
-                    enabled = true,
-                    font = "+4",
-                },
-                -- wezterm = { -- will probably use wezterm in the future
-                --     enabled = true,
-                --     font = "+4",
-                -- },
-            },
-        }
+        "2kabhishek/co-author.nvim",
+        commit = "e6458cb9d42266336a92e750c9452ac12ee03079",
+        cmd = "CoAuthor",
+        keys = {
+            { "<leader>gC", vim.cmd.CoAuthor, desc = "Quickly add co-authors to git commits", mode = "n" }
+        },
     },
     -- piersolenski/telescope-import.nvim Autofill imports. Supports JS; lua; py; c++.
 
@@ -856,7 +805,6 @@ local plugins = {
             }
         end
     },
-    { 'nvim-telescope/telescope-ui-select.nvim', lazy = true },
     {
         "ziontee113/icon-picker.nvim", -- Useful for emoji's too. See github for more info (use gz with my config to open up the link :) )
         -- One thing that could improve this is a freqently used list or previous emojis or filter to sometimes use exclusively emojis or icons.
@@ -922,23 +870,6 @@ local plugins = {
 
     -- automatically add "end" to code-block. note: possible issues with autocomplete if that is enabled
     { 'tpope/vim-endwise', event = "InsertEnter" },
-    {
-        'rcarriga/nvim-notify',
-        -- event = "UIEnter",
-        priority = 997, -- error messages even before startup are less disruptive
-        init = function()
-            local n = require("notify")
-            n.setup({ render = "compact", background_colour = "#000000" })
-            vim.notify = n
-
-            -- Do this before: require("telescope").load_extension("notify")
-            -- require('telescope').extensions.notify.notify(<opts>)
-            -- OR
-            -- :Telescope notify
-            -- No telescope? :Notifications # lua: require("notify").history()
-            -- compact
-        end
-    },
     -- see how regex works with :Hypersonic
     { "tomiis4/hypersonic.nvim", cmd = "Hypersonic" },
     --[[ Below does the same as vim-sudo but:
@@ -1007,6 +938,7 @@ local plugins = {
     },
     {
         "stevearc/oil.nvim",
+        event = "VeryLazy",
         -- config = true
         config = function()
             require("oil").setup({
@@ -1023,6 +955,45 @@ local plugins = {
                 vim.api.nvim_create_user_command(v, ":Oil", {})
             end
         end
+    },
+
+    { -- requires nvim 0.9.4 according to readme
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        opts = { -- See: https://github.com/folke/snacks.nvim?tab=readme-ov-file#-usage
+            bigfile = { enabled = true },
+            -- dashboard = { enabled = true }, -- homescreen for nvim
+            -- indent = { enabled = true }, -- visualize current line. might be useful for you! i just don't like it with transparent theme that much .. and rnumber is visible enough
+            input = { enabled = true }, -- alternative to 'nvim-telescope/telescope-ui-select.nvim'. Might switch back later if fzf really helps.
+            notifier = { enabled = true }, -- better alternative to 'rcarriga/nvim-notify'
+            quickfile = { enabled = true }, -- render file before plugins
+            scroll = { -- smooth scroll. might remove later.
+                animate = {
+                    duration = { step = 15, total = 100 }, -- 0.1 second delay
+                    easing = "linear",
+                },
+            },
+            zen = {
+                on_open = function() toggleNotZen(false) end,
+                on_close = function() toggleNotZen(true) end,
+            }
+        },
+        keys = {
+            { "<leader>zs", function() Snacks.zen() end, desc = "Toggle Zen Mode" }, -- s = skim-read mode as i call it
+            { "<leader>Z",  function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
+            { "<leader>vn",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
+            { "<leader>fr", function() Snacks.rename.rename_file() end, desc = "Rename File" },
+            { "<leader>gr", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
+            { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" }, -- doesn't replace 'f-person/git-blame.nvim'
+            { "<leader>hn", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
+    --         { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
+    --         { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+    --         { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+    --         { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit Current File History" },
+    --         { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+    --         { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
+        },
     }
 }
 --[[

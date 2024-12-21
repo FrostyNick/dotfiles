@@ -117,7 +117,6 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
 --- xdg-open miscellaneous
 -- Future: If using Windows or MacOS, alias different open command
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
-k.set("n", "<leader>n", function() vim.notify"Future: list of sessions" end, {desc="future: list of sessions"})
 k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
 k.set("n", "<leader>fx", "<cmd>!chmod +x %<CR>", { silent = true }) -- cuts all text to clipboard
@@ -128,9 +127,6 @@ k.set("n", "<leader>po",
 { silent = true, desc = "xdg-open file" })
 
 --- Git shortcuts
-k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think 
-"<cmd>!xdg-open $(git remote -v | grep -i $(git config user.name) | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
-{ silent = true })
 k.set("n", "<leader>ghs",
 "<cmd>!gh status<CR>",
 { silent = true, desc = "github status (requires gh / github-cli)" })
