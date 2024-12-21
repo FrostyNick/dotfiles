@@ -1,6 +1,7 @@
 # Convert most .bashrc stuff to Powershell bc I have to use it sometimes.
 # EXPERIMENTAL. Presumeably will have bugs.
 
+# Located in ~/Documents/Powershell/profile.ps1
 # Tested on Windows 10 and 11 .. powershell version is more important tho.
 
 function convert {
@@ -39,7 +40,7 @@ nal la 'gci -Force'
 
 # <c-d> is built-in to a different mode in newer powershell. There are multiple versions installed on Windows by default...
 function e {exit}
-nal ^D e # Doesn't work. Newer powershell version?
+function ^D {exit} # usually doesn't work if it ever did
 
 
 # nal f fcd
@@ -204,3 +205,5 @@ function 2j { nv $HOME\selfnotes\2j.md }
 
 ## Below makes fzf work with <c-r> and <c-t> with `scoop install fzf psfzf`
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+
+function e. { explorer . }

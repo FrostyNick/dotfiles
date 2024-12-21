@@ -1,17 +1,21 @@
 ## https://github.com/glzr-io/glazewm
-# This config is located in ~/.glaze-wm/config.yaml
-# This mimics i3 when I can only use Windows.
+
+## Dependencies as far as I know: mononoki font
+## Dependencies (optional): mpv, flow launcher (if you decide to break the bottom bar more than even the instructions below)
+## If you have scoop you can install these dependencies by running:
+# scoop add nerd-fonts
+# scoop install Mononoki-NF-Propo
+## Also replace "nicholas" in this file with your computer username for all commands to run without errors.
 
 ## Missing so far:
-## - no highlighted focus (in i3 it highlights red) 
-
-## Extra setup (Might have missing ones):
-## - Mononoki nerd font (or another nerd font, make sure to change it somewhere in this config)
-## - Find and replace all "nicholas" in this file with your device username.
-## - [Optional instructions below] Remove the default Windows bottom bar.
+## - No highlighted focus (in i3 it highlights red) 
+## - Focus is inconsistant
+## - Dock doesn't work with all programs
+## - No tabbed layout
+## - Clicking on time to see calendar would be useful. Best viable workaround I could find is running in powershell `cd ~ ; java -jar .\cal.jar` while having cal.jar in the home directory (works as of v2.7.1; src: https://github.com/frossm/cal/releases).
 
 ## (this step might not be required) win+s taskbar -> hide taskbar # this will hide taskbar unless your mouse is at the bottom of the screen.
-## To persistantly remove taskbar (Disclaimer: `nircmd` is not FOSS. There could be a better solution but I haven't found it yet):
+## To persistantly remove taskbar (Disclaimer: `nircmd` is not FOSS. There could be a FOSS solution but I haven't found it yet):
 ## Download here: https://www.nirsoft.net/utils/nircmd-x64.zip or https://www.nirsoft.net/utils/nircmd.zip and set environment variables.
 ## Alternatively with scoop:
 # scoop install nircmd
@@ -139,7 +143,7 @@ window_rules:
   # Task Manager requires admin privileges to manage and should be ignored unless running
   # the WM as admin.
   - command: "ignore"
-    match_process_name: "/Taskmgr|ScreenClippingHost/"
+    match_process_name: "/Taskmgr|ScreenClippingHost|StartMenu/"
 
   # Launches system dialogs as floating by default (eg. File Explorer save/open dialog).
   - command: "set floating"
@@ -157,29 +161,39 @@ window_rules:
   - command: "resize borders 0px -7px -7px -7px"
     match_process_name: "steam"
 
+      # browser
   - command: "move to workspace 1"
     match_process_name: "librewolf|vivaldi|qutebrowser|floorp"
 
+      # text-based
   - command: "move to workspace 2"
-    match_process_name: "alacritty|git-bash|nvim|cmd|powershell|wezterm-gui"
+    match_process_name: "alacritty|git-bash|nvim|notepad|cmd|powershell|wezterm-gui"
 
+      # GUI-based / educational / files
   - command: "move to workspace 3"
-    match_process_name: "notepad|nvim|kdeconnect-app|soffice|scalc"
+    match_process_name: "kdeconnect-app|soffice|scalc"
 
+      # IDE
   - command: "move to workspace 4"
-    match_process_name: "VirtualBox|Godot_v*|GodotManager|VSCodium"
+    match_process_name: "VirtualBox|Godots|Godot_v*|GodotManager|VSCodium"
 
+      # art / gaming / emulator / graphics-heavy
   - command: "move to workspace 5"
-    match_process_name: "VirtualBoxVM|steam|steamservice|steamwebhelper|Super Animal Royale|scrcpy|mpv" # haven't tested if scrcpy works
+    match_process_name: "VirtualBoxVM|steam|steamservice|steamwebhelper|Super Animal Royale|scrcpy|mpv|SnippingTool|script-fu|gimp-2.10|Purified" # haven't tested if scrcpy works # Purified doesn't work. Same issue on Linux.
+  # - command: "move to workspace 7": # currently breaks the code
+  #   match_process_name: "Microsoft\.MinecraftUWP*" # Microsoft.MinecraftUWP_1.20.7201.0_x64__8wekyb3d8bbwe
 
+      # socials
   - command: "move to workspace 6"
     match_process_name: "Vesktop|Zoom"
 
+      # device capture
   - command: "move to workspace 10"
     match_process_name: "obs64"
 
   - command: "move to workspace 100"
     match_process_name: "KeePassXC|Picocrypt"
+
 
 
 binding_modes:
@@ -209,16 +223,18 @@ keybindings:
   # - command: 'exec C:/Users/nicholas/scoop/apps/alacritty/current/alacritty.exe --config-file "C:/Users/nicholas/scoop/persist/alacritty/alacritty.toml"'
     binding: "Alt+Z"
 
-  - commands: ['exec %UserProfile%/scoop/apps/alacritty/current/alacritty.exe --config-file "C:/Users/nicholas/scoop/persist/alacritty/alacritty.toml" -e "C:/Users/nicholas/scoop/apps/neovim/current/bin/nvim.exe', "focus workspace 2"] # it should focus only if I'm not in workspace 2. otherwise it will go back to previous focus instead.
+  - commands: ['exec %UserProfile%/scoop/apps/alacritty/current/alacritty.exe --config-file "C:/Users/nicholas/scoop/persist/alacritty/alacritty.toml" -e "C:/Users/nicholas/scoop/apps/neovim/current/bin/nvim.exe"', "focus workspace 2"]
     binding: "Alt+V"
 
+  - commands: ['exec %UserProfile%/scoop/apps/alacritty/current/alacritty.exe --config-file "C:/Users/nicholas/scoop/persist/alacritty/alacritty.toml" --hold -e "java -jar .\cal.jar"', "focus workspace 2"]
+    binding: "Alt+C"
 
-
-  # %USERPROFILE% doesn't work here.
-  - commands: ['exec mpv C:/Users/nicholas/Music/@q_usb/* --no-audio-display --volume=50 --shuffle']
+  # Replace file path below to where you store music.
+  # Note: %USERPROFILE% doesn't work below.
+  - commands: ['exec mpv C:/Users/nicholas/Music/@q_usb/* --no-audio-display --volume=50 --shuffle --loop-playlist=inf']
     binding: "Alt+S" # s for song. m is taken.
 
-  - commands: ['exec mpv C:/Users/nicholas/Music/@q_usb/* --no-audio-display --volume=50'] # the first song is yes
+  - commands: ['exec mpv C:/Users/nicholas/Music/@q_usb/* --no-audio-display --volume=50 --loop-playlist=inf'] # the first song is yes
     binding: "Alt+A+S" # must hold buttons. <c-a> could contain many shortcuts.
 
   # Shift focus in a given direction.
@@ -264,9 +280,10 @@ keybindings:
   - command: "tiling direction toggle"
     binding: "Alt+V"
 
-  # Change focus between floating / tiling windows.
-  - command: "focus mode toggle"
-    binding: "Alt+Space"
+  ## Change focus between floating / tiling windows.
+  ## this keybind is used in flow launcher so no
+  # - command: "focus mode toggle"
+  #   binding: "Alt+Space"
 
   # Change the focused window to be floating / tiling.
   - command: "toggle floating"
@@ -331,16 +348,17 @@ keybindings:
   - command: "focus workspace 10"
     binding: "Alt+0"
 
+  # "move workspace" not to be mistaken with "move to"
   # Move focused workspace to a monitor in a given direction.
-  # I don't use these right now so they have a shift. alt+{a,s} are used with something else.
+  # I don't use this right now, so I added shift and put keybinds I use with just alt.
   - command: "move workspace left"
     binding: "Alt+Shift+A"
   - command: "move workspace right"
     binding: "Alt+Shift+F"
-  - command: "move workspace up"
-    binding: "Alt+Shift+D"
-  - command: "move workspace down"
-    binding: "Alt+Shift+S"
+  # - command: "move workspace up" # conflicts with Dark Reader
+  #   binding: "Alt+Shift+D"
+  # - command: "move workspace down"
+  #   binding: "Alt+Shift+S"
 
   # Move focused window to a workspace defined in `workspaces` config.
   - commands: ["move to workspace 1"]
@@ -362,7 +380,5 @@ keybindings:
   - commands: ["move to workspace 9"]
     bindings: ["Alt+Shift+9"]
   - commands: ["move to workspace 10"]
-  # Below line is the original behavior for these lines in glazewm. I prefer i3 behavior better.
-  # - commands: ["move to workspace 10", "focus workspace 10"] 
+  # - commands: ["move to workspace 10", "focus workspace 10"] # this is the original behavior in glazewm. I like default i3 behavior better.
     binding: "Alt+Shift+0"
-
