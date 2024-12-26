@@ -42,6 +42,7 @@ k.set("n", "gr", vim.lsp.buf.rename, {desc="LSP: rename"})
 -- ga overrides vim keybind for character code under current cursor.
 k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
 k.set("n", "gf", "<cmd>e <cfile><CR>", {desc="gf + also create unsaved file if it doesn't exist"})
+-- <leader>zo moved to lazy.lua
 
 -- yank/put: " + macro + y/p
 -- useless macro: isusu€kb
@@ -58,7 +59,10 @@ k.set("n", "<C-j>", "<C-w><c-j>")
 k.set("n", "<C-k>", "<C-w><c-k>")
 k.set("n", "<C-l>", "<C-w><c-l>")
 
--- <leader>zo moved to lazy.lua
+k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think 
+"<cmd>!xdg-open $(git remote -v | grep -i $(git config user.name) | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
+{ desc = "Opens git remote origin link with your username as configured in git. For opening the exact file and line in github from all users, use <leader>2gr instead.", silent = true })
+
 k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"})
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
 k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
@@ -335,7 +339,11 @@ yup
 --]]
     c('!qrencode -t UTF8 "' .. txt .. '"')
 end
-vim.api.nvim_create_user_command("Qr", qrCmd, {}) -- this is DIFFERENT than <leader>qr ... just in case there's more bugs with newer way
+vim.api.nvim_create_user_command("Qr", qrCmd, {desc = "Note: This is different than the keybind for testing purposes."})
+vim.api.nvim_create_user_command("TSPlaygroundToggle", function()
+    vim.notify("nvim-treesitter/playground is deprecated. Use :InspectTree, :Inspect, and (v0.10+) :EditQuery")
+    vim.cmd.InspectTree()
+end, {})
 
 -- k.set("n", "<leader>qr", qrCmd, {desc="Get QR code from system clipboard (+ register)"})
 k.set("n", "<leader>qr", [[:!qrencode -t UTF8 "<c-r>+"<CR>]], {desc="Get QR code from system clipboard (+ register) (escapes don't work for now)"})
