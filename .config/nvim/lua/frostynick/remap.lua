@@ -87,7 +87,7 @@ k.set("n", "<leader>cm", "<cmd>!chmod +x %<CR>", { silent = true })
 k.set("n", "<leader>cs", "<cmd>!chmod +x %<CR>", { silent = true })
 -- k.set("n", "<leader>mb", [[}kI- ]], { desc="Markdown bullet points" }) -- does nothing cuz (macro != keymap function)
 k.set("n", "<leader>me", function()
-    c.tabe(); vim.opt.filetype = 'markdown' end)
+  c.tabe(); vim.opt.filetype = 'markdown' end)
 
 k.set("n", "<leader>vpc",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
@@ -108,8 +108,8 @@ k.set('n', '<leader>vpb',
 k.set("n", "<leader>vpi", "<cmd>tabe ~/backup2022nov*/markor/ideas.md<CR>")
 k.set("n", "<leader>vpt", "<cmd>tabe ~/backup2022nov*/markor/todo.md<CR>")
 k.set("n", "<leader>vpg", function()
-    c.tabe("~/backup2022nov*/markor/gfl.md")
-    vim.notify("<leader>g{o,p} also make new branch")
+  c.tabe("~/backup2022nov*/markor/gfl.md")
+  vim.notify("<leader>g{o,p} also make new branch")
 end);
 
 k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
@@ -139,32 +139,32 @@ k.set("n", "<leader>gl", "<cmd>Git log --oneline --pretty=reference --date=relat
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
 
 local function termExec(rawKeys, doCR)
-    c("vs | term")
+  c("vs | term")
 
-    local keys
-    if vim.fn.exists(":Vterm") == 2 then
-        -- below changes if termim plugin exists
-        keys = rawKeys
-    else
-        keys = "i" .. rawKeys
-    end
+  local keys
+  if vim.fn.exists(":Vterm") == 2 then
+    -- below changes if termim plugin exists
+    keys = rawKeys
+  else
+    keys = "i" .. rawKeys
+  end
 
-    if not doCR then
-        vim.api.nvim_feedkeys(keys, "n", false)
-        return
-    end
-    local keyRawTxt = "<CR>"
-    local keyCR = vim.api.nvim_replace_termcodes(keyRawTxt, true, true, true)
+  if not doCR then
+    vim.api.nvim_feedkeys(keys, "n", false)
+    return
+  end
+  local keyRawTxt = "<CR>"
+  local keyCR = vim.api.nvim_replace_termcodes(keyRawTxt, true, true, true)
 
-    vim.api.nvim_feedkeys(keys .. keyCR, "n", false)
+  vim.api.nvim_feedkeys(keys .. keyCR, "n", false)
 end
 
 k.set("n", "<leader>gp", function()
-    termExec("gitp", true)
+  termExec("gitp", true)
 end)
 
 k.set("n", "<leader>at", function()
-    termExec("tgpt -m", true)
+  termExec("tgpt -m", true)
 end, { desc = "ai tgpt"})
 
 -- if in git repository, open 1st remote url.
@@ -179,13 +179,13 @@ k.set("n", "<leader>p5",
 ---- Markdown shortcuts
 k.set("n", "<leader>mm", c.MarkdownPreviewToggle)
 k.set("n", "<leader>mt", function()
-    vim.g.treesitterOn = not vim.g.treesitterOn
-    c.TableModeToggle()
-    if vim.g.treesitterOn then
-        vim.treesitter.start()
-    else
-        vim.treesitter.stop()
-    end
+  vim.g.treesitterOn = not vim.g.treesitterOn
+  c.TableModeToggle()
+  if vim.g.treesitterOn then
+    vim.treesitter.start()
+  else
+    vim.treesitter.stop()
+  end
 end)
 
 ---- Compiler shortcuts
@@ -207,13 +207,13 @@ k.set("n", "<leader><CR>", c.term)
 --- Buffer shortcuts
 k.set("n", "<leader>qb", c.bd, {desc=":bd Delete buffer"})
 local function bufToNewTab(isBackground)
-    local id = vim.api.nvim_get_current_buf()
-    vim.api.nvim_win_hide(0)
-    c.tabe()
-    vim.api.nvim_set_current_buf(id)
-    if isBackground then
-        c.tabp()
-    end
+  local id = vim.api.nvim_get_current_buf()
+  vim.api.nvim_win_hide(0)
+  c.tabe()
+  vim.api.nvim_set_current_buf(id)
+  if isBackground then
+    c.tabp()
+  end
 end
 
 k.set("n", "<leader>zm", bufToNewTab, {desc="Move to new tab"})
@@ -224,18 +224,18 @@ k.set("n", "<leader>w", c.w)
 k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>e", c.tabe)
 k.set("n", "<leader>`", function()
-    c.cd()
-    vim.notify("cwd: ~")
+  c.cd()
+  vim.notify("cwd: ~")
 end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current dir
 
 k.set("n", "<leader>~", function()
-    c("cd %:h")
-    vim.notify(uv.cwd())
+  c("cd %:h")
+  vim.notify(uv.cwd())
 end, {desc="Move cwd .. of current file"})
 
 k.set("n", "<leader>m.", function()
-    c("cd ..")
-    vim.notify(uv.cwd())
+  c("cd ..")
+  vim.notify(uv.cwd())
 end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
 --[[ above todo:
@@ -252,38 +252,38 @@ end, { desc = "Project directory"})
 
 --- not keyboard shortcut
 vim.api.nvim_create_user_command("Godot", function() -- Runs on :Godot
-    local path = "project.godot"
-    local pathExists = uv.fs_stat(path)
-    if not pathExists then
-        -- vim.notify("where u at godot????")
-        local handle = vim.uv.fs_scandir(".")
-        if not handle then
-            vim.notify("nvim godot: Failed to get directory contents from cwd.")
-            return
-        end
-
-        while true do -- check cwd
-            local name, typ = vim.uv.fs_scandir_next(handle)
-            if not name then break end
-            if typ == "directory" then
-                path = name .. "/project.godot"
-                pathExists = uv.fs_stat(path)
-                if pathExists then break end
-            end
-        end
+  local path = "project.godot"
+  local pathExists = uv.fs_stat(path)
+  if not pathExists then
+    -- vim.notify("where u at godot????")
+    local handle = vim.uv.fs_scandir(".")
+    if not handle then
+      vim.notify("nvim godot: Failed to get directory contents from cwd.")
+      return
     end
 
-    if pathExists then
-        vim.notify("Launching Godot from " .. path)
-        -- c("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
-
-        require'plenary.job':new({
-            command = "godot", args = {path}, cwd = uv.cwd(),
-            on_exit = function(j, res) print(j:result()); print(res) end
-        }):start()
-    else
-        vim.notify("Could not find project.godot.\ncwd: " .. uv.cwd())
+    while true do -- check cwd
+      local name, typ = vim.uv.fs_scandir_next(handle)
+      if not name then break end
+      if typ == "directory" then
+        path = name .. "/project.godot"
+        pathExists = uv.fs_stat(path)
+        if pathExists then break end
+      end
     end
+  end
+
+  if pathExists then
+    vim.notify("Launching Godot from " .. path)
+    -- c("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
+
+    require'plenary.job':new({
+      command = "godot", args = {path}, cwd = uv.cwd(),
+      on_exit = function(j, res) print(j:result()); print(res) end
+    }):start()
+  else
+    vim.notify("Could not find project.godot.\ncwd: " .. uv.cwd())
+  end
 
 end, {})
 
@@ -291,58 +291,58 @@ k.set("n", "<leader>go", c.Godot)
 
 -- l8r: make it like an API that can be accessed anywhere
 local function i_txt(txt)
-    -- :help nvim_buf_set_text
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-    vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { txt })
+  -- :help nvim_buf_set_text
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { txt })
 end
 
 local function i_date()
-    i_txt(tostring(os.date("%x"))
-        -- To learn more: https://www.lua.org/pil/20.2.html
-        :gsub('(%d+)/(%d+)/(%d+)', '%3-%1-%2')
-        -- Leading zeros show up only on some operating systems.
-        :gsub("-0", "-"))
+  i_txt(tostring(os.date("%x"))
+    -- To learn more: https://www.lua.org/pil/20.2.html
+    :gsub('(%d+)/(%d+)/(%d+)', '%3-%1-%2')
+    -- Leading zeros show up only on some operating systems.
+    :gsub("-0", "-"))
 end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
 k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
 
 -- local function getReg()
---     return vim.fn.getreg('+') -- no arguments = vim clipboard
+--   return vim.fn.getreg('+') -- no arguments = vim clipboard
 -- end
 
 local function getReg(reg)
-    reg = reg or '+'
-    return vim.fn.getreg(reg)
-    -- below technically works but why
-    -- return vim.api.nvim_exec2("echo @+", { output = true }).output
+  reg = reg or '+'
+  return vim.fn.getreg(reg)
+  -- below technically works but why
+  -- return vim.api.nvim_exec2("echo @+", { output = true }).output
 end
 
 local function qrCmd()
-    -- c("!qrencode -t UTF8 \"" .. getClipboard():gsub('"', '\\"') .. '\""')
-    local txt = tostring(getReg())
+  -- c("!qrencode -t UTF8 \"" .. getClipboard():gsub('"', '\\"') .. '\""')
+  local txt = tostring(getReg())
 
-    -- prevents error when text starts with -- by adding space. broken with <leader>qr right now.
-    if string.sub(txt,1,2) == "--" then
-        txt = " " .. txt
-    end
-    txt = txt:gsub("\n", " ") -- new lines break stuff for some reason. `qrencode` does work with new lines.
-    -- txt = txt:gsub('-', '\\-')
+  -- prevents error when text starts with -- by adding space. broken with <leader>qr right now.
+  if string.sub(txt,1,2) == "--" then
+    txt = " " .. txt
+  end
+  txt = txt:gsub("\n", " ") -- new lines break stuff for some reason. `qrencode` does work with new lines.
+  -- txt = txt:gsub('-', '\\-')
 
-    -- \n test
-    vim.notify('after filtering: "' .. tostring(txt) .. '"')
+  -- \n test
+  vim.notify('after filtering: "' .. tostring(txt) .. '"')
 --[[
 
 this text is here for testing
 
 yup
 --]]
-    c('!qrencode -t UTF8 "' .. txt .. '"')
+  c('!qrencode -t UTF8 "' .. txt .. '"')
 end
 vim.api.nvim_create_user_command("Qr", qrCmd, {desc = "Note: This is different than the keybind for testing purposes."})
 vim.api.nvim_create_user_command("TSPlaygroundToggle", function()
-    vim.notify("nvim-treesitter/playground is deprecated. Use :InspectTree, :Inspect, and (v0.10+) :EditQuery")
-    vim.cmd.InspectTree()
+  vim.notify("nvim-treesitter/playground is deprecated. Use :InspectTree, :Inspect, and (v0.10+) :EditQuery")
+  vim.cmd.InspectTree()
 end, {})
 
 -- k.set("n", "<leader>qr", qrCmd, {desc="Get QR code from system clipboard (+ register)"})
@@ -351,56 +351,56 @@ k.set("n", "<leader>qr", [[:!qrencode -t UTF8 "<c-r>+"<CR>]], {desc="Get QR code
 -- WARNING: only works in systems with "ls" and wildcards
 --- @return table|nil
 local function ls_filter(txt)
-    txt = txt or ""
+  txt = txt or ""
 
-    -- WARNING: Nothing below handles stderr (why cursor text shows up on err)
-    local file, err
-    file, err = io.popen("ls " .. txt)
+  -- WARNING: Nothing below handles stderr (why cursor text shows up on err)
+  local file, err
+  file, err = io.popen("ls " .. txt)
 
-    if not file then -- lua lang server wants me to check for some reason
-        vim.notify("Error in probably ls_filter(): "..tostring(err)) return
-    end
+  if not file then -- lua lang server wants me to check for some reason
+    vim.notify("Error in probably ls_filter(): "..tostring(err)) return
+  end
 
-    local lines = vim.split(file:read('*a'), '\n', {trimempty=true})
-    -- local lines = file:lines()
+  local lines = vim.split(file:read('*a'), '\n', {trimempty=true})
+  -- local lines = file:lines()
 
-    file:close()
-    return lines
+  file:close()
+  return lines
 end
 
 local function vsall(range)
-    range = range:gsub(" ", "\\ ")
-    local lines = ls_filter(range)
-    if not lines or #lines == 0 then
-        vim.notify("Canceled vsall. Expected: "..tostring(range))
-        return
-    end
+  range = range:gsub(" ", "\\ ")
+  local lines = ls_filter(range)
+  if not lines or #lines == 0 then
+    vim.notify("Canceled vsall. Expected: "..tostring(range))
+    return
+  end
 
-    vim.print(lines)
-    for _, name in pairs(lines) do
-        if name ~= "" then
-            c.vs(name)
-        end
+  vim.print(lines)
+  for _, name in pairs(lines) do
+    if name ~= "" then
+      c.vs(name)
     end
+  end
 end
 
 -- k.set("n", "<leader>md") -- markdown delete duplicates (better name / etc. l8r)
 
 k.set("n", "<leader>dc", function()
-    -- sync conflict files made automatically by syncthing
-    vsall(vim.fn.expand('%:r') .. ".sync-conflict-*")
+  -- sync conflict files made automatically by syncthing
+  vsall(vim.fn.expand('%:r') .. ".sync-conflict-*")
 end, {desc="Diff conflict files (might do more in future)"})
 
 k.set("n", "<leader>pt", c.TodoLocList, { desc = ":TodoLocList"})
 
 local isVisible = false
 k.set("n", "<leader>ht", function()
-    isVisible = not isVisible
-    if isVisible then
-        c.hi("Normal", "guifg=#333333", "guibg=#000000")
-    else
-        c.hi("Normal", "guifg=xxx", "guibg=Clear")
-    end
+  isVisible = not isVisible
+  if isVisible then
+    c.hi("Normal", "guifg=#333333", "guibg=#000000")
+  else
+    c.hi("Normal", "guifg=xxx", "guibg=Clear")
+  end
 end, { desc = "Less visible text. tags: invisible, hidden"})
 
 k.set("n", "<leader>hh", "<cmd>nohl<CR>", { desc = "Hide highlight after searching. tags: invisible, hidden"})
@@ -413,11 +413,11 @@ k.set("n", "<leader>hn", "<cmd>set nu! rnu!<CR>", { desc = "Toggle number / rela
 -- https://youtu.be/9gUatBHuXE0
 -- Autorun on save. Useful but not in this case. Useful example: .md -> .html
 -- vim.api.nvim_create_autocmd("BufWritePost", {
---     group = vim.api.nvim_create_augroup("Codeee", { clear = true }),
---     pattern = "project.godot",
---     callback = function()
---         c("!godot project.godot")
---     end,
+--   group = vim.api.nvim_create_augroup("Codeee", { clear = true }),
+--   pattern = "project.godot",
+--   callback = function()
+--     c("!godot project.godot")
+--   end,
 -- })
 
 -- !pup text{} | sed '/^\s*$/d' # doesn't work smh cuz sed and vim recognizing it differently... make new shell script i guess

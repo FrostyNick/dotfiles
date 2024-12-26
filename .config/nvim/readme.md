@@ -142,32 +142,32 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Lazy Plugins
 local plugins = {
-    {
-        'nvim-telescope/telescope.nvim', tag = '0.1.5',
-        -- or                          , branch = '0.1.x',
-        dependencies = { 'nvim-lua/plenary.nvim' },
-        config = function()
-            k.del("n", "<leader>,") -- this is backup remap; telescope will break probably
-            k.set("n", "<leader>,", function() vim.cmd("Telescope oldfiles") end, {desc=":bro o -> Telescope oldfiles"})
-        end
-    },
-    {
-        'rose-pine/neovim',
-        name = 'rose-pine',
-        config = function()
-            vim.cmd.colorscheme("rose-pine")
+  {
+    'nvim-telescope/telescope.nvim', tag = '0.1.5',
+    -- or                          , branch = '0.1.x',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      k.del("n", "<leader>,") -- this is backup remap; telescope will break probably
+      k.set("n", "<leader>,", function() vim.cmd("Telescope oldfiles") end, {desc=":bro o -> Telescope oldfiles"})
+    end
+  },
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    config = function()
+      vim.cmd.colorscheme("rose-pine")
 
---            :lua vim.print(vim.api.nvim_get_color_map())
---            :Telescope highlights
-            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+--      :lua vim.print(vim.api.nvim_get_color_map())
+--      :Telescope highlights
+      vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
-            -- Makes telescope transparent
-            vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-        end,
-    },
-    { 'numToStr/Comment.nvim', opts = {} },
+      -- Makes telescope transparent
+      vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
+      vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    end,
+  },
+  { 'numToStr/Comment.nvim', opts = {} },
 }
 
 require("lazy").setup(plugins, {})

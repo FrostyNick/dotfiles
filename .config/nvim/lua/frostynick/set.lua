@@ -87,23 +87,23 @@ cmd.ca("tan tabe")
 -- Try when ya got time. Works but could be improved maybe.
 --[[ Restore cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {
-    pattern = "*",
-    callback = function()
-        vim.api.nvim_exec('silent! normal! g`"zv', false)
-    end,
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_exec('silent! normal! g`"zv', false)
+  end,
 })
 --]]
 
 -- local mygroup = vim.api.nvim_create_augroup('vimStartup', {clear = true}) -- rm clear?
 -- vim.api.nvim_create_autocmd("BufReadPost", {
---     pattern = "*",
---     group = mygroup,
---     command = [[
---     vim.o.au = false -- is this needed?
---     -- still needs to be converted f vimscript. this is psudocode. might break vim. there's probably a better way to do this.
---     local pos = cmd('line("\'\\"")') -- this probably won't work.
---     if pos >= 1 and pos <= cmd('line("$")') and ???? then
---         -- press g`"
---     end
---     ]], 
+--   pattern = "*",
+--   group = mygroup,
+--   command = [[
+--   vim.o.au = false -- is this needed?
+--   -- still needs to be converted f vimscript. this is psudocode. might break vim. there's probably a better way to do this.
+--   local pos = cmd('line("\'\\"")') -- this probably won't work.
+--   if pos >= 1 and pos <= cmd('line("$")') and ???? then
+--     -- press g`"
+--   end
+--   ]], 
 -- })
