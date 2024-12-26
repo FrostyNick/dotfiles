@@ -28,8 +28,8 @@ k.set("n", "<leader>cwd", function() vim.notify(uv.cwd()) end)
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 -- k.set("n", "<leader>dk", function() vim.diagnostic.jump({count=1, float=true}) end, {desc="LSP: prev diagnostic"})
-k.set("n", "<leader>dk", vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"}) -- WARNING: Deprecated in nvim 0.11 probably / nightly (2024-10-16)
-k.set("n", "<leader>dj", vim.diagnostic.goto_next, {desc="LSP: next diagnostic"})
+k.set("n", "<leader>dk", vim.diagnostic.goto_prev or vim.diagnostic.jump({count=1, float=true}), {desc="LSP: prev diagnostic"})
+k.set("n", "<leader>dj", vim.diagnostic.goto_next or vim.diagnostic.jump({count=-1, float=true}), {desc="LSP: next diagnostic"})
 
 -- Keep clipboard contents after pasting with p in visual mode.
 -- Thanks to: https://github.com/LunarVim/Neovim-from-scratch/blob/02-keymaps/lua/user/keymaps.lua#L52C1-L52C31
@@ -39,22 +39,24 @@ k.set("v", "p", '"_dP')
 -- kLsp("gca", vim.lsp.buf.code_action, "code action")
 k.set("n", "gt", vim.lsp.buf.type_definition, {desc="LSP: type definition"})
 k.set("n", "gr", vim.lsp.buf.rename, {desc="LSP: rename"})
--- ga overrides vim keybind which could be useful in the future
+-- ga overrides vim keybind for character code under current cursor.
 k.set("n", "gA", vim.lsp.buf.code_action, {desc="LSP: code action"})
-k.set("n", "gf", "<cmd>e <cfile><CR>", {desc="gf but also create file if it doesn't exist."})
+k.set("n", "gf", "<cmd>e <cfile><CR>", {desc="gf + also create unsaved file if it doesn't exist"})
 
 -- yank/put: " + macro + y/p
 -- useless macro: isusu€kb
 -- macro: cwk,€kb.setwa"n", $2F'2F"$2F"i{desc=$i}
 
-
--- overrided by new harpoon shortcuts
+-- Might be useful if you use quickfix list
+-- k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- k.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 -- k.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 
--- I don't use this. Maybe if I learn how to use this it would be useful.
--- k.set("n", "<leader>k", "<cmd>lnext<CR>zz")
--- k.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+k.set("n", "<C-h>", "<C-w><c-h>")
+k.set("n", "<C-j>", "<C-w><c-j>")
+k.set("n", "<C-k>", "<C-w><c-k>")
+k.set("n", "<C-l>", "<C-w><c-l>")
 
 -- <leader>zo moved to lazy.lua
 k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"})
@@ -72,6 +74,7 @@ k.set("n", "<leader>mytv", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {d
 -- k.set("n", "<leader>mk", ":norm blysiW]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
 -- k.set("n", "<leader>mw", ":norm blysiW]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
 
+k.set("n", "yc", "yygccp", {desc="Text: Copy line; comment; paste in next line.", remap=true}) -- credit: u/santas on reddit
 k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
 k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clipboard
@@ -105,13 +108,6 @@ k.set("n", "<leader>vpg", function()
     vim.notify("<leader>g{o,p} also make new branch")
 end);
 
-
--- local leader = ' '
--- I cannot get below to work. Above is the best solution I could make.
--- vim.api.nvim_set_keymap('n', ' <Space>vpv', [[:nmap  <Space>vp<CR>]], { noremap = true, silent = true })
--- k.set("n", "<leader>vpv", "<cmd>nmap " .. space .. "vp<CR>");
--- k.set("n", "<leader>vpv", [[:execute 'nmap ' .. mapleader .. 'vp' | echomsg ''<CR>]]);
--- k.set("n", "<leader>vpv", [[:echo 'nmap <leader>vp'<CR>]]);
 k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
 
 --- xdg-open miscellaneous
@@ -119,7 +115,7 @@ k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
 k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
-k.set("n", "<leader>fx", "<cmd>!chmod +x %<CR>", { silent = true }) -- cuts all text to clipboard
+k.set("n", "<leader>fx", "<cmd>!chmod +x %<CR>", { silent = true, desc = "execute current file" })
 
 -- "explorer" is for Windows. Probably broken; needs Git Bash for pipes to work.
 k.set("n", "<leader>po",
@@ -137,21 +133,35 @@ k.set("n", "<leader>gho",
 k.set("n", "<leader>gg", c.Git)
 k.set("n", "<leader>gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
 k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
-k.set("n", "<leader>gp", function()
-    c.vs()
-    c.term()
 
-    local keys -- changes based on if ":Vterm" exists from termim plugin
+local function termExec(rawKeys, doCR)
+    c("vs | term")
+
+    local keys
     if vim.fn.exists(":Vterm") == 2 then
-        keys = "gitp"
+        -- below changes if termim plugin exists
+        keys = rawKeys
     else
-        keys = "igitp"
+        keys = "i" .. rawKeys
     end
 
-    vim.api.nvim_feedkeys(keys, "n", false)
-    -- WARNING: If termim is removed, below should be "igitp"
-    -- c("<C-w>v<cmd>term<CR>igitp")
+    if not doCR then
+        vim.api.nvim_feedkeys(keys, "n", false)
+        return
+    end
+    local keyRawTxt = "<CR>"
+    local keyCR = vim.api.nvim_replace_termcodes(keyRawTxt, true, true, true)
+
+    vim.api.nvim_feedkeys(keys .. keyCR, "n", false)
+end
+
+k.set("n", "<leader>gp", function()
+    termExec("gitp", true)
 end)
+
+k.set("n", "<leader>at", function()
+    termExec("tgpt -m", true)
+end, { desc = "ai tgpt"})
 
 -- if in git repository, open 1st remote url.
 -- Above should use git fugitive ... I just have a terminal dependant password inserting thing that makes git fugitive not work well. (:G push)
