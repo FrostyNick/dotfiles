@@ -5,16 +5,15 @@ function ColorMyPencils(color, isSpell, showBg) -- NOTE: duplicate fn in ../../l
     if type(color) == "table" then
       color = color.name -- automatically passed from Lazy
     end
-    if not color then
-      color = "midnight"
+    if color then
+      vim.cmd.colorscheme(color)
     end
-    vim.cmd.colorscheme(color)
   end)
 
   if not a then
     vim.notify("Could not apply colorscheme: "..tostring(b))
   end
-  if not isSpell then
+  if not isSpell or type(isSpell) == "table" then -- empty table exists from Lazy
     vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
     vim.cmd.hi("clear", "SpellCap")
   end

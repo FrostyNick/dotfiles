@@ -226,16 +226,15 @@ local function invisiBkgd(color, isSpell, showBg) -- NOTE: ColorMyPencils() is a
     if type(color) == "table" then
       color = color.name -- automatically passed from Lazy
     end
-    if not color then
-      color = "midnight"
+    if color then
+      vim.cmd.colorscheme(color)
     end
-    vim.cmd.colorscheme(color)
   end)
 
   if not a then
     vim.notify("Could not apply colorscheme: "..tostring(b))
   end
-  if not isSpell then
+  if not isSpell or type(isSpell) == "table" then -- empty table exists from Lazy
     vim.cmd.hi("clear", "SpellBad") -- removes highlight since I set spell to true by default
     vim.cmd.hi("clear", "SpellCap")
   end
@@ -267,11 +266,21 @@ end
 -- local function toggleZen(win) -- not working
 --   local isZen = not not win:is_floating() -- not vim.wo.nu
 local function toggleNotZen(isNotZen)
-  vim.cmd.GitGutterToggle()
   vim.wo.wrap = isNotZen
   vim.wo.nu = isNotZen
   vim.wo.rnu = isNotZen
   vim.wo.colorcolumn = isNotZen and "80" or "0"
+  local a,b = pcall(function()
+    -- vim.cmd.GitGutterToggle()
+    if isNotZen then
+      vim.cmd.Gitsigns("attach")
+    else
+      vim.cmd.Gitsigns("detach")
+    end
+  end)
+  if not a then
+    vim.notify("Failed to toggle gitsigns.nvim: " .. tostring(b))
+  end
 end
 
 local plugins = {
@@ -740,37 +749,62 @@ local plugins = {
   {
     'mbbill/undotree',
     cmd = "UndotreeToggle",
-    init = function()
-      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
-    end,
+    keys = {
+      { "<leader>u", vim.cmd.UndotreeToggle, mode = "n" }
+    }
+  },
+  {
+    "NeogitOrg/neogit", -- new plugin here. Possible addition/alternative to vim-fugitive. Seems promising (neogit is keyboard shortcut based vs vim fugitive improving git command line)
+    cmd = "Neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+
+      -- Only one of these is needed.
+      "nvim-telescope/telescope.nvim", -- optional
+      -- "ibhagwan/fzf-lua",           -- optional
+      -- "echasnovski/mini.pick",      -- optional
+    },
+    keys = {
+      { "<leader>2gs", vim.cmd.Neogit, mode = "n", desc = "Open Neogit"},
+    },
   },
   {
     'tpope/vim-fugitive',
-    event = "VeryLazy",
-    config = function()
-      vim.keymap.set('n', '<leader>gs', vim.cmd.Git);
-    end,
+    -- event = "VeryLazy",
+    cmd = "Git",
+    keys = {
+      { "<leader>gs", vim.cmd.Git, mode = "n", desc = "Open Git Fugitive"},
+    },
   },
-  -- { -- This is instant (way faster than git-blame.nvim). But..
-  -- It takes over alternative git signs plugins, git signs is quite limited, and grey text is white. Not worth the trade offs in my opinion.
-  --   'hougesen/blame-me.nvim',
-  --   event = "VeryLazy",
-  --   opts = { delay = 0 }
-  -- },
-  {'f-person/git-blame.nvim', event = 'VeryLazy'}, -- shows git blame
   {'lewis6991/gitsigns.nvim', event = 'VeryLazy', -- requires v0.9+
     -- config = true, -- use default config
-    opts = {
+    opts = { -- :help gitsigns-usage
       signs = { add = { text = '+' }, },
       signs_staged = { add = { text = '+' }, },
+      numhl     = true, -- `:Gitsigns toggle_numhl`
+      word_diff = true, -- `:Gitsigns toggle_word_diff`
+      current_line_blame = true, -- `:Gitsigns toggle_word_diff`
+      current_line_blame_opts = {
+        delay = 200, -- default: 1000
+        virt_text_pos = 'right_align' -- default: next to text
+      }
     },
+    keys = {
+      { "<leader>ghv", ":Gits preview_hunk<CR>",   mode = {"n", "v"}, desc = "Git Hunk: View"},
+      { "<leader>ghs", ":Gits stage_hunk<CR>",     mode = {"n", "v"}, desc = "Git Hunk: Stage"},
+      { "<leader>ghu", ":Gits undo_stage_hunk<CR>",mode = {"n", "v"}, desc = "Git Hunk: Reset"},
+      { "<leader>ghr", ":Gits reset_hunk<CR>",     mode = {"n", "v"}, desc = "Git Hunk: Stage"},
+      { "<leader>ghe", ":Gits select_hunk<CR>",    mode = {"n", "v"}, desc = "Git Hunk: Edit (select hunk with visual mode)"},
+      { "<leader>gd", ":Gits diffthis<CR>", mode = {"n", "v"}, desc = "Git Diff" },
+    }
     -- commit = "76927d14d3fbd4ba06ccb5246e79d93b5442c188", -- v0.8 support
   },
   {
     "2kabhishek/co-author.nvim",
     commit = "e6458cb9d42266336a92e750c9452ac12ee03079",
     cmd = "CoAuthor",
-    keys = {
+    keys = { -- this is the whole plugin btw just the below feature
       { "<leader>gC", vim.cmd.CoAuthor, desc = "Quickly add co-authors to git commits", mode = "n" }
     },
   },
