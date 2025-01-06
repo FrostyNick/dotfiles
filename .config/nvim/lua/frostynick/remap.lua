@@ -24,7 +24,6 @@ k.set({ "n", "v" }, "<leader>d", [["_d]])
 --
 k.set("n", "Q", "<nop>")
 
-k.set("n", "<leader>cwd", function() vim.notify(uv.cwd()) end)
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 -- k.set("n", "<leader>dk", function() vim.diagnostic.jump({count=1, float=true}) end, {desc="LSP: prev diagnostic"})
@@ -58,6 +57,8 @@ k.set("n", "<C-h>", "<C-w><c-h>")
 k.set("n", "<C-j>", "<C-w><c-j>")
 k.set("n", "<C-k>", "<C-w><c-k>")
 k.set("n", "<C-l>", "<C-w><c-l>")
+k.set("n", "<leader>zl", "<cmd>tabn<CR>", {desc="Next tab"})
+k.set("n", "<leader>zh", "<cmd>tabp<CR>", {desc="Prev tab"})
 
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think 
 "<cmd>!xdg-open $(git remote -v | grep -i $(git config user.name) | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
@@ -136,7 +137,7 @@ k.set("n", "<leader>gho",
 
 k.set("n", "<leader>gg", c.Git)
 k.set("n", "<leader>gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
-k.set("n", "<leader>gd", "<cmd>Git diff<CR>")
+k.set("n", "<leader>2gd", "<cmd>Git diff<CR>")
 
 local function termExec(rawKeys, doCR)
   c("vs | term")
@@ -220,20 +221,26 @@ k.set("n", "<leader>zm", bufToNewTab, {desc="Move to new tab"})
 k.set("n", "<leader>zM", function() bufToNewTab(true) end, {desc="Move to new tab (stay in same tab)"})
 
 --- Vim shortcuts
-k.set("n", "<leader>w", c.w)
-k.set("n", "<leader>ze", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+k.set("n", "<leader>w", c.up)
+k.set("n", "<leader>zw", c.wa)
+k.set("n", "<leader>qw", c.xa)
+k.set("n", "<leader>zie", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+k.set("n", "<leader>ze", c.vne)
 k.set("n", "<leader>e", c.tabe)
+
+--- Working directory
 k.set("n", "<leader>`", function()
   c.cd()
   vim.notify("cwd: ~")
 end, {desc="Move cwd to ~"}) -- In future: if cd == ~ .. otherwise go to current dir
+k.set("n", "<leader>cwd", function() vim.notify(uv.cwd()) end)
 
 k.set("n", "<leader>~", function()
   c("cd %:h")
   vim.notify(uv.cwd())
 end, {desc="Move cwd .. of current file"})
 
-k.set("n", "<leader>m.", function()
+k.set("n", "<leader>.", function()
   c("cd ..")
   vim.notify(uv.cwd())
 end, {desc="Move cwd .. of cwd (previously <leader>.)"})
