@@ -8,17 +8,22 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+# FUTURE: Move all this to i3 and sway if possible to make it less specific to how arch/ubuntu/etc work. (Note for anyone looking at src code: At the time of commit, this is only used in Ubuntu and X11.)
+
 # for i3-sensible-terminal
 # TERMINAL=wezterm; export TERMINAL 
 # ^ this has stopped working. maybe the system has stopped recognizing this file for some reason??
-# alternatives to kitty: wezterm, alacritty, st
+# alternatives to kitty: wezterm, alacritty, st, (on ubuntu 20.04 using nix package manager) foot
 export TERMINAL=alacritty
 export EDITOR=vi
 export VISUAL=vi
 # for dark theme on apps such as simplescrrec
 export QT_STYLE_OVERRIDE=kvantum
-# feh --randomize --bg-max ~/Pictures/wallpapers/*
-feh --randomize --bg-fill ~/Pictures/wallpapers/*
+# Add below if using sway
+export XDG_CURRENT_DESKTOP="sway"
+# feh --randomize --bg-max ~/backup2*/wallpapers/active/*
+feh --randomize --bg-fill ~/backup2*/wallpapers/active/*
+
 setxkbmap -option caps:escape
 
 # if running bash

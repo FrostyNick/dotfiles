@@ -19,6 +19,7 @@ image/png=qimgv.desktop
 image/jpeg=qimgv.desktop
 image/webp=qimgv.desktop
 x-scheme-handler/discord-962073502469459999=discord-962073502469459999.desktop
+application/zip=AM-mcpelauncher.desktop
 
 [Added Associations]
 application/x-desktop=vim.desktop;
@@ -32,3 +33,4 @@ image/jpeg=qimgv.desktop;
 image/webp=qimgv.desktop;
 application/pdf=org.kde.kdeconnect.nonplasma.desktop;org.kde.kdeconnect.app.desktop;qpdfview.desktop;
 application/epub+zip=qpdfview.desktop;
+application/zip=AM-mcpelauncher.desktop;net.lutris.minecraft-bedrock-edition-2.desktop;

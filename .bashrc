@@ -123,9 +123,7 @@ trap clear_console EXIT
 command -v zoxide >/dev/null && eval "$(zoxide init bash)"
 
 # environment variables | test: `printenv | grep TERM`
-export PATH="$HOME/.config/emacs/bin:/home/nicholas/.local/bin:$PATH"
-export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-export HOMEBREW_NO_ENV_FILTERING=1
+export PATH="$HOME/.config/emacs/bin:$HOME/.local/bin:$HOME/.local/share/bob/nvim-bin:$PATH"
 # TERMINAL=kitty; export TERMINAL
 # export TERMINAL="kitty"
 
@@ -133,7 +131,7 @@ export HOMEBREW_NO_ENV_FILTERING=1
 # ls="ls --hyperlink" added above cuz it don't work here
 
 # for nix command to work
-# . /home/nicholas/.nix-profile/etc/profile.d/nix.sh
+. /home/nicholas/.nix-profile/etc/profile.d/nix.sh
 
 # Automatically added by the Guix install script.
 if [ -n "$GUIX_ENVIRONMENT" ]; then
@@ -142,3 +140,5 @@ if [ -n "$GUIX_ENVIRONMENT" ]; then
     fi
 fi
 
+# Added by github.com/FrostyNick/fgit setup
+alias fgit=". fgit"
