@@ -110,9 +110,11 @@ mweb() {
 
 
 # more colors
-export MANPAGER="less -R --use-color -Dd+r -Du+b"
-export MANROFFOPT="-P -c"
-export LESS='-R --use-color -Dd+r$Du+b$'
+export MANPAGER='nvim +Man!'
+# commented below doesn't work at the very least in Ubuntu 20.04, probably old binaries / my setup
+# export MANPAGER="less -R --use-color -Dd+r -Du+b"
+# export MANROFFOPT="-P -c"
+# export LESS='-R --use-color -Dd+r$Du+b$' # this won't work in Ubuntu 20.04 (there's no --use-color flag)
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -257,6 +259,7 @@ discordV() {
 
 alias pulseaudioD="pipewireE"
 alias pipewireD="pulseaudioE"
+alias p-="pulseaudioE"
 
 pipewireE() {
     systemctl --user --now disable pulseaudio.service pulseaudio.socket
@@ -326,7 +329,7 @@ alias gitplp='anticn && git pull;procn'
 alias gitfp='anticn && git fetch;procn'
 
 alias dtwarning='echo "All changes WILL be public."'
-alias dt='/nix/store/0cgj6agi5yzp4lyrzcnjwlidym2c84al-user-environment/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias dt='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias dts='dt branch;dt status'
 alias dtp='dtwarning && anticn && dt push;procn'
 alias dtpl='dt pull'
@@ -397,3 +400,4 @@ alias 2j="nvim ~/backup2022nov10/markor/j/$(date +%Y)/$(date +%m | sed 's/^0*//'
 # actually, a shortcut + fzf would be better than cluttering the terminal (maybe)
 # until then, it's saved in android t-ui.
 # syntax: tui <alias>
+# ~/.bashrc
