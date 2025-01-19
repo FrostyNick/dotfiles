@@ -15,7 +15,7 @@
 # # Also: networkmanager for waitConnection.sh to work
 
 # # Dependencies with Ubuntu 20.04 (list not exhaustive):
-# sudo apt install dunst waybar
+# sudo apt install dunst waybar wob # wob not recommended on ubuntu 20.04
 # # Some dependencies can be installed with nix package manager:
 # nix-env -iA nixpkgs.tofi
 # nix-env -iA nixpkgs.wlprop # (Optional) Alternatively, find the bash script online and paste the shell script for example in ~/.local/bin/ if that's in your PATH.
@@ -23,7 +23,6 @@
 # nix-env -iA nixpkgs.mpv # This installs mpv 0.35.0 on my machine.. might be newer for you which works too.
 # # Below requires elevated permissions. Make sure you find correct /nix/store path before proceeding. mv or rm below.. your choice.
 # cd /usr/bin; mv mpv mpv32; ln -s /nix/store/???????/bin/mpv mpv
-# # Not tested: wob, networkmanager for waitConnection.sh to work
 
 # alternative to wlprop that shows all running wayland applications:
 # swaymsg -t get_tree
@@ -34,7 +33,7 @@
 # i3 config file (v4)
 #############################################################################
 # Please see https://i3wm.org/docs/userguide.html for a complete reference! #
-######################################w#######################################
+#####################################w#######################################
 
 set $mod Mod4
 # $menu can be bemenu, wmenu, dmenu, etc.
@@ -74,7 +73,8 @@ exec nm-applet --indicator
 exec dunst
 # exec mako
 exec swaync 
-# exec_always $HOME/.config/sway/wobInit.sh
+# on older distros wob may have a memory leak .. you'll want to disable there
+exec_always $HOME/.config/sway/wobInit.sh
 # dbus-launch --exit-with-session exec mako
 
 # below doesn't work
@@ -89,6 +89,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
 set $refresh_i3status killall -SIGUSR1 i3status
 # bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && exec $HOME/.config/sway/wobPush.sh
 # bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && exec $HOME/.config/sway/wobPush.sh
+
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && notify-send "Mute toggled"
@@ -281,6 +282,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 bindsym $mod+z exec $HOME/.config/sway/setZoom.sh $menu
+bindsym $mod+t exec $HOME/.config/sway/setTran.sh $menu
 
 # Waybar config: ~/.config/waybar/config.jsonc
 bar {
@@ -306,8 +308,8 @@ client.background       #00ee78
 # WARNING: flameshot doesn't work
 # bindsym $mod+Print exec flameshot gui
 bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save)"
-# bindsym Print exec flameshot gui || exec notify-send "Took screenshot: $(grimshot save area)"
-bindsym Print exec ./.config/sway/launchFlameshot.sh || exec notify-send "Took screenshot: $(grimshot save area)"
+bindsym Print exec notify-send "Took screenshot: $(grimshot save area)"
+# bindsym Print exec $HOME/.config/sway/launchFlameshot.sh || exec notify-send "Took screenshot: $(grimshot save area)"
 # if slurp dependency isn't ancient "area" above should be replaced with "anything" (missing slurp -o)
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
@@ -510,6 +512,8 @@ assign [app_id="libreoffice-*"] $ws3
 assign [app_id="org.qbittorrent.qBittorrent"] $ws3
 for_window [app_id="org.kde.dolphin"] focus
 assign [app_id="org.kde.dolphin"] $ws3
+for_window [app_id="pcmanfm-qt"] focus
+assign [app_id="pcmanfm-qt"] $ws3
 # text editor
 assign [app_id="featherpad"] $ws3
 for_window [app_id="featherpad"] focus
@@ -645,6 +649,8 @@ include /etc/sway/config.d/*
 
 # exec $HOME/.config/sway/notifyBattery.sh
 
+# autotiling doesn't work on Ubuntu 20.04
+exec_always autotiling
 exec_always $HOME/.config/sway/setSwaybg.sh
 
 # Auto-launch Vesktop. The flag below forces vesktop through

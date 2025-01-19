@@ -325,7 +325,7 @@ client.background       #00ee78
 # Same as above, this also works if you use X11 with a file in `~/.profile`, `~/.bash_profile`, etc:
 # `feh --randomize --bg-max ~/Pictures/wallpapers/*`
 # Below will probably work:
-# exec feh --randomize --bg-max ~/Pictures/wallpapers/*
+exec feh --randomize --bg-max ~/Pictures/wallpapers/active/*
 
 # 107 = Print, so below also works:
 # bindcode 107 flameshot gui
