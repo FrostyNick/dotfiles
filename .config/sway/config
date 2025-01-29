@@ -23,6 +23,7 @@
 # nix-env -iA nixpkgs.mpv # This installs mpv 0.35.0 on my machine.. might be newer for you which works too.
 # # Below requires elevated permissions. Make sure you find correct /nix/store path before proceeding. mv or rm below.. your choice.
 # cd /usr/bin; mv mpv mpv32; ln -s /nix/store/???????/bin/mpv mpv
+# # Not tested: wob, networkmanager for waitConnection.sh to work
 
 # alternative to wlprop that shows all running wayland applications:
 # swaymsg -t get_tree
@@ -40,6 +41,7 @@ set $mod Mod4
 set $menu tofi
 # set $term i3-sensible-terminal
 set $term foot
+set $bar waybar
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -167,10 +169,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+b split h
+bindsym $mod+Shift+b split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+Shift+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -201,6 +203,11 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 bindsym $mod+x exec $term -e "./.config/i3/openQuick.sh"
+
+bindsym $mod+b exec ./.config/sway/launchBrowser.sh $menu
+bindsym $mod+comma exec ./.config/sway/toggleBar.sh $bar
+# /home/nicholas/.config/sway/toggleBar.sh
+bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi"
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -285,21 +292,25 @@ bindsym $mod+z exec $HOME/.config/sway/setZoom.sh $menu
 bindsym $mod+t exec $HOME/.config/sway/setTran.sh $menu
 
 # Waybar config: ~/.config/waybar/config.jsonc
-bar {
-    swaybar_command waybar
-    # autohide bar (src: https://github.com/Alexays/Waybar/discussions/3225#discussioncomment-9334609)
-    hidden_state hide
-    mode hide
-    modifier $mod
-    position bottom
-}
+# bar {
+#     swaybar_command waybar
+#     # autohide bar (src: https://github.com/Alexays/Waybar/discussions/3225#discussioncomment-9334609)
+#     hidden_state hide
+#     mode hide
+#     modifier $mod
+#     position bottom
+# }
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #002800 #002800 #b8b8b8 #002800   #001800
-client.focused_inactive #180000 #181818 #888888 #141414   #181818
-client.unfocused        #333333 #222222 #696969 #292d2e   #222222
+# client.focused          #002800 #002800 #b8b8b8 #002800   #001800
+client.focused          #000000 #000000 #b8b8b8 #000000   #000000
+# client.focused_inactive #180000 #181818 #888888 #141414   #181818
+client.focused_inactive #280000 #000000 #888888 #000000   #000000
+# client.unfocused        #333333 #222222 #696969 #292d2e   #222222
+client.unfocused        #222222 #000000 #696969 #292d2e   #222222
 client.urgent           #2f343a #900000 #cccccc #900000   #900000
-client.placeholder      #000000 #0c0c0c #484848 #000000   #0c0c0c
+# client.placeholder      #000000 #0c0c0c #484848 #000000   #0c0c0c
+client.placeholder      #0c0c0c #000000 #484848 #000000   #0c0c0c
 client.background       #00ee78
 
 # 107 = Print, so below also works:

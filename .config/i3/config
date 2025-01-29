@@ -47,6 +47,7 @@ set $term alacritty
 # Set above as Mod1 after resetting to avoid Mod4 if it breaks.
 # Errors are expected for now, since idk the fix, but it's workable.
 # otherwise above should be Mod4
+set $bar i3bar
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -142,10 +143,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+b split h
+bindsym $mod+Shift+b split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+Shift+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -171,6 +172,11 @@ bindsym $mod+a focus parent
 # Add scratchpad like in sway?
 
 bindsym $mod+x exec $term -e "./.config/i3/openQuick.sh"
+
+bindsym $mod+b exec ./.config/sway/launchBrowser.sh $menu
+bindsym $mod+comma exec ./.config/sway/toggleBar.sh $bar
+# /home/nicholas/.config/sway/toggleBar.sh
+bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi"
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -255,9 +261,8 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-
-
-    mode hide
+    # mode hide
+    mode dock
     # position top
     # disable clicking on the bar
     bindsym button1 nop
@@ -315,11 +320,11 @@ bar {
 # client.background       #00ff88
 
 # these colors are probably not matching the theme since these aren't visible.
-client.focused          #002800 #002800 #b8b8b8 #002800   #001800
-client.focused_inactive #180000 #181818 #888888 #141414   #181818
-client.unfocused        #333333 #222222 #696969 #292d2e   #222222
+client.focused          #000000 #000000 #b8b8b8 #000000   #000000
+client.focused_inactive #280000 #000000 #888888 #000000   #000000
+client.unfocused        #222222 #000000 #696969 #292d2e   #222222
 client.urgent           #2f343a #900000 #cccccc #900000   #900000
-client.placeholder      #000000 #0c0c0c #484848 #000000   #0c0c0c
+client.placeholder      #0c0c0c #000000 #484848 #000000   #0c0c0c
 client.background       #00ee78
 
 # Same as above, this also works if you use X11 with a file in `~/.profile`, `~/.bash_profile`, etc:
