@@ -1,0 +1,53 @@
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+
+# Config syntax crash course
+# ==========================
+# # Spacing around the equals sign does not matter.
+# # All of these are identical:
+# key=value
+# key= value
+# key =value
+# key = value
+
+# Window settings
+window-decoration = false
+window-inherit-working-directory = true
+# below default: auto
+window-theme = dark
+window-save-state = always
+# below supports less Gnome/GTK GUI features
+gtk-adwaita = false
+
+# Mouse settings
+mouse-hide-while-typing = true
+# copy-on-select = true
+
+# Font and cursor settings
+font-family = "Mononoki Nerd Font Mono"
+font-size = 12
+cursor-style = block
+
+# Background settings
+background = #000000
+background-opacity = 0.8
+# Below officially supported: MacOS, KDE Plasma (X11 and Wayland) on Linux.
+# background-blur = false 
+# not added: official themes exist are in ghostty
+# on mac this seems notable:
+# macos-option-as-alt = 
+
+# Add your own theme
+# see: https://www.ditig.com/256-colors-cheat-sheet
+# example: https://github.com/dacrab/ghostty-config/
+# palette = 0=#1d1f21
+# palette = 1=#cc6666
+# palette = 2=#b5bd68
+# palette = ... = ...
+# palette = 255=#eeeeee
+
+# Everything below requires shell integration (not sure if I added it correctly)
+# cursor-click-to-move = true
