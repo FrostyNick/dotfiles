@@ -1,0 +1,21 @@
+# See README.md for plugin installation
+
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[manager]
+show_hidden    = true
+
+# Below uses git plugin:
+# $ ya pack -a yazi-rs/plugins:git
+# ~/.config/yazi/plugins/git.yazi/README.md (unix)
+
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*"
+run  = "git"
+
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*/"
+run  = "git"
+
