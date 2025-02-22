@@ -57,8 +57,18 @@ k.set("n", "<C-h>", "<C-w><c-h>")
 k.set("n", "<C-j>", "<C-w><c-j>")
 k.set("n", "<C-k>", "<C-w><c-k>")
 k.set("n", "<C-l>", "<C-w><c-l>")
+-- k.set("n", "<TAB>", "<cmd>tabn<CR>", {desc="Next tab"}) -- might override existing shortcuts
+-- k.set("n", "<S-TAB>", "<cmd>tabp<CR>", {desc="Prev tab"})
 k.set("n", "<leader>zl", "<cmd>tabn<CR>", {desc="Next tab"})
 k.set("n", "<leader>zh", "<cmd>tabp<CR>", {desc="Prev tab"})
+
+-- k.set("t", "<C-h>", "<cmd>wincmd h<CR>", {remap=true, silent=true}) -- yea doesn't seem to work
+-- k.set("t", "<C-j>", "<cmd>wincmd j<CR>", {remap=true, silent=true})
+-- k.set("t", "<C-k>", "<cmd>wincmd k<CR>", {remap=true, silent=true})
+-- k.set("t", "<C-l>", "<cmd>wincmd l<CR>", {remap=true, silent=true})
+
+k.set("v", "<", "<gv")
+k.set("v", ">", ">gv")
 
 k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think 
 "<cmd>!xdg-open $(git remote -v | grep -i $(git config user.name) | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
@@ -98,11 +108,13 @@ k.set('n', '<leader>vpp',
 {desc="Telescope: find code in projects directory"})
 
 k.set('n', '<leader>vp2p',
-'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup*/p/<CR>',
+-- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov*/p/<CR>',
+'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/p/<CR>',
 {desc="Telescope: find code in projects directory"})
 
 k.set('n', '<leader>vpb',
-'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup*/<CR>',
+-- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov*/<CR>',
+'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/<CR>',
 {desc="Telescope: find code in backup directory"})
 
 -- below doesnt work because i is powerful af. fix later.
@@ -136,7 +148,7 @@ k.set("n", "<leader>gho",
 { silent = true, desc = "octo list (requires gh)" })
 
 k.set("n", "<leader>gg", c.Git)
-k.set("n", "<leader>gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
+k.set("n", "<leader>2gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
 k.set("n", "<leader>2gd", "<cmd>Git diff<CR>")
 
 local function termExec(rawKeys, doCR)
@@ -351,6 +363,7 @@ vim.api.nvim_create_user_command("TSPlaygroundToggle", function()
   vim.notify("nvim-treesitter/playground is deprecated. Use :InspectTree, :Inspect, and (v0.10+) :EditQuery")
   vim.cmd.InspectTree()
 end, {})
+k.set("n", "<leader>kk", "<cmd>Screenkey<CR>", { desc = "Toggle displaying screenkey visibility."})
 
 -- k.set("n", "<leader>qr", qrCmd, {desc="Get QR code from system clipboard (+ register)"})
 k.set("n", "<leader>qr", [[:!qrencode -t UTF8 "<c-r>+"<CR>]], {desc="Get QR code from system clipboard (+ register) (escapes don't work for now)"})

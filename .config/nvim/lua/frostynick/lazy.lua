@@ -29,7 +29,10 @@ local function telescopeConfig()
       file_browser = { hijack_netrw = true, }
     },
     media_files = {
-      filetypes = {"png", "webp", "jpg", "jpeg"},
+      -- -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+      filetypes = {"png", "webp", "jpg", "jpeg", "mp4", "pdf", "webm"},
+      -- works with: foot, alacritty, rio
+      -- doesn't work with: ghostty, (probably kitty since it works similarly?)
       -- find command (defaults to `fd`)
       find_cmd = "rg"
     }
@@ -48,7 +51,6 @@ local function telescopeConfig()
 
   k.set('n', '<leader><leader>', tsb.spell_suggest, {})
   k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
-  k.set('n', '<leader>fo', function() print("use <leader>. instead") end)
   -- local a,b = pcall(function()
   --   -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })
   --   k.del('n', '<leader>.')
@@ -59,7 +61,9 @@ local function telescopeConfig()
   -- end
   k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
   k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
+  k.set('n', '<leader>f"', tsb.registers, { desc="Telescope: registers" })
   k.set('n', '<leader>f?', function() print"use <leader>fk instead" end)
+
 
   k.set('n', '<leader>fk', tsb.help_tags,
   { desc="Telescope: help tags (documentation)" })
@@ -73,7 +77,8 @@ local function telescopeConfig()
   {desc="Telescope: find files"})
 
   k.set('n', '<leader>fj',
-  '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov*/<CR>',
+  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/*<CR>',
+  '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/<CR>',
   {desc="Telescope: find backup files; keyword: joplin"})
 
   k.set('n', '<leader>fc',
@@ -85,7 +90,7 @@ local function telescopeConfig()
   '<cmd>Telescope live_grep search_dirs=$HOME/backup2022nov*/<CR>',
   {desc="Telescope: live grep (find text) in backup files; replacement to joplin. Requires rg."})
 
-  k.set('n', '<leader>fm', "<cmd>Telescope man_page<CR>", {})
+  k.set('n', '<leader>fm', "<cmd>Telescope man_pages<CR>", {})
 
   k.set('n', '<leader>fv', tsb.git_files, {desc="Telescope: git files"})
   k.set('n', '<leader>fg', tsb.live_grep, {desc="Telescope: live grep"})
@@ -118,6 +123,21 @@ local function telescopeConfig()
   loadExtension("lazy", function()
     k.set('n', '<leader>fl',
     "<cmd>Telescope lazy<CR>", {desc = "Telescope: lazy plugin info"})
+  end)
+
+  -- require("telescope").load_extension("git_worktree")
+  loadExtension("git_worktree", function()
+    local gw = ts.extensions.git_worktree
+    k.set('n', '<leader>gwn', function()
+      gw.create_git_worktree()
+    end, {desc = "Telescope: git worktree: new"})
+    k.set('n', '<leader>gwv', function()
+      gw.git_worktrees()
+    end, {desc = "Telescope: git worktree: view"})
+    -- <Enter> - switches to that worktree
+    -- <c-d> - deletes that worktree
+    -- <c-f> - toggles forcing of the next deletion
+    -- Of course, also visible in <Esc>?
   end)
 
   loadExtension("ui-select")
@@ -639,13 +659,13 @@ local plugins = {
   lazy = true },
   { 'paulo-granthon/hyper.nvim', name = "hyper",
   lazy = true },
-  { 'scottmckendry/cyberdream.nvim', name = 'cyberdream',
+  { 'rose-pine/neovim', name = 'rose-pine',
   lazy = true },
   { 'rebelot/kanagawa.nvim', name = 'kanagawa',
   lazy = true },
   { 'AlexvZyl/nordic.nvim', name = 'nordic',
   lazy = true }, -- swap this line with "config = ..." to set as default theme
-  { 'rose-pine/neovim', name = 'rose-pine',
+  { 'scottmckendry/cyberdream.nvim', name = 'cyberdream',
   config = invisiBkgd, }, -- init = invisiBkgd },
 
   { -- WARNING: Might remove later if there's a quicker alternative that has the same basic functionality.
@@ -766,7 +786,8 @@ local plugins = {
       -- "echasnovski/mini.pick",      -- optional
     },
     keys = {
-      { "<leader>2gs", vim.cmd.Neogit, mode = "n", desc = "Open Neogit"},
+      { "<leader>2gs", function() vim.cmd("Neogit kind=vsplit") end, mode = "n", desc = "Open Neogit"},
+      { "<leader>gl", function() vim.cmd("NeogitLogCurrent .") end, mode = "n", desc = "Open Neogit"},
     },
   },
   {
@@ -796,6 +817,8 @@ local plugins = {
       { "<leader>ghu", ":Gits undo_stage_hunk<CR>",mode = {"n", "v"}, desc = "Git Hunk: Reset"},
       { "<leader>ghr", ":Gits reset_hunk<CR>",     mode = {"n", "v"}, desc = "Git Hunk: Stage"},
       { "<leader>ghe", ":Gits select_hunk<CR>",    mode = {"n", "v"}, desc = "Git Hunk: Edit (select hunk with visual mode)"},
+      { "<leader>ghn", ":Gits next_hunk<CR>",      mode = {"n", "v"}, desc = "Git Hunk: Jump next"},
+      { "<leader>ghp", ":Gits prev_hunk<CR>",      mode = {"n", "v"}, desc = "Git Hunk: Jump prev"},
       { "<leader>gd", ":Gits diffthis<CR>", mode = {"n", "v"}, desc = "Git Diff" },
     }
     -- commit = "76927d14d3fbd4ba06ccb5246e79d93b5442c188", -- v0.8 support
@@ -809,6 +832,13 @@ local plugins = {
     },
   },
   -- piersolenski/telescope-import.nvim Autofill imports. Supports JS; lua; py; c++.
+  {
+    "ThePrimeagen/git-worktree.nvim",
+    event = "VeryLazy",
+    -- config = function()
+    --   require("telescope").load_extension("git_worktree")
+    -- end
+  },
 
   {'nvim-treesitter/nvim-treesitter-textobjects',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
@@ -929,6 +959,7 @@ local plugins = {
     },
     -- Ensure that it runs first to minimize delay when opening file from terminal
     lazy = false,
+    commit = "cc3d8f7", -- drop nvim 0.9 support without this commit
     priority = 999,
   },
 
@@ -978,7 +1009,37 @@ local plugins = {
       end
     end
   },
-
+  { -- requires: yazi 0.4.0 or later; nvim 0.10.2+ to be useful
+    "mikavilpas/yazi.nvim",
+    cmd = "Yazi",
+    -- commit = "98db026",
+    keys = {
+      -- 👇 in this section, choose your own keymappings!
+      {
+        "<leader>zv",
+        mode = { "n", "v" },
+        vim.cmd.Yazi,
+        desc = "(nvim 0.10.2+) Open yazi at the current file ya[z]i [v]iew",
+      },
+      {
+        -- Open in the current working directory
+        "<leader>z.",
+        "<cmd>Yazi cwd<cr>",
+        desc = "(nvim 0.10.2+) Open yazi file manager in nvim's working directory",
+      },
+      {
+        "<leader>z<BS>",
+        "<cmd>Yazi toggle<cr>",
+        desc = "(nvim 0.10.2+) Resume the last yazi session",
+      },
+    },
+    opts = {
+      open_for_directories = false, -- if false, leave alone netrw
+      keymaps = {
+        show_help = "<f1>",
+      },
+    },
+  },
   { -- requires nvim 0.9.4 according to readme
     "folke/snacks.nvim",
     priority = 1000,
@@ -1014,7 +1075,7 @@ local plugins = {
   --     { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
   --     { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit Current File History" },
   --     { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-  --     { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
+  --     { "<leader>3gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
     },
   }
 }
