@@ -27,11 +27,11 @@ Above mount.yazi, git.yazi, and general plugin documentation are available here:
 
 Plugin list (contains bookmark.yazi): [Resources \| Yazi](https://yazi-rs.github.io/docs/resources/)
 
-# Yazi config offline
+# Where is the default config so I don't waste time?
 
 If you don't have it already get it from here (I put [fgit](https://github.com/FrostyNick/fgit) for my own convinience which assumes ~/p project path. This is just a git clone helper and you could just git clone everything instead.):
 `fgit https://github.com/sxyazi/yazi yazi-config/preset`
 
-Defaults saved in:
+If you git cloned it in `~/p`, the default configuration would be saved in:
 `~/p/yazi/yazi-config/preset/yazi-default.toml`
 

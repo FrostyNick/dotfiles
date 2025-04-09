@@ -4,6 +4,7 @@
 
 [manager]
 show_hidden    = true
+# mouse_events   = [ ] # disable mouse support; might be useful when copying text with Ctrl + shift + v. Holding "Shift" while selecting also works.
 
 # Below uses git plugin:
 # $ ya pack -a yazi-rs/plugins:git

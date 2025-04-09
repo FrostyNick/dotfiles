@@ -59,13 +59,13 @@ k.set("n", "<C-k>", "<C-w><c-k>")
 k.set("n", "<C-l>", "<C-w><c-l>")
 -- k.set("n", "<TAB>", "<cmd>tabn<CR>", {desc="Next tab"}) -- might override existing shortcuts
 -- k.set("n", "<S-TAB>", "<cmd>tabp<CR>", {desc="Prev tab"})
-k.set("n", "<leader>zl", "<cmd>tabn<CR>", {desc="Next tab"})
-k.set("n", "<leader>zh", "<cmd>tabp<CR>", {desc="Prev tab"})
+k.set("n", "<leader>zk", "<cmd>tabn<CR>", {desc="Next tab"})
+k.set("n", "<leader>zj", "<cmd>tabp<CR>", {desc="Prev tab"})
 
--- k.set("t", "<C-h>", "<cmd>wincmd h<CR>", {remap=true, silent=true}) -- yea doesn't seem to work
--- k.set("t", "<C-j>", "<cmd>wincmd j<CR>", {remap=true, silent=true})
--- k.set("t", "<C-k>", "<cmd>wincmd k<CR>", {remap=true, silent=true})
--- k.set("t", "<C-l>", "<cmd>wincmd l<CR>", {remap=true, silent=true})
+-- k.set("t", "<C-h>", "<cmd>winc h<CR>", {remap=true, silent=true}) -- doesn't seem to work
+-- k.set("t", "<C-j>", "<cmd>winc j<CR>", {remap=true, silent=true})
+-- k.set("t", "<C-k>", "<cmd>winc k<CR>", {remap=true, silent=true})
+-- k.set("t", "<C-l>", "<cmd>winc l<CR>", {remap=true, silent=true})
 
 k.set("v", "<", "<gv")
 k.set("v", ">", ">gv")
@@ -80,7 +80,9 @@ k.set("t", "<C-h>", "<C-\\><C-N><cmd>sleep! 100m<CR><C-w>h")
 k.set("t", "<Esc>q", "<c-\\><c-n>")
 
 k.set("n", "<leader>zd", [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
+-- related: >st
 k.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><Left>]])
+k.set("n", "<leader>sR", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 --- I should make a different mode at this point...
 -- *insert removing end of yt links*
 k.set("n", "<leader>myts", [[:%s#www.youtube.com/shorts/#youtu.be/#gI<CR>]], {desc="Shorten YouTube short URLs"})
@@ -91,11 +93,13 @@ k.set("n", "<leader>mytv", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {d
 
 k.set("n", "yc", "yygccp", {desc="Text: Copy line; comment; paste in next line.", remap=true}) -- credit: u/santas on reddit
 k.set("n", "<leader>dt", [[:diffthis<CR><C-w><C-w>:diffthis<CR><C-w><C-p>]])
+k.set("n", "<leader>dq", [[:diffo<CR><C-w><C-p>:diffo<CR><C-w><C-p>]])
+k.set("n", "<leader>do", "<cmd>windo set scrollbind!<CR>") -- might not be working
 -- * does the same thing k.set("n", "<leader>/", "/<C-r><C-w><CR>")
 k.set("n", "<leader>x", [[GVgg"+x]], { silent = true }) -- cuts all text to clipboard
 k.set("n", "<leader>mr", [[:put =range(1,)<Left>]], { desc="Insert text: math range" })
-k.set("n", "<leader>cm", "<cmd>!chmod +x %<CR>", { silent = true })
-k.set("n", "<leader>cs", "<cmd>!chmod +x %<CR>", { silent = true })
+-- :vmap _a <Esc>`>a<CR><Esc>`<i<CR><Esc>!!date<CR>kJJ -- :help visual_example
+-- k.set("v", "<leader>yt", "<Esc>`>a<CR><Esc>`<i<CR><Esc>!!date<CR>kJJ")
 -- k.set("n", "<leader>mb", [[}kI- ]], { desc="Markdown bullet points" }) -- does nothing cuz (macro != keymap function)
 k.set("n", "<leader>me", function()
   c.tabe(); vim.opt.filetype = 'markdown' end)
@@ -107,32 +111,25 @@ k.set('n', '<leader>vpp',
 '<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/<CR>',
 {desc="Telescope: find code in projects directory"})
 
-k.set('n', '<leader>vp2p',
--- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov*/p/<CR>',
-'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/p/<CR>',
-{desc="Telescope: find code in projects directory"})
-
-k.set('n', '<leader>vpb',
--- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov*/<CR>',
-'<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/<CR>',
-{desc="Telescope: find code in backup directory"})
-
 -- below doesnt work because i is powerful af. fix later.
-k.set("n", "<leader>vpi", "<cmd>tabe ~/backup2022nov*/markor/ideas.md<CR>")
-k.set("n", "<leader>vpt", "<cmd>tabe ~/backup2022nov*/markor/todo.md<CR>")
+k.set("n", "<leader>vpi", "<cmd>tabe ~/bk*/markor/ideas.md<CR>")
+k.set("n", "<leader>vpt", "<cmd>tabe ~/bk*/markor/todo.md<CR>")
 k.set("n", "<leader>vpg", function()
-  c.tabe("~/backup2022nov*/markor/gfl.md")
+  c.tabe("~/bk*/markor/gfl.md")
   vim.notify("<leader>g{o,p} also make new branch")
 end);
 
-k.set("n", "<leader>ia", "<cmd>e ~/backup2022nov*/markor/ideas.md<CR>");
+k.set("n", "<leader>ia", "<cmd>e ~/bk*/markor/ideas.md<CR>");
 
 --- xdg-open miscellaneous
 -- Future: If using Windows or MacOS, alias different open command
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
 k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
-k.set("n", "<leader>fx", "<cmd>!chmod +x %<CR>", { silent = true, desc = "execute current file" })
+k.set("n", "<leader>fx", "<cmd>!chmod +x \"%\"<CR>", { silent = true, desc = "chmod +x current file" })
+-- k.set("n", "<leader>fd", function() vim.notify("Temporary deletion not supported. Captial D to delete file permanently.") end, { silent = true, desc = "permanantly delete file" })
+k.set("n", "<leader>fd", "<cmd>!trash-put \"%\" # reminder: not permanent.<CR>" , { silent = true, desc = "Temporarily delete file (requires trash-cli)." })
+k.set("n", "<leader>fD", "<cmd>!rm \"%\"<CR>", { silent = true, desc = "Permanantly delete file." })
 
 -- "explorer" is for Windows. Probably broken; needs Git Bash for pipes to work.
 k.set("n", "<leader>po",
@@ -151,8 +148,19 @@ k.set("n", "<leader>gg", c.Git)
 k.set("n", "<leader>2gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
 k.set("n", "<leader>2gd", "<cmd>Git diff<CR>")
 
+local function getReg(reg)
+  reg = reg or '+'
+  return vim.fn.getreg(reg)
+  -- below technically works too
+  -- return vim.api.nvim_exec2("echo @+", { output = true }).output
+end
+
+local function getTermCode(txt)
+  return vim.api.nvim_replace_termcodes(txt, true, true, true)
+end
+
 local function termExec(rawKeys, doCR)
-  c("vs | term")
+  c("vs | te")
 
   local keys
   if vim.fn.exists(":Vterm") == 2 then
@@ -166,10 +174,15 @@ local function termExec(rawKeys, doCR)
     vim.api.nvim_feedkeys(keys, "n", false)
     return
   end
-  local keyRawTxt = "<CR>"
-  local keyCR = vim.api.nvim_replace_termcodes(keyRawTxt, true, true, true)
+  local keyCR = getTermCode("<CR>")
 
   vim.api.nvim_feedkeys(keys .. keyCR, "n", false)
+end
+
+local function getVSel()
+  -- credit to u/PaperCupsAhoy old.reddit.com/r/neovim/comments/oo97pq/comment/h5xiuyn
+  vim.cmd('noau normal! "vy"')
+  return getReg('v')
 end
 
 k.set("n", "<leader>gp", function()
@@ -179,6 +192,19 @@ end)
 k.set("n", "<leader>at", function()
   termExec("tgpt -m", true)
 end, { desc = "ai tgpt"})
+
+k.set("n", "<leader>Wt", function() -- [[:!dict <C-r><C-w><CR>g]], {silent = true, desc="Get word definition from word that's on your cursor (requires dict to be installed and configured correctly)"})
+  c("<cmd>norm yiW<CR>")
+  -- termExec(getTermCode("<Esc>") .. "p", true)
+end, { desc = "open WORD in terminal" })
+
+k.set("v", "<leader>zt", function()
+  local txt = getVSel()
+  if txt:sub(-1) == "\n" then txt = txt:sub(1, -2) end
+  -- vim.notify(txt)
+  -- c("winc v")
+  termExec(txt, false)
+end, { desc = "Write visual selection to new vertical split terminal" })
 
 -- if in git repository, open 1st remote url.
 -- Above should use git fugitive ... I just have a terminal dependant password inserting thing that makes git fugitive not work well. (:G push)
@@ -213,9 +239,9 @@ k.set("n", "<leader>ct", c.CompilerToggleResults)
 -- <leader>cx is in lazy.lua if it still exists
 
 --- Open terminal shortcuts
-k.set("n", "<leader>zt", "<C-w>v<cmd>term<CR>")
-k.set("n", "<leader>t", "<cmd>tabe<CR><cmd>term<CR>")
-k.set("n", "<leader><CR>", c.term)
+k.set("n", "<leader>zt", "<C-w>v<cmd>te<CR>")
+k.set("n", "<leader>t", "<cmd>tabe<CR><cmd>te<CR>")
+k.set("n", "<leader><CR>", c.te)
 
 --- Buffer shortcuts
 k.set("n", "<leader>qb", c.bd, {desc=":bd Delete buffer"})
@@ -236,7 +262,7 @@ k.set("n", "<leader>zM", function() bufToNewTab(true) end, {desc="Move to new ta
 k.set("n", "<leader>w", c.up)
 k.set("n", "<leader>zw", c.wa)
 k.set("n", "<leader>qw", c.xa)
-k.set("n", "<leader>zie", [[GVgg"+x<cmd>e ~/backup2022nov*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
+k.set("n", "<leader>zie", [[GVgg"+x<cmd>e ~/bk*/j/Backup/sessions-watch l8r 2024.md<CR>gg}ma"+p2o<Esc>`a3O<Esc><cmd>.!date +\%F<CR>]])
 k.set("n", "<leader>ze", c.vne)
 k.set("n", "<leader>e", c.tabe)
 
@@ -316,26 +342,20 @@ local function i_txt(txt)
 end
 
 local function i_date()
-  i_txt(tostring(os.date("%x"))
+  local date = tostring(os.date("%x"))
     -- To learn more: https://www.lua.org/pil/20.2.html
     :gsub('(%d+)/(%d+)/(%d+)', '%3-%1-%2')
-    -- Leading zeros show up only on some operating systems.
-    :gsub("-0", "-"))
+    -- Leading zeros show up only on some operating systems. LuaJIT issue?
+    :gsub("-0", "-")
+
+  if date:sub(3,3) == "/" then
+    date = "20" .. date
+  end
+  i_txt(date)
 end
 
 vim.api.nvim_create_user_command("Date", i_date, {})
 k.set("n", "<leader>da", i_date, {desc="Insert date"}) -- note: doesn't work on all distros and platforms for some reason
-
--- local function getReg()
---   return vim.fn.getreg('+') -- no arguments = vim clipboard
--- end
-
-local function getReg(reg)
-  reg = reg or '+'
-  return vim.fn.getreg(reg)
-  -- below technically works but why
-  -- return vim.api.nvim_exec2("echo @+", { output = true }).output
-end
 
 local function qrCmd()
   -- c("!qrencode -t UTF8 \"" .. getClipboard():gsub('"', '\\"') .. '\""')
@@ -360,7 +380,7 @@ yup
 end
 vim.api.nvim_create_user_command("Qr", qrCmd, {desc = "Note: This is different than the keybind for testing purposes."})
 vim.api.nvim_create_user_command("TSPlaygroundToggle", function()
-  vim.notify("nvim-treesitter/playground is deprecated. Use :InspectTree, :Inspect, and (v0.10+) :EditQuery")
+  vim.notify("nvim-treesitter/playground is deprecated for these dotfiles. Use :InspectTree, :Inspect, and (v0.10+) :EditQuery")
   vim.cmd.InspectTree()
 end, {})
 k.set("n", "<leader>kk", "<cmd>Screenkey<CR>", { desc = "Toggle displaying screenkey visibility."})
@@ -378,7 +398,7 @@ local function ls_filter(txt)
   file, err = io.popen("ls " .. txt)
 
   if not file then -- lua lang server wants me to check for some reason
-    vim.notify("Error in probably ls_filter(): "..tostring(err)) return
+    vim.notify("Error in ls_filter(): "..vim.inspect(err)) return
   end
 
   local lines = vim.split(file:read('*a'), '\n', {trimempty=true})
@@ -404,6 +424,43 @@ local function vsall(range)
   end
 end
 
+local function getYId()
+  local txtLs, id = getVSel()
+
+  for _,txt in pairs(vim.split(txtLs, ' ', {trimempty=true})) do
+    txt = txt:gsub("\n", "")
+    -- txt = txt:gsub(")]", "")
+    txt = txt:gsub("[()]", "")
+
+    local len = string.len(txt)
+    if len >= 11 then
+      txt = txt:sub(-11)
+      id = txt
+      break
+    end
+  end
+
+  if id then
+    -- vim.notify("success! yid=" .. vim.inspect(id))
+    return id
+  end
+  vim.notify("That doesn't appear to be a valid yid. yid=" .. vim.inspect(id))
+end
+
+local function y2(cmd)
+  local id = getYId()
+  if id then termExec(cmd .. tostring(id), true) end
+end
+
+k.set("v", "<leader>y2", function()
+  y2("y2 -a ")
+end, {desc="Grab the yid in visual mode, then run it like this: y2 -a <id>"})
+
+k.set("v", "<leader>y3", function()
+  y2("y2 -x ")
+end, {desc="Grab the yid in visual mode, then run it like this: y2 -x <id>"})
+
+k.set("v", "<leader>y9", function() vim.notify("yid = " .. tostring(getYId())) end)
 -- k.set("n", "<leader>md") -- markdown delete duplicates (better name / etc. l8r)
 
 k.set("n", "<leader>dc", function()
