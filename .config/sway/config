@@ -1,17 +1,17 @@
 # ../i3/config
 # https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway
 # https://github.com/swaywm/sway/wiki/i3-Migration-Guide
-# https://wiki.archlinux.org/title/Sway (general useful info)
+# https://i3wm.org/docs/userguide.html
 
-# Flameshot is fixed with below script!
-# Use launchFlameshot.sh it just works everywhere... even on hyprland!
+# https://wiki.archlinux.org/title/Sway (general useful info)
 
 # potential alternative fix: Use "downgrade xdg-desktop-protal" then select 1.14.6 to fix flameshot. src: https://github.com/flameshot-org/flameshot/issues/2872
 
 # # Dependencies with Arch:
-# pacman -S network-manager-applet brightnessctl swaync xdg-desktop-portal{,-wlr} grim xorg-xwayland # (dependencies may be missing on this list) 
-# pacman -S bemenu wmenu dmenu tofi # choose one of these for menu (set as bemenu by default; wmenu is dmenu for wayland basically)
-# yay wob wlprop # (OPTIONAL) alternative to xprop that works well. `wob` is used for volume with how I set it up (may need to be uncommented in this config).
+# yay -S network-manager-applet brightnessctl swaync xdg-desktop-portal{,-wlr} grim xorg-xwayland swaylock
+# yay -S bemenu wmenu dmenu tofi # choose one of these for menu (set as tofi by default; wmenu is dmenu for wayland)
+# yay -S wob wlprop tesseract # (OPTIONAL) alternative to xprop that works decent. `wob` is used as a volume bar. `tesseract` for ocr during screenshots. (wobInit.sh wobPush.sh)
+# yay -S slurp grim swappy wl-clipboard # for screenshots to work well (and clipboard to save), install all of these (launchSwappy.sh)
 # # Also: networkmanager for waitConnection.sh to work
 
 # # Dependencies with Ubuntu 20.04 (list not exhaustive):
@@ -30,11 +30,6 @@
 
 # old dependencies to remove (no longer used or needed):
 # rm /usr/bin/vim-sway-nav
-
-# i3 config file (v4)
-#############################################################################
-# Please see https://i3wm.org/docs/userguide.html for a complete reference! #
-#####################################w#######################################
 
 set $mod Mod4
 # $menu can be bemenu, wmenu, dmenu, etc.
@@ -75,7 +70,8 @@ exec nm-applet --indicator
 exec dunst
 # exec mako
 exec swaync 
-# on older distros wob may have a memory leak .. you'll want to disable there
+
+# WARNING: old wob = memory leak it seems
 exec_always $HOME/.config/sway/wobInit.sh
 # dbus-launch --exit-with-session exec mako
 
@@ -134,9 +130,6 @@ bindsym Control+Mod1+t exec $term
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# program launcher from terminal (alternative to dmenu) (might require alacritty) (this works in x11, but requires swaymsg, which is in sway).
-# note: can't get above to work with Ubuntu 20.04 + sway. All I found so far is to fix fzf error you can do: `sudo ln -s ~/path/to/fzf /usr/bin/fzf`
-
 bindsym $mod+d exec dmenu_path | $menu | xargs swaymsg exec --
 
 # change focus
@@ -144,6 +137,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+bindsym $mod+p exec swaylock --color 003300 --image ~/backup2022nov/wallpapers/*/wallhaven-zy*.png
 
 # Only reason why I remove tabbed layout is because I don't like the default
 # having a visible title bar, which can't be changed in i3wm.
@@ -313,14 +307,10 @@ client.urgent           #2f343a #900000 #cccccc #900000   #900000
 client.placeholder      #0c0c0c #000000 #484848 #000000   #0c0c0c
 client.background       #00ee78
 
-# 107 = Print, so below also works:
-# bindcode 107 flameshot gui
-# FIX: grimshot alone kinda sucks
-# WARNING: flameshot doesn't work
 # bindsym $mod+Print exec flameshot gui
-bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save)"
-bindsym Print exec notify-send "Took screenshot: $(grimshot save area)"
-# bindsym Print exec $HOME/.config/sway/launchFlameshot.sh || exec notify-send "Took screenshot: $(grimshot save area)"
+bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save || $HOME/.config/sway/launchFlameshot.sh full)"
+bindsym Escape+Print exec $HOME/.config/sway/launchGurp.sh ocr
+bindsym Print exec $HOME/.config/sway/launchGurp.sh
 # if slurp dependency isn't ancient "area" above should be replaced with "anything" (missing slurp -o)
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
@@ -335,8 +325,7 @@ default_floating_border pixel
 # fixes windows that are too big. Side effect: Affects all floating windows.
 floating_maximum_size 0 x 0
 
-# set $mode_launcher Launch: [l]ibrewolf -Profile[M]anager, r[a]nger, scr[c]py, [a]ndroid studio, [o]bs, [d]iscord, simplescreen[r]ecorder, n[v]im, s[y]ncthing, kee[p]ass, s[h]otcut, pcman[f]m, [n]ewsboat
-set $mode_launcher Open: [l]wlf m., [m]c, [c]py, [a]nroi, [o]bs, [d]uwu, [r]ec, n[v], s[y]nc, s[h]otc, pcm[f]m, [n]boat
+set $mode_launcher Open: [l]w m., [m]c, [c]py, [a]nr, [o]bs, [d]i, [r]ec, [v], s[y]n, s[h]tc, pcm[f]m, [n]ws, ya[z]
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
@@ -376,6 +365,8 @@ mode "$mode_launcher" {
     bindsym a exec ./Apps/android-studio/bin/studio.sh
 # below = file manager that comes in Lubuntu 20.04. Likely not on your OS.
     bindsym f exec pcmanfm-qt # || exec nautilus || exec dolphin
+    bindsym z exec $term -e "yazi"
+    bindsym x exec $term -e "lynx"
 
     # NOT WORKING	bindsym --release t exec $term -e "fzf"
     # NOT WORKING	bindsym t exec --no-startup-id i3-msg 'exec xterm -e fzf'
@@ -433,12 +424,9 @@ for_window [shell="xwayland"] title_format "[XWayland] %title"
 # doesn't do anything
 # for_window [urgent="latest"] focus
 
-
-
 # https://libreddit.pussthecat.org/r/i3wm/comments/aqg8u5/how_to_add_a_pause_in_i3_config_execution/
 # for_window [class="librewolf-default" window_role="browser"] move to workspace $ws2
 # bindsym $mod+semicolon+f "fzf-tmux"
-
 
 # src: https://unix.stackexchange.com/questions/485851/how-to-execute-a-specific-sequence-of-operations-in-i3-on-start-up LOOK MORE INTO IT P)ROBABLY BYEEERDSAIHFDSAHIDFSO
 # i3-msg workspace 2
@@ -450,10 +438,6 @@ for_window [shell="xwayland"] title_format "[XWayland] %title"
 # i3-msg resize grow  width 20 px or 20 ppt
 # i3-msg move left
 # xdotool key F11
-
-
-# exec librewolf
-# Thanks to https://unix.stackexchange.com/a/363848 --> `xprop | grep CLASS`
 
 # web
 # selenium uses firefox.. and i dont need to focus on selenium always
