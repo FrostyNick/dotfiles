@@ -20,14 +20,18 @@ git clone -n --depth=1 --filter=tree:0 https://github.com/FrostyNick/dotfiles.gi
 cd dotfiles/ && git sparse-checkout set --no-cone .config/nvim
 git checkout && cd ..
 
+# if you want to use github.com/FrostyNick/fgit, you can replace above steps with:
+fgit https://github.com/FrostyNick/dotfiles .config/nvim
+cd ../..
+
 # Create ~/.config/ if it doesn't already exist
 mkdir -p ~/.config
 # Create a soft link to nvim directory.
-ln -s ~/dotfiles/.config/nvim/ ~/.config/nvim
+ln -s $(pwd)/dotfiles/.config/nvim/ ~/.config/nvim
 ```
 
 Then:
-- Install nerd fonts. See main [readme.md](readme.md) (not neovim readme)
+- Install nerd fonts. See main [readme.md](../../readme.md) (not neovim readme)
 - See `:checkhealth` for any other missing dependencies.
 
 #### Termux

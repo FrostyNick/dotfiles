@@ -148,6 +148,13 @@ k.set("n", "<leader>gg", c.Git)
 k.set("n", "<leader>2gl", "<cmd>Git log --oneline --pretty=reference --date=relative --decorate --graph --all<CR>") -- date=relative can be date=iso (yyyy-mm-dd hh:mm:ss -n) See git log --help /date=rel
 k.set("n", "<leader>2gd", "<cmd>Git diff<CR>")
 
+k.set("n", "<leader>gr", function()
+  -- :he filename-modifiers
+  vim.cmd("!cp %:r{,.sync-conflict-git}.%:e && git restore %:S")
+  vim.notify("You may want to do <le.>dc now.")
+end, { desc = "Git restore + backup which is compatible with <le.>dc"} )
+k.set("n", "<leader>gR", "<cmd>!git restore \"%\"<CR>", { desc = "Git restore (no backup)" })
+
 local function getReg(reg)
   reg = reg or '+'
   return vim.fn.getreg(reg)

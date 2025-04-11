@@ -274,9 +274,9 @@ scoop update neovim-nightly
 ##### Alternative frontends
 [Scoop - Apps (neovim)](https://scoop.sh/#/apps?q=neovim)
 
-#### Ubuntu
+#### Ubuntu / AppImage
 
-Download v0.9.0 AppImage; recommended file format to install neovim. Download link for AppImage: https://github.com/neovim/neovim/releases/download/v0.9.0/nvim.appimage
+Download v0.9.4 AppImage; recommended file format to install neovim. Download link for AppImage: https://github.com/neovim/neovim/releases/download/v0.9.4/nvim.appimage
 
 Then:
 ```bash
@@ -292,7 +292,7 @@ nvim.appimage # you probably want an alias in .bashrc so it's just nvim/nv
 
 # If you plan to use telescope, install ripgrep as shown below.
 # If using dict (<leader>zd), add dict to the list:
-sudo apt install rg dict
+sudo apt install rg dict # yarn is in repo?
 ```
 
 #### Termux
@@ -305,6 +305,15 @@ pkg update && pkg upgrade
 # Install neovim.
 # If using telescope.nvim plugin, install (rg) ripgrep.
 # If using dict, install (dictd) dict daemon.
-pkg install nvim rg dictd
+pkg install nvim rg dictd # yarn is in repo?
 ```
+
+#### Fedora
+
+sudo dnf install neovim ripgrep dictd # yarn when?
+\# also see my dnf config and add it to this command .. otherwise it installs extra crap.
+
+#### Arch
+
+sudo pacman -S nvim rg dictd yarn
 

@@ -152,7 +152,7 @@ local function lspConfig()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-    -- For easy starting point: https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+    -- For easy starting point see `:help lspconfig-all` or https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
     local lspLs = {
       {
         'lua_ls',
@@ -200,7 +200,7 @@ local function lspConfig()
             path_mono_download .. '/omnisharp/OmniSharp.exe',
           },
           -- Assuming you have an on_attach function. Delete this line if you don't.
-          on_attach = on_attach,
+          -- on_attach = on_attach,
           use_mono = true,
         }
       },
@@ -220,7 +220,7 @@ local function lspConfig()
         }
       },
       'bashls', 'denols', --[[denols might be deno]] 'pylsp',
-      'rust_analyzer', 'ts_ls', 'zk',
+      'rust_analyzer', 'ts_ls', 'zk', 'golangci-lint-langserver'
     }
     for _,v in ipairs(lspLs) do
       if type(v) ~= "table" then
@@ -314,7 +314,7 @@ local plugins = {
         -- A list of parser names,
         -- or "all" (five required parsers should always be installed)
         ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim",
-        "query", "vimdoc" },
+        "go", "query", "vimdoc" },
         -- "vimdoc" might be "help" in older versions. When I tested v0.8.3 nvim on
         -- another device it seems to still use vimdoc instead of help.
 
@@ -564,6 +564,16 @@ local plugins = {
     }
   },
   {
+    'vidocqh/data-viewer.nvim',
+    -- opts = { autoDisplayWhenOpenFile = true, view = { float = false } },
+    opts = { autoDisplayWhenOpenFile = true },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      -- "kkharji/sqlite.lua", -- Optional, sqlite support
+    },
+    ft = {"csv", "tsv", "sqlite"} -- This breaks autodisplay config
+  },
+  {
     'cameron-wags/rainbow_csv.nvim',
     config = true,
     ft = {
@@ -587,7 +597,6 @@ local plugins = {
     event = "VeryLazy",
     config = function()
       local rainbow_delimiters = require'rainbow-delimiters'
-      ---@type rainbow_delimiters.config
       vim.g.rainbow_delimiters = {
         strategy = {
           [''] = rainbow_delimiters.strategy['global'],
@@ -634,6 +643,7 @@ local plugins = {
             arch = { pattern = 'archlinux%.org', icon = ' '},
             wikipedia = { pattern = 'wikipedia%.org', icon = '󰖬 '},
             google = { pattern = 'google%.com', icon = ' '},
+            mozilla = { pattern = 'mozilla%.org', icon = '󰈹 '},
             trello = { pattern = 'trello%.com', icon = '󰔲 '},
             discord = { pattern = 'discord%.gg', icon = '󰙯 '},
             godot = { pattern = 'godotengine%.org', icon = ' '},
@@ -1067,7 +1077,7 @@ local plugins = {
       { "<leader>Z",  function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
       { "<leader>vn", function() Snacks.notifier.show_history() end, desc = "View All Notifications" },
       { "<leader>fr", function() Snacks.rename.rename_file() end, desc = "Rename File" },
-      { "<leader>2gr", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
+      { "<leader>2gr",function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" }, -- doesn't replace 'f-person/git-blame.nvim'
       { "<leader>hn", function() Snacks.notifier.hide() end, desc = "Hide All Notifications" },
   --     { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
@@ -1077,7 +1087,11 @@ local plugins = {
   --     { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
   --     { "<leader>3gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
     },
-  }
+  },
+  -- {
+  --   "jake-stewart/multicursor.nvim",
+  --   event = "VeryLazy",
+  -- },
 }
 --[[
 -- alternative plugins maybe
