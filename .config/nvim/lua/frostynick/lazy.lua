@@ -82,8 +82,9 @@ local function telescopeConfig()
   {desc="Telescope: find backup files; keyword: joplin"})
 
   k.set('n', '<leader>fc',
-  function() vim.notify("Use `<leader>vpp`.") end,
-  {desc="Telescope: (deprecated) find code in projects directory"})
+  '<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/learnxinyminutes-docs<CR>',
+  {desc="Telescope: offline code reference if learnxinyminutes-docs is git cloned in ~/p"})
+
   k.set('n', '<leader>gz', function() vim.notify("Use `2gx`.") end)
 
   k.set('n', '<leader>gj',
@@ -220,7 +221,7 @@ local function lspConfig()
         }
       },
       'bashls', 'denols', --[[denols might be deno]] 'pylsp',
-      'rust_analyzer', 'ts_ls', 'zk', 'golangci-lint-langserver'
+      'rust_analyzer', 'ts_ls', 'zk', 'golangci-lint-langserver', 'gopls',
     }
     for _,v in ipairs(lspLs) do
       if type(v) ~= "table" then
@@ -303,6 +304,7 @@ local function toggleNotZen(isNotZen)
   end
 end
 
+local rainbow_delimiters
 local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -313,10 +315,9 @@ local plugins = {
       require'nvim-treesitter.configs'.setup {
         -- A list of parser names,
         -- or "all" (five required parsers should always be installed)
-        ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim",
-        "go", "query", "vimdoc" },
-        -- "vimdoc" might be "help" in older versions. When I tested v0.8.3 nvim on
-        -- another device it seems to still use vimdoc instead of help.
+        ensure_installed = "all",
+        -- ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim", "query", "vimdoc" },
+        -- "vimdoc" might be "help" in <0.9.0 nvim.
 
         -- Install parsers synchronously (only applied to `ensure_installed`)
         sync_install = false,
@@ -563,15 +564,16 @@ local plugins = {
       -- dim = false
     }
   },
-  {
+  { -- :DataView
     'vidocqh/data-viewer.nvim',
     -- opts = { autoDisplayWhenOpenFile = true, view = { float = false } },
     opts = { autoDisplayWhenOpenFile = true },
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
       -- "kkharji/sqlite.lua", -- Optional, sqlite support
     },
-    ft = {"csv", "tsv", "sqlite"} -- This breaks autodisplay config
+    -- ft = {"csv", "tsv", "sqlite"} -- This breaks autodisplay config
   },
   {
     'cameron-wags/rainbow_csv.nvim',
@@ -594,33 +596,37 @@ local plugins = {
   },
   { -- this does take 7MB space btw..
     "HiPhish/rainbow-delimiters.nvim",
-    event = "VeryLazy",
-    config = function()
-      local rainbow_delimiters = require'rainbow-delimiters'
-      vim.g.rainbow_delimiters = {
-        strategy = {
-          [''] = rainbow_delimiters.strategy['global'],
-          vim = rainbow_delimiters.strategy['local'],
-        },
-        query = {
-          [''] = 'rainbow-delimiters',
-          lua = 'rainbow-blocks',
-        },
-        priority = {
-          [''] = 110,
-          lua = 210,
-        },
-        highlight = {
-          'RainbowDelimiterRed',
-          'RainbowDelimiterYellow',
-          'RainbowDelimiterBlue',
-          'RainbowDelimiterOrange',
-          'RainbowDelimiterGreen',
-          'RainbowDelimiterViolet',
-          'RainbowDelimiterCyan',
-        },
-      }
-    end,
+    -- event = "VeryLazy",
+    keys = {
+      { "<leader>hr",
+        function()
+          if rainbow_delimiters then
+            rainbow_delimiters.toggle() -- this should've been in README/docs.
+            return
+          end
+          rainbow_delimiters = require'rainbow-delimiters'
+          vim.g.rainbow_delimiters = {
+            strategy = {
+              [''] = rainbow_delimiters.strategy['global'],
+              vim = rainbow_delimiters.strategy['local'],
+            },
+            query = { [''] = 'rainbow-delimiters', lua = 'rainbow-blocks', },
+            priority = { [''] = 110, lua = 210, },
+            highlight = {
+              'RainbowDelimiterRed',
+              'RainbowDelimiterYellow',
+              'RainbowDelimiterBlue',
+              'RainbowDelimiterOrange',
+              'RainbowDelimiterGreen',
+              'RainbowDelimiterViolet',
+              'RainbowDelimiterCyan',
+            },
+          }
+          rainbow_delimiters.enable()
+        end, mode = "n",
+        desc = 'Toggle rainbow delimiters. This may be sluggish in big files, when using animations, or changing the "strategy" config.'
+      },
+    },
   },
   -- markdown alternative to below: github.com/2kabhishek/tdo.nvim (may use this)
   {"iamcco/markdown-preview.nvim",
@@ -808,7 +814,8 @@ local plugins = {
       { "<leader>gs", vim.cmd.Git, mode = "n", desc = "Open Git Fugitive"},
     },
   },
-  {'lewis6991/gitsigns.nvim', event = 'VeryLazy', -- requires v0.9+
+  {'lewis6991/gitsigns.nvim', event = 'VeryLazy', -- requires v0.10+ unless you pin commit below
+    -- commit = "3c76f7f", -- ci!: target Nvim 0.11, drop testing for 0.9.5 (2025 Mar 30)
     -- config = true, -- use default config
     opts = { -- :help gitsigns-usage
       signs = { add = { text = '+' }, },
@@ -1061,12 +1068,12 @@ local plugins = {
       -- input = { enabled = true }, -- alternative to 'nvim-telescope/telescope-ui-select.nvim'. Not usable with icon-picker: has over 10000 results with ui-select that I can't skip/search.
       notifier = { enabled = true, timeout = 5000 --[[in ms]] }, -- timeout default=3000ms; better alternative to 'rcarriga/nvim-notify'
       quickfile = { enabled = true }, -- render file before plugins
-      scroll = { -- smooth scroll. might remove later.
-        animate = {
-          duration = { step = 10, total = 100 }, -- 0.1 second delay
-          easing = "linear",
-        },
-      },
+      -- scroll = { -- smooth scroll. too slow with a specific plugin I use. I guess this can be good for testing performance.
+      --   animate = {
+      --     duration = { step = 10, total = 100 }, -- 0.1 second delay
+      --     easing = "linear",
+      --   },
+      -- },
       zen = {
         on_open = function() toggleNotZen(false) end,
         on_close = function() toggleNotZen(true) end,
