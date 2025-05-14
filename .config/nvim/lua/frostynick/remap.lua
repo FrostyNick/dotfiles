@@ -70,9 +70,9 @@ k.set("n", "<leader>zj", "<cmd>tabp<CR>", {desc="Prev tab"})
 k.set("v", "<", "<gv")
 k.set("v", ">", ">gv")
 
-k.set("n", "<leader>gr", -- rare edge-case: breaks when git exists earlier I think 
-"<cmd>!xdg-open $(git remote -v | grep -i $(git config user.name) | awk '{ print $2 }' | head -n 1 | sed '$s/\\.git//')&<CR><CR>",
-{ desc = "Opens git remote origin link with your username as configured in git. For opening the exact file and line in github from all users, use <leader>2gr instead.", silent = true })
+k.set("n", "<leader>gb", -- rare edge-case: breaks when git exists earlier I think 
+"<cmd>!xdg-open $(git remote -v | grep -i $(git config user.name) | awk '{ print $2 }' | head -1 | sed '$s/\\.git//')&<CR><CR>",
+{ desc = 'Opens git browsing (remote origin link) with your username as configured in git. For opening the exact file and line in github from all users, use <leader>2gr instead.', silent = true })
 
 k.set("n", "<leader>gv", [[:Gvdiffsplit]], {desc="Gvdiffsplit - fill in: git vertical split"})
 -- k.set("t", "<C-h>", "<C-\\><C-N><C-w>h")
@@ -85,8 +85,8 @@ k.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gIc<Left><Left><Left><L
 k.set("n", "<leader>sR", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 --- I should make a different mode at this point...
 -- *insert removing end of yt links*
-k.set("n", "<leader>myts", [[:%s#www.youtube.com/shorts/#youtu.be/#gI<CR>]], {desc="Shorten YouTube short URLs"})
-k.set("n", "<leader>mytv", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
+k.set("n", "<leader>mys", [[:%s#www.youtube.com/shorts/#youtu.be/#gI<CR>]], {desc="Shorten YouTube short URLs"})
+k.set("n", "<leader>myv", [[:%s#www.youtube.com/watch?v=#youtu.be/#gI<CR>]], {desc="Shorten YouTube URLs"})
 ---- below is work in progress
 -- k.set("n", "<leader>mk", ":norm blysiW]f]a()<CR>", {desc="Markdown lin[k] (requires nvim-surround)"})
 -- k.set("n", "<leader>mw", ":norm blysiW]f]a()<CR>2hT[", {desc="Markdown link [w]ord (requires nvim-surround)"})
@@ -126,14 +126,14 @@ k.set("n", "<leader>ia", "<cmd>e ~/bk*/markor/ideas.md<CR>");
 -- norg only loads in .norg file; setup in Lazy. Result: about -11ms startup but it sometimes takes really long to load (50ms) when it loads for some reason. I might be a bit off though haven't tested it much.
 k.set("n", "<leader>o", -- project open
 "<cmd>!xdg-open . &<CR><CR>", { silent = true, desc = "xdg-open directory" })
-k.set("n", "<leader>fx", "<cmd>!chmod +x \"%\"<CR>", { silent = true, desc = "chmod +x current file" })
+k.set("n", "<leader>fx", "<cmd>!chmod +x %:S<CR>", { silent = true, desc = "chmod +x current file" })
 -- k.set("n", "<leader>fd", function() vim.notify("Temporary deletion not supported. Captial D to delete file permanently.") end, { silent = true, desc = "permanantly delete file" })
-k.set("n", "<leader>fd", "<cmd>!trash-put \"%\" # reminder: not permanent.<CR>" , { silent = true, desc = "Temporarily delete file (requires trash-cli)." })
-k.set("n", "<leader>fD", "<cmd>!rm \"%\"<CR>", { silent = true, desc = "Permanantly delete file." })
+k.set("n", "<leader>fd", "<cmd>!trash-put %:S # reminder: not permanent.<CR>" , { silent = true, desc = "Temporarily delete file (requires trash-cli)." })
+k.set("n", "<leader>fD", "<cmd>!rm %:S<CR>", { silent = true, desc = "Permanantly delete file." })
 
 -- "explorer" is for Windows. Probably broken; needs Git Bash for pipes to work.
 k.set("n", "<leader>po",
-"<cmd>!xdg-open % & | open % | explorer %<CR><CR>",
+"<cmd>!xdg-open %:S & | open %:S | explorer %:S<CR><CR>",
 { silent = true, desc = "xdg-open file" })
 
 --- Git shortcuts
@@ -205,6 +205,7 @@ k.set("n", "<leader>Wt", function() -- [[:!dict <C-r><C-w><CR>g]], {silent = tru
   -- termExec(getTermCode("<Esc>") .. "p", true)
 end, { desc = "open WORD in terminal" })
 
+k.set("n", "<leader>zb", "<cmd>tabe | te newsboat<CR>", { desc = "Open newsboat"})
 k.set("v", "<leader>zt", function()
   local txt = getVSel()
   if txt:sub(-1) == "\n" then txt = txt:sub(1, -2) end
@@ -222,16 +223,20 @@ k.set("n", "<leader>p5",
 "<cmd>!xdg-open ~/p/p5-reference/index.html || xdg-open https://p5js.org/reference/ || open https://p5js.org/reference/<CR><CR>",
 { silent = false }) -- "open" not tested yet on Windows / MacOS.
 
----- Markdown shortcuts
-k.set("n", "<leader>mm", c.MarkdownPreviewToggle)
-k.set("n", "<leader>mt", function()
+local function toggleTs()
   vim.g.treesitterOn = not vim.g.treesitterOn
-  c.TableModeToggle()
   if vim.g.treesitterOn then
     vim.treesitter.start()
   else
     vim.treesitter.stop()
   end
+end
+
+---- Markdown shortcuts
+k.set("n", "<leader>mm", c.MarkdownPreviewToggle)
+k.set("n", "<leader>mt", function()
+  c.TableModeToggle()
+  toggleTs()
 end)
 
 ---- Compiler shortcuts
@@ -247,8 +252,8 @@ k.set("n", "<leader>ct", c.CompilerToggleResults)
 
 --- Open terminal shortcuts
 k.set("n", "<leader>zt", "<C-w>v<cmd>te<CR>")
-k.set("n", "<leader>t", "<cmd>tabe<CR><cmd>te<CR>")
-k.set("n", "<leader><CR>", c.te)
+k.set("n", "<leader>t", "<cmd>tabe | te<CR>")
+-- k.set("n", "<leader><CR>", c.te)
 
 --- Buffer shortcuts
 k.set("n", "<leader>qb", c.bd, {desc=":bd Delete buffer"})
@@ -433,12 +438,10 @@ end
 
 local function getYId()
   local txtLs, id = getVSel()
+  local txts = vim.split(txtLs, ' ', {trimempty=true})
 
-  for _,txt in pairs(vim.split(txtLs, ' ', {trimempty=true})) do
-    txt = txt:gsub("\n", "")
-    -- txt = txt:gsub(")]", "")
-    txt = txt:gsub("[()]", "")
-
+  for i = #txts, 1, -1 do
+    local txt = txts[i]:gsub("\n", ""):gsub("[()]", "")
     local len = string.len(txt)
     if len >= 11 then
       txt = txt:sub(-11)
@@ -454,18 +457,37 @@ local function getYId()
   vim.notify("That doesn't appear to be a valid yid. yid=" .. vim.inspect(id))
 end
 
-local function y2(cmd)
+local function y2(cmd, left)
   local id = getYId()
-  if id then termExec(cmd .. tostring(id), true) end
+  if id then
+    if left then
+      left = string.len(id) + 1
+      -- vim.notify("Moved " .. left .. " times")
+      local tcL = getTermCode("<Left>")
+      vim.notify("Moved with termcode: " .. tcL)
+      local cmd2 = ""
+      for _ = 1,left do
+        cmd2 = cmd2 .. tcL
+      end
+      termExec(cmd .. tostring(id) .. cmd2)
+      return -- no pressing enter after
+    end
+    -- c('vs | te "' .. cmd .. '"') -- not working
+    termExec(cmd .. tostring(id), true)
+  end
 end
 
 k.set("v", "<leader>y2", function()
-  y2("y2 -a ")
-end, {desc="Grab the yid in visual mode, then run it like this: y2 -a <id>"})
+  y2("y2 0 ")
+end, {desc="Grab the yid in visual mode, then run it like this: y2 0 <id>"})
 
 k.set("v", "<leader>y3", function()
   y2("y2 -x ")
 end, {desc="Grab the yid in visual mode, then run it like this: y2 -x <id>"})
+
+k.set("v", "<leader>y4", function()
+  y2("y2  ", true)
+end, {desc="Grab the yid in visual mode, then type it like this (* = cursor pos): y2 * <id>"})
 
 k.set("v", "<leader>y9", function() vim.notify("yid = " .. tostring(getYId())) end)
 -- k.set("n", "<leader>md") -- markdown delete duplicates (better name / etc. l8r)
@@ -488,13 +510,14 @@ k.set("n", "<leader>ht", function()
 end, { desc = "Less visible text. tags: invisible, hidden"})
 
 k.set("n", "<leader>hh", "<cmd>nohl<CR>", { desc = "Hide highlight after searching. tags: invisible, hidden"})
-k.set("n", "<leader>hn", "<cmd>set nu! rnu!<CR>", { desc = "Toggle number / relative number. tags: invisible, hidden"})
+k.set("n", "<leader>hn", "<cmd>set nu! rnu!<CR>", { desc = "Toggle number + relative number. tags: invisible, hidden"})
+k.set("n", "<leader>hs", toggleTs, { desc = "Toggle tree[s]itter. tags: invisible, hidden"})
+k.set("n", "<leader>hl", "<cmd>LspStop ++force<CR>", { desc = "Force stop LSP servers. tags: invisible, hidden"})
 
 -- -- future problem
 -- vim.api.nvim_create_autocmd("NerdTreeAutocd", {
 -- })
 
--- https://youtu.be/9gUatBHuXE0
 -- Autorun on save. Useful but not in this case. Useful example: .md -> .html
 -- vim.api.nvim_create_autocmd("BufWritePost", {
 --   group = vim.api.nvim_create_augroup("Codeee", { clear = true }),
