@@ -3,7 +3,7 @@ local k = vim.keymap
 local c = vim.cmd
 
 vim.g.mapleader = ' '
-vim.g.treesitterOn = true
+local treesitterOn = true
 k.set("v", "J", ":m '>+1<CR>gv=gv")
 k.set("v", "K", ":m '<-2<CR>gv=gv")
 
@@ -27,8 +27,8 @@ k.set("n", "Q", "<nop>")
 k.set('n', '<leader>,', "<cmd>bro o<CR>", { desc="(fallback to Telescope): old files" })
 
 -- k.set("n", "<leader>dk", function() vim.diagnostic.jump({count=1, float=true}) end, {desc="LSP: prev diagnostic"})
-k.set("n", "<leader>dk", vim.diagnostic.goto_prev or vim.diagnostic.jump({count=1, float=true}), {desc="LSP: prev diagnostic"})
-k.set("n", "<leader>dj", vim.diagnostic.goto_next or vim.diagnostic.jump({count=-1, float=true}), {desc="LSP: next diagnostic"})
+k.set("n", "<leader>dk", pcall(function() vim.diagnostic.jup({count=-1, float=true}) end) or vim.diagnostic.goto_prev, {desc="LSP: prev diagnostic"})
+k.set("n", "<leader>dj", pcall(function() vim.diagnostic.jup({count=1,float=true}) end) or vim.diagnostic.goto_next, {desc="LSP: next diagnostic"})
 
 -- Keep clipboard contents after pasting with p in visual mode.
 -- Thanks to: https://github.com/LunarVim/Neovim-from-scratch/blob/02-keymaps/lua/user/keymaps.lua#L52C1-L52C31
@@ -101,8 +101,6 @@ k.set("n", "<leader>mr", [[:put =range(1,)<Left>]], { desc="Insert text: math ra
 -- :vmap _a <Esc>`>a<CR><Esc>`<i<CR><Esc>!!date<CR>kJJ -- :help visual_example
 -- k.set("v", "<leader>yt", "<Esc>`>a<CR><Esc>`<i<CR><Esc>!!date<CR>kJJ")
 -- k.set("n", "<leader>mb", [[}kI- ]], { desc="Markdown bullet points" }) -- does nothing cuz (macro != keymap function)
-k.set("n", "<leader>me", function()
-  c.tabe(); vim.opt.filetype = 'markdown' end)
 
 k.set("n", "<leader>vpc",
 "<cmd>e " .. vim.fn.stdpath('config') .. "/lua/frostynick/lazy.lua<CR>");
@@ -224,8 +222,8 @@ k.set("n", "<leader>p5",
 { silent = false }) -- "open" not tested yet on Windows / MacOS.
 
 local function toggleTs()
-  vim.g.treesitterOn = not vim.g.treesitterOn
-  if vim.g.treesitterOn then
+  treesitterOn = not treesitterOn
+  if treesitterOn then
     vim.treesitter.start()
   else
     vim.treesitter.stop()
@@ -233,6 +231,31 @@ local function toggleTs()
 end
 
 ---- Markdown shortcuts
+k.set("n", "<leader>me", function()
+  c.tabe(); vim.opt.filetype = 'markdown' end)
+
+local function panmap(char, f, t)
+  local nf = (f == "gfm" and "gfm (markdown)") or f
+  local nt = (t == "gfm" and "gfm (markdown)") or t
+  local fT = f.. " -t " ..t.. " --no-highlight<CR>"
+
+  k.set("v", "<leader>p" .. char, ":!pandoc -f " .. fT,
+    { desc="Pandoc: " ..nf.. " -> " .. nt, noremap=true, silent=true })
+  k.set("n", "<leader>p" .. char, ":%!pandoc -f " .. fT,
+    { desc="Pandoc: " ..nf.. " -> " .. nt, noremap=true, silent=true })
+end
+
+panmap("O", "gfm", "org")
+panmap("m", "html", "gfm")
+panmap("h", "gfm", "html")
+
+k.set("n", "<leader>cfy", [[:%!grep -- "- \[x\]"<CR>]], { desc = "checkmark (markdown): filter = 'yes' values (requires grep)"})
+k.set("n", "<leader>cfi", [[:%!grep -- "- \[-\]"<CR>]], { desc = "checkmark (markdown): filter = 'in-progress' values (requires grep)"})
+k.set("n", "<leader>cfn", [[:%!grep -- "- \[ \]"<CR>]], { desc = "checkmark (markdown): filter = 'no' values (requires grep)"})
+k.set("n", "<leader>cay", [[:%s/- \[.\]/- \[x]/gI<CR>]], { desc = "checkmark (markdown): all = 'yes' values"})
+k.set("n", "<leader>cai", [[:%s/- \[.\]/- \[-]/gI<CR>]], { desc = "checkmark (markdown): all = 'in-progress' values"})
+k.set("n", "<leader>can", [[:%s/- \[.\]/- \[ ]/gI<CR>]], { desc = "checkmark (markdown): all = 'no' values"})
+
 k.set("n", "<leader>mm", c.MarkdownPreviewToggle)
 k.set("n", "<leader>mt", function()
   c.TableModeToggle()
@@ -245,8 +268,8 @@ k.set("n", "<leader>r", c.RunCode)
 -- k.set("n", "<leader>???", function() vim.notify"code: run docs soon. (see tj tutorial)" end)
 -- ^ goals: support lua; py; live-server/js; p5.js; binaries for crablang + c-based-langs
 
-k.set("n", "<leader>cr", c.CompilerOpen) -- compiler run
-k.set("n", "<leader>ct", c.CompilerToggleResults)
+k.set("n", "<leader>cr", c.CompilerOpen, { desc = "CompilerOpen" }) -- compiler run
+k.set("n", "<leader>ct", c.CompilerToggleResults, { desc = "CompilerToggleResults"})
 
 -- <leader>cx is in lazy.lua if it still exists
 
