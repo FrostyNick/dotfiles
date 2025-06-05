@@ -70,8 +70,10 @@ exec --no-startup-id picom -b
 bindsym XF86MonBrightnessUp exec brightnessctl set +2%
 bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
 
-# Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
+
+# Use pactl to adjust volume in PulseAudio.
+# NOTE: consider switch to wpctl (wireplumber; native pipewire manager) .. however, it's less compatible with older distros without pipewire
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3statusconf
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
@@ -163,7 +165,7 @@ bindsym $mod+x exec $term -e "./.config/i3/openQuick.sh"
 bindsym $mod+b exec ./.config/sway/launchBrowser.sh $menu
 bindsym $mod+comma exec ./.config/sway/toggleBar.sh $bar
 # /home/nicholas/.config/sway/toggleBar.sh
-bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi"
+bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi" || exec $term -e "$EDITOR"
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -357,7 +359,10 @@ mode "$mode_launcher" {
     # bindsym n exec caprine
 
     bindsym v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi" || exec $term -e "nano" || exec notify-send "Failed to open fallback text editors"
-    bindsym n exec $term -e "newsboat"
+    # below 2 lines not tested in i3
+    # bindsym n exec $term -e "nvim" +'te newsboat' +star || exec $term -e "newsboat"
+    bindsym n exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" +'te newsboat' +star || $term -e "nvim" +'te newsboat' +star || exec $term -e "newsboat"
+    # bindsym n exec $term -e "newsboat"
     # FAIL bindsym i exec "nvim"
     # FAIL bindsym v exec $term -e "nvim ~/p"
     # FAIL || vim || vi || nano
@@ -385,7 +390,7 @@ mode "$mode_launcher" {
     # NOT WORKING	bindsym t exec systemd-run --user fzf
     # NOT WORKING	bindsym t exec "fzf-tmux"
 
-    # $term -e setsid 	
+    # $term -e setsid
 
     # FOR LATER: i3 automation on start up (like open up projects with a keybind)
     bindsym Escape mode "default"

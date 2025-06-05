@@ -12,8 +12,10 @@
 #   grim -c -t jpeg -g "$(slurp)" "$name" && notify-send "Saved to ~/$(echo $name | cut -c1-25)   .png"
 # }
 
-notify-send "General reminder: Check dependencies and config." # i will add checks later if I remember
+# TODO: Add pause while taking screenshot.
 
-[ "$1" = "ocr" ] && (grim -g "$(slurp)" - | tesseract stdin stdout | wl-copy) || (grim -c -t jpeg -g "$(slurp)" - | swappy -f -) # || s || grimshot save area
+notify-send "General reminder: Check dependencies and config." & # i will add checks later if I remember
+
+[ "$1" = "ocr" ] && ((notify-send "ocr" &); grim -g "$(slurp)" - | tesseract stdin stdout | wl-copy) || (grim -c -t jpeg -g "$(slurp)" - | swappy -f -) # || s || grimshot save area
 
 

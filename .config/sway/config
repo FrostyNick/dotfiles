@@ -83,13 +83,15 @@ bindsym $mod+Shift+n exec swaync-client -t -sw
 bindsym XF86MonBrightnessUp exec brightnessctl set +2%
 bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
 
-# Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && exec $HOME/.config/sway/wobPush.sh
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && exec $HOME/.config/sway/wobPush.sh
 
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%
+# Use pactl to adjust volume in PulseAudio.
+# NOTE: consider switch to wpctl (wireplumber; native pipewire manager) .. however, it's less compatible with older distros without pipewire
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && exec $HOME/.config/sway/wobPush.sh
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && exec $HOME/.config/sway/wobPush.sh
+
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && notify-send "Mute toggled"
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && notify-send "Mic mute toggled"
 
@@ -115,8 +117,9 @@ input type:keyboard {
 input type:touchpad {
     tap enabled
     # natural_scroll enabled # otherwise: disabled
-    # accel_profile "flat" # disable mouse acceleration
-    # pointer_accel 0.5 # set mouse sensitivity (between -1 and 1)
+    accel_profile "flat" # disable mouse acceleration
+    pointer_accel 1 # set mouse sensitivity (between -1 and 1)
+    # Mouse sensitivity limitations described here: https://github.com/swaywm/sway/issues/3174
     tap_button_map lrm
 }
 
@@ -201,7 +204,7 @@ bindsym $mod+x exec $term -e "./.config/i3/openQuick.sh"
 bindsym $mod+b exec ./.config/sway/launchBrowser.sh $menu
 bindsym $mod+comma exec ./.config/sway/toggleBar.sh $bar
 # /home/nicholas/.config/sway/toggleBar.sh
-bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi"
+bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi" || exec $term -e "$EDITOR"
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -345,7 +348,8 @@ mode "$mode_launcher" {
     # bindsym n exec caprine
 
     bindsym v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi"
-    bindsym n exec $term -e "newsboat"
+    # bindsym n exec $term -e "newsboat"
+    bindsym n exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" +'te newsboat' +star || $term -e "nvim" +'te newsboat' +star || exec $term -e "newsboat"
     # FAIL bindsym i exec "nvim"
     # FAIL bindsym v exec $term -e "nvim ~/p"
     # FAIL || vim || vi || nano
@@ -373,7 +377,7 @@ mode "$mode_launcher" {
     # NOT WORKING	bindsym t exec systemd-run --user fzf
     # NOT WORKING	bindsym t exec "fzf-tmux"
 
-    # $term -e setsid 	
+    # $term -e setsid
 
     # FOR LATER: i3 automation on start up (like open up projects with a keybind)
     bindsym Escape mode "default"
@@ -449,16 +453,20 @@ assign [class="Pale moon"] $ws1
 for_window [class="Pale moon"] focus
 assign [class="Brave-browser"] $ws1
 for_window [class="Brave-browser"] focus
+assign [app_id="luakit"] $ws1
+for_window [app_id="luakit"] focus
 assign [class="Luakit"] $ws1
 for_window [class="Luakit"] focus
 assign [class="Vivaldi-stable"] $ws1
 for_window [class="Vivaldi-stable"] focus
+assign [app_id="librewolf"] $ws1
+for_window [app_id="librewolf"] focus
 assign [app_id="librewolf-default"] $ws1
 for_window [app_id="librewolf-default"] focus
 assign [app_id="zen-alpha"] $ws1
 for_window [app_id="zen-alpha"] focus
-# assign [app_id="zen"] $ws1
-# for_window [app_id="zen"] focus
+assign [app_id="zen"] $ws1
+for_window [app_id="zen"] focus
 
 # web (remove in future; LibreWolf 126 and below)
 assign [class="librewolf-default"] $ws1
@@ -564,10 +572,10 @@ assign [app_id="sober"] $ws5
 assign [class="Minecraft Linux Launcher UI"] $ws5
 for_window [class="mcpelauncher-client"] focus,layout toggle split
 assign [class="mcpelauncher-client"] $ws5
-# below not working
-assign [class="minecraft-launcher"] $ws5
-assign [class="Minecraft Launcher"] $ws5
-assign [class="Minecraft 1.19"] $ws5
+for_window [app_id="mcpelauncher-client"] focus,layout toggle split
+assign [app_id="mcpelauncher-client"] $ws5
+for_window [app_id="net.lutris.Lutris"] focus,layout toggle split
+assign [app_id="net.lutris.Lutris"] $ws5
 
 # art editing
 assign [class="Gimp"] $ws5
