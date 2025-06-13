@@ -100,15 +100,16 @@ size = 14
 color = #ccffccff
 # Shadow color (RGBA)
 shadow = #000000a0
+background = #000000cc
 
 ################################################################################
 # Image meta info scheme (format, size, EXIF, etc)
 ################################################################################
 [info]
-# Show on startup (yes/no)
+# Show text on startup (yes/no)
 show = yes
 # Timeout to hide info (seconds, 0 to always show)
-info_timeout = 5
+info_timeout = 2
 # Timeout to hide status message (seconds)
 status_timeout = 3
 
