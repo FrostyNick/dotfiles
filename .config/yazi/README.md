@@ -1,7 +1,7 @@
 
 # Plugin installation
 
-These are instructions for after installing the latest version of yazi with the plugins in this config. Keep in mind yazi plugins are in beta. You might want to frequently update plugins.
+These are instructions for after installing the latest version of yazi with the plugins in this config. Keep in mind Yazi plugins are in beta.
 
 To install:
 
@@ -13,14 +13,28 @@ ya pack -a dedukun/bookmarks
 
 To view mounted systems, press <kbd>M</kbd>.
 
-## Plugin info + troubleshooting
+## Troubleshooting
 
-If there are issues with the git or mount plugins, make sure you have the minimum requirements for each plugin. In general the readme's are helpful! On Unix systems, you can check the concise documentation in:
+If there are issues with the plugins above, check:
 
-```txt
+- You meet the minimum requirements for each plugin. Likely, yazi is updated.
+- You're on the latest plugin updates with `ya pkg -u` or in older versions `ya pack -u` if you update yazi.
+
+## Plugin info
+In general, the readme's can be very helpful. For this config, you can see them in:
+
+Unix-like systems (Linux, MacOS):
+```sh
 ~/.config/yazi/plugins/mount.yazi/README.md
 ~/.config/yazi/plugins/git.yazi/README.md
 ~/.config/yazi/plugins/bookmarks.yazi/README.md # according to this, as of 2025-2-18, latest version of yazi is required
+```
+
+Windows:
+```bat
+%AppData%\yazi\config\plugins\mount.yazi\README.md
+%AppData%\yazi\config\plugins\git.yazi\README.md
+%AppData%\yazi\config\plugins\bookmarks.yazi\README.md
 ```
 
 Above mount.yazi, git.yazi, and general plugin documentation are available here: https://github.com/yazi-rs/plugins
@@ -29,9 +43,9 @@ Plugin list (contains bookmark.yazi): [Resources \| Yazi](https://yazi-rs.github
 
 # Where is the default config so I don't waste time?
 
-If you don't have it already get it from here (I put [fgit](https://github.com/FrostyNick/fgit) for my own convinience which assumes ~/p project path. This is just a git clone helper and you could just git clone everything instead.):
-`fgit https://github.com/sxyazi/yazi yazi-config/preset`
+https://github.com/sxyazi/yazi/tree/main/yazi-config/preset
 
-If you git cloned it in `~/p`, the default configuration would be saved in:
-`~/p/yazi/yazi-config/preset/yazi-default.toml`
+Locally with git or [fgit (git helper)](https://github.com/FrostyNick/fgit):
+`fgit https://github.com/sxyazi/yazi yazi-config/preset`
+<!-- `~/p/yazi/yazi-config/preset/yazi-default.toml` -->
 

@@ -3,27 +3,28 @@
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
 # Plugins (README.md for more info)
+# yazi will change "manager" to "mgr" as of 2025-6-18 so don't bother undoing that if reading github readme.
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on  = "M"
 run = "plugin mount"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = [ "m" ]
 run = "plugin bookmarks save"
 desc = "Save current position as a bookmark"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = [ "'" ]
 run = "plugin bookmarks jump"
 desc = "Jump to a bookmark"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = [ "b", "d" ]
 run = "plugin bookmarks delete"
 desc = "Delete a bookmark"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = [ "b", "D" ]
 run = "plugin bookmarks delete_all"
 desc = "Delete all bookmarks"
@@ -32,7 +33,7 @@ desc = "Delete all bookmarks"
 # Most keybinds below are from [Tips \| Yazi](https://yazi-rs.github.io/docs/tips/)
 
 # by default: seek up
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "K"
 run  = 'arrow -5'
 desc = "Move cursor 5 up"
@@ -48,7 +49,7 @@ run  = 'arrow -5'
 desc = "Move cursor 5 up"
 
 # by default: seek down
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "J"
 run  = 'arrow 5'
 desc = "Move cursor 5 down"
@@ -63,14 +64,14 @@ on   = "J"
 run  = 'arrow 5'
 desc = "Move cursor 5 down"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "!"
 run  = 'shell "$SHELL" --block'
 # run  = 'shell "powershell.exe" --block'
 desc = "Open shell here"
 
 # [GitHub \- mwh\/dragon\: Drag and drop source\/target](https://github.com/mwh/dragon) (works on xwayland ... but natively?)
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on  = "<C-n>"
 run = 'shell -- dragon -x -i -T "$1"'
 # I've symlinked dragon-drop to dragon in this case. It seems like -drop is not usually needed in most systems.
