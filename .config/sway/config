@@ -69,7 +69,7 @@ exec nm-applet --indicator
 # Note: likely there will be issues if both are installed. Remove one of the lines below or uninstall one if you have both.
 exec dunst
 # exec mako
-exec swaync 
+exec swaync
 
 # WARNING: old wob = memory leak it seems
 exec_always $HOME/.config/sway/wobInit.sh
@@ -116,7 +116,7 @@ input type:keyboard {
 
 input type:touchpad {
     tap enabled
-    # natural_scroll enabled # otherwise: disabled
+    natural_scroll enabled # otherwise: disabled
     accel_profile "flat" # disable mouse acceleration
     pointer_accel 1 # set mouse sensitivity (between -1 and 1)
     # Mouse sensitivity limitations described here: https://github.com/swaywm/sway/issues/3174
@@ -609,6 +609,7 @@ assign [class="zoom"] $ws6
 # video creation
 assign [class="obs"] $ws10
 for_window [class="obs"] focus
+for_window [class="obs" title="Stats"] floating enable,opacity 0.8
 assign [app_id="com.obsproject.Studio"] $ws10
 for_window [app_id="com.obsproject.Studio"] focus
 assign [class="kdenlive"] $ws10
@@ -637,7 +638,7 @@ assign [app_id="org.keepassxc.KeePassXC"] $ws100
 # exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
 # NOT WORKING exec_always $term -e "nvim ~/backup2022nov10/notes/todo.norg"
 # NOT WORKING exec_always ./.config/i3/openTodo.sh
-exec $term -e "./.config/i3/openTodo.sh"
+exec $term -e "$HOME/.config/i3/openTodo.sh"
 # NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
 

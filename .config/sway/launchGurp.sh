@@ -17,7 +17,9 @@ done
 command -v wl-copy || ($ec "launchGurp: Image clipboard broken! Install wl-clipboard / wl-copy to fix." &)
 
 live-screenshot() {
-  grim -c -t jpeg -g "$(slurp -b 000000cc -c 005500cc;kill $(ps aux | grep swayimg | grep -v grep | tail -n 1 | awk '{print $2}'))" - | swappy -f -
+  # the kill below must go after grim command has fully run, so below doesn't always work
+  # grim -c -t jpeg -g "$(slurp -b 000000cc -c 005500cc;kill $(ps aux | grep swayimg | grep -v grep | tail -n 1 | awk '{print $2}'))" - | swappy -f -
+  (grim -c -t jpeg -g "$(slurp -b 000000cc -c 005500cc)" -;kill $(ps aux | grep swayimg | grep -v grep | tail -n 1 | awk '{print $2}')) | swappy -f -
 }
 
 hold-screenshot() {
@@ -34,6 +36,7 @@ full-screenshot() {
   barExit=$?
   # wait "$pid"
   sleep 0.8 # for some reason `live-screenshot` and `hold-screenshot` (either order) need to be around 0.6+ seconds apart if one of them is in the background to consistantly work with the delay in grim.
+  # sleep 0.5
 
   live-screenshot
   if [ $barExit -eq 0 ]; then # success = it ran earlier, so bring it back like it was before

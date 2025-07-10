@@ -472,6 +472,8 @@ for_window [class="librewolf-default"] focus
 # web (arch)
 assign [class="Chromium"] $ws1
 for_window [class="Chromium"] focus
+assign [class="librewolf"] $ws1
+for_window [class="librewolf"] focus
 assign [class="LibreWolf"] $ws1
 for_window [class="LibreWolf"] focus
 assign [class="Ladybird"] $ws1
