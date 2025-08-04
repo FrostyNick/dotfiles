@@ -145,13 +145,17 @@ local function telescopeConfig()
   -- loadExtension("frecency")
 end
 
-local function lspConfig()
+local function lspAndFoldConfig()
   local a,b = pcall(function()
     local path_mono_download = "$HOME/Apps/omnisharp-lsp-1.38.2/" -- not tested. may need to use /user/$HOME instead
     local lspc = require('lspconfig')
     require('lspconfig/configs')
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.foldingRange = { -- from nvim-ufo docs
+      dynamicRegistration = false,
+      lineFoldingOnly = true
+    }
 
     -- For easy starting point see `:help lspconfig-all` or https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
     local lspLs = {
@@ -171,7 +175,8 @@ local function lspConfig()
 
             client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
               workspace = {
-                checkThirdParty = false,
+                checkThirdParty = true, -- (this may impact performance) diagnostics.globals is not changing anything at the moment (this may impact performance)
+                -- checkThirdParty = false,
                 library = {
                   vim.env.VIMRUNTIME, -- nvim lua info shows up with this enabled
                   -- Depending on the usage, you might want to add additional paths here.
@@ -180,7 +185,7 @@ local function lspConfig()
                 }
               },
               telemetry = { enable = false },
-              diagnostics = { globals = { 'Snacks' } }, -- remove global warnings for these variables
+              diagnostics = { globals = { 'Snacks', 'vim' } }, -- Remove global warnings for these variables. WARNING: This has stopped working recently.
               runtime = { version = "LuaJIT" }
             })
           end,
@@ -220,8 +225,8 @@ local function lspConfig()
           }
         }
       },
-      'bashls', 'denols', --[[denols might be deno]] 'pylsp',
-      'rust_analyzer', 'ts_ls', 'zk', 'golangci-lint-langserver', 'gopls',
+      'bashls', 'denols', 'pylsp', 'zls', 'tinymist',
+      'rust_analyzer', 'ts_ls', 'zk', --[[ 'golangci_lint_ls', ]] 'gopls',
     }
     for _,v in ipairs(lspLs) do
       if type(v) ~= "table" then
@@ -234,6 +239,23 @@ local function lspConfig()
   end)
   if not a then
     print("failed to setup lspconfig: "..b)
+  end
+  a,b = pcall(function() -- for lsp-based folds)
+    vim.o.foldcolumn = '1' -- '0' is not bad
+    vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+    vim.o.foldlevelstart = 99
+    vim.o.foldenable = true
+
+    -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+    vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+    vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+  end)
+  if not a then
+    vim.notify("Error loading nvim-ufo sets: " .. b)
+  end
+  a,b = pcall(function() require('ufo').setup() end)
+  if not a then
+    vim.notify("Error loading nvim-ufo: " .. b)
   end
 end
 -- Example: invisiBkgd("ron")
@@ -248,6 +270,10 @@ local function invisiBkgd(color, isSpell, showBg) -- NOTE: ColorMyPencils() is a
       color = color.name -- automatically passed from Lazy
     end
     if color then
+      if color:lower():sub(1, 10) == "cyberdream" then -- fix for cyberdream when switching between light and dark theme
+        vim.cmd.CyberdreamToggleMode()
+        vim.cmd.CyberdreamToggleMode()
+      end
       vim.cmd.colorscheme(color)
     end
   end)
@@ -359,7 +385,7 @@ local plugins = {
       }
     end
   }, -- Optional
-  { 'neovim/nvim-lspconfig', event = "VeryLazy", config = lspConfig }, -- Required
+  { 'neovim/nvim-lspconfig', event = "VeryLazy", config = lspAndFoldConfig }, -- Required
 
   -- Autocompletion (taken with minimal changes from https://github.com/cpow/neovim-for-newbs/blob/7cee93b394359c2fee4f134d27903af65742247d/lua/plugins/completions.lua )
   {
@@ -426,7 +452,10 @@ local plugins = {
 
     end,
   },
-
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+  },
   -- uses ys; which stands for you surround; very powerful and must have if
   -- you know how to use it; see `:h nvim-surround.usage` for more info
   {
@@ -673,16 +702,14 @@ local plugins = {
   --- Colorschemes below. if you just uncomment and comment a plugin below, it will be the default. Personally, I don't want to load all the themes.
   { 'dasupradyumna/midnight.nvim', name = "midnight",
   lazy = true },
-  { 'paulo-granthon/hyper.nvim', name = "hyper",
-  lazy = true },
   { 'rose-pine/neovim', name = 'rose-pine',
-  lazy = true },
+  config = invisiBkgd, }, -- init = invisiBkgd },
   { 'rebelot/kanagawa.nvim', name = 'kanagawa',
   lazy = true },
   { 'AlexvZyl/nordic.nvim', name = 'nordic',
   lazy = true }, -- swap this line with "config = ..." to set as default theme
   { 'scottmckendry/cyberdream.nvim', name = 'cyberdream',
-  config = invisiBkgd, }, -- init = invisiBkgd },
+  lazy = true },
 
   { -- WARNING: Might remove later if there's a quicker alternative that has the same basic functionality.
     'nvim-lualine/lualine.nvim',
@@ -742,7 +769,7 @@ local plugins = {
     -- This plugin doesn't work out of the box.
     --[[ Extra steps to make this work:
     1. Get the dependencies.
-    I wonder if the built-in luaJIT from Neovim works:
+    The built-in luaJIT from Neovim doesn't work don't do this:
     - ~/.local/share/nvim/lazy/vim-love-docs/src/env.txt 
     `lua="lua"` to `lua="nvim -l"`
 
@@ -1057,14 +1084,14 @@ local plugins = {
       },
     },
   },
-  { -- requires nvim 0.9.4 according to readme
+  { -- requires nvim 0.9.4 according to readme -- So far, this seems worthy of replacing telescope. This needs more testing before I commit to that.
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
     opts = { -- See: https://github.com/folke/snacks.nvim?tab=readme-ov-file#-usage
       bigfile = { enabled = true },
       -- dashboard = { enabled = true }, -- homescreen for nvim
-      -- indent = { enabled = true }, -- visualize current line. might be useful for you! i just don't like it with transparent theme that much .. and rnumber is visible enough
+      -- indent = { enabled = true }, -- visualize current line. might be useful for you! i just don't like it with transparent theme that much .. and rnumber is visible enough + fold numbers exist
       -- input = { enabled = true }, -- alternative to 'nvim-telescope/telescope-ui-select.nvim'. Not usable with icon-picker: has over 10000 results with ui-select that I can't skip/search.
       notifier = { enabled = true, timeout = 5000 --[[in ms]] }, -- timeout default=3000ms; better alternative to 'rcarriga/nvim-notify'
       quickfile = { enabled = true }, -- render file before plugins
@@ -1077,6 +1104,41 @@ local plugins = {
       zen = {
         on_open = function() toggleNotZen(false) end,
         on_close = function() toggleNotZen(true) end,
+      },
+      picker = {
+        sources = {
+          colorschemes = {
+            finder = "vim_colorschemes",
+            format = "text",
+            preview = "colorscheme",
+            preset = "vertical",
+            on_close = function(_, item)
+              vim.defer_fn(function()
+                if item then
+                  invisiBkgd(item.text)
+                else
+                  invisiBkgd()
+                end
+              end, 50)
+            end,
+            on_change = function(_, item)
+              vim.defer_fn(function()
+                vim.cmd.hi("clear")
+                invisiBkgd(item.text)
+              end, 0)
+            end,
+            confirm = function(picker, item)
+              picker:close()
+              if item then
+                picker.preview.state.colorscheme = nil
+                vim.schedule(function()
+                  -- vim.cmd("colorscheme " .. item.text)
+                  invisiBkgd(item.text)
+                end)
+              end
+            end,
+          }
+        }
       }
     },
     keys = {

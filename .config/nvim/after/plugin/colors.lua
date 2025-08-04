@@ -6,6 +6,10 @@ function ColorMyPencils(color, isSpell, showBg) -- NOTE: duplicate fn in ../../l
       color = color.name -- automatically passed from Lazy
     end
     if color then
+      if color:lower():sub(1, 10) == "cyberdream" then -- fix for cyberdream when switching between light and dark theme
+        vim.cmd.CyberdreamToggleMode()
+        vim.cmd.CyberdreamToggleMode()
+      end
       vim.cmd.colorscheme(color)
     end
   end)
