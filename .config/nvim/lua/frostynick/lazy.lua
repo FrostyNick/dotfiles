@@ -3,6 +3,8 @@
 -- Migration: Lazy <--> Packer https://github.com/folke/lazy.nvim#packernvim
 
 
+-- local vim = vim -- possibly needed if using emmylua_ls
+-- local Snacks = Snacks
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 local uv = vim.uv or vim.loop -- `vim.loop` planned to be removed in nvim 1.0 as of 2024-11-1
 if not uv.fs_stat(lazypath) then
@@ -47,7 +49,7 @@ local function telescopeConfig()
   k.set("n", "<leader>dl", tsb.diagnostics, {desc="LSP: Telescope diagnostics"})
   -- For some reason there is A being called after the below is run. Additionally
   -- adding over one Esc keys aren't recognized. Might report as bug.
-  k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>ispacevp<Esc>");
+  k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>>vp<Esc>");
 
   k.set('n', '<leader><leader>', tsb.spell_suggest, {})
   k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
@@ -77,9 +79,9 @@ local function telescopeConfig()
   {desc="Telescope: find files"})
 
   k.set('n', '<leader>fj',
-  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/*<CR>',
-  '<cmd>Telescope find_files hidden=true search_dirs=$HOME/backup2022nov/<CR>',
-  {desc="Telescope: find backup files; keyword: joplin"})
+  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/bk/*<CR>',
+  '<cmd>Telescope find_files hidden=true search_dirs=$HOME/bk/<CR>',
+  {desc="Telescope: find backup files; keywords: >vpv joplin"})
 
   k.set('n', '<leader>fc',
   '<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/learnxinyminutes-docs<CR>',
@@ -88,7 +90,7 @@ local function telescopeConfig()
   k.set('n', '<leader>gz', function() vim.notify("Use `2gx`.") end)
 
   k.set('n', '<leader>gj',
-  '<cmd>Telescope live_grep search_dirs=$HOME/backup2022nov*/<CR>',
+  '<cmd>Telescope live_grep search_dirs=$HOME/bk*/<CR>',
   {desc="Telescope: live grep (find text) in backup files; replacement to joplin. Requires rg."})
 
   k.set('n', '<leader>fm', "<cmd>Telescope man_pages<CR>", {})
@@ -118,7 +120,7 @@ local function telescopeConfig()
 
   loadExtension("media_files", function()
     k.set('n', '<leader>fp',
-    "<cmd>Telescope media_files<CR>", {desc = "Telescope: pictures; media files"})
+    "<cmd>Telescope media_files<CR>", {desc = "Telescope: pictures; images; media files"})
   end)
 
   loadExtension("lazy", function()
@@ -159,6 +161,8 @@ local function lspAndFoldConfig()
 
     -- For easy starting point see `:help lspconfig-all` or https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
     local lspLs = {
+
+      -- TODO: Consider using 'emmylua_ls' ... it's around 3x lighter in RAM when starting up.. readme says 10x faster.. sounds believable.
       {
         'lua_ls',
         {
@@ -167,18 +171,33 @@ local function lspAndFoldConfig()
           -- https://github.com/neovim/neovim/discussions/24119
           -- This option performs better if you are able to set it up with this:
           -- workspace.library is the bottle neck. I notice the speed improvement too. More info: https://luals.github.io/wiki/performance/
+
+          -- Also in general if..
+          -- - more than 1 lua-language-server runs in the background (there should only be one installed)
+          -- - OR restarting neovim quickly as of v0.11.3 (seems like neovim bug, previous lua_ls should be killed), which can lead to above.
+          -- ..there will be many global variable warnings in this file.
+
           on_init = function(client)
             local path = client.workspace_folders[1].name
+            -- vim.notify("lua_ls path: " .. vim.inspect(path)) -- emmylua_ls is better probably ..
+            local home = uv.os_homedir()
+            local uhohDir = path == home .. "/p" or path == home -- rootUri should be nil if these are root folders.
+
+            if uhohDir then
+              vim.notify(vim.inspect(client))
+              vim.notify("WARNING: Potential performance issue might occur. Remove .luarc.json from (" .. path .. ") bad folder and then run LSP again / restart nvim.")
+              client.rootUri = nil -- This doesn't seem to be working workaround. Follow notified instructions above.
+            end
             if uv.fs_stat(path..'/.luarc.json') or uv.fs_stat(path..'/.luarc.jsonc') then
+              vim.notify(".luarc found. exiting.")
               return
             end
-
             client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
               workspace = {
-                checkThirdParty = true, -- (this may impact performance) diagnostics.globals is not changing anything at the moment (this may impact performance)
-                -- checkThirdParty = false,
+                checkThirdParty = true, -- diagnostics.globals is not working at the moment.
                 library = {
-                  vim.env.VIMRUNTIME, -- nvim lua info shows up with this enabled
+                  -- vim.env.VIMRUNTIME, -- nvim lua info shows up with this enabled
+                  "/usr/share/nvim",
                   -- Depending on the usage, you might want to add additional paths here.
                   -- "${3rd}/luv/library"
                   -- "${3rd}/busted/library",
@@ -192,6 +211,8 @@ local function lspAndFoldConfig()
           settings = { Lua = {} }
         },
       },
+      --]]
+
       {
         -- omnisharp is 1.38.2 and many guides seems to fallback to that version. My guess: I think it doesn't work on the version of Unity I have to use.
         -- https://dzfrias.dev/blog/neovim-unity-setup/
@@ -225,7 +246,7 @@ local function lspAndFoldConfig()
           }
         }
       },
-      'bashls', 'denols', 'pylsp', 'zls', 'tinymist',
+      'bashls', 'denols', 'pylsp', 'zls', 'tinymist', -- 'emmylua_ls',
       'rust_analyzer', 'ts_ls', 'zk', --[[ 'golangci_lint_ls', ]] 'gopls',
     }
     for _,v in ipairs(lspLs) do
@@ -330,19 +351,23 @@ local function toggleNotZen(isNotZen)
   end
 end
 
+-- local sysn = uv.os_uname().sysname -- "Android" is "Linux" according to this. So that won't work here.
+
+local sysn = vim.split(vim.api.nvim_exec2("!uname -o", { output = true }).output, "\n", {trimempty=true, plain=true}) or {"ErrorNoUname"}
+sysn = tostring(sysn[#sysn])
+local isAndroid = sysn == "Android"
 local rainbow_delimiters
+
 local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     event = "VeryLazy",
     build = ":TSUpdate",
     config = function()
-
       require'nvim-treesitter.configs'.setup {
-        -- A list of parser names,
-        -- or "all" (five required parsers should always be installed)
-        ensure_installed = "all",
-        -- ensure_installed = { "rust", "javascript", "python", "c", "lua", "vim", "query", "vimdoc" },
+        -- A list of parser names, (five required parsers should always be installed)
+        -- Below installs everything, unless it's on Android, due to a major issue.
+        ensure_installed = isAndroid and { "rust", "javascript", "python", "c", "lua", "vim", "query", "vimdoc" } or "all",
         -- "vimdoc" might be "help" in <0.9.0 nvim.
 
         -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -380,9 +405,9 @@ local plugins = {
     event = "VeryLazy",
     config = function()
       require("mason").setup()
-      require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "rust_analyzer", --[[ "denols" ]] },
-      }
+      -- ensure_installed sometimes launches an extra "lua_ls", causing warnings that the LSP should be ignoring. Additionally for Termux, *ensure_installed* doesn't work at the moment. Manually install with Mason package manager instead.
+      require("mason-lspconfig").setup()
+      -- .setup { ensure_installed = { "lua_ls", "rust_analyzer", },
     end
   }, -- Optional
   { 'neovim/nvim-lspconfig', event = "VeryLazy", config = lspAndFoldConfig }, -- Required
@@ -420,8 +445,8 @@ local plugins = {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
-          -- ["<C-e>"] = cmp.mapping.abort(), -- Not recommended in Termux
-          ["<C-y>"] = cmp.mapping.confirm({ select = true }), -- Seems like new update automatically changed this to <CR>. Uncommenting and recommenting above fixed that for me, but any change will probably fix new update default.
+          -- ["<C-e>"] = cmp.mapping.abort(), -- Not recommended in Termux (this appears to no longer be an issue so far)
+          ["<C-y>"] = cmp.mapping.confirm({ select = true }), -- BUG: Since some time, this will once in a while go back to <CR> for an unknown reason. (Uncommenting and commenting this line possibly fixed this for me temporarily).
         }),
         sources = cmp.config.sources({
           -- { name = "crates" }, -- rust crates.nvim -- the autocmd below does lazyloading which this line doesn't do.
@@ -547,7 +572,7 @@ local plugins = {
     },
     config = true
   },
-  { -- this takes a couple MB ... might not be best idea if you're low on space
+  { -- this takes a couple MB ... might not be best idea if you're low on space. BUG: nvim cannot be used while process has started with this plugin.
     "chrishrb/gx.nvim",
     -- it conflicts once in a while but usually saves time
     keys = { { "2gx", "<cmd>Browse<cr>", mode = { "n", "x" }} },
@@ -829,8 +854,8 @@ local plugins = {
       -- "echasnovski/mini.pick",      -- optional
     },
     keys = {
-      { "<leader>2gs", function() vim.cmd("Neogit kind=vsplit") end, mode = "n", desc = "Open Neogit"},
-      { "<leader>gl", function() vim.cmd("NeogitLogCurrent .") end, mode = "n", desc = "Open Neogit"},
+      { "<leader>2gs", function() vim.cmd("Neogit kind=vsplit") end, mode = "n", desc = "Open Neogit in vsplit"},
+      { "<leader>gl", function() vim.cmd("NeogitLogCurrent .") end, mode = "n", desc = "Open Neogit in new tab (default)"},
     },
   },
   {
@@ -1004,6 +1029,7 @@ local plugins = {
     -- Ensure that it runs first to minimize delay when opening file from terminal
     lazy = false,
     commit = "cc3d8f7", -- drop nvim 0.9 support without this commit
+    pin = true,
     priority = 999,
   },
 
@@ -1094,6 +1120,7 @@ local plugins = {
       -- indent = { enabled = true }, -- visualize current line. might be useful for you! i just don't like it with transparent theme that much .. and rnumber is visible enough + fold numbers exist
       -- input = { enabled = true }, -- alternative to 'nvim-telescope/telescope-ui-select.nvim'. Not usable with icon-picker: has over 10000 results with ui-select that I can't skip/search.
       notifier = { enabled = true, timeout = 5000 --[[in ms]] }, -- timeout default=3000ms; better alternative to 'rcarriga/nvim-notify'
+      -- might replace notifier with [mini.nvim/readmes/mini-notify.md at main · echasnovski/mini.nvim · GitHub](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-notify.md)
       quickfile = { enabled = true }, -- render file before plugins
       -- scroll = { -- smooth scroll. too slow with a specific plugin I use. I guess this can be good for testing performance.
       --   animate = {
@@ -1201,8 +1228,7 @@ end
 
 require("lazy").setup(plugins, {})
 
-
--- vim.print(plugins);
+-- vim.notify("Loaded " .. vim.inspect(#plugins) .. " plugins.")
 vim.g.neovide_scale_factor = 0.7
 
 -- Run this also to make it work: `:TSInstall http`
@@ -1212,3 +1238,10 @@ vim.filetype.add({
     ['http'] = 'http',
   },
 })
+
+if isAndroid then
+  vim.notify("EXPERIMENTAL: Termux detection enabled: There should be no startup errors and minimal errors with other plugins. Termux has been tested for nvim v0.11.3 (this is rolling release packages so this is no problemo.)")
+else
+  vim.notify(sysn)
+end
+
