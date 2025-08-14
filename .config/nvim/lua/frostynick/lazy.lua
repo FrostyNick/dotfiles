@@ -518,7 +518,7 @@ local plugins = {
     keys = {
       {
         "<leader>ls",
-        "<cmd>NvimTreeToggle<CR>",
+        function() require("nvim-tree.api").tree.toggle({focus=false}) end,
         desc = "Toggle nvim tree",
         mode = "n",
       },
@@ -526,7 +526,12 @@ local plugins = {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
-    config = true,
+    config = {
+      view = {
+        number = true,
+        relativenumber = true,
+      }
+    }
   },
   { 'TarunDaCoder/sus.nvim', event = "VeryLazy", config = true },
   { 'nmac427/guess-indent.nvim', event = "VeryLazy", config = true },
@@ -710,8 +715,11 @@ local plugins = {
 
             itch = { pattern = 'itch%.io', icon = '󰺷 '},
             github2 = { pattern = 'githubusercontent%.com', icon = '󰊤 '},
+            kofi = { pattern = 'kofi%.com', icon = ' '},
+            patreon = { pattern = 'patreon%.com', icon = '󰢂 '},
+            liberap = { pattern = 'liberapay%.com', icon = ' '},
           }
-        }
+        },
       })
     end
   },
@@ -825,13 +833,13 @@ local plugins = {
     config = true,
     cmd = { "PossessionLoad", "PossessionDelete", "PossessionSave" },
     keys = {
-      { "<leader>stl", "<cmd>PossessionLoad temp<CR>", mode = "n", desc="possession: load temp session"},
-      { "<leader>sts", "<cmd>PossessionSave temp<CR>", mode = "n", desc="possession: save temp session"},
-      { "<leader>std", "<cmd>PossessionDelete temp<CR>", mode = "n", desc="possession: delete temp session"},
+      { "<leader>se", "<cmd>PossessionLoad temp<CR>", mode = "n", desc="possession: load temp session"},
+      { "<leader>sw", "<cmd>wa | PossessionSave! temp<CR>", mode = "n", desc="possession: write files and save temp session"},
+      { "<leader>sx", "<Esc><cmd>wa | PossessionSave! temp<CR><cmd>qa<CR>", mode = "n", desc="possession: write files, save temp session and quit"},
       { "<leader>ss", ":PossessionSave ", mode = "n", desc="possession: save a file"},
       { "<leader>sl", ":PossessionLoad ", mode = "n", desc="possession: load a file"},
       { "<leader>sd", ":PossessionDelete ", mode = "n", desc="possession: delete a file"},
-      { "<leader>fs", "<cmd>Telescope possession list<CR>", mode = "n"},
+      { "<leader>fs", "<cmd>Telescope possession list<CR>", mode = "n", desc="possession: find session"},
     },
   },
   {
@@ -885,10 +893,13 @@ local plugins = {
       { "<leader>ghs", ":Gits stage_hunk<CR>",     mode = {"n", "v"}, desc = "Git Hunk: Stage"},
       { "<leader>ghu", ":Gits undo_stage_hunk<CR>",mode = {"n", "v"}, desc = "Git Hunk: Reset"},
       { "<leader>ghr", ":Gits reset_hunk<CR>",     mode = {"n", "v"}, desc = "Git Hunk: Stage"},
-      { "<leader>ghe", ":Gits select_hunk<CR>",    mode = {"n", "v"}, desc = "Git Hunk: Edit (select hunk with visual mode)"},
+      { "<leader>ghe", ":Gits select_hunk<CR>",    mode = {"n", "v"}, desc = "Git Hunk: Edit (Ex: Select visual mode)"},
       { "<leader>ghn", ":Gits next_hunk<CR>",      mode = {"n", "v"}, desc = "Git Hunk: Jump next"},
       { "<leader>ghp", ":Gits prev_hunk<CR>",      mode = {"n", "v"}, desc = "Git Hunk: Jump prev"},
-      { "<leader>gd", ":Gits diffthis<CR>", mode = {"n", "v"}, desc = "Git Diff" },
+      { "<leader>gd", ":Gits diffthis<CR>",        mode = {"n", "v"}, desc = "Git Diff" },
+      { "<leader>hgh", ":Gits toggle_numhl<CR>:Gits toggle_word_diff<CR>",mode="n", desc = "Hide/toggle git highlighting" },
+      { "<leader>hb", ":Gits toggle_current_line_blame<CR>",mode="n", desc = "Hide/toggle git blame (gitsigns.nvim) (normal)" },
+      { "<leader>hb",":Gits toggle_current_line_blame<CR>gv",mode="v",desc = "Hide/toggle git blame (gitsigns.nvim) (visual)" },
     }
     -- commit = "76927d14d3fbd4ba06ccb5246e79d93b5442c188", -- v0.8 support
   },
@@ -1169,19 +1180,74 @@ local plugins = {
       }
     },
     keys = {
+      -- "Other" in docs
+      -- { "<leader>zs", function() Snacks.zen() end, desc = "Toggle Zen Mode" }, -- s = skim-read mode as i call it
       { "<leader>zs", function() Snacks.zen() end, desc = "Toggle Zen Mode" }, -- s = skim-read mode as i call it
       { "<leader>Z",  function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
+      -- { "<leader>Z",  Snacks.zen.zoom, desc = "Toggle Zoom" },
       { "<leader>vn", function() Snacks.notifier.show_history() end, desc = "View All Notifications" },
       { "<leader>fr", function() Snacks.rename.rename_file() end, desc = "Rename File" },
       { "<leader>2gr",function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" }, -- doesn't replace 'f-person/git-blame.nvim'
       { "<leader>hn", function() Snacks.notifier.hide() end, desc = "Hide All Notifications" },
-  --     { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
-  --     { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
-  --     { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-  --     { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit Current File History" },
-  --     { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-  --     { "<leader>3gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
+      { "<c-/>",      function() Snacks.terminal() end, desc = "Toggle Terminal" },
+
+      --- Below keymaps are not final .. most things are "2" since there's a lot of testing and fallbacks ... the new potential mappings are a nice alternative to telescope. (<c-f> instead of <c-d> is more .. consistant with other stuff and better .. there is a few missing things though.
+      -- { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
+      -- { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+      -- { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+      -- { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit Current File History" },
+      -- { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+      -- { "<leader>3gl",function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
+      { "<leader>3ff", function() Snacks.picker.smart() end, desc = "Smart Find Files (spicker snacks picker)" },
+      { "<leader>2b",  function() Snacks.picker.buffers() end, desc = "Buffers (s picker)" },
+      { "<leader>2/",  function() Snacks.picker.grep() end, desc = "Grep (s picker)" },
+      -- { "<leader>:",   function() Snacks.picker.command_history() end, desc = "Command History (s picker)" },
+      -- { "2<leader>vn", function() Snacks.picker.notifications() end, desc = "Notification History (s picker)" }, -- I won't use this much probably
+      -- below was <leader>e ... it could be shorter maybe.
+      { "<leader>2pv", function() Snacks.explorer() end, desc = "File Explorer / Project View (s picker)" },
+      -- find
+      { "<leader>2vpc",function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File (s picker)" },
+      { "<leader>2ff", function() Snacks.picker.files() end, desc = "Find Files (s picker)" },
+      { "<leader>2fg", function() Snacks.picker.git_files() end, desc = "Find Git Files (s picker)" },
+      { "<leader>2fp", function() Snacks.picker.projects() end, desc = "Projects (s picker)" },
+      { "<leader>2,",  function() Snacks.picker.recent() end, desc = "Recent (oldfiles) (s picker)" },
+      -- git
+      { "<leader>2gb", function() Snacks.picker.git_branches() end, desc = "Git Branches (s picker)" },
+      { "<leader>2gl", function() Snacks.picker.git_log() end, desc = "Git Log (s picker)" },
+      { "<leader>2gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line (s picker)" },
+      { "<leader>2gs", function() Snacks.picker.git_status() end, desc = "Git Status (s picker)" },
+      { "<leader>2gS", function() Snacks.picker.git_stash() end, desc = "Git Stash (s picker)" },
+      { "<leader>2gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks) (s picker)" },
+      { "<leader>2gf", function() Snacks.picker.git_log_file() end, desc = "Git Log File (s picker)" },
+      -- grep
+      { "<leader>2sb", function() Snacks.picker.lines() end, desc = "Buffer Lines (s picker)" },
+      { "<leader>2sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers (s picker)" },
+      { "<leader>2sg", function() Snacks.picker.grep() end, desc = "Grep (s picker)" },
+      { "<leader>2sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word (s picker)", mode = { "n", "x" } },
+      -- search
+      { '<leader>2s"', function() Snacks.picker.registers() end, desc = "Registers (s picker)" },
+      { "<leader>2s/", function() Snacks.picker.search_history() end, desc = "Search History (s picker)" },
+      { "<leader>2sa", function() Snacks.picker.autocmds() end, desc = "Autocmds (s picker)" },
+      { "<leader>2sb", function() Snacks.picker.lines() end, desc = "Buffer Lines (s picker)" },
+      { "<leader>2sc", function() Snacks.picker.command_history() end, desc = "Command History (s picker)" },
+      { "<leader>2sC", function() Snacks.picker.commands() end, desc = "Commands (s picker)" },
+      { "<leader>2sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics (s picker)" },
+      { "<leader>2sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics (s picker)" },
+      { "<leader>2fk", function() Snacks.picker.help() end, desc = "Help Pages (s picker)" },
+      { "<leader>2sH", function() Snacks.picker.highlights() end, desc = "Highlights (s picker)" },
+      { "<leader>2si", function() Snacks.picker.icons() end, desc = "Icons (s picker)" },
+      { "<leader>2sj", function() Snacks.picker.jumps() end, desc = "Jumps (s picker)" },
+      { "<leader>2sk", function() Snacks.picker.keymaps() end, desc = "Keymaps (s picker)" },
+      { "<leader>2sl", function() Snacks.picker.loclist() end, desc = "Location List (s picker)" },
+      { "<leader>2sm", function() Snacks.picker.marks() end, desc = "Marks (s picker)" },
+      { "<leader>2sM", function() Snacks.picker.man() end, desc = "Man Pages (s picker)" },
+      { "<leader>2sp", function() Snacks.picker.lazy() end, desc = "Search for Plugin Spec (s picker)" },
+      { "<leader>2sq", function() Snacks.picker.qflist() end, desc = "Quickfix List (s picker)" },
+      { "<leader>2<BS>", function() Snacks.picker.resume() end, desc = "Resume (s picker)" },
+      { "<leader>2su", function() Snacks.picker.undo() end, desc = "Undo History (s picker)" },
+      { "<leader>fi", function() Snacks.picker.colorschemes() end, desc = "Colorschemes 'find ink / invisiBkgd' (s picker)" },
+      -- LSP (native vim api already does all this..)
     },
   },
   -- {
@@ -1241,7 +1307,7 @@ vim.filetype.add({
 
 if isAndroid then
   vim.notify("EXPERIMENTAL: Termux detection enabled: There should be no startup errors and minimal errors with other plugins. Termux has been tested for nvim v0.11.3 (this is rolling release packages so this is no problemo.)")
-else
-  vim.notify(sysn)
+-- else
+--   vim.notify(sysn)
 end
 
