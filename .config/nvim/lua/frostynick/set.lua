@@ -35,6 +35,22 @@ o.scrolloff = 2 -- This should be dynamically determined based on how many lines
 -- o.signcolumn = "yes"
 -- o.isfname:append("@-@")
 
+-- o.sidescrolloff = 8 -- this is useful if you're not autowrapping lines I guess
+-- vim.opt.iskeyword:append("-") -- Treat dash as part of word
+vim.opt.path:append("**") -- include subdirectories in search (doesn't work with vim.o)
+
+-- vim.opt.nofoldenable = true -- folds are closed by default (THIS CAUSES ERROR IN NVIM)
+-- o.foldlevelstart = 99 -- folds stay open when switching buffers supposedly
+-- o.foldlevelstart = 1
+
+local a,b = pcall(function()
+end)
+if not a then
+  print("An error occured: " .. tostring(b))
+end
+
+-- :mkview :loadview (save/load folds) zf to create fold
+
 o.updatetime = 50
 o.timeoutlen = 300 -- timeout for key strokes
 
@@ -82,9 +98,45 @@ augroup END
 ]])
 
 cmd.ca("tan tabe")
+-- cmd.ca("|awk", "| awk'{print $}")
 -- cmd.ab("ao about")
 -- src: https://web.archive.org/web/20230117225946/https://stackoverflow.com/questions/7894330/preserve-last-editing-position-in-vim
+local augroup = vim.api.nvim_create_augroup("UserConfig", {})
+
+-- Highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = augroup,
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
+-- Return to last edit position when opening files
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = augroup,
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
+-- Create directories when saving files
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = augroup,
+  callback = function()
+    local dir = vim.fn.expand('<afile>:p:h')
+    if vim.fn.isdirectory(dir) == 0 then
+      vim.fn.mkdir(dir, 'p')
+    end
+  end,
+})
+
 -- Try when ya got time. Works but could be improved maybe.
+-- TODO: Above may be the solution!
+
 --[[ Restore cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*",
