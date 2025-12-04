@@ -1,6 +1,7 @@
 # ../sway/config (wayland alternative)
 
-# arch dependencies: pacman -S extra/network-manager-applet extra/brightnessctl i3lock # (there are dependencies missing here probably)
+# some arch dependencies:
+# pacman -S extra/network-manager-applet extra/brightnessctl i3lock feh
 
 # To be in closer parity with sway:
 # - Add xob (wob exists)
@@ -37,6 +38,7 @@ set $term alacritty
 # Errors are expected for now, since idk the fix, but it's workable.
 # otherwise above should be Mod4
 set $bar i3bar
+set $noti dunst
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -61,11 +63,19 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet 
 
-# picom is a compositor for X11; allows for transparent background in kitty.
+# picom is a compositor for X11; allows for transparent app backgrounds.
 # doesn't work from arch repo for some reason
 exec --no-startup-id picom -b
 # credit: https://github.com/i3/i3/discussions/4841
 # NOT SURE THIS WORKS exec picom # /usr/local/bin/picom
+
+# Below not tested (if not working, use systemd). GTK apps should be dark if this is running and this is installed: `yay -S xfce4-settings`
+exec --no-startup-id xfsettingsd
+
+exec $noti
+
+bindsym $mod+n exec dunstctl history-pop
+bindsym $mod+Shift+n exec dunstctl close-all
 
 bindsym XF86MonBrightnessUp exec brightnessctl set +2%
 bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
@@ -106,7 +116,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-bindsym $mod+p exec i3lock --color 003300 --image ~/backup2022nov/wallpapers/*/wallhaven-zy*.png
+bindsym $mod+p exec i3lock --color 003300 --image ~/bk/wallpapers/*/wallhaven-zy*.png
 
 # Only reason why I remove tabbed layout is because I don't like the default
 # having a visible title bar, which can't be changed in i3wm.
@@ -114,10 +124,10 @@ bindsym $mod+p exec i3lock --color 003300 --image ~/backup2022nov/wallpapers/*/w
 # workspace_layout tabbed
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -156,14 +166,14 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+i focus child
 
 # Add scratchpad like in sway?
 
 bindsym $mod+x exec $term -e "./.config/i3/openQuick.sh"
 
-bindsym $mod+b exec ./.config/sway/launchBrowser.sh $menu
-bindsym $mod+comma exec ./.config/sway/toggleBar.sh $bar
+bindsym $mod+b exec ./.config/sway/launchBrowser.sh "$menu"
+bindsym $mod+comma exec ./.config/sway/toggleBar.sh "$bar"
 # /home/nicholas/.config/sway/toggleBar.sh
 bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi" || exec $term -e "$EDITOR"
 
@@ -209,6 +219,10 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
+# This is separate from mod+{h,l} because it's much easier to map to game controller if you're into that.
+bindsym $mod+Right workspace next
+bindsym $mod+Left workspace prev
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -246,6 +260,7 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+bindsym $mod+z exec $HOME/.config/sway/setZoom.sh
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -338,7 +353,7 @@ default_floating_border pixel
 # fixes windows that are too big. Side effect: Affects all floating windows.
 floating_maximum_size 0 x 0
 
-set $mode_launcher Open: [l]w m., [m]c, [c]py, [a]nr, [o]bs, [d]i, [r]ec, [v], s[y]n, s[h]tc, pcm[f]m, [n]ws, ya[z]
+set $mode_launcher Open: [l]w m., [e]mail, [m]c, [c]py, [a]nr, [o]bs, [d]i, [r]ec, [v], s[y]n, s[h]tc, pcm[f]m, [n]ws, ya[z], [b]rv
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
@@ -347,8 +362,8 @@ mode "$mode_launcher" {
 #    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
     bindsym o exec "$term -e './.config/i3/obs.sh' &"
     # WORKING bindsym o exec obs
-# below temporarily removed
-    # bindsym s exec steam
+    bindsym s exec steam
+    bindsym u exec lutris
     bindsym c exec scrcpy
     bindsym r exec simplescreenrecorder
     # bindsym r exec "$term -e './.config/i3/ssr.sh'"
@@ -377,12 +392,14 @@ mode "$mode_launcher" {
     # NOT WORKING bindsym y exec xdg-open syncthing
     # TRY L8R exec --no-startup-id
 # L8R: mv below to /usr/local/bin/ or /usr/bin/
-    bindsym p exec ./Apps/KeePassXC-2.7.4-x86_64.AppImage
-    bindsym h exec ./Apps/shotcut-linux-x86_64-221221.AppImage
-    bindsym a exec ./Apps/android-studio/bin/studio.sh
-# below = file manager that comes in Lubuntu 20.04. Likely not on your OS.
+    bindsym p exec "keepassxc"
+    bindsym h exec "shotcut"
+    # bindsym a exec ./Apps/android-studio/bin/studio.sh
+    bindsym a exec "duckai.sh"
+# below = file manager
     bindsym f exec pcmanfm-qt # || exec nautilus || exec dolphin
     bindsym z exec $term -e "yazi"
+    bindsym b exec brave --incognito
     bindsym x exec $term -e "lynx"
 
     # NOT WORKING	bindsym --release t exec $term -e "fzf"
@@ -586,6 +603,7 @@ assign [class="qimgv"] $ws5
 # social
 assign [class="VencordDesktop"] $ws6
 assign [class="vesktop"] $ws6
+assign [class="Signal"] $ws6
 assign [class="discord"] $ws6
 assign [class="Element"] $ws6
 assign [class="Caprine"] $ws6
@@ -603,6 +621,8 @@ assign [class="Shotcut"] $ws10
 for_window [class="Shotcut"] focus
 assign [class="SimpleScreenRecorder"] $ws10
 for_window [class="SimpleScreenRecorder"] focus,layout tabbed
+assign [class="vokoscreenNG"] $ws10
+for_window [class="vokoscreenNG"] focus
 
 # should auto full scr l8r. or change window mode to fit the whole screen.
 # for_window [class="mpv"] focus
@@ -616,15 +636,11 @@ assign [class="org.keepassxc.KeePassXC"] $ws100
 # exec $term -e "vi"
 # exec $term
 # not working on restarting i3:
-# exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
-# NOT WORKING exec_always $term -e "nvim ~/backup2022nov10/notes/todo.norg"
-# NOT WORKING exec_always ./.config/i3/openTodo.sh
 exec $term -e "./.config/i3/openTodo.sh"
-# NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
 
 # WORKING exec_always $term -e "nvim"
-# NOT WORKING exec_always "xdg-open ~/backup2022nov10/notes/todo.norg"
+# NOT WORKING exec_always "xdg-open ~/bk/notes/todo.norg"
 # this made the command worse, but fixed it in other places:
 # sudo ln -s /home/YOUR_USERNAME_HERE/Apps/nvim-linux64/bin/nvim /usr/bin/nvim
 
@@ -641,4 +657,4 @@ exec $term -e "./.config/i3/openTodo.sh"
 # exec betterbird
 
 # NOT WORKING exec $term -e "./.config/sway/notifyBattery.sh"
-exec_always "notify-send 'Loaded config'"
+# exec_always "notify-send 'Loaded config'"
