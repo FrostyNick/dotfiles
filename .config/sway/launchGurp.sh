@@ -51,5 +51,16 @@ ocr-screenshot() {
   ($ec "launchGurp: ocr" &); grim -g "$(slurp -b 000000cc -c 005500cc)" - | tesseract stdin stdout | wl-copy
 }
 
-[ "$1" = "ocr" ] && ocr-screenshot || full-screenshot
+qr-screenshot() {
+  if ! command -v zbarimg 2> /dev/null; then
+    $ec "launchGurp: zbarimg (from zbar) is needed in order to scan for codes in this script."; exit 1
+  fi
+  ($ec "launchGurp: getting text from qr" &);
+  grim -g "$(slurp -b 000000cc -c 005500cc)" - > /tmp/gurp_qr.png
+  # zbarimg -q /tmp/gurp_qr.png | cut -c9- | wl-copy # This only works for the first line. Otherwise it cuts every line and that's no good.
+  zbarimg -q /tmp/gurp_qr.png | wl-copy
+  rm /tmp/gurp_qr.png
+}
+
+[ "$1" = "ocr" ] && ocr-screenshot || ([ "$1" = "qr" ] && qr-screenshot || full-screenshot)
 

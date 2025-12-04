@@ -37,6 +37,8 @@ set $menu tofi
 # set $term i3-sensible-terminal
 set $term foot
 set $bar waybar
+# $noti can be dunst (backwards compatible with X11 and suckless), mako (doesn't show history afaik.) or swaync (feature packed; 10x more ram usage than dunst). you may need to modify other notification keybinds if you want keybinds to work.
+set $noti dunst
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -65,11 +67,7 @@ exec nm-applet --indicator
 # selfnote: below should be tested against conflicting stuff more before being used
 # exec foot -s
 
-# Notification Daemon !!wayland!!
-# Note: likely there will be issues if both are installed. Remove one of the lines below or uninstall one if you have both.
-exec dunst
-# exec mako
-exec swaync
+exec $noti
 
 # WARNING: old wob = memory leak it seems
 exec_always $HOME/.config/sway/wobInit.sh
@@ -78,7 +76,8 @@ exec_always $HOME/.config/sway/wobInit.sh
 # below doesn't work
 # exec brightnessctl --min-value
 
-bindsym $mod+Shift+n exec swaync-client -t -sw
+bindsym $mod+n exec dunstctl history-pop
+bindsym $mod+Shift+n exec dunstctl close-all
 
 bindsym XF86MonBrightnessUp exec brightnessctl set +2%
 bindsym XF86MonBrightnessDown exec brightnessctl set 2%-
@@ -103,15 +102,19 @@ bindsym XF86Search exec dmenu_path | $menu | xargs swaymsg exec --
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# This errors under i3. !!WAYLAND!!
 # For more info: `man 5 sway-input` or github.com/swaywm/sway/wiki#keyboard-layout
 # Also see: `man 7 xkeyboard-config`
 # Map CapsLock to Esc. Add Dvorak and English phonetic Cyrillic. Toggle with
 # rctrl rshift. Caps lock led lights up if default layout is not being used.
+# setxkbmap -help
+
 input type:keyboard {
-    xkb_layout us,us(dvorak),us(rus)
+    # WARNING: Only the first 4 layouts can be used. 5th one is ignored.
+    xkb_layout us,us(colemak_dh),gr,us(rus),us(dvorak)
     xkb_options grp:rctrl_rshift_toggle,grp_led:caps,caps:escape
-    # hold esc to have ctrl would be nice too .. needs more than just sway tho ... good enough!
+
+    # hold esc to have ctrl would be nice too .. needs more than just sway tho (keyd) ... good enough!
+    # Like keyd, but works on Windows and MacOS too: [jtroo/kanata: Improve keyboard comfort and usability with advanced customization](https://github.com/jtroo/kanata)
 }
 
 input type:touchpad {
@@ -140,7 +143,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-bindsym $mod+p exec swaylock --color 003300 --image ~/backup2022nov/wallpapers/*/wallhaven-zy*.png
+bindsym $mod+p exec swaylock --color 003300 --image ~/bk/wallpapers/*/wallhaven-zy*.png
 
 # Only reason why I remove tabbed layout is because I don't like the default
 # having a visible title bar, which can't be changed in i3wm.
@@ -148,10 +151,10 @@ bindsym $mod+p exec swaylock --color 003300 --image ~/backup2022nov/wallpapers/*
 # workspace_layout tabbed
 
 # # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -190,7 +193,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+bindsym $mod+i focus child
 
 # Move the currently focused window to the scratchpad !!WAYLAND!!
 bindsym $mod+Shift+minus move scratchpad
@@ -199,10 +202,11 @@ bindsym $mod+Shift+minus move scratchpad
 # If there are multiple scratchpad windows, this command cycles through them. !!WAYLAND!!
 bindsym $mod+minus scratchpad show
 
-bindsym $mod+x exec $term -e "./.config/i3/openQuick.sh"
+bindsym $mod+x exec $term -e "$HOME/.config/i3/openQuick.sh"
 
-bindsym $mod+b exec ./.config/sway/launchBrowser.sh $menu
-bindsym $mod+comma exec ./.config/sway/toggleBar.sh $bar
+bindsym $mod+b exec $HOME/.config/sway/launchBrowser.sh "$menu"
+bindsym $mod+c exec $HOME/.config/sway/cursor.sh --txtbCp
+bindsym $mod+comma exec $HOME/.config/sway/toggleBar.sh "$bar"
 # /home/nicholas/.config/sway/toggleBar.sh
 bindsym $mod+v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi" || exec $term -e "$EDITOR"
 
@@ -248,6 +252,10 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
+# This is separate from mod+{h,l} because it's much easier to map to game controller if you're into that.
+bindsym $mod+Right workspace next
+bindsym $mod+Left workspace prev
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -285,8 +293,8 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-bindsym $mod+z exec $HOME/.config/sway/setZoom.sh $menu
-bindsym $mod+t exec $HOME/.config/sway/setTran.sh $menu
+bindsym $mod+z exec $HOME/.config/sway/setZoom.sh "$menu"
+bindsym $mod+t exec $HOME/.config/sway/setTran.sh "$menu"
 
 # Waybar config: ~/.config/waybar/config.jsonc
 # bar {
@@ -311,9 +319,15 @@ client.placeholder      #0c0c0c #000000 #484848 #000000   #0c0c0c
 client.background       #00ee78
 
 # bindsym $mod+Print exec flameshot gui
-bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save || $HOME/.config/sway/launchFlameshot.sh full)"
+# bindsym $mod+Print exec notify-send "Took full screenshot: $(grimshot save || $HOME/.config/sway/launchFlameshot.sh full)"
+
+# bindsym $mod+Print exec notify-send "Took full screenshot: $($HOME/.config/sway/launchFlameshot.sh full)"
+bindsym $mod+Print exec $HOME/.config/sway/launchGurp.sh
 bindsym Escape+Print exec $HOME/.config/sway/launchGurp.sh ocr
-bindsym Print exec $HOME/.config/sway/launchGurp.sh
+# Below: You need to hold space while pressing print for some reason.
+bindsym space+Print exec $HOME/.config/sway/launchGurp.sh qr
+# bindsym Print exec $HOME/.config/sway/launchGurp.sh # this is better in older versions of flameshot/wayland
+bindsym Print exec $HOME/.config/sway/launchFlameshot.sh
 # if slurp dependency isn't ancient "area" above should be replaced with "anything" (missing slurp -o)
 # below: repeat mod + num to go to previous ws
 # workspace_auto_back_and_forth yes
@@ -328,23 +342,26 @@ default_floating_border pixel
 # fixes windows that are too big. Side effect: Affects all floating windows.
 floating_maximum_size 0 x 0
 
-set $mode_launcher Open: [l]w m., [m]c, [c]py, [a]nr, [o]bs, [d]i, [r]ec, [v], s[y]n, s[h]tc, pcm[f]m, [n]ws, ya[z]
+set $mode_launcher Open: [l]w m., [e]mail, [m]c, [c]py, [a]i, [o]bs, [d]i, [r]ec, [v], s[y]n, s[h]tc, pcm[f]m, [n]ws, ya[z], [b]rv
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
-    bindsym l mode "default"; exec ./.config/sway/launchBrowser.sh $menu
+    bindsym l mode "default"; exec $HOME/.config/sway/launchBrowser.sh "$menu"
     bindsym m exec mcpelauncher-ui-qt -p Default || mcpelauncher -p Default
-#    bindsym o exec --no-startup-id ~/.config/i3/obs.sh
-    bindsym o exec "$term -e './.config/i3/obs.sh' &"
-    # WORKING bindsym o exec obs
-# below temporarily removed
-    # bindsym s exec steam
-    bindsym c exec scrcpy
-    bindsym r exec simplescreenrecorder
-    # bindsym r exec "$term -e './.config/i3/ssr.sh'"
+    # bindsym o exec --no-startup-id ~/.config/i3/obs.sh
+    # bindsym o exec "$term -e '$HOME/.config/i3/obs.sh' &" # with dnd but doesn't work
+    bindsym o exec obs
 
-# !!! Self-notes: see "fixing linux" for ln on installing PipeWire on 20.04 Ubuntu. For audio to be fixed on Vesktop.
+    bindsym s exec steam
+    bindsym u exec lutris
+    bindsym c exec scrcpy
+    # bindsym r exec simplescreenrecorder
+    # `sudo ln -s $HOME/p/botspot-screen-recorder/screen-recorder.sh /bin/botspot-screen-recorder`
+    bindsym r exec "botspot-screen-recorder" || exec simplescreenrecorder
+
     bindsym d exec vesktop || exec vencorddesktop || exec discord || exec discord-canary
+    # bindsym e exec mutt
+    bindsym e exec betterbird
     # bindsym n exec caprine
 
     bindsym v exec $term -e "$HOME/.local/share/bob/nvim-bin/nvim" || exec $term -e "nvim" || exec $term -e "vim" || exec $term -e "vi"
@@ -364,12 +381,18 @@ mode "$mode_launcher" {
     # NOT WORKING bindsym y exec xdg-open syncthing
     # TRY L8R exec --no-startup-id
 # L8R: mv below to /usr/local/bin/ or /usr/bin/
-    bindsym p exec ./Apps/KeePassXC-2.7.4-x86_64.AppImage
-    bindsym h exec ./Apps/shotcut-linux-x86_64-221221.AppImage
-    bindsym a exec ./Apps/android-studio/bin/studio.sh
-# below = file manager that comes in Lubuntu 20.04. Likely not on your OS.
-    bindsym f exec pcmanfm-qt # || exec nautilus || exec dolphin
+    # bindsym p exec "keepassxc"
+    bindsym p exec "(export QT_QPA_PLATFORM=wayland; keepassxc)"
+    bindsym h exec "shotcut"
+    # bindsym a exec $HOME/Apps/android-studio/bin/studio.sh
+    bindsym a exec "duckai.sh"
+# below = future problem (it should be its own script)
+    bindsym 2 exec "web.sh --d2l1"
+# below = file manager
+    bindsym f exec "(export QT_QPA_PLATFORM=wayland; pcmanfm-qt)"
+# pcmanfm-qt # || exec nautilus || exec dolphin
     bindsym z exec $term -e "yazi"
+    bindsym b exec brave --enable-features=UseOzonePlatform --ozone-platform=wayland --incognito
     bindsym x exec $term -e "lynx"
 
     # NOT WORKING	bindsym --release t exec $term -e "fzf"
@@ -384,7 +407,7 @@ mode "$mode_launcher" {
 }
 
 # shutdown / restart / suspend...
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot (not Ubuntu X11?), (CTRL+s) shutdown, (i) restart i3
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot (not Ubuntu X11), (CTRL+s) shutdown, (i) restart i3
 bindsym $mod+BackSpace mode "$mode_system"
 # bindsym Mod1+BackSpace mode "$mode_system"
 # bindsym Control+Mod1+Delete mode "$mode_system"
@@ -420,11 +443,12 @@ for_window [window_type="menu"] floating enable
 for_window [app_id="floating"] floating enable
 for_window [app_id="floating_update"] floating enable, resize set width 1000px height 600px
 for_window [title="Administrator privileges required"] floating enable
-for_window [title="Picture-in-Picture"] floating enable
+for_window [app_id="firefox|librewolf" title="Picture-in-Picture"] border none, floating enable, sticky enable, resize set 586 330, move position 100 ppt 0 ppt, move left 610, move down 12, opacity 0.7
+for_window [app_id="firefox|librewolf" title="Save Image|Save As|Enter name of file to save to…"] border none, floating enable, sticky enable, resize set 1000 600, move position 100 ppt 0 ppt, move left 1030, move down 14, opacity 0.85
 for_window [title="Password Required - Betterbird"] floating enable
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
 # prepend "[xwayland] " to the title if it's xwayland
-for_window [shell="xwayland"] title_format "[XWayland] %title"
+for_window [shell="xwayland"] title_format "[XWay.] %title"
 # doesn't do anything
 # for_window [urgent="latest"] focus
 
@@ -447,6 +471,8 @@ for_window [shell="xwayland"] title_format "[XWayland] %title"
 # selenium uses firefox.. and i dont need to focus on selenium always
 assign [class="firefox"] $ws1
 for_window [class="firefox"] focus
+assign [class="librewolf"] $ws1
+for_window [class="librewolf"] focus
 assign [class="Chromium-browser"] $ws1
 for_window [class="Chromium-browser"] focus
 assign [class="Pale moon"] $ws1
@@ -467,6 +493,7 @@ assign [app_id="zen-alpha"] $ws1
 for_window [app_id="zen-alpha"] focus
 assign [app_id="zen"] $ws1
 for_window [app_id="zen"] focus
+for_window [app_id="nm-connection-editor"] floating enable
 
 # web (remove in future; LibreWolf 126 and below)
 assign [class="librewolf-default"] $ws1
@@ -508,6 +535,8 @@ for_window [class="Soffice"] focus
 assign [class="Soffice"] $ws3
 for_window [class="Zathura"] focus
 assign [class="Zathura"] $ws3
+for_window [app_id="org.pwmt.zathura"] focus
+assign [app_id="org.pwmt.zathura"] $ws3
 for_window [class="qpdfview"] focus
 assign [class="qpdfview"] $ws3
 for_window [app_id="libreoffice-*"] focus
@@ -518,6 +547,8 @@ assign [app_id="org.kde.dolphin"] $ws3
 for_window [app_id="pcmanfm-qt"] focus
 assign [app_id="pcmanfm-qt"] $ws3
 # text editor
+assign [class="FeatherPad"] $ws3
+for_window [class="FeatherPad"] focus
 assign [app_id="featherpad"] $ws3
 for_window [app_id="featherpad"] focus
 assign [class="nobleNote"] $ws3
@@ -595,6 +626,8 @@ assign [class="VencordDesktop"] $ws6
 assign [app_id="VencordDesktop"] $ws6
 assign [class="vesktop"] $ws6
 assign [app_id="vesktop"] $ws6
+assign [class="Signal"] $ws6
+assign [app_id="signal"] $ws6
 assign [class="discord"] $ws6
 assign [class="Element"] $ws6
 assign [class="Caprine"] $ws6
@@ -620,6 +653,10 @@ assign [app_id="simplescreenrecorder"] $ws10
 for_window [app_id="simplescreenrecorder"] focus,layout tabbed
 assign [app_id="SimpleScreenRecorder"] $ws10
 for_window [app_id="SimpleScreenRecorder"] focus,layout tabbed
+assign [app_id="media-record"] $ws10
+for_window [app_id="media-record"] focus,floating enable
+assign [class="vokoscreenNG"] $ws10
+for_window [class="vokoscreenNG"] focus
 
 # should auto full scr l8r. or change window mode to fit the whole screen.
 # for_window [class="mpv"] focus
@@ -635,18 +672,14 @@ assign [app_id="org.keepassxc.KeePassXC"] $ws100
 # exec $term -e "vi"
 # exec $term
 # not working on restarting i3:
-# exec_always "xdg-open ~/backup2022nov10/notes/todo.norg" # not in vim btw FUTURE PROBLEM
-# NOT WORKING exec_always $term -e "nvim ~/backup2022nov10/notes/todo.norg"
-# NOT WORKING exec_always ./.config/i3/openTodo.sh
 exec $term -e "$HOME/.config/i3/openTodo.sh"
-# NOT WORKING exec_always gnome-terminal -- nvim ~/backup2022nov10/notes/todo.md
 
 
 # WORKING exec_always $term -e "nvim"
 
 # This is at the bottom just in case it's not asyncronous
-# THIS WORKS when restarting i3: exec_always ./.config/i3/xrandr.sh
-# THIS WORKS only on startup: exec ./.config/i3/xrandr.sh
+# THIS WORKS when restarting i3: exec_always $HOME/.config/i3/xrandr.sh
+# THIS WORKS only on startup: exec $HOME/.config/i3/xrandr.sh
 # Above no longer needed cuz Vencord fixes the resolution of streaming.
 
 include /etc/sway/config.d/*
@@ -663,4 +696,4 @@ exec_always $HOME/.config/sway/setSwaybg.sh
 
 exec $HOME/.config/sway/startupPrograms.sh
 
-exec_always "notify-send 'Loaded config'"
+# exec_always "notify-send 'Loaded config'"
