@@ -31,23 +31,17 @@ o.incsearch = true
 
 o.termguicolors = true -- full color support
 
-o.scrolloff = 2 -- This should be dynamically determined based on how many lines are on the screen. sucks on small screens.
+-- o.scrolloff = 2
+-- o.sidescrolloff = 8
+
 -- o.signcolumn = "yes"
 -- o.isfname:append("@-@")
-
--- o.sidescrolloff = 8 -- this is useful if you're not autowrapping lines I guess
 -- vim.opt.iskeyword:append("-") -- Treat dash as part of word
 vim.opt.path:append("**") -- include subdirectories in search (doesn't work with vim.o)
 
 -- vim.opt.nofoldenable = true -- folds are closed by default (THIS CAUSES ERROR IN NVIM)
 -- o.foldlevelstart = 99 -- folds stay open when switching buffers supposedly
 -- o.foldlevelstart = 1
-
-local a,b = pcall(function()
-end)
-if not a then
-  print("An error occured: " .. tostring(b))
-end
 
 -- :mkview :loadview (save/load folds) zf to create fold
 

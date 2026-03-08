@@ -52,7 +52,7 @@ local function telescopeConfig()
   k.set("n", "<leader>vpv", "<cmd>Telescope keymaps<CR>>vp<Esc>");
 
   k.set('n', '<leader><leader>', tsb.spell_suggest, {})
-  k.set('n', '<leader>,', tsb.oldfiles, { desc="Telescope: old files" })
+  -- k.set('n', '<leader>3,', tsb.oldfiles, { desc="Telescope: old files" }) -- snacks
   -- local a,b = pcall(function()
   --   -- k.set('n', '<leader>,', ts.extensions.frecency.frecency, { desc="Telescope: frecency" })
   --   k.del('n', '<leader>.')
@@ -61,31 +61,29 @@ local function telescopeConfig()
   -- if not a then
   --   vim.notify("Failed to load frecency keymap:\n"..tostring(b))
   -- end
-  k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" })
-  k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" })
-  k.set('n', '<leader>f"', tsb.registers, { desc="Telescope: registers" })
-  k.set('n', '<leader>f?', function() print"use <leader>fk instead" end)
+  -- k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" }) -- snacks
+  -- k.set('n', '<leader>f"', tsb.registers, { desc="Telescope: registers" }) -- snacks
+  k.set('n', '<leader>2?', tsb.keymaps, { desc="Telescope: keymaps" }) -- snacks, but less verbose
 
 
-  k.set('n', '<leader>fk', tsb.help_tags,
-  { desc="Telescope: help tags (documentation)" })
+  -- k.set('n', '<leader>2fk', tsb.help_tags, -- snacks
+  -- { desc="Telescope: help tags (documentation)" })
 
-  k.set('n', '<leader><BS>', tsb.resume,
+  k.set('n', '<leader>2<BS>', tsb.resume,
   {desc="Telescope: use prev picker"})
 
   -- error: k.set('n', '<leader>f/', builtin.grep_files, {})
   -- k.set('n', '<leader>ff', builtin.find_files, {})
-  k.set('n', '<leader>ff', "<cmd>Telescope find_files hidden=true<CR>",
-  {desc="Telescope: find files"})
+  -- k.set('n', '<leader>ff', "<cmd>Telescope find_files hidden=true<CR>",
+  -- {desc="Telescope: find files"}) -- snacks does this
 
-  k.set('n', '<leader>fj',
-  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/bk/*<CR>',
-  '<cmd>Telescope find_files hidden=true search_dirs=$HOME/bk/<CR>',
-  {desc="Telescope: find backup files; keywords: >vpv joplin"})
+  -- k.set('n', '<leader>fj',
+  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/bk/<CR>',
+  -- {desc="Telescope: find backup files; keywords: >vpv joplin"})
 
-  k.set('n', '<leader>fc',
-  '<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/learnxinyminutes-docs<CR>',
-  {desc="Telescope: offline code reference if learnxinyminutes-docs is git cloned in ~/p"})
+  -- k.set('n', '<leader>fc',
+  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/learnxinyminutes-docs<CR>',
+  -- {desc="Telescope: offline code reference if learnxinyminutes-docs is git cloned in ~/p"})
 
   k.set('n', '<leader>gz', function() vim.notify("Use `2gx`.") end)
 
@@ -93,15 +91,15 @@ local function telescopeConfig()
   '<cmd>Telescope live_grep search_dirs=$HOME/bk*/<CR>',
   {desc="Telescope: live grep (find text) in backup files; replacement to joplin. Requires rg."})
 
-  k.set('n', '<leader>fm', "<cmd>Telescope man_pages<CR>", {})
+  k.set('n', '<leader>2fm', "<cmd>Telescope man_pages<CR>", {})
 
   k.set('n', '<leader>fv', tsb.git_files, {desc="Telescope: git files"})
-  k.set('n', '<leader>fg', tsb.live_grep, {desc="Telescope: live grep"})
-  k.set('n', '<leader>ft', "<cmd>TodoTelescope<CR>", {desc="Telescope: see tags from todo-comments.nvim"})
+  k.set('n', '<leader>2fg', tsb.live_grep, {desc="Telescope: live grep"})
+  k.set('n', '<leader>2ft', "<cmd>TodoTelescope<CR>", {desc="Telescope: see tags from todo-comments.nvim"})
 
-  k.set('n', '<leader>f/', function()
-    tsb.grep_string({ search = vim.fn.input("Grep > ") })
-  end, {desc="Telescope: Grep string"})
+  -- k.set('n', '<leader>f/', function() -- snacks
+  --   tsb.grep_string({ search = vim.fn.input("Grep > ") })
+  -- end, {desc="Telescope: Grep string"})
 
   local function loadExtension(name, fn)
     local success,msg = pcall(function()
@@ -114,7 +112,7 @@ local function telescopeConfig()
   end
 
   loadExtension("file_browser", function()
-    k.set('n', '<leader>fb',
+    k.set('n', '<leader>2fb',
     "<cmd>Telescope file_browser<CR>", {desc="Telescope: file browser"})
   end)
 
@@ -150,8 +148,8 @@ end
 local function lspAndFoldConfig()
   local a,b = pcall(function()
     local path_mono_download = "$HOME/Apps/omnisharp-lsp-1.38.2/" -- not tested. may need to use /user/$HOME instead
-    local lspc = require('lspconfig')
-    require('lspconfig/configs')
+    -- local lspc = require('lspconfig') -- pre-v0.11.0
+    -- require('lspconfig/configs') -- this is deprecated too probably. or in lsp folder instead.
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities.textDocument.foldingRange = { -- from nvim-ufo docs
@@ -160,6 +158,7 @@ local function lspAndFoldConfig()
     }
 
     -- For easy starting point see `:help lspconfig-all` or https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+    -- :help lspconfig-
     local lspLs = {
 
       -- TODO: Consider using 'emmylua_ls' ... it's around 3x lighter in RAM when starting up.. readme says 10x faster.. sounds believable.
@@ -246,15 +245,19 @@ local function lspAndFoldConfig()
           }
         }
       },
-      'bashls', 'denols', 'pylsp', 'zls', 'tinymist', -- 'emmylua_ls',
-      'rust_analyzer', 'ts_ls', 'zk', --[[ 'golangci_lint_ls', ]] 'gopls',
+      'bashls', 'denols', 'pylsp', 'zls', 'tinymist',
+      'rust_analyzer', 'ts_ls', 'zk', 'gopls', 
+      -- 'golangci_lint_ls', 'emmylua_ls', 'marksman' (even if marksman works, too much RAM in my opinion. There's a better way with enough time.)
     }
     for _,v in ipairs(lspLs) do
       if type(v) ~= "table" then
-        lspc[v].setup { capabilities = capabilities }
+        vim.lsp.config(v, {capabilities = capabilities})
+        -- vim.lsp.enable(v) -- alternatively without "capabilities" (it's probably automatic)
+        -- lspc[v].setup { capabilities = capabilities } -- pre-0.11.0 ( :help lspconfig-nvim-0.11 )
       else
         -- vim.notify(vim.inspect(v))
-        lspc[v[1]].setup(v[2])
+        -- lspc[v[1]].setup(v[2]) -- pre-0.11.0
+        vim.lsp.config(v[1], v[2])
       end
     end
   end)
@@ -356,7 +359,7 @@ end
 local sysn = vim.split(vim.api.nvim_exec2("!uname -o", { output = true }).output, "\n", {trimempty=true, plain=true}) or {"ErrorNoUname"}
 sysn = tostring(sysn[#sysn])
 local isAndroid = sysn == "Android"
-local rainbow_delimiters
+-- local rainbow_delimiters
 
 local plugins = {
   {
@@ -399,7 +402,7 @@ local plugins = {
 
   -- LSP Support
   { 'williamboman/mason.nvim', event = "VeryLazy"},-- Optional
-  { 'williamboman/mason-lspconfig.nvim', -- b950110 fix: update required nvim version to >= 0.9.0 (#478) (2024-10-22)
+  { 'williamboman/mason-lspconfig.nvim', -- b950110 fix: update required nvim version to >= 0.9.0 (#478) (2024-10-22) -- do i need this if i use vim.lsp?
 
     dependencies = { 'williamboman/mason.nvim' },
     event = "VeryLazy",
@@ -653,7 +656,7 @@ local plugins = {
       'RainbowMultiDelim'
     }
   },
-  { -- this does take 7MB space btw..
+  --[[ { -- this does take 7MB space btw.. -- NOTE: "local rainbow_delimiters" exists
     "HiPhish/rainbow-delimiters.nvim",
     -- event = "VeryLazy",
     keys = {
@@ -687,6 +690,7 @@ local plugins = {
       },
     },
   },
+  --]]
   -- markdown alternative to below: github.com/2kabhishek/tdo.nvim (may use this)
   {"iamcco/markdown-preview.nvim",
     ft = "markdown",
@@ -708,6 +712,7 @@ local plugins = {
             arch = { pattern = 'archlinux%.org', icon = ' '},
             wikipedia = { pattern = 'wikipedia%.org', icon = '󰖬 '},
             google = { pattern = 'google%.com', icon = ' '},
+            apple = { pattern = 'apple%.com', icon = ' '},
             mozilla = { pattern = 'mozilla%.org', icon = '󰈹 '},
             trello = { pattern = 'trello%.com', icon = '󰔲 '},
             discord = { pattern = 'discord%.gg', icon = '󰙯 '},
@@ -724,9 +729,9 @@ local plugins = {
     end
   },
   { "dhruvasagar/vim-table-mode", cmd = "TableModeToggle",
-    -- ft = "markdown"
+    -- ft = "markdown" PERF: 
   },
-  -- PERF, HACK, TODO, NOTE, FIX, WARNING
+  -- PERF ("perfect".. no need for improvement), HACK, TODO, NOTE, FIX, WARNING
   { "folke/todo-comments.nvim", config = true, event = "VeryLazy", },
   -- -- in theory, works with .puml files and probably other UML files:
   -- 'https://gitlab.com/itaranto/preview.nvim', version = '*', config = true
@@ -754,7 +759,49 @@ local plugins = {
     'nanozuki/tabby.nvim',
     event = "VeryLazy",
     dependencies = 'nvim-tree/nvim-web-devicons',
-    config = true,
+    -- config = true,
+    config = function()
+      local theme = {
+        fill = 'TabLineFill',
+        -- Also you can do this: fill = { fg='#f2e9de', bg='#907aa9', style='italic' },
+        head = 'TabLine',
+        current_tab = 'TabLineSel',
+        tab = 'TabLine',
+        win = 'TabLine',
+        tail = 'TabLine',
+        -- WARNING: This is what WON'T work:
+        -- fill = { fg='#f2e9de', bg='none', style='italic' }, -- bg='Clear' errors (that what I do w/ my own script.)
+        -- head = { fg='#00ffde', bg='none', style='italic' },
+        -- current_tab = { fg='#00ffde', bg='none', style='italic' },
+        -- tab = { fg='#000000', bg='none', style='italic' },
+        -- win = { fg='#000000', bg='none', style='italic' },
+        -- tail = { fg='#000000', bg='none', style='italic' },
+      }
+      require('tabby').setup({
+        line = function(line) -- src: `:help tabby-setup-setup-tabby.nvim`
+          return { -- this makes tab line cleaner + no unneeded buftab
+            -- '  ',
+            ' 󰞲',
+            line.tabs().foreach(function(tab)
+              local hl = tab.is_current() and theme.current_tab or theme.tab
+              return {
+                line.sep('', hl, theme.fill),
+                tab.is_current() and '' or '󰆣',
+                tab.number(),
+                tab.name(),
+                tab.close_btn(''),
+                line.sep('', hl, theme.fill),
+                hl = hl,
+                margin = ' ',
+              }
+            end),
+            hl = theme.fill,
+          }
+        end,
+        -- option = {}, -- setup modules' option,
+      })
+
+    end,
     keys = {
       { "<leader>gtr", ":Tabby rename_tab ", mode = "n", desc = "Rename tab"},
     },
@@ -833,6 +880,17 @@ local plugins = {
     config = true,
     cmd = { "PossessionLoad", "PossessionDelete", "PossessionSave" },
     keys = {
+      { "<leader>sf", function()
+        pcall(function()
+          vim.cmd("wa | PossessionSave! tempauto")
+          -- local tmp2 = vim.fn.stdpath("data") .. "/possession/tempauto.json"
+          -- local str = "PossessionDelete!" -- the ! causes an error for some reason
+          -- vim.cmd("!(killall lua-language-server;$TERMINAL -e \"$(which nvim)\" +'sleep 20m | lua vim.cmd(\"PossessionLoad tempauto\"); vim.cmd(\"" .. str .. "tempauto\")' 2> /dev/null &);sleep 0.01")
+          vim.cmd("!(killall lua-language-server 2> /dev/null; $TERMINAL -e \"$(which nvim)\" +'sleep 20m | PossessionLoad tempauto' 2> /dev/null &);sleep 0.01")
+        end)
+        vim.notify('WARNING: this is lingering old session')
+        vim.cmd("qa")
+      end, mode = "n", desc="possession: restart nvim and restore changes"},
       { "<leader>se", "<cmd>PossessionLoad temp<CR>", mode = "n", desc="possession: load temp session"},
       { "<leader>sw", "<cmd>wa | PossessionSave! temp<CR>", mode = "n", desc="possession: write files and save temp session"},
       { "<leader>sx", "<Esc><cmd>wa | PossessionSave! temp<CR><cmd>qa<CR>", mode = "n", desc="possession: write files, save temp session and quit"},
@@ -840,15 +898,16 @@ local plugins = {
       { "<leader>sl", ":PossessionLoad ", mode = "n", desc="possession: load a file"},
       { "<leader>sd", ":PossessionDelete ", mode = "n", desc="possession: delete a file"},
       { "<leader>fs", "<cmd>Telescope possession list<CR>", mode = "n", desc="possession: find session"},
+      { "<leader>vd",":PossessionLoad daily<c-z><CR>", mode = "n", desc="possession: load 'daily*' (view daily) tag: >vp"},
     },
   },
-  {
-    'mbbill/undotree',
-    cmd = "UndotreeToggle",
-    keys = {
-      { "<leader>u", vim.cmd.UndotreeToggle, mode = "n" }
-    }
-  },
+  -- { -- snacks does this
+  --   'mbbill/undotree',
+  --   cmd = "UndotreeToggle",
+  --   keys = {
+  --     { "<leader>2u", vim.cmd.UndotreeToggle, mode = "n" }
+  --   }
+  -- },
   {
     "NeogitOrg/neogit", -- new plugin here. Possible addition/alternative to vim-fugitive. Seems promising (neogit is keyboard shortcut based vs vim fugitive improving git command line)
     cmd = "Neogit",
@@ -885,7 +944,6 @@ local plugins = {
       current_line_blame = true, -- `:Gitsigns toggle_word_diff`
       current_line_blame_opts = {
         delay = 200, -- default: 1000
-        virt_text_pos = 'right_align' -- default: next to text
       }
     },
     keys = {
@@ -896,10 +954,10 @@ local plugins = {
       { "<leader>ghe", ":Gits select_hunk<CR>",    mode = {"n", "v"}, desc = "Git Hunk: Edit (Ex: Select visual mode)"},
       { "<leader>ghn", ":Gits next_hunk<CR>",      mode = {"n", "v"}, desc = "Git Hunk: Jump next"},
       { "<leader>ghp", ":Gits prev_hunk<CR>",      mode = {"n", "v"}, desc = "Git Hunk: Jump prev"},
-      { "<leader>gd", ":Gits diffthis<CR>",        mode = {"n", "v"}, desc = "Git Diff" },
+      { "<leader>gd",  ":Gits diffthis<CR>",        mode = {"n", "v"}, desc = "Git Diff" },
       { "<leader>hgh", ":Gits toggle_numhl<CR>:Gits toggle_word_diff<CR>",mode="n", desc = "Hide/toggle git highlighting" },
-      { "<leader>hb", ":Gits toggle_current_line_blame<CR>",mode="n", desc = "Hide/toggle git blame (gitsigns.nvim) (normal)" },
-      { "<leader>hb",":Gits toggle_current_line_blame<CR>gv",mode="v",desc = "Hide/toggle git blame (gitsigns.nvim) (visual)" },
+      { "<leader>hb",  ":Gits toggle_current_line_blame<CR>",mode="n", desc = "Hide/toggle git blame (gitsigns.nvim) (normal)" },
+      { "<leader>hb",":Gits toggle_current_line_blame<CR>gv",mode="v", desc = "Hide/toggle git blame (gitsigns.nvim) (visual)" },
     }
     -- commit = "76927d14d3fbd4ba06ccb5246e79d93b5442c188", -- v0.8 support
   },
@@ -950,16 +1008,17 @@ local plugins = {
       }
     end
   },
-  {
-    -- alternative that relies on telescope instead of vim.ui.select: https://github.com/nvim-telescope/telescope-symbols.nvim
-    "ziontee113/icon-picker.nvim", -- Useful for emoji's too. See github for more info (use gz with my config to open up the link :) )
-    -- One thing that could improve this is a freqently used list or previous emojis or filter to sometimes use exclusively emojis or icons.
-    opts = { disable_legacy_commands = true },
-    keys = {
-      { "<c-e>", vim.cmd.IconPickerInsert, desc = "Pick icons and emojis", mode = "i" }
-    },
-    -- event = "VeryLazy"
-  },
+  -- 
+  -- { -- snacks does this good enough
+  --   -- alternative that relies on telescope instead of vim.ui.select: https://github.com/nvim-telescope/telescope-symbols.nvim
+  --   "ziontee113/icon-picker.nvim", -- Useful for emoji's too. See github for more info (use gz with my config to open up the link :) )
+  --   -- One thing that could improve this is a freqently used list or previous emojis or filter to sometimes use exclusively emojis or icons.
+  --   opts = { disable_legacy_commands = true },
+  --   keys = {
+  --     { "<c-e>", vim.cmd.IconPickerInsert, desc = "Pick icons and emojis", mode = "i" }
+  --   },
+  --   -- event = "VeryLazy"
+  -- },
 
   -- no longer works on here. probably bc of another plugin.
   -- 'airblade/vim-rooter',               -- 0.54 ms, 0.6 ms, 0.46 ms, 0.37 ms
@@ -974,7 +1033,7 @@ local plugins = {
     cmd = "Outline",
     -- event = "VeryLazy",
     keys = {
-      { "<leader>zo", "<cmd>Outline!<CR>",
+      { "<leader>o", "<cmd>Outline!<CR>",
       desc = "Code outline. Previously :SymbolsOutline. Can be used with :Outline" },
     },
     opts = {
@@ -1144,7 +1203,37 @@ local plugins = {
         on_close = function() toggleNotZen(true) end,
       },
       picker = {
+        hidden = true,
+        -- ignored = true, -- is this going to make .git visible?
         sources = {
+          explorer = {
+            win = {
+              list = {
+                 keys = { -- add - to go up parent (like Netrw, NvimTree, Oil, etc.)
+                   ["-"] = "explorer_up"
+                 }
+              }
+            }
+          },
+          files = {
+            hidden = true,
+            ignored = true,
+            exclude = { "**/.git/*" },
+          },
+          keymaps = { -- closer to telescope; less cluttered. (unless you happen to put everything in Lazy, which in that case default is just okay.)
+            layout = { preview = false }
+          },
+          zoxide = { -- WARNING: Below changes current directory instead of load_session / find picker.
+            confirm = function(picker, item)
+              picker:close()
+              if item then
+                vim.schedule(function()
+                  vim.notify("cwd: " .. vim.inspect(item.file or item.text))
+                  vim.cmd.cd(item.file or item.text)
+                end)
+              end
+            end
+          },
           colorschemes = {
             finder = "vim_colorschemes",
             format = "text",
@@ -1179,7 +1268,7 @@ local plugins = {
         }
       }
     },
-    keys = {
+    keys = { -- if it works good enough remove "snacks does this" plugins
       -- "Other" in docs
       -- { "<leader>zs", function() Snacks.zen() end, desc = "Toggle Zen Mode" }, -- s = skim-read mode as i call it
       { "<leader>zs", function() Snacks.zen() end, desc = "Toggle Zen Mode" }, -- s = skim-read mode as i call it
@@ -1200,18 +1289,29 @@ local plugins = {
       -- { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       -- { "<leader>3gl",function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
       { "<leader>3ff", function() Snacks.picker.smart() end, desc = "Smart Find Files (spicker snacks picker)" },
-      { "<leader>2b",  function() Snacks.picker.buffers() end, desc = "Buffers (s picker)" },
-      { "<leader>2/",  function() Snacks.picker.grep() end, desc = "Grep (s picker)" },
+      { "<leader>b",   function() Snacks.picker.buffers() end, desc = "Buffers (s picker)" },
+      { "<leader>f/",  function() Snacks.picker.grep() end, desc = "Grep (s picker)" },
       -- { "<leader>:",   function() Snacks.picker.command_history() end, desc = "Command History (s picker)" },
       -- { "2<leader>vn", function() Snacks.picker.notifications() end, desc = "Notification History (s picker)" }, -- I won't use this much probably
       -- below was <leader>e ... it could be shorter maybe.
       { "<leader>2pv", function() Snacks.explorer() end, desc = "File Explorer / Project View (s picker)" },
       -- find
+      { "<leader>,",   function() Snacks.picker.recent() end, desc = "Recent (oldfiles) (s picker)" },
+      { "<leader>z,",  function() Snacks.picker.zoxide() end, desc = "Find with zoxide (s picker)" },
+      { "<leader>vpp", function() Snacks.picker.files({ cwd = "~/p" }) end, desc = "Search projects folder (s picker)" },
+      { "<leader>fj", function() vim.notify("now use n,") end, desc = "Search j folder (s picker)" },
+      { "<leader>n", function() Snacks.picker.files({ cwd = "~/bk" }) end, desc = "Search j folder (s picker)" },
+      { "<leader>n,", function() Snacks.picker.files({ cwd = "~/bk" }) end, desc = "Search j folder (s picker)" },
+      { "<leader>nh", function() Snacks.picker.grep({ cwd = "~/bk" }) end, desc = "Search j folder (s picker)" },
+      { "<leader>fc",  function() Snacks.picker.files({ cwd = "~/p/learnxinyminutes-docs" }) end, desc = "Search code docs folder (s picker)" },
+  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/p/learnxinyminutes-docs<CR>',
+  -- '<cmd>Telescope find_files hidden=true search_dirs=$HOME/bk/<CR>',
       { "<leader>2vpc",function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File (s picker)" },
-      { "<leader>2ff", function() Snacks.picker.files() end, desc = "Find Files (s picker)" },
-      { "<leader>2fg", function() Snacks.picker.git_files() end, desc = "Find Git Files (s picker)" },
+      { "<leader>ff",  function() Snacks.picker.files() end, desc = "Find Files (s picker)" },
+      { "<leader>fg",  function() Snacks.picker.git_files() end, desc = "Find Git Files (s picker)" },
+      { "<leader>fh",  function() Snacks.picker.grep() end, desc = "Find c[h]ar Grep (s picker)" },
+      { "<leader>fw",  function() Snacks.picker.grep_word() end, desc = "Find [w]ord Grep (s picker)" },
       { "<leader>2fp", function() Snacks.picker.projects() end, desc = "Projects (s picker)" },
-      { "<leader>2,",  function() Snacks.picker.recent() end, desc = "Recent (oldfiles) (s picker)" },
       -- git
       { "<leader>2gb", function() Snacks.picker.git_branches() end, desc = "Git Branches (s picker)" },
       { "<leader>2gl", function() Snacks.picker.git_log() end, desc = "Git Log (s picker)" },
@@ -1226,7 +1326,7 @@ local plugins = {
       { "<leader>2sg", function() Snacks.picker.grep() end, desc = "Grep (s picker)" },
       { "<leader>2sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word (s picker)", mode = { "n", "x" } },
       -- search
-      { '<leader>2s"', function() Snacks.picker.registers() end, desc = "Registers (s picker)" },
+      { '<leader>f"',  function() Snacks.picker.registers() end, desc = "Registers (s picker)" },
       { "<leader>2s/", function() Snacks.picker.search_history() end, desc = "Search History (s picker)" },
       { "<leader>2sa", function() Snacks.picker.autocmds() end, desc = "Autocmds (s picker)" },
       { "<leader>2sb", function() Snacks.picker.lines() end, desc = "Buffer Lines (s picker)" },
@@ -1234,19 +1334,24 @@ local plugins = {
       { "<leader>2sC", function() Snacks.picker.commands() end, desc = "Commands (s picker)" },
       { "<leader>2sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics (s picker)" },
       { "<leader>2sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics (s picker)" },
-      { "<leader>2fk", function() Snacks.picker.help() end, desc = "Help Pages (s picker)" },
+      { "<leader>fk",  function() Snacks.picker.help() end, desc = "Help Pages (s picker)" },
+      { "<leader>fb",  function() Snacks.picker.explorer() end, desc = "File Browser Pages (s picker)" },
+      { "<leader>ft",  function() Snacks.picker.todo_comments() end, desc = "Todo Comments (s picker)" }, -- vim.cmd.TodoLocList for quickfix view
+      { "<leader>fm",  function() Snacks.picker.man() end, desc = "Man pages (s picker)" },
       { "<leader>2sH", function() Snacks.picker.highlights() end, desc = "Highlights (s picker)" },
       { "<leader>2si", function() Snacks.picker.icons() end, desc = "Icons (s picker)" },
+      { "<c-e>",       function() Snacks.picker.icons() end, desc = "Icons (s picker)", mode = "i" }, -- replace 
       { "<leader>2sj", function() Snacks.picker.jumps() end, desc = "Jumps (s picker)" },
-      { "<leader>2sk", function() Snacks.picker.keymaps() end, desc = "Keymaps (s picker)" },
+      { "<leader>2?",   function() Snacks.picker.keymaps() end, desc = "Keymaps (s picker)" },
+      { "<leader>f?",  function() Snacks.picker.pick() end, desc = "Pickers (s picker)" },
       { "<leader>2sl", function() Snacks.picker.loclist() end, desc = "Location List (s picker)" },
       { "<leader>2sm", function() Snacks.picker.marks() end, desc = "Marks (s picker)" },
       { "<leader>2sM", function() Snacks.picker.man() end, desc = "Man Pages (s picker)" },
       { "<leader>2sp", function() Snacks.picker.lazy() end, desc = "Search for Plugin Spec (s picker)" },
       { "<leader>2sq", function() Snacks.picker.qflist() end, desc = "Quickfix List (s picker)" },
-      { "<leader>2<BS>", function() Snacks.picker.resume() end, desc = "Resume (s picker)" },
-      { "<leader>2su", function() Snacks.picker.undo() end, desc = "Undo History (s picker)" },
-      { "<leader>fi", function() Snacks.picker.colorschemes() end, desc = "Colorschemes 'find ink / invisiBkgd' (s picker)" },
+      { "<leader><BS>",function() Snacks.picker.resume() end, desc = "Resume (s picker)" },
+      { "<leader>u",   function() Snacks.picker.undo() end, desc = "Undo History (s picker)" }, -- replace 'mbbill/undotree'
+      { "<leader>fi",  function() Snacks.picker.colorschemes() end, desc = "Colorschemes 'find ink / invisiBkgd' (s picker)" },
       -- LSP (native vim api already does all this..)
     },
   },
@@ -1302,6 +1407,8 @@ vim.g.neovide_scale_factor = 0.7
 vim.filetype.add({
   extension = {
     ['http'] = 'http',
+    -- ['kbd'] = 'fennel', -- better syntax highlighting
+    ['kbd'] = 'lisp', -- correct commentstring
   },
 })
 

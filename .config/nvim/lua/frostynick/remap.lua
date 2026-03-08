@@ -328,11 +328,11 @@ local function vTe(cTxt, L, R)
     vim.notify('Removed "// " from start.')
     txt2 = txt2:sub(4)
   end
-  local comments = vim.split(txt2, "#", {trimempty=true, plain=true}) -- this function is also used to launch bash programs which happen to have comments at the end, which can break extra code intended for "R" variable.
+  local comments = vim.split(txt2, "# ", {trimempty=true, plain=true}) -- this function is also used to launch bash programs which happen to have comments at the end, which can break extra code intended for "R" variable.
   if #comments > 1 then
     local comment = comments[#comments]
-    vim.notify('Removed everything continuing from "#": ' .. comment)
-    txt2 = txt2:sub(1, -(string.len(comment)+2) )
+    vim.notify('Removed everything continuing from "# ": ' .. comment)
+    txt2 = txt2:sub(1, -(string.len(comment)+3) )
     vim.notify("Code: " .. txt2)
   end
   local txt = (L or "") .. txt2 .. (R or "")
@@ -450,7 +450,7 @@ local function runGodot() -- Runs on :Godot
   local path = getRunPath("project.godot")
   if path then
     vim.notify("Launching Godot from " .. path)
-    -- c("!godot project.godot") -- same thing as below, but nvim can't be used while Godot is open in this case
+    -- c("!godot project.godot &") -- same thing as below, but nvim can't be used while Godot is open in this case (why is this not bkgd process? probably a reason)
 
     require'plenary.job':new({
       command = "godot", args = {path}, cwd = uv.cwd(),
@@ -715,7 +715,7 @@ local function getYId()
 
   for i = #txts, 1, -1 do
     -- local txt = vim.trim(txts[i]:gsub("[\n()]", ""))
-    local txt = txts[i]:gsub("[\n()]", "")
+    local txt = txts[i]:gsub('[,"\n()]', "")
     local t = string.find(txt, "&t=")
     if t then
       vim.notify("timestamp " .. string.sub(txt, t + 1) .. " has been found.. trimming.")
