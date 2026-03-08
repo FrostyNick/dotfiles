@@ -1,9 +1,8 @@
 # zathura: A vim-based minimalist PDF/djvu/ps/epub/comic book reader
 # https://www.youtube.com/watch?v=V_Iz4zdyRM4&t=315s
-set statusbar-v-padding 0
-set statusbar-h-padding 0
-set page-padding 1
-set recolor true
+# Honorable mentions:
+# - zaread (converts many files to work with zathura)
+# - sioyek (alternative to zathura)
 map u scroll half-up
 map d scroll half-down
 map D toggle_page_mode
@@ -13,3 +12,14 @@ map K zoom in
 map J zoom out
 map i recolor
 map p print
+set statusbar-v-padding 0
+set statusbar-h-padding 0
+set guioptions ""
+set page-padding 1
+set recolor true
+set selection-clipboard clipboard
+set font "Mononoki Nerd Font Propo Regular 12"
+set recolor-keephue true
+set recolor-reverse-video true
+set window-title-page
+set window-title-home-tilde
