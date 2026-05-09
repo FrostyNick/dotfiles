@@ -63,7 +63,7 @@ local function telescopeConfig()
   -- end
   -- k.set('n', '<leader>b', tsb.buffers, { desc="Telescope: buffers" }) -- snacks
   -- k.set('n', '<leader>f"', tsb.registers, { desc="Telescope: registers" }) -- snacks
-  k.set('n', '<leader>2?', tsb.keymaps, { desc="Telescope: keymaps" }) -- snacks, but less verbose
+  k.set('n', '<leader>?', tsb.keymaps, { desc="Telescope: keymaps" }) -- snacks, but less verbose (at least out of the box)
 
 
   -- k.set('n', '<leader>2fk', tsb.help_tags, -- snacks
