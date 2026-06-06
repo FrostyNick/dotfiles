@@ -43,6 +43,7 @@ If you learn something, consider adding a star or commenting.
   | [~/.config/zathura/](.config/zathura/)                                                 | Tiny vim-like PDF/epub/other viewer                    | x      |
   | [~/.termux/font.tff%%%](.termux/font.tff)                                              | Set default font in Termux                             |        | x      |
   | [~/.local/share/fonts/](.local/share/fonts)                                            | Set default font in Ubuntu                             | x      |
+<!-- /usr/local/share/fonts is apparently also a good place according to an arch dotfiles -->
   | [~/.fzf](.fzf/)                                                                        | Fuzzy finder                                           | x      | !      |
   | [~/.newsboat/](.newsboat)                                                              | Terminal RSS+atom reader with vim keybinds in config   | x      | x      |
   | [~/.bashrc](.bashrc)                                                                   | Bash shell config                                      | x      | ?      |
@@ -132,6 +133,7 @@ For my case I downloaded with cURL:
 ```
 cd ~/.local/share/fonts
 curl -OL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.1/Mononoki.zip
+curl -OL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Mononoki.zip
 unzip Mononoki.zip
 ```
 After that, I changed the default fonts in the kitty terminal. In your case,
@@ -141,6 +143,7 @@ In Termux:
 ```
 cd ~/.termux
 curl -OL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.1/Mononoki.zip
+curl -OL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Mononoki.zip
 unzip Mononoki.zip
 mv MononokiNerdFont-Regular.ttf font.ttf
 termux-reload-settings

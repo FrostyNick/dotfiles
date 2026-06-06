@@ -142,3 +142,4 @@ fi
 
 # Added by github.com/FrostyNick/fgit setup
 alias fgit=". fgit"
+# ~/.bash_aliases

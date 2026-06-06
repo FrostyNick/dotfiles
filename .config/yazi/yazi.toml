@@ -1,6 +1,8 @@
 # See README.md for plugin installation
 
-"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+
+# ^ issues 3938 on yazi
 
 [mgr]
 show_hidden    = true
@@ -11,12 +13,13 @@ show_hidden    = true
 # ~/.config/yazi/plugins/git.yazi/README.md (unix)
 
 [[plugin.prepend_fetchers]]
-id   = "git"
-name = "*"
+url  = "*"
 run  = "git"
+group= "git"
+# id   = "git"  # Add if Yazi <= v26.1.22
 
 [[plugin.prepend_fetchers]]
-id   = "git"
-name = "*/"
+url  = "*/"
 run  = "git"
-
+group= "git"
+# id   = "git"  # Add if Yazi <= v26.1.22

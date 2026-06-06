@@ -1,4 +1,5 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+# above fixes this script for systems with "sh" (my computer just has symlink to bash)
 # config
 oldids="$(pgrep swaybg)"
 

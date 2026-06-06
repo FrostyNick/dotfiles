@@ -1,6 +1,8 @@
 # Defaults saved in:
 # ~/p/yazi/yazi-config/preset/keymap-default.toml
-"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+# Also: F1 and ~ for keymaps.
+
+#:schema https://yazi-rs.github.io/schemas/keymap.json
 
 # Plugins (README.md for more info)
 # yazi will change "manager" to "mgr" as of 2025-6-18 so don't bother undoing that if reading github readme.
