@@ -591,11 +591,62 @@ k.set("n", "<leader>.", function()
   vim.notify(uv.cwd())
 end, {desc="Move cwd .. of cwd (previously <leader>.)"})
 
+local olpath
 vim.keymap.set("n", "yp", function()
-  -- string.gsub("original", "orig", "ori")
-  local home = vim.cmd.echo("$HOME")
-  -- vim.notify(home)
-  local path = vim.fn.expand("%:p"):gsub(home, "")
+  local home = vim.fn.expand("$HOME")
+  local path = vim.fn.expand("%:p"):gsub("^" .. home, "~")
+  if string.sub(path, 1, 4) == "~/bk" then
+    if olpath then -- try relative path
+      local _olpath = olpath
+      olpath = nil -- prevent memory bugs
+      local s = vim.split(path, "/")
+      local ols = vim.split(_olpath, "/")
+
+      local _i = -1
+      local max = math.max(#ols,#s)
+      for i = 2,max-1 do -- skip ~/bk/
+        if s[i] ~= ols[i] then
+          vim.notify(tostring(s[i]) .. " is not " .. tostring(ols[i]))
+          -- _i = i+2
+          _i = i
+          break
+        end
+      end
+
+      if _i == -1 then -- REALLY? needed???
+        _i = math.min(#ols,#s)-1
+        vim.notify("-1 -> loop x" .. _i)
+      else
+        _i = _i - 1
+        vim.notify("loop x" .. _i)
+      end
+
+      local olpos = 1
+      local pos = 1
+      for j = 1,_i do
+        olpos = string.find(_olpath, "/", olpos) + 1
+        pos = string.find(path, "/", pos) + 1
+      end
+
+      local olpath2 = string.sub(_olpath, olpos)
+      local path2 = string.sub(path, pos)
+
+      local olslashcount = select(2, path:gsub("/", ""))
+      local slashcount = select(2, _olpath:gsub("/", ""))
+
+      local str = ""
+
+      for i = 1,math.abs(olslashcount-slashcount) do
+        str = str .. "../"
+      end
+      path = str .. olpath2
+
+      vim.notify("now: " .. path2 .. "\nb4: " .. olpath2)
+    else
+      olpath = path
+    end
+  end
+
   vim.fn.setreg("+", path)
   vim.notify("file: " .. path)
 end, {desc="Yank full file path"})
